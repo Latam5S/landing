@@ -33,7 +33,7 @@
   nav a:hover{color:var(--accent)}
   .hero{
     text-align:center;
-    margin-top:60px;
+    margin-top:40px;
     background:linear-gradient(135deg,var(--accent),#FFB59A);
     color:#fff;
     border-radius:20px;
@@ -62,6 +62,10 @@
   .chip.selected{background:linear-gradient(90deg,var(--accent),#FF8B6A);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(217,107,79,0.12)}
   .btn-submit{margin-top:8px;padding:14px 20px;background:linear-gradient(90deg,var(--accent),#FF8B6A);color:#fff;border:0;border-radius:14px;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 10px 30px rgba(217,107,79,0.14)}
   .btn-submit:hover{opacity:.9}
+  
+  .mock-card{margin-top:40px;text-align:center;background:#fff;border-radius:20px;box-shadow:0 8px 25px rgba(15,20,25,0.05);padding:20px;}
+  .mock-card img{max-width:100%;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.05)}
+  .mock-card p{font-size:13px;color:var(--muted);margin-top:10px}  
 
   /* CTA Floating */
   .cta-fixed{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:14px 18px;border-radius:999px;box-shadow:0 6px 20px rgba(217,107,79,0.3);font-weight:700;cursor:pointer;}
@@ -85,10 +89,6 @@
         <div style="font-size:13px;color:var(--muted)">Organiza tus envíos · Para emprendedores</div>
       </div>
     </div>
-    <nav>
-      <a href="#beneficios">Beneficios</a>
-      <a href="#form">Registro</a>
-    </nav>
   </header>
 
   <section class="hero">
@@ -99,7 +99,7 @@
 
   <section id="beneficios" class="benefits">
     <div class="benefit">
-      <h4>✨ Sensación de calma</h4>
+      <h4>😌 Sensación de calma</h4>
       <p>Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
     </div>
     <div class="benefit">
@@ -149,9 +149,16 @@
 
       <button class="btn-submit">Quiero ordenar mi desorden</button>
     </form>
+    
+    <aside class="mock-card">
+    <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Vista del tablero de LATAM 5S">
+    <p>🔥 Nuevo tablero, nueva experiencia. Sé de los primeros.</p>
+    </aside>   
+    
+    
   </section>
 
-  <footer>© 2025 LATAM 5S — Beta exclusiva para emprendedores peruanos.</footer>
+  <footer>© 2025 LATAM 5S — Lanzamiento exclusivo para emprendedores peruanos.</footer>
 
 </div>
 <div class="cta-fixed" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">🚀 Unirme a la beta</div>
