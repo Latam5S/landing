@@ -191,33 +191,60 @@
 
 <script>
 const COMPANY_WHATSAPP = '51942096391';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec'; // ✅ Pega aquí la URL publicada
 
 const chipContainer = document.getElementById('networks');
 chipContainer.addEventListener('click', e=>{
-  const chip=e.target.closest('.chip');if(!chip)return;chip.classList.toggle('selected');});
+  const chip=e.target.closest('.chip');
+  if(!chip)return;
+  chip.classList.toggle('selected');
+});
 
 async function handleSubmit(e){
   e.preventDefault();
+
   const business=document.getElementById('business').value.trim();
   const wa=document.getElementById('wa').value.trim().replace(/\D/g,'');
   const volume=document.getElementById('volume').value;
   const selected=Array.from(document.querySelectorAll('.chip.selected')).map(c=>c.dataset.value);
 
   if(!business||!volume||selected.length===0||!/^[9]\d{8}$/.test(wa)){
-    alert('Por favor completa todos los campos correctamente.');return;
+    alert('Por favor completa todos los campos correctamente.');
+    return;
   }
 
-  const msg=encodeURIComponent(`👋 Hola, quiero participar en la beta de LATAM 5S.%0A📛 Emprendimiento: ${business}%0A📱 Redes: ${selected.join(', ')}%0A📦 Envíos/semana: ${volume}%0A📞 Mi WhatsApp: ${wa}`);
+  // ✅ Enviar datos a Google Sheets
+  const payload = {
+    business,
+    whatsapp: wa,
+    volume,
+    networks: selected
+  };
 
-  if(COMPANY_WHATSAPP!=='REPLACE_WITH_COMPANY_NUMBER'){
-    window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`,'_blank');
-  }else{
-    alert('Gracias, tus datos fueron registrados. Reemplaza COMPANY_WHATSAPP en el código para abrir WhatsApp automáticamente.');
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    console.log('Datos enviados a Google Sheets');
+  } catch (err) {
+    console.error('Error al enviar los datos:', err);
   }
 
-  e.target.reset();document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+  // ✅ Mensaje de WhatsApp (si quieres mantenerlo)
+  const msg = encodeURIComponent(
+    `👋 Hola, quiero conocer más sobre LATAM 5S.\n📛 Emprendimiento: ${business}\n📱 Redes: ${selected.join(', ')}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}`
+  );
+
+  window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`,'_blank');
+
+  e.target.reset();
+  document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
   return false;
 }
 </script>
+
 </body>
 </html>
