@@ -1,249 +1,275 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Latam5S — Organiza tus envíos con calma</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#fffaf6;
-    --card:#ffffff;
-    --text:#2b2b2b;
-    --muted:#6b6b6b;
-    --accent:#D96B4F;
-    --accent-2:#C9B5E6;
-    --radius:14px;
-    font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  :root {
+    --bg: #fffaf6;
+    --card: #ffffff;
+    --text: #2b2b2b;
+    --muted: #6b6b6b;
+    --accent: #D96B4F;
+    --accent-alt: #FF8B6A;
+    --radius: 14px;
+    --font: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background:linear-gradient(180deg,var(--bg),#fff);
-    color:var(--text);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: linear-gradient(180deg, var(--bg), #fff);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
   }
-  .page{max-width:1100px;margin:0 auto;padding:32px}
 
-  /* HEADER */
-  header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:12px 0}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#FF9B7A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;box-shadow:0 4px 12px rgba(217,107,79,0.25)}
-  nav a{margin:0 12px;color:var(--text);text-decoration:none;font-weight:600;transition:.2s}
-  nav a:hover{color:var(--accent)}
-  .hero{
-    text-align:center;
-    margin-top:40px;
-    background:linear-gradient(135deg,var(--accent),#FFB59A);
-    color:#fff;
-    border-radius:20px;
-    padding:60px 24px;
-    box-shadow:0 15px 40px rgba(217,107,79,0.25);
+  .page { max-width: 1100px; width: 100%; margin: 0 auto; padding: 32px; display:flex; flex-direction:column; align-items:center; }
+
+  header { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; width:100%; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo { width: 56px; height: 56px; border-radius: var(--radius); background: linear-gradient(135deg, var(--accent), #FF9B7A); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; box-shadow: 0 4px 12px rgba(217,107,79,0.25); }
+  header .brand div div { font-weight: 700; }
+  header .brand div div + div { font-size: 13px; color: var(--muted); }
+
+  h2 { text-align:center;margin-bottom:24px;font-size:24px;color:var(--accent) }
+
+  /* === CHAT CENTRAL === */
+  .chat-container {
+    position: relative;
+    width: 360px;
+    max-width: 90%;
+    height: 500px;
+    background: url('https://raw.githubusercontent.com/complicidad/landing/main/Image.jpg') no-repeat center bottom;
+    background-size: cover;
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* centrado vertical */
+    align-items: center; /* centrado horizontal */
+    overflow-y: auto;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
   }
-  .hero h1{font-size:40px;line-height:1.1;margin-bottom:16px;}
-  .hero p{font-size:18px;max-width:640px;margin:0 auto 28px}
-  .hero button{background:#fff;color:var(--accent);border:0;padding:14px 26px;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 8px 20px rgba(255,255,255,0.2);}
-  .hero button:hover{background:#ffe5de}
+  .messages { display: flex; flex-direction: column; gap: 8px; width:100%; max-width:320px; }
+  .message { padding: 10px 14px; border-radius: 18px; max-width: 80%; font-size: 14px; line-height: 1.3; word-break: break-word; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
+  .message.show { opacity: 1; transform: translateY(0); }
+  .from-user { align-self: flex-start; background: #DCF8C6; text-align: left; }
+  .from-system { align-self: flex-end; background: #FFF; text-align: right; }
 
-  /* BENEFITS */
-  .benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:80px}
-  .benefit{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(15,20,25,0.05);padding:24px;transition:.3s;}
-  .benefit:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(15,20,25,0.08)}
-  .benefit h4{font-size:18px;color:var(--accent);margin-bottom:8px}
-  .benefit p{color:var(--muted);font-size:15px;}
+  .btn-toggle { padding: 14px; border: none; border-radius: 999px; background: linear-gradient(135deg,var(--accent),var(--accent-alt)); color: #fff; font-weight: 700; cursor: pointer; transition: 0.25s; box-shadow: 0 6px 20px rgba(217,107,79,0.4); }
+  .btn-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,107,79,0.5); }
 
-  /* FORM CARD */
-  .form-card{margin-top:80px;background:#fff;border-radius:20px;padding:40px;box-shadow:0 10px 40px rgba(15,20,25,0.06);}
-  form{display:grid;gap:18px}
-  label{font-weight:700;font-size:14px;color:var(--muted)}
-  input,select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);font-size:15px;}
-  .chips{display:flex;flex-wrap:wrap;gap:10px}
-  .chip{padding:8px 14px;border-radius:999px;background:#fff;border:1px solid rgba(0,0,0,0.1);cursor:pointer;font-size:14px;color:var(--muted);transition:.2s}
-  .chip.selected{background:linear-gradient(90deg,var(--accent),#FF8B6A);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(217,107,79,0.12)}
-  .btn-submit{margin-top:8px;padding:14px 20px;background:linear-gradient(90deg,var(--accent),#FF8B6A);color:#fff;border:0;border-radius:14px;font-weight:700;cursor:pointer;font-size:16px;box-shadow:0 10px 30px rgba(217,107,79,0.14)}
-  .btn-submit:hover{opacity:.9}
-  
-  .mock-card{margin-top:40px;text-align:center;background:#fff;border-radius:20px;box-shadow:0 8px 25px rgba(15,20,25,0.05);padding:20px;}
-  .mock-card img{max-width:100%;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.05)}
-  .mock-card p{font-size:14px;color:var(--accent);font-weight:600;margin-top:12px}
+  /* === HERO === */
+  .hero { text-align: center; margin-top: 40px; background: linear-gradient(135deg, var(--accent), #FFB59A); color: #fff; border-radius: 20px; padding: 60px 24px; box-shadow: 0 15px 40px rgba(217,107,79,0.25); }
+  .hero h1 { font-size: 40px; line-height: 1.1; margin-bottom: 16px; }
+  .hero p { font-size: 18px; max-width: 640px; margin: 0 auto 28px; }
+  .hero button { background: #fff; color: var(--accent); border: 0; padding: 14px 26px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 8px 20px rgba(255,255,255,0.2); transition: 0.25s; }
+  .hero button:hover { background: #ffe5de; }
 
-  /* CTA Floating */
-  .cta-fixed{position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:14px 18px;border-radius:999px;box-shadow:0 6px 20px rgba(217,107,79,0.3);font-weight:700;cursor:pointer;}
+  /* === BENEFICIOS === */
+  .benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 80px; }
+  .benefit { background: #fff; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(15,20,25,0.05); padding: 24px; transition: .3s; }
+  .benefit:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(15,20,25,0.08); }
+  .benefit h4 { font-size: 18px; color: var(--accent); margin-bottom: 8px; }
+  .benefit p { color: var(--muted); font-size: 15px; }
 
-  footer{margin-top:80px;text-align:center;color:var(--muted);font-size:14px;padding-bottom:20px}
+  /* === FORMULARIO === */
+  .form-card { margin-top: 80px; background: var(--card); border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(15,20,25,0.06); }
+  form { display: grid; gap: 18px; }
+  label { font-weight: 700; font-size: 14px; color: var(--muted); }
+  input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); font-size: 15px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; font-size: 14px; color: var(--muted); transition: 0.2s; }
+  .chip.selected { background: linear-gradient(90deg,var(--accent),var(--accent-alt)); color: #fff; border-color: transparent; box-shadow: 0 8px 20px rgba(217,107,79,0.12); }
+  .btn-submit { margin-top: 8px; padding: 14px 20px; background: linear-gradient(90deg,var(--accent),var(--accent-alt)); color: #fff; border: 0; border-radius: var(--radius); font-weight: 700; cursor: pointer; font-size: 16px; box-shadow: 0 10px 30px rgba(217,107,79,0.14); transition: 0.2s; }
+  .btn-submit:hover { opacity: .9; }
+
+  footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 14px; padding-bottom: 20px; }
 
   @media(max-width:700px){
-    .hero h1{font-size:30px}
-    .form-card{padding:24px}
+    .hero h1 { font-size: 30px; }
+    .form-card { padding: 24px; }
   }
   
-.btn-flotante{
-  position:fixed;
-  bottom:22px;
-  right:22px;
-  background:linear-gradient(135deg, var(--accent), #FF8B6A);
-  color:#fff;
-  font-weight:700;
-  font-size:15px;
-  padding:14px 20px;
-  border-radius:999px;
-  text-decoration:none;
-  box-shadow:0 8px 20px rgba(217,107,79,0.3);
-  transition:.25s;
-  z-index:9999;
-}
-.btn-flotante:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 24px rgba(217,107,79,0.4);
-  opacity:.95;
-}  
+  /* BOTÓN FLOTANTE */
+  .btn-floating {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(217,107,79,0.4);
+    transition: 0.25s;
+    z-index: 999;
+  }
+  .btn-floating:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(217,107,79,0.5);
+  }  
   
 </style>
 </head>
 <body>
-<div class="page">
 
+<div class="page">
   <header>
     <div class="brand">
       <div class="logo">L5S</div>
       <div>
-        <div style="font-weight:700">Latam5S</div>
-        <div style="font-size:13px;color:var(--muted)">Organiza tus envíos · Para emprendedores</div>
+        <div>Latam5S</div>
+        <div>Organiza tus envíos · Para emprendedores</div>
       </div>
     </div>
   </header>
 
+  <h2>¿Cansado del desorden de direcciones?</h2>
+
+  <div class="chat-container">
+    <div class="messages" id="chat"></div>
+  </div>
+  <button class="btn-toggle" id="toggleBtn">Ver solución</button>
+
   <section class="hero">
-    <h1><span style="color:#fff;font-weight:700">Nos renovamos para hacerte la vida más fácil 🚀</span></h1>
+    <h1>Organiza tus envíos con calma — sin direcciones confusas ni mensajes perdidos</h1>
     <p>Más intuitiva, más rápida y lista para tu día a día como emprendedor. Descubre la nueva versión de Latam5S, hecha para ti.</p>
-    
     <button onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">🚀 Quiero unirme</button>
   </section>
 
   <section id="beneficios" class="benefits">
-    <div class="benefit">
-      <h4>😌 Sensación de calma</h4>
-      <p>Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
-    </div>
-    <div class="benefit">
-      <h4>⏱️ Más tiempo para vender</h4>
-      <p>Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
-    </div>
-    <div class="benefit">
-      <h4>📊 Decisiones claras</h4>
-      <p>Controla lo que se envía y cuándo — evita reenvíos y problemas con clientes.</p>
-    </div>
+    <div class="benefit"><h4>😌 Sensación de calma</h4><p>Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p></div>
+    <div class="benefit"><h4>⏱️ Más tiempo para vender</h4><p>Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p></div>
+    <div class="benefit"><h4>📊 Decisiones claras</h4><p>Controla lo que se envía y cuándo — evita reenvíos y problemas con clientes.</p></div>
   </section>
 
   <section id="form" class="form-card">
-    <h2 style="text-align:center;margin-bottom:24px;font-size:24px;color:var(--accent)">Forma parte de la renovación</h2>
-    <form id="leadForm" onsubmit="return handleSubmit(event)">
-      <div>
-        <label>Nombre del emprendimiento</label>
-        <input id="business" type="text" placeholder="Ej: La Tiendita de Ana" required>
+    <h2 style="text-align:center;margin-bottom:24px;font-size:24px;color:var(--accent)">Sé de las primeras en probar la nueva versión de Latam5S</h2>
+    <form id="leadForm">
+      <label>Nombre del emprendimiento</label>
+      <input id="business" type="text" placeholder="Ej: La Tiendita de Ana" required>
+
+      <label>¿En qué redes vendes más?</label>
+      <div class="chips" id="networks">
+        <div class="chip" data-value="TikTok">TikTok</div>
+        <div class="chip" data-value="Instagram">Instagram</div>
+        <div class="chip" data-value="WhatsApp">WhatsApp</div>
+        <div class="chip" data-value="Facebook">Facebook</div>
+        <div class="chip" data-value="Otro">Otro</div>
       </div>
 
-      <div>
-        <label>¿En qué redes vendes más?</label>
-        <div class="chips" id="networks">
-          <div class="chip" data-value="TikTok">TikTok</div>
-          <div class="chip" data-value="Instagram">Instagram</div>
-          <div class="chip" data-value="WhatsApp">WhatsApp</div>
-          <div class="chip" data-value="Facebook">Facebook</div>
-          <div class="chip" data-value="Otro">Otro</div>
-        </div>
-      </div>
+      <label>¿Cuántos envíos haces por semana?</label>
+      <select id="volume" required>
+        <option value="">Selecciona un rango</option>
+        <option value="Menos de 10">Menos de 10</option>
+        <option value="10-30">10 - 30</option>
+        <option value="30-60">30 - 60</option>
+        <option value="Más de 60">Más de 60</option>
+      </select>
 
-      <div>
-        <label>¿Cuántos envíos haces por semana?</label>
-        <select id="volume" required>
-          <option value="">Selecciona un rango</option>
-          <option value="Menos de 10">Menos de 10</option>
-          <option value="10-30">10 - 30</option>
-          <option value="30-60">30 - 60</option>
-          <option value="Más de 60">Más de 60</option>
-        </select>
-      </div>
+      <label>Tu WhatsApp (para contactarte)</label>
+      <input id="wa" type="tel" placeholder="Ej: 9XXXXXXXX" required>
 
-      <div>
-        <label>Tu WhatsApp (para contactarte)</label>
-        <input id="wa" type="tel" placeholder="Ej: 9XXXXXXXX" required>
-      </div>
-
-      <button class="btn-submit">Únete ahora</button>
+      <button type="submit" class="btn-submit">Únete ahora</button>
     </form>
-
   </section>
-
-    <aside class="mock-card">
-    <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Vista del tablero de LATAM 5S">
-    <p>Nuevo diseño, misma confianza.</p>
-    </aside>    
   
+  <a href="https://complicidad.github.io/dashboard/" target="_blank" class="btn-floating">🚀 Ir al Dashboard</a>
   
   <footer>© 2025 LATAM 5S — Renovado para emprendedores peruanos</footer>
-
 </div>
-  
-<a href="https://complicidad.github.io/dashboard/" class="btn-flotante" title="Volver al inicio">
-  🚀 Probar ahora
-</a>
 
 <script>
-const COMPANY_WHATSAPP = '51942096391';
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec'; // ✅ Pega aquí la URL publicada
+/* === CHAT SIMULADO === */
+const chat = document.getElementById('chat');
+const toggleBtn = document.getElementById('toggleBtn');
 
-const chipContainer = document.getElementById('networks');
-chipContainer.addEventListener('click', e=>{
-  const chip=e.target.closest('.chip');
-  if(!chip)return;
-  chip.classList.toggle('selected');
+const problemMessages = [
+  {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
+  {text:"Ok, ¿me pasas la dirección?", from:"from-system"},
+  {text:"Calle Falsa 123", from:"from-user"},
+  {text:"Ah, ¿y en qué distrito?", from:"from-system"},
+  {text:"San Juan de Lurigancho", from:"from-user"},
+  {text:"Ok, ¿alguna referencia?", from:"from-system"},
+  {text:"Está al lado del parque, entrada amarilla 😅", from:"from-user"},
+  {text:"Perfecto, listo.", from:"from-system"}
+];
+
+const solutionMessages = [
+  {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
+  {text:"¡Perfecto! 😃 Para asegurarnos que todo llegue bien, completa tus datos en este enlace:", from:"from-system"},
+  {text:"https://latam5s.com/form", from:"from-system"},
+  {text:"Listo, agregué todos mis datos. Muchas gracias!", from:"from-user"},
+  {text:"¡¡Excelente! Tu envío está programado y organizado. Muchas gracias 🚀", from:"from-system"}
+];
+
+let showingProblem = true;
+
+function renderChat(messages){
+  chat.innerHTML = '';
+  let delay = 0;
+  messages.forEach(m => {
+    const div = document.createElement('div');
+    div.className = `message ${m.from}`;
+    div.textContent = m.text;
+    chat.appendChild(div);
+    setTimeout(() => div.classList.add('show'), delay);
+    delay += 800;
+  });
+}
+
+renderChat(problemMessages);
+
+toggleBtn.addEventListener('click', () => {
+  renderChat(showingProblem ? solutionMessages : problemMessages);
+  toggleBtn.textContent = showingProblem ? "Volver al problema" : "Ver solución";
+  showingProblem = !showingProblem;
 });
 
-async function handleSubmit(e){
+/* === FORMULARIO === */
+const COMPANY_WHATSAPP = '51942096391';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
+
+document.getElementById('networks').addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if(chip) chip.classList.toggle('selected');
+});
+
+document.getElementById('leadForm').addEventListener('submit', async e => {
   e.preventDefault();
+  const business = document.getElementById('business').value.trim();
+  const wa = document.getElementById('wa').value.trim().replace(/\D/g,'');
+  const volume = document.getElementById('volume').value;
+  const selected = Array.from(document.querySelectorAll('.chip.selected')).map(c=>c.dataset.value);
 
-  const business=document.getElementById('business').value.trim();
-  const wa=document.getElementById('wa').value.trim().replace(/\D/g,'');
-  const volume=document.getElementById('volume').value;
-  const selected=Array.from(document.querySelectorAll('.chip.selected')).map(c=>c.dataset.value);
-
-  if(!business||!volume||selected.length===0||!/^[9]\d{8}$/.test(wa)){
+  if(!business || !volume || !selected.length || !/^9\d{8}$/.test(wa)){
     alert('Por favor completa todos los campos correctamente.');
     return;
   }
 
-  // ✅ Enviar datos a Google Sheets
-  const payload = {
-    business,
-    whatsapp: wa,
-    volume,
-    networks: selected
-  };
-
+  const payload = { business, whatsapp: wa, volume, networks: selected };
   try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'application/json'}, body:JSON.stringify(payload) });
     console.log('Datos enviados a Google Sheets');
-  } catch (err) {
-    console.error('Error al enviar los datos:', err);
-  }
+  } catch(err) { console.error('Error al enviar datos:', err); }
 
-  // ✅ Mensaje de WhatsApp (si quieres mantenerlo)
-  const msg = encodeURIComponent(
-    `👋 Hola, quiero conocer más sobre LATAM 5S.\n📛 Emprendimiento: ${business}\n📱 Redes: ${selected.join(', ')}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}`
-  );
-
+  const msg = encodeURIComponent(`👋 Hola, quiero conocer más sobre LATAM 5S.\n📛 Emprendimiento: ${business}\n📱 Redes: ${selected.join(', ')}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}`);
   window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`,'_blank');
 
   e.target.reset();
   document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
-  return false;
-}
+});
 </script>
 
 </body>
