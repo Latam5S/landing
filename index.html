@@ -79,7 +79,7 @@
     margin: 15px auto 30px;
   }
 
-  /* === CARRUSEL SLIDESHOW (Controlado por JS) === */
+  /* === CARRUSEL FADE (Controlado por JS) === */
   #carrusel-dashboard {
     width: 100%;
     text-align: center;
@@ -87,29 +87,47 @@
   }
 
   .carrusel-container {
-    position: relative; /* Clave para posicionar los botones */
-    max-width: 600px; /* Ancho máximo del carrusel */
+    position: relative; /* Clave para posicionar los botones e imágenes */
+    max-width: 600px;
     margin: 0 auto;
-  }
-
-  .carrusel {
-    overflow: hidden; /* Oculta las imágenes que no están en el viewport */
     border-radius: var(--radius);
     box-shadow: 0 10px 30px rgba(15,20,25,0.08);
   }
 
-  .carrusel-track {
-    display: flex;
-    /* La transición hace el efecto de deslizamiento suave */
-    transition: transform 0.5s ease-in-out;
+  .carrusel {
+    position: relative;
+    /* La altura se ajustará a la imagen */
   }
 
+  /* === LA MAGIA DEL FADE ESTÁ AQUÍ === */
   .carousel-slide {
-    width: 100%;       /* Cada imagen ocupa el 100% del contenedor */
-    flex-shrink: 0;   /* Evita que las imágenes se encojan */
+    width: 100%;
+    height: auto;
+    display: block; /* Para un buen manejo de la imagen */
+
+    /* Todas las imágenes están ocultas por defecto */
+    opacity: 0;
+
+    /* Transición suave para el efecto de desvanecimiento */
+    transition: opacity 0.4s ease-in-out;
   }
 
-  /* Estilos para los botones de navegación */
+  .carousel-slide.active {
+    /* La imagen activa se hace visible */
+    opacity: 1;
+  }
+
+  /* Para apilar las imágenes, hacemos que todas menos la primera
+     sean absolutas para que no ocupen espacio en el flujo */
+  .carousel-slide:not(:first-child) {
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
+  /* === FIN DE LA MAGIA DEL FADE === */
+
+
+  /* Estilos para los botones de navegación (se mantienen) */
   .carousel-btn {
     position: absolute;
     top: 50%;
@@ -135,12 +153,11 @@
   .carousel-btn.next {
     right: 10px;
   }
-  /* Clase para ocultar los botones en los extremos */
   .carousel-btn.hidden {
     display: none;
   }
 
-  /* Estilos para los puntos indicadores */
+  /* Estilos para los puntos indicadores (se mantienen) */
   .carousel-dots-container {
     text-align: center;
     margin-top: 15px;
@@ -158,6 +175,7 @@
   .dot.active {
     background-color: var(--accent);
   }
+  
   /* === SECCIÓN COMPARATIVA === */
   #comparativo { text-align: center; padding: 60px 20px; }
   #toggleComparativo { background-color: #FF6F61; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 20px; }
@@ -220,13 +238,12 @@
     .form-card { padding: 24px; }
     
     /* Carrusel móvil */
-    .carrusel-track { width: calc(300px * 2); }
-    .carrusel img { width: 300px; margin: 0 6px; }
-    @keyframes scroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(calc(-312px * 2)); } /* 300px de imagen + 12px de margen */
-    }
-
+    .carousel-btn { width: 35px; height: 35px; font-size: 20px; }
+    .carousel-btn.prev { left: 5px; }
+    .carousel-btn.next { right: 5px; }
+    
+    
+    
     /* Tabla comparativa móvil */
     .comparative-table { font-size: 0.8rem; }
     .comparative-table th, .comparative-table td { padding: 8px; word-wrap: break-word; }
@@ -370,42 +387,45 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* === LÓGICA DEL CARRUSEL SLIDESHOW === */
-  const track = document.getElementById('carrusel-track');
-  const slides = Array.from(track.children);
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const dotsContainer = document.getElementById('carousel-dots');
+  /* === LÓGICA DEL CARRUSEL FADE === */
+  const carruselContainer = document.getElementById('carrusel-dashboard');
 
-  if (track && slides.length > 0) {
-    const slideWidth = slides[0].getBoundingClientRect().width;
+  if (carruselContainer) { // Verificamos que el carrusel exista
+    const slides = Array.from(carruselContainer.querySelectorAll('.carousel-slide'));
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const dotsContainer = document.getElementById('carousel-dots');
     let currentIndex = 0;
 
     // Crear los puntos indicadores
-    slides.forEach((slide, index) => {
-      const dot = document.createElement('button');
-      dot.classList.add('dot');
-      dotsContainer.appendChild(dot);
-      if (index === 0) dot.classList.add('active');
+    if (dotsContainer && slides.length > 0) {
+        dotsContainer.innerHTML = ''; // Limpiamos por si acaso
+        slides.forEach((slide, index) => {
+          const dot = document.createElement('button');
+          dot.classList.add('dot');
+          dotsContainer.appendChild(dot);
+          dot.addEventListener('click', () => {
+            currentIndex = index;
+            updateCarousel();
+          });
+        });
+    }
+    const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
 
-      dot.addEventListener('click', () => {
-        currentIndex = index;
-        updateCarousel();
-      });
-    });
-
-    const dots = Array.from(dotsContainer.children);
-
-    // Función para actualizar la posición del carrusel y los elementos UI
+    // Función para actualizar qué imagen y punto están activos
     const updateCarousel = () => {
-      // Mover el track
-      track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+      // 1. Ocultar todas las imágenes quitando la clase 'active'
+      slides.forEach(slide => slide.classList.remove('active'));
+      // 2. Mostrar solo la imagen actual añadiendo la clase 'active'
+      slides[currentIndex].classList.add('active');
 
-      // Actualizar punto activo
-      dots.forEach(dot => dot.classList.remove('active'));
-      dots[currentIndex].classList.add('active');
+      // 3. Actualizar los puntos
+      if (dots.length > 0) {
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentIndex].classList.add('active');
+      }
 
-      // Mostrar/ocultar botones
+      // 4. Mostrar u ocultar los botones de navegación
       prevBtn.classList.toggle('hidden', currentIndex === 0);
       nextBtn.classList.toggle('hidden', currentIndex === slides.length - 1);
     };
@@ -425,9 +445,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Llamada inicial para establecer el estado correcto
+    // Llamada inicial para mostrar la primera imagen
     updateCarousel();
-  }  
+  }
+  
   
   /* === LÓGICA DE LA TABLA COMPARATIVA === */
   const botonComparativo = document.getElementById('toggleComparativo');
