@@ -119,7 +119,43 @@
     transform: translateY(-3px);
     box-shadow: 0 12px 36px rgba(217,107,79,0.5);
   }  
-  
+  .carrusel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(15,20,25,0.08);
+  }
+
+  .carrusel-track {
+    display: flex;
+    width: calc(600px * 4); /* total de imágenes (ajustar según cantidad y tamaño) */
+    animation: scroll 20s linear infinite;
+  }
+
+  .carrusel img {
+    width: 600px;
+    flex-shrink: 0;
+    border-radius: 0px;
+    margin: 0 0px;
+  }
+
+  /* 🔄 Animación continua sin saltos */
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* 🖱️ Pausa al pasar el mouse */
+  .carrusel:hover .carrusel-track {
+    animation-play-state: paused;
+  }
+
+  /* 📱 Adaptación móvil */
+  @media (max-width: 700px) {
+    .carrusel-track { width: calc(300px * 6); }
+    .carrusel img { width: 300px; margin: 0 6px; }
+  }  
 </style>
 </head>
 <body>
@@ -142,6 +178,23 @@
   </div>
   <button class="btn-toggle" id="toggleBtn">Ver solución</button>
 
+<!-- ==== CARRUSEL DEL DASHBOARD ==== -->
+<section id="carrusel-dashboard" style="margin:80px 0; text-align:center;">
+  <h2 style="color:var(--accent); font-size:2rem; font-weight:700;">Explora el Panel de Control</h2>
+  <p style="color:#555; margin-bottom:30px;">Un vistazo a cómo se ve tu nuevo dashboard</p>
+
+  <div class="carrusel">
+    <div class="carrusel-track">
+      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1">
+      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2">
+      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1">
+      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2">
+    </div>
+  </div>
+</section>
+  
+  
+  
   <section id="comparativo" style="text-align:center; padding:60px 20px;">
     <h2 style="font-size:2rem; color:#222; font-weight:700;">Así cambia tu forma de organizar tus envíos 🚀</h2>
     <p style="color:#555; max-width:600px; margin:15px auto;">
