@@ -38,7 +38,7 @@
   header .brand div div { font-weight: 700; }
   header .brand div div + div { font-size: 13px; color: var(--muted); }
 
-  h2 { text-align:center;margin-bottom:24px;font-size:24px;color:var(--accent) }
+  h2 { text-align:center; margin-bottom:24px; font-size:24px; color:var(--accent) }
 
   /* === CHAT CENTRAL === */
   .chat-container {
@@ -52,8 +52,8 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* centrado vertical */
-    align-items: center; /* centrado horizontal */
+    justify-content: flex-start;
+    align-items: center;
     overflow-y: auto;
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     margin-bottom: 20px;
@@ -66,6 +66,108 @@
 
   .btn-toggle { padding: 14px; border: none; border-radius: 999px; background: linear-gradient(135deg,var(--accent),var(--accent-alt)); color: #fff; font-weight: 700; cursor: pointer; transition: 0.25s; box-shadow: 0 6px 20px rgba(217,107,79,0.4); }
   .btn-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,107,79,0.5); }
+
+  /* === SECCIÓN DE TÍTULO === */
+  .section-title {
+    color: #222;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .section-subtitle {
+    color: #555;
+    max-width: 600px;
+    margin: 15px auto 30px;
+  }
+
+  /* === CARRUSEL SLIDESHOW (Controlado por JS) === */
+  #carrusel-dashboard {
+    width: 100%;
+    text-align: center;
+    margin: 80px 0;
+  }
+
+  .carrusel-container {
+    position: relative; /* Clave para posicionar los botones */
+    max-width: 600px; /* Ancho máximo del carrusel */
+    margin: 0 auto;
+  }
+
+  .carrusel {
+    overflow: hidden; /* Oculta las imágenes que no están en el viewport */
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(15,20,25,0.08);
+  }
+
+  .carrusel-track {
+    display: flex;
+    /* La transición hace el efecto de deslizamiento suave */
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .carousel-slide {
+    width: 100%;       /* Cada imagen ocupa el 100% del contenedor */
+    flex-shrink: 0;   /* Evita que las imágenes se encojan */
+  }
+
+  /* Estilos para los botones de navegación */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text);
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s;
+  }
+  .carousel-btn:hover {
+    background-color: white;
+  }
+  .carousel-btn.prev {
+    left: 10px;
+  }
+  .carousel-btn.next {
+    right: 10px;
+  }
+  /* Clase para ocultar los botones en los extremos */
+  .carousel-btn.hidden {
+    display: none;
+  }
+
+  /* Estilos para los puntos indicadores */
+  .carousel-dots-container {
+    text-align: center;
+    margin-top: 15px;
+  }
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .dot.active {
+    background-color: var(--accent);
+  }
+  /* === SECCIÓN COMPARATIVA === */
+  #comparativo { text-align: center; padding: 60px 20px; }
+  #toggleComparativo { background-color: #FF6F61; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+  #tablaComparativa { max-width: 100%; margin: 40px auto; display: none; transition: all 0.5s ease; }
+  .comparative-table { width: 100%; border-collapse: collapse; font-family: 'Quicksand', sans-serif; table-layout: fixed; }
+  .comparative-table th, .comparative-table td { padding: 10px; }
+  .comparative-table thead tr { background-color: #ffe9e5; color: #333; }
+  .comparative-table thead th { font-size: 1rem; }
+  .comparative-table tbody td:nth-child(2) { background: #fff6f5; }
+  .comparative-table tbody td:nth-child(3) { background: #e8fff1; }
 
   /* === HERO === */
   .hero { text-align: center; margin-top: 40px; background: linear-gradient(135deg, var(--accent), #FFB59A); color: #fff; border-radius: 20px; padding: 60px 24px; box-shadow: 0 15px 40px rgba(217,107,79,0.25); }
@@ -92,14 +194,7 @@
   .btn-submit { margin-top: 8px; padding: 14px 20px; background: linear-gradient(90deg,var(--accent),var(--accent-alt)); color: #fff; border: 0; border-radius: var(--radius); font-weight: 700; cursor: pointer; font-size: 16px; box-shadow: 0 10px 30px rgba(217,107,79,0.14); transition: 0.2s; }
   .btn-submit:hover { opacity: .9; }
 
-  footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 14px; padding-bottom: 20px; }
-
-  @media(max-width:700px){
-    .hero h1 { font-size: 30px; }
-    .form-card { padding: 24px; }
-  }
-  
-  /* BOTÓN FLOTANTE */
+  /* === BOTÓN FLOTANTE === */
   .btn-floating {
     position: fixed;
     bottom: 24px;
@@ -115,47 +210,28 @@
     transition: 0.25s;
     z-index: 999;
   }
-  .btn-floating:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 36px rgba(217,107,79,0.5);
-  }  
-  .carrusel {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    border-radius: var(--radius);
-    box-shadow: 0 10px 30px rgba(15,20,25,0.08);
-  }
+  .btn-floating:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(217,107,79,0.5); }
+  
+  footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 14px; padding-bottom: 20px; }
 
-  .carrusel-track {
-    display: flex;
-    width: calc(600px * 4); /* total de imágenes (ajustar según cantidad y tamaño) */
-    animation: scroll 20s linear infinite;
-  }
-
-  .carrusel img {
-    width: 600px;
-    flex-shrink: 0;
-    border-radius: 0px;
-    margin: 0 0px;
-  }
-
-  /* 🔄 Animación continua sin saltos */
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* 🖱️ Pausa al pasar el mouse */
-  .carrusel:hover .carrusel-track {
-    animation-play-state: paused;
-  }
-
-  /* 📱 Adaptación móvil */
-  @media (max-width: 700px) {
+  /* === REGLAS RESPONSIVAS === */
+  @media(max-width:700px){
+    .hero h1 { font-size: 30px; }
+    .form-card { padding: 24px; }
+    
+    /* Carrusel móvil */
     .carrusel-track { width: calc(300px * 4); }
     .carrusel img { width: 300px; margin: 0 6px; }
-  }  
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-312px * 2)); } /* 300px de imagen + 12px de margen */
+    }
+
+    /* Tabla comparativa móvil */
+    .comparative-table { font-size: 0.8rem; }
+    .comparative-table th, .comparative-table td { padding: 8px; word-wrap: break-word; }
+    .comparative-table td { font-size: 0.75rem; }
+  }
 </style>
 </head>
 <body>
@@ -178,102 +254,71 @@
   </div>
   <button class="btn-toggle" id="toggleBtn">Ver solución</button>
 
-<!-- ==== CARRUSEL DEL DASHBOARD ==== -->
-<section id="carrusel-dashboard" style="margin:80px 0; text-align:center;">
-  <h2 style="color:var(--accent); font-size:2rem; font-weight:700;">Explora el Panel de Control</h2>
-  <p style="color:#555; margin-bottom:30px;">Un vistazo a cómo se ve tu nuevo dashboard</p>
+  <section id="carrusel-dashboard">
+    <h2 class="section-title">Explora el Panel de Control</h2>
+    <p class="section-subtitle">Un vistazo a cómo se ve tu nuevo dashboard</p>
 
-  <div class="carrusel">
-    <div class="carrusel-track">
-      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1">
-      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2">
-      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1">
-      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2">
+    <div class="carrusel-container">
+      <div class="carrusel">
+        <div class="carrusel-track" id="carrusel-track">
+          <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1" class="carousel-slide">
+          <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2" class="carousel-slide">
+          <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1" class="carousel-slide">
+          <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2" class="carousel-slide">
+        </div>
+      </div>
+      <button id="prevBtn" class="carousel-btn prev">‹</button>
+      <button id="nextBtn" class="carousel-btn next">›</button>
     </div>
-  </div>
-</section>
+
+    <div id="carousel-dots" class="carousel-dots-container"></div>
+  </section>
   
-  
-  
-  <section id="comparativo" style="text-align:center; padding:60px 20px;">
-    <h2 style="font-size:2rem; color:#222; font-weight:700;">Así cambia tu forma de organizar tus envíos 🚀</h2>
-    <p style="color:#555; max-width:600px; margin:15px auto;">
+  <section id="comparativo">
+    <h2 class="section-title">Así cambia tu forma de organizar tus envíos 🚀</h2>
+    <p class="section-subtitle">
       Mira cómo pasa tu día de caos a control con <strong>Latam5S</strong>
     </p>
-    <button id="toggleComparativo"
-            style="background-color:#FF6F61; color:white; border:none; padding:12px 25px; border-radius:6px; font-weight:600; cursor:pointer; margin-top:20px;">
-      Descubre la diferencia 💡
-    </button>
+    <button id="toggleComparativo">Descubre la diferencia 💡</button>
   
-    <div id="tablaComparativa"
-         style="max-width:100%; margin:40px auto; display:none; transition:all 0.5s ease;">
-      <table style="width:100%; border-collapse:collapse; font-family:'Quicksand', sans-serif; table-layout:fixed;">
+    <div id="tablaComparativa">
+      <table class="comparative-table">
         <thead>
-          <tr style="background-color:#ffe9e5; color:#333;">
-            <th style="padding:12px; font-size:1rem;">Situación</th>
-            <th style="padding:12px; font-size:1rem;">Sin Latam5S 😩</th>
-            <th style="padding:12px; font-size:1rem;">Con Latam5S 😌</th>
+          <tr>
+            <th>Situación</th>
+            <th>Sin Latam5S 😩</th>
+            <th>Con Latam5S 😌</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding:10px;">Coordinación de envíos</td>
-            <td style="padding:10px; background:#fff6f5;">Caos y mensajes por todos lados 😵‍💫</td>
-            <td style="padding:10px; background:#e8fff1;">Todo ordenado desde un solo lugar ✨</td>
+            <td>Coordinación de envíos</td>
+            <td>Caos y mensajes por todos lados 😵‍💫</td>
+            <td>Todo ordenado desde un solo lugar ✨</td>
           </tr>
           <tr>
-            <td style="padding:10px;">Control de fechas</td>
-            <td style="padding:10px; background:#fff6f5;">Se olvidan o confunden los envíos 📅</td>
-            <td style="padding:10px; background:#e8fff1;">Fechas claras y automáticas ⏰</td>
+            <td>Control de fechas</td>
+            <td>Se olvidan o confunden los envíos 📅</td>
+            <td>Fechas claras y automáticas ⏰</td>
           </tr>
           <tr>
-            <td style="padding:10px;">Comunicación con clientes</td>
-            <td style="padding:10px; background:#fff6f5;">Mensajes repetidos y estrés 📲</td>
-            <td style="padding:10px; background:#e8fff1;">Recordatorios automáticos y clientes felices 💬</td>
+            <td>Comunicación con clientes</td>
+            <td>Mensajes repetidos y estrés 📲</td>
+            <td>Recordatorios automáticos y clientes felices 💬</td>
           </tr>
           <tr>
-            <td style="padding:10px;">Tiempo invertido</td>
-            <td style="padding:10px; background:#fff6f5;">Horas perdidas cada semana 🕓</td>
-            <td style="padding:10px; background:#e8fff1;">Solo unos minutos al día ⚡</td>
+            <td>Tiempo invertido</td>
+            <td>Horas perdidas cada semana 🕓</td>
+            <td>Solo unos minutos al día ⚡</td>
           </tr>
           <tr>
-            <td style="padding:10px;">Sensación general</td>
-            <td style="padding:10px; background:#fff6f5;">Estrés constante 😩</td>
-            <td style="padding:10px; background:#e8fff1;">Tranquilidad total 😌</td>
+            <td>Sensación general</td>
+            <td>Estrés constante 😩</td>
+            <td>Tranquilidad total 😌</td>
           </tr>
         </tbody>
       </table>
     </div>
-  
-    <script>
-      const boton = document.getElementById('toggleComparativo');
-      const tabla = document.getElementById('tablaComparativa');
-      let visible = false;
-  
-      boton.addEventListener('click', () => {
-        visible = !visible;
-        tabla.style.display = visible ? 'block' : 'none';
-        boton.textContent = visible ? 'Ocultar comparación 🔒' : 'Descubre la diferencia 💡';
-      });
-    </script>
-  
-    <style>
-      @media screen and (max-width: 600px) {
-        #tablaComparativa table {
-          font-size: 0.8rem;
-        }
-  
-        #tablaComparativa th,
-        #tablaComparativa td {
-          padding: 8px;
-          word-wrap: break-word;
-        }
-  
-        #tablaComparativa td {
-          font-size: 0.75rem;
-        }
-      }
-    </style>
   </section>
 
   <section class="hero">
@@ -289,7 +334,7 @@
   </section>
 
   <section id="form" class="form-card">
-    <h2 style="text-align:center;margin-bottom:24px;font-size:24px;color:var(--accent)">Sé de las primeras en probar la nueva versión de Latam5S</h2>
+    <h2>Sé de las primeras en probar la nueva versión de Latam5S</h2>
     <form id="leadForm">
       <label>Nombre del emprendimiento</label>
       <input id="business" type="text" placeholder="Ej: La Tiendita de Ana" required>
@@ -325,84 +370,161 @@
 </div>
 
 <script>
-/* === CHAT SIMULADO === */
-const chat = document.getElementById('chat');
-const toggleBtn = document.getElementById('toggleBtn');
+document.addEventListener('DOMContentLoaded', () => {
 
-const problemMessages = [
-  {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
-  {text:"Ok, ¿me pasas la dirección?", from:"from-system"},
-  {text:"Calle Falsa 123", from:"from-user"},
-  {text:"Ah, ¿y en qué distrito?", from:"from-system"},
-  {text:"San Juan de Lurigancho", from:"from-user"},
-  {text:"Ok, ¿alguna referencia?", from:"from-system"},
-  {text:"Está al lado del parque, entrada amarilla 😅", from:"from-user"},
-  {text:"Perfecto, listo.", from:"from-system"}
-];
+  /* === LÓGICA DEL CARRUSEL SLIDESHOW === */
+  const track = document.getElementById('carrusel-track');
+  const slides = Array.from(track.children);
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const dotsContainer = document.getElementById('carousel-dots');
 
-const solutionMessages = [
-  {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
-  {text:"¡Perfecto! 😃 Para asegurarnos que todo llegue bien, completa tus datos en este enlace:", from:"from-system"},
-  {text:"https://latam5s.com/form", from:"from-system"},
-  {text:"Listo, agregué todos mis datos. Muchas gracias!", from:"from-user"},
-  {text:"¡¡Excelente! Tu envío está programado y organizado. Muchas gracias 🚀", from:"from-system"}
-];
+  if (track && slides.length > 0) {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    let currentIndex = 0;
 
-let showingProblem = true;
+    // Crear los puntos indicadores
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.classList.add('dot');
+      dotsContainer.appendChild(dot);
+      if (index === 0) dot.classList.add('active');
 
-function renderChat(messages){
-  chat.innerHTML = '';
-  let delay = 0;
-  messages.forEach(m => {
-    const div = document.createElement('div');
-    div.className = `message ${m.from}`;
-    div.textContent = m.text;
-    chat.appendChild(div);
-    setTimeout(() => div.classList.add('show'), delay);
-    delay += 800;
+      dot.addEventListener('click', () => {
+        currentIndex = index;
+        updateCarousel();
+      });
+    });
+
+    const dots = Array.from(dotsContainer.children);
+
+    // Función para actualizar la posición del carrusel y los elementos UI
+    const updateCarousel = () => {
+      // Mover el track
+      track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+
+      // Actualizar punto activo
+      dots.forEach(dot => dot.classList.remove('active'));
+      dots[currentIndex].classList.add('active');
+
+      // Mostrar/ocultar botones
+      prevBtn.classList.toggle('hidden', currentIndex === 0);
+      nextBtn.classList.toggle('hidden', currentIndex === slides.length - 1);
+    };
+
+    // Event Listeners para los botones
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+        updateCarousel();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    });
+
+    // Llamada inicial para establecer el estado correcto
+    updateCarousel();
+  }  
+  
+  /* === LÓGICA DE LA TABLA COMPARATIVA === */
+  const botonComparativo = document.getElementById('toggleComparativo');
+  const tablaComparativa = document.getElementById('tablaComparativa');
+  let tablaVisible = false;
+
+  botonComparativo.addEventListener('click', () => {
+    tablaVisible = !tablaVisible;
+    tablaComparativa.style.display = tablaVisible ? 'block' : 'none';
+    botonComparativo.textContent = tablaVisible ? 'Ocultar comparación 🔒' : 'Descubre la diferencia 💡';
   });
-}
 
-renderChat(problemMessages);
+  /* === CHAT SIMULADO === */
+  const chat = document.getElementById('chat');
+  const toggleBtn = document.getElementById('toggleBtn');
 
-toggleBtn.addEventListener('click', () => {
-  renderChat(showingProblem ? solutionMessages : problemMessages);
-  toggleBtn.textContent = showingProblem ? "Volver al problema" : "Ver solución";
-  showingProblem = !showingProblem;
-});
+  const problemMessages = [
+    {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
+    {text:"Ok, ¿me pasas la dirección?", from:"from-system"},
+    {text:"Calle Falsa 123", from:"from-user"},
+    {text:"Ah, ¿y en qué distrito?", from:"from-system"},
+    {text:"San Juan de Lurigancho", from:"from-user"},
+    {text:"Ok, ¿alguna referencia?", from:"from-system"},
+    {text:"Está al lado del parque, entrada amarilla 😅", from:"from-user"},
+    {text:"Perfecto, listo.", from:"from-system"}
+  ];
 
-/* === FORMULARIO === */
-const COMPANY_WHATSAPP = '51942096391';
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
+  const solutionMessages = [
+    {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
+    {text:"¡Perfecto! 😃 Para asegurarnos que todo llegue bien, completa tus datos en este enlace:", from:"from-system"},
+    {text:"https://latam5s.com/form", from:"from-system"},
+    {text:"Listo, agregué todos mis datos. Muchas gracias!", from:"from-user"},
+    {text:"¡¡Excelente! Tu envío está programado y organizado. Muchas gracias 🚀", from:"from-system"}
+  ];
 
-document.getElementById('networks').addEventListener('click', e => {
-  const chip = e.target.closest('.chip');
-  if(chip) chip.classList.toggle('selected');
-});
+  let showingProblem = true;
 
-document.getElementById('leadForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const business = document.getElementById('business').value.trim();
-  const wa = document.getElementById('wa').value.trim().replace(/\D/g,'');
-  const volume = document.getElementById('volume').value;
-  const selected = Array.from(document.querySelectorAll('.chip.selected')).map(c=>c.dataset.value);
-
-  if(!business || !volume || !selected.length || !/^9\d{8}$/.test(wa)){
-    alert('Por favor completa todos los campos correctamente.');
-    return;
+  function renderChat(messages){
+    chat.innerHTML = '';
+    let delay = 0;
+    messages.forEach(m => {
+      const div = document.createElement('div');
+      div.className = `message ${m.from}`;
+      div.textContent = m.text;
+      chat.appendChild(div);
+      setTimeout(() => div.classList.add('show'), delay);
+      delay += 800;
+    });
   }
 
-  const payload = { business, whatsapp: wa, volume, networks: selected };
-  try {
-    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-    console.log('Datos enviados a Google Sheets');
-  } catch(err) { console.error('Error al enviar datos:', err); }
+  // Iniciar el chat por defecto
+  if (chat) {
+      renderChat(problemMessages);
+  }
 
-  const msg = encodeURIComponent(`👋 Hola, quiero conocer más sobre LATAM 5S.\n📛 Emprendimiento: ${business}\n📱 Redes: ${selected.join(', ')}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}`);
-  window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`,'_blank');
+  toggleBtn.addEventListener('click', () => {
+    renderChat(showingProblem ? solutionMessages : problemMessages);
+    toggleBtn.textContent = showingProblem ? "Volver al problema" : "Ver solución";
+    showingProblem = !showingProblem;
+  });
 
-  e.target.reset();
-  document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+  /* === FORMULARIO === */
+  const COMPANY_WHATSAPP = '51942096391';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
+
+  document.getElementById('networks').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if(chip) chip.classList.toggle('selected');
+  });
+
+  document.getElementById('leadForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const business = document.getElementById('business').value.trim();
+    const wa = document.getElementById('wa').value.trim().replace(/\D/g,'');
+    const volume = document.getElementById('volume').value;
+    const selected = Array.from(document.querySelectorAll('.chip.selected')).map(c=>c.dataset.value);
+
+    if(!business || !volume || !selected.length || !/^9\d{8}$/.test(wa)){
+      alert('Por favor completa todos los campos correctamente.');
+      return;
+    }
+
+    const payload = { business, whatsapp: wa, volume, networks: selected };
+    try {
+      await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      console.log('Datos enviados a Google Sheets');
+    } catch(err) { console.error('Error al enviar datos:', err); }
+
+    const msg = encodeURIComponent(`👋 Hola, quiero conocer más sobre LATAM 5S.\n📛 Emprendimiento: ${business}\n📱 Redes: ${selected.join(', ')}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}`);
+    window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`,'_blank');
+
+    e.target.reset();
+    document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+  });
+
 });
 </script>
 
