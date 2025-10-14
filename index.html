@@ -27,12 +27,12 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    padding: 10px;
   }
 
-  .page { max-width: 1100px; width: 100%; margin: 0 auto; padding: 32px; display:flex; flex-direction:column; align-items:center; }
+  .page { max-width: 1500px; width: 100%; margin: 0 auto; padding: 20px; display:flex; flex-direction:column; align-items:center; }
 
-  header { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; width:100%; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 0px 0; width:100%; margin-bottom: 20px}
   .brand { display: flex; align-items: center; gap: 12px; }
   .logo { width: 56px; height: 56px; border-radius: var(--radius); background: linear-gradient(135deg, var(--accent), #FF9B7A); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; box-shadow: 0 4px 12px rgba(217,107,79,0.25); }
   header .brand div div { font-weight: 700; }
@@ -45,7 +45,7 @@
     position: relative;
     width: 360px;
     max-width: 90%;
-    height: 500px;
+    height: 475px;
     background: url('https://raw.githubusercontent.com/complicidad/landing/main/Image.jpg') no-repeat center bottom;
     background-size: cover;
     border-radius: 20px;
@@ -59,11 +59,10 @@
     margin-bottom: 20px;
   }
   .messages { display: flex; flex-direction: column; gap: 8px; width:100%; max-width:320px; }
-  .message { padding: 10px 14px; border-radius: 18px; max-width: 80%; font-size: 14px; line-height: 1.3; word-break: break-word; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
+  .message { padding: 10px 14px; border-radius: 18px; max-width: 80%; font-size: 12px; line-height: 1.3; word-break: break-word; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
   .message.show { opacity: 1; transform: translateY(0); }
   .from-user { align-self: flex-start; background: #DCF8C6; text-align: left; }
   .from-system { align-self: flex-end; background: #FFF; text-align: right; }
-
   .btn-toggle { padding: 14px; border: none; border-radius: 999px; background: linear-gradient(135deg,var(--accent),var(--accent-alt)); color: #fff; font-weight: 700; cursor: pointer; transition: 0.25s; box-shadow: 0 6px 20px rgba(217,107,79,0.4); }
   .btn-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,107,79,0.5); }
 
@@ -76,14 +75,14 @@
   .section-subtitle {
     color: #555;
     max-width: 600px;
-    margin: 15px auto 30px;
+    margin: 10px auto 30px;
   }
 
   /* === CARRUSEL FADE (Controlado por JS) === */
   #carrusel-dashboard {
     width: 100%;
     text-align: center;
-    margin: 80px 0;
+    margin: 80px auto 40px;
   }
 
   .carrusel-container {
@@ -178,7 +177,7 @@
   
   /* === SECCIÓN COMPARATIVA === */
   #comparativo { text-align: center; padding: 60px 20px; }
-  #toggleComparativo { background-color: #FF6F61; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+
   #tablaComparativa { max-width: 100%; margin: 40px auto; display: none; transition: all 0.5s ease; }
   .comparative-table { width: 100%; border-collapse: collapse; font-family: 'Quicksand', sans-serif; table-layout: fixed; }
   .comparative-table th, .comparative-table td { padding: 10px; }
@@ -188,14 +187,21 @@
   .comparative-table tbody td:nth-child(3) { background: #e8fff1; }
 
   /* === HERO === */
-  .hero { text-align: center; margin-top: 40px; background: linear-gradient(135deg, var(--accent), #FFB59A); color: #fff; border-radius: 20px; padding: 60px 24px; box-shadow: 0 15px 40px rgba(217,107,79,0.25); }
+  .hero { text-align: center; margin: 10px auto 80px; background: linear-gradient(135deg, var(--accent), #FFB59A); color: #fff; border-radius: 20px; padding: 60px 24px; box-shadow: 0 15px 40px rgba(217,107,79,0.25); }
   .hero h1 { font-size: 40px; line-height: 1.1; margin-bottom: 16px; }
   .hero p { font-size: 18px; max-width: 640px; margin: 0 auto 28px; }
   .hero button { background: #fff; color: var(--accent); border: 0; padding: 14px 26px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 8px 20px rgba(255,255,255,0.2); transition: 0.25s; }
   .hero button:hover { background: #ffe5de; }
 
   /* === BENEFICIOS === */
-  .benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 80px; }
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%; /* Ocupa el ancho disponible */
+    max-width: 900px; /* ¡La clave está aquí! No crecerá más de 900px */
+    margin: 80px auto; /* 'auto' en los lados para centrar el contenedor */
+  }
   .benefit { background: #fff; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(15,20,25,0.05); padding: 24px; transition: .3s; }
   .benefit:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(15,20,25,0.08); }
   .benefit h4 { font-size: 18px; color: var(--accent); margin-bottom: 8px; }
@@ -248,7 +254,8 @@
     .comparative-table { font-size: 0.8rem; }
     .comparative-table th, .comparative-table td { padding: 8px; word-wrap: break-word; }
     .comparative-table td { font-size: 0.75rem; }
-  }
+  } 
+  
 </style>
 </head>
 <body>
@@ -259,12 +266,18 @@
       <div class="logo">L5S</div>
       <div>
         <div>Latam5S</div>
-        <div>Organiza tus envíos · Para emprendedores</div>
+        <div>Organiza tus envíos</div>
       </div>
     </div>
   </header>
 
-  <h2>¿Cansado del desorden de direcciones?</h2>
+  <section class="hero">
+    <h1>Organiza tus envíos con calma — sin direcciones confusas ni mensajes perdidos</h1>
+    <p>Más intuitiva, más rápida y lista para tu día a día como emprendedor. Descubre la nueva versión de Latam5S, hecha para ti.</p>
+    <button onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">🚀 Quiero unirme</button>
+  </section>  
+  
+  <h2 class="section-title">¿Cansado del desorden de direcciones?</h2>
 
   <div class="chat-container">
     <div class="messages" id="chat"></div>
@@ -273,7 +286,7 @@
 
   <section id="carrusel-dashboard">
     <h2 class="section-title">Explora el Panel de Control</h2>
-    <p class="section-subtitle">Un vistazo a cómo se ve tu nuevo dashboard</p>
+    <p class="section-subtitle">Control total al alcance de tus manos</p>
 
     <div class="carrusel-container">
       <div class="carrusel">
@@ -290,11 +303,11 @@
   </section>
   
   <section id="comparativo">
-    <h2 class="section-title">Así cambia tu forma de organizar tus envíos 🚀</h2>
+    <h2 class="section-title">Descubre los beneficios de organizar tus envíos 🚀</h2>
     <p class="section-subtitle">
       Mira cómo pasa tu día de caos a control con <strong>Latam5S</strong>
     </p>
-    <button id="toggleComparativo">Descubre la diferencia 💡</button>
+    <button class="btn-toggle" id="toggleComparativo">Descubre la diferencia 💡</button>
   
     <div id="tablaComparativa">
       <table class="comparative-table">
@@ -314,12 +327,17 @@
           <tr>
             <td>Control de fechas</td>
             <td>Se olvidan o confunden los envíos 📅</td>
-            <td>Fechas claras y automáticas ⏰</td>
+            <td>Fechas a elección y precisas ⏰</td>
           </tr>
           <tr>
-            <td>Comunicación con clientes</td>
+            <td>Agencias y couriers</td>
+            <td>Datos errados o mal escritos</td>
+            <td>Datos listo para carga masiva</td>
+          </tr>          
+          <tr>
+            <td>Orden y control</td>
             <td>Mensajes repetidos y estrés 📲</td>
-            <td>Recordatorios automáticos y clientes felices 💬</td>
+            <td>Panel de control centralizado </td>
           </tr>
           <tr>
             <td>Tiempo invertido</td>
@@ -336,20 +354,14 @@
     </div>
   </section>
 
-  <section class="hero">
-    <h1>Organiza tus envíos con calma — sin direcciones confusas ni mensajes perdidos</h1>
-    <p>Más intuitiva, más rápida y lista para tu día a día como emprendedor. Descubre la nueva versión de Latam5S, hecha para ti.</p>
-    <button onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">🚀 Quiero unirme</button>
-  </section>
-
-  <section id="beneficios" class="benefits">
+  <section id="beneficios" class="benefits">  
     <div class="benefit"><h4>😌 Sensación de calma</h4><p>Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p></div>
     <div class="benefit"><h4>⏱️ Más tiempo para vender</h4><p>Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p></div>
     <div class="benefit"><h4>📊 Decisiones claras</h4><p>Controla lo que se envía y cuándo — evita reenvíos y problemas con clientes.</p></div>
   </section>
 
   <section id="form" class="form-card">
-    <h2>Sé de las primeras en probar la nueva versión de Latam5S</h2>
+    <h2>Registrate y participa por un descuento del 50% en el primer mes</h2>
     <form id="leadForm">
       <label>Nombre del emprendimiento</label>
       <input id="business" type="text" placeholder="Ej: La Tiendita de Ana" required>
@@ -375,13 +387,13 @@
       <label>Tu WhatsApp (para contactarte)</label>
       <input id="wa" type="tel" placeholder="Ej: 9XXXXXXXX" required>
 
-      <button type="submit" class="btn-submit">Únete ahora</button>
+      <button type="submit" class="btn-submit">Registrarme</button>
     </form>
   </section>
   
   <a href="https://complicidad.github.io/dashboard/" target="_blank" class="btn-floating">🚀 Ir al Dashboard</a>
   
-  <footer>© 2025 LATAM 5S — Renovado para emprendedores peruanos</footer>
+  <footer>© 2025 Latam5S — Organiza tus envíos</footer>
 </div>
 
 <script>
