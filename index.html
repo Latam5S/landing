@@ -17,27 +17,11 @@
     <!-- Feather Icons for Dark Mode Toggle -->
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <script>
-        // Configuración de Tailwind para personalizar colores y fuentes
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Quicksand', 'sans-serif'],
-                    },
-                    colors: {
-                        'brand-accent': '#D96B4F',
-                        'brand-accent-alt': '#FF8B6A',
-                        'brand-bg': '#FFFBF7',
-                        'brand-muted': '#6b6b6b',
-                    },
-                },
-            },
-        };
-    </script>
-
     <style>
+        /* Estilos base y para la fuente personalizada */
+        body {
+            font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        }
         /* Ocultar flechas en inputs de tipo número (para WhatsApp) */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -48,403 +32,510 @@
             -moz-appearance: textfield;
         }
     </style>
+
+    <script>
+        // Configuración personalizada para Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class', // Habilitar modo oscuro basado en clase
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#fffaf6',
+                        'brand-card': '#ffffff',
+                        'brand-text': '#2b2b2b',
+                        'brand-muted': '#6b6b6b',
+                        'brand-accent': '#D96B4F',
+                        'brand-accent-alt': '#FF8B6A',
+                    },
+                    fontFamily: {
+                        'quicksand': ['Quicksand', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-brand-bg dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+<body class="bg-brand-bg dark:bg-gray-900 text-brand-text dark:text-gray-200 transition-colors duration-300">
 
-    <!-- Notificación Flotante (reemplazo de alert) -->
-    <div id="notification" class="fixed top-5 right-5 text-white py-2 px-5 rounded-lg shadow-lg transform translate-x-[120%] transition-transform duration-500 z-50"></div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Encabezado -->
+    <header class="flex items-center justify-between w-full mb-10">
+        <a href="#" class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-accent to-brand-accent-alt flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-accent/30">
+                L5S
+            </div>
+            <div>
+                <div class="font-bold text-lg dark:text-white">Latam5S</div>
+                <div class="text-sm text-brand-muted dark:text-gray-400">Organiza tus envíos</div>
+            </div>
+        </a>
+        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+            <i data-feather="sun" class="text-gray-600 dark:hidden"></i>
+            <i data-feather="moon" class="text-white hidden dark:inline"></i>
+        </button>
+    </header>
 
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header class="w-full py-5 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-accent to-orange-400 flex items-center justify-center text-white font-bold text-2xl shadow-lg">L5S</div>
-                <div>
-                    <div class="font-bold text-lg text-gray-900 dark:text-white">Latam5S</div>
-                    <div class="text-sm text-brand-muted dark:text-gray-400">Organiza tus envíos</div>
-                </div>
+    <main>
+        <!-- Sección Hero -->
+        <section id="hero" class="text-center bg-gradient-to-br from-brand-accent to-orange-400 text-white rounded-3xl py-16 px-6 shadow-2xl shadow-brand-accent/30 mb-20">
+            <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">Organiza tus envíos con calma</h1>
+            <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto">Sin direcciones confusas ni mensajes perdidos. Descubre la nueva versión de Latam5S, hecha para ti.</p>
+            <a href="#form" class="bg-white text-brand-accent font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-100 transition-transform hover:scale-105 inline-block">
+                🚀 Quiero mi acceso
             </a>
-            <!-- Botón de Modo Oscuro -->
-            <button id="darkModeToggle" aria-label="Toggle Dark Mode" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                <i data-feather="moon" class="block dark:hidden"></i>
-                <i data-feather="sun" class="hidden dark:block"></i>
-            </button>
-        </header>
+        </section>
 
-        <main>
-            <!-- Hero Section -->
-            <section class="text-center my-12 md:my-20">
-                <h1 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white leading-tight max-w-4xl mx-auto">Organiza tus envíos con calma — sin direcciones confusas ni mensajes perdidos</h1>
-                <p class="mt-4 text-base md:text-lg text-brand-muted dark:text-gray-400 max-w-2xl mx-auto">Más intuitiva, más rápida y lista para tu día a día como emprendedor. Descubre la nueva versión de Latam5S, hecha para ti.</p>
-                <a href="#form" class="mt-8 inline-block bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 transform transition-transform duration-300">
-                    🚀 Quiero unirme
-                </a>
-            </section>
-            
-            <!-- Sección de Animación de Caos -->
-            <section class="text-center mb-20 md:mb-32">
-                <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">¿Cansado del desorden de mensajes?</h2>
-                <div id="chaos-container" class="relative w-full max-w-sm h-[400px] mx-auto mb-6 transition-all duration-500 ease-in-out">
-                    <!-- Tarjeta de Solución (inicialmente oculta) -->
-                    <img id="solution-card" src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard3.png" alt="Dashboard de Latam5S" class="absolute inset-0 w-full h-full object-contain rounded-2xl shadow-2xl opacity-0 scale-90 transition-all duration-500 ease-in-out">
-            
-                    <!-- Tarjetas del Caos (se animarán con JS) -->
-                    <div class="chaos-card absolute top-[10%] left-[5%] w-4/5 p-3 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-lg transition-all duration-500 opacity-0 -rotate-6 transform translate-y-8">
-                        <p class="text-xs font-bold text-green-500">Cliente WhatsApp</p>
-                        <p class="text-sm dark:text-gray-200">Hola, ¿me pasas la dirección? Calle Falsa 123...</p>
-                    </div>
-                    <div class="chaos-card absolute top-[30%] right-[5%] w-4/5 p-3 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-lg transition-all duration-500 opacity-0 rotate-3 transform translate-y-8">
-                        <p class="text-xs font-bold text-pink-500">Cliente Instagram</p>
-                        <p class="text-sm dark:text-gray-200">Te dejé mis datos por DM para el envío.</p>
-                    </div>
-                    <div class="chaos-card absolute top-[55%] left-[10%] w-4/5 p-3 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-lg transition-all duration-500 opacity-0 rotate-12 transform translate-y-8">
-                        <p class="text-xs font-bold text-blue-500">Cliente Facebook</p>
-                        <p class="text-sm dark:text-gray-200">Ojo, es en Surco, al lado del parque.</p>
-                    </div>
-                </div>
-                <button id="toggleBtn" class="bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 transform transition-transform duration-300">Ver la solución</button>
-            </section>
-            
-            <!-- Sección Comparativa -->
-            <section class="text-center mb-20 md:mb-32">
-                <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-2">Pasa del caos al control</h2>
-                <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-6">Mira cómo <strong>Latam5S</strong> transforma tu día a día.</p>
-                <button id="toggleComparativo" aria-expanded="false" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-bold py-3 px-8 rounded-full shadow-md hover:scale-105 transform transition-transform duration-300">Descubre la diferencia 💡</button>
-                <div id="tablaComparativa" class="hidden mt-8 max-w-4xl mx-auto overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden">
-                        <thead class="text-xs text-gray-700 uppercase bg-orange-100 dark:bg-gray-700 dark:text-gray-300">
+<!-- Sección Caos vs Solución con Animación Directa -->
+<section class="text-center mb-24 px-4 min-h-[500px] animate-on-scroll">
+  <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
+    Del caos al control total ✨
+  </h2>
+  <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
+    Así se siente pasar de los mensajes desordenados a un panel claro y simple.
+  </p>
+
+  <!-- Contenedor del Caos -->
+  <div id="caosContainer" class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto transition-opacity duration-500">
+    <!-- Mensajes del caos -->
+    <div class="caos-msg absolute top-[10%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-6 transition-all duration-300 ease-out">
+      <p class="text-xs font-bold text-green-500">Cliente WhatsApp</p>
+      <p class="text-sm dark:text-gray-100">Hola, ¿me pasas la dirección de nuevo? 🙃</p>
+    </div>
+    <div class="caos-msg absolute top-[35%] right-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg rotate-3 transition-all duration-300 ease-out">
+      <p class="text-xs font-bold text-pink-500">Mensaje Instagram</p>
+      <p class="text-sm dark:text-gray-100">Amiga, la referencia es una casa con rejas negras 🏠</p>
+    </div>
+    <div class="caos-msg absolute top-[60%] left-[10%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-2 transition-all duration-300 ease-out">
+      <p class="text-xs font-bold text-blue-500">Chat Facebook</p>
+      <p class="text-sm dark:text-gray-100">¿Por Olva o Shalom? 🤔</p>
+    </div>
+  </div>
+
+  <!-- Contenedor de la Solución (Dashboard) -->
+  <div id="solutionContainer" class="hidden w-full max-w-3xl mx-auto aspect-[1037/677] transition-opacity duration-500">
+      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard3.png"
+           alt="Dashboard Latam5S" 
+           class="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-500 ease-in-out">
+  </div>
+
+
+  <button id="toggleCaos"
+          class="mt-10 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-brand-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all">
+    Ver la solución 💡
+  </button>
+</section>
+
+
+
+        
+        <!-- Sección Comparativa -->
+        <section id="comparativo" class="text-center mb-20 animate-on-scroll">
+             <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-2">Pasa del caos al control total</h2>
+            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-8">Mira cómo <strong>Latam5S</strong> transforma tu día a día.</p>
+            <button id="toggleComparativo" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold py-3 px-8 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all" aria-expanded="false">
+                Descubre la diferencia 💡
+            </button>
+            <div id="tablaComparativa" class="hidden mt-8 transition-all duration-500 max-w-4xl mx-auto">
+                <div class="overflow-x-auto rounded-xl shadow-lg">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-orange-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase">
                             <tr>
                                 <th scope="col" class="px-6 py-3">Situación</th>
                                 <th scope="col" class="px-6 py-3">Sin Latam5S 😩</th>
                                 <th scope="col" class="px-6 py-3">Con Latam5S 😌</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td class="px-6 py-4 font-medium">Coordinación de envíos</td>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Coordinación</td>
                                 <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Caos y mensajes por todos lados 😵‍💫</td>
                                 <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Todo ordenado desde un solo lugar ✨</td>
                             </tr>
-                            <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td class="px-6 py-4 font-medium">Control de fechas</td>
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Control de fechas</td>
                                 <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Se olvidan o confunden los envíos 📅</td>
                                 <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Fechas a elección y precisas ⏰</td>
                             </tr>
-                             <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td class="px-6 py-4 font-medium">Agencias y couriers</td>
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Datos para couriers</td>
                                 <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Datos errados o mal escritos</td>
                                 <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Datos listos para carga masiva</td>
                             </tr>
-                            <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td class="px-6 py-4 font-medium">Tiempo invertido</td>
-                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Horas perdidas cada semana 🕓</td>
-                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Solo unos minutos al día ⚡</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td class="px-6 py-4 font-medium">Sensación general</td>
-                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Estrés constante 😩</td>
-                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Tranquilidad total 😌</td>
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Orden y control</td>
+                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Mensajes repetidos y estrés 📲</td>
+                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Panel de control centralizado</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Beneficios -->
-            <section class="mb-20 md:mb-32">
-                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                    <div class="benefit bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">😌 Sensación de calma</h4>
-                        <p class="text-brand-muted dark:text-gray-400">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
-                    </div>
-                    <div class="benefit bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">⏱️ Más tiempo para vender</h4>
-                        <p class="text-brand-muted dark:text-gray-400">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
-                    </div>
-                     <div class="benefit bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">📊 Decisiones claras</h4>
-                        <p class="text-brand-muted dark:text-gray-400">Controla lo que se envía y cuándo — evita reenvíos y problemas con clientes.</p>
-                    </div>
+        <!-- Sección Beneficios -->
+        <section id="beneficios" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 animate-on-scroll">
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
+                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">😌 Sensación de calma</h4>
+                <p class="text-brand-muted dark:text-gray-400 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
+            </div>
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 150ms;">
+                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">⏱️ Más tiempo para vender</h4>
+                <p class="text-brand-muted dark:text-gray-400 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
+            </div>
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 300ms;">
+                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">📊 Decisiones claras</h4>
+                <p class="text-brand-muted dark:text-gray-400 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
+            </div>
+        </section>
+
+        <!-- Sección Formulario -->
+        <section id="form" class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl animate-on-scroll">
+            <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">Obtén 15 días GRATIS y 50% OFF</h2>
+            <p class="text-center text-brand-muted dark:text-gray-400 mb-8">Completa tus datos, validaremos tu negocio y te enviaremos tu acceso exclusivo.</p>
+            <form id="leadForm" class="grid gap-6">
+                 <div>
+                    <label for="profile" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">Perfil de tu negocio (Instagram, TikTok, etc.)</label>
+                    <input id="profile" name="profile" type="url" placeholder="Ej: instagram.com/latienditadeana" required class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all">
                 </div>
-            </section>
-
-            <!-- Formulario -->
-            <section id="form" class="mb-20 md:mb-32">
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-10 shadow-lg max-w-2xl mx-auto">
-                    <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-2">Obtén 15 días de prueba GRATIS</h2>
-                    <p class="text-center text-brand-muted dark:text-gray-400 mb-8">Regístrate y te contactaremos para validar tu negocio y darte acceso preferencial.</p>
-                    <form id="leadForm" class="grid grid-cols-1 gap-6">
-                        
-                        <!-- Perfil del negocio -->
-                        <div>
-                            <label for="profile" class="block text-sm font-medium text-brand-muted dark:text-gray-400 mb-2">Perfil de tu negocio (Instagram, TikTok, etc.)</label>
-                            <input type="url" id="profile" name="profile" placeholder="Ej: https://instagram.com/tienditadeana" required class="w-full p-3 rounded-lg border bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
-                        </div>
-
-                        <!-- Volumen de envíos y WhatsApp -->
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div>
-                                <label for="volume" class="block text-sm font-medium text-brand-muted dark:text-gray-400 mb-2">Envíos por semana</label>
-                                <select id="volume" name="volume" required class="w-full p-3 rounded-lg border bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
-                                    <option value="">Selecciona un rango</option>
-                                    <option value="Menos de 10">Menos de 10</option>
-                                    <option value="10-30">10 - 30</option>
-                                    <option value="30-60">30 - 60</option>
-                                    <option value="Más de 60">Más de 60</option>
-                                </select>
-                            </div>
-                             <div>
-                                <label for="wa" class="block text-sm font-medium text-brand-muted dark:text-gray-400 mb-2">Tu WhatsApp</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none text-brand-muted dark:text-gray-400">+51</div>
-                                    <input type="number" id="wa" name="wa" placeholder="987 654 321" required class="w-full p-3 ps-12 rounded-lg border bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Email (Opcional) -->
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-brand-muted dark:text-gray-400 mb-2">Email (Opcional)</label>
-                            <input type="email" id="email" name="email" placeholder="Para enviarte los accesos a la prueba" class="w-full p-3 rounded-lg border bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
-                        </div>
-
-                        <!-- Botón de envío -->
-                        <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-transform duration-300 flex items-center justify-center disabled:opacity-75 disabled:cursor-not-allowed">
-                            <span id="submitBtnText">Quiero mi prueba gratis</span>
-                            <div id="submitBtnSpinner" class="hidden w-5 h-5 border-t-2 border-white border-solid rounded-full animate-spin"></div>
-                        </button>
-                    </form>
+                <div>
+                    <label for="volume" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">¿Cuántos envíos haces por semana?</label>
+                    <select id="volume" name="volume" required class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all appearance-none">
+                        <option value="">Selecciona un rango</option>
+                        <option value="Menos de 10">Menos de 10</option>
+                        <option value="10-30">10 - 30</option>
+                        <option value="30-60">30 - 60</option>
+                        <option value="Más de 60">Más de 60</option>
+                    </select>
                 </div>
-            </section>
-        </main>
-    </div>
+                <div>
+                     <label for="wa" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">Tu WhatsApp (para contactarte)</label>
+                    <input id="wa" name="wa" type="number" placeholder="Ej: 987654321" required class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all">
+                </div>
+                <div>
+                    <label for="email" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">Tu email (Opcional)</label>
+                    <input id="email" name="email" type="email" placeholder="Aquí enviaremos tu acceso a la prueba" class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all">
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-accent/40 hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2">
+                    <span id="submitBtnText">Solicitar mi acceso GRATIS</span>
+                    <svg id="submitBtnSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </section>
+    </main>
 
-    <a href="https://complicidad.github.io/dashboard/" target="_blank" class="fixed bottom-6 right-6 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-5 rounded-full shadow-xl hover:scale-110 transform transition-transform duration-300 z-40">🚀 Ir al Dashboard</a>
-
-    <footer class="text-center py-8 text-sm text-brand-muted dark:text-gray-500">
+    <!-- Footer -->
+    <footer class="text-center text-brand-muted dark:text-gray-500 text-sm mt-20 pb-8">
         © 2025 Latam5S — Organiza tus envíos con calma
     </footer>
+    
+    <!-- Botón Flotante -->
+    <a href="https://complicidad.github.io/dashboard/" target="_blank" class="fixed bottom-6 right-6 bg-gradient-to-br from-brand-accent to-orange-400 text-white py-3 px-5 rounded-full shadow-2xl shadow-brand-accent/40 hover:-translate-y-1 hover:shadow-brand-accent/60 transition-all z-50 flex items-center gap-2">
+        🚀 <span class="hidden sm:inline">Ir al Dashboard</span>
+    </a>
+    
+    <!-- Contenedor para Notificaciones (reemplaza alert) -->
+    <div id="notification" class="fixed top-5 right-5 bg-red-500 text-white py-3 px-5 rounded-lg shadow-lg transform translate-x-[120%] transition-transform duration-500 z-50">
+        <p>Este es un mensaje de error.</p>
+    </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
+</div>
 
-        // Inicializar iconos
-        feather.replace();
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-        /**
-         * GESTIÓN DEL MODO OSCURO
-         */
-        function setupDarkModeToggle() {
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (!darkModeToggle) return; 
+    // Inicializar iconos
+    feather.replace();
 
-            const html = document.documentElement;
+    /**
+     * GESTIÓN DEL MODO OSCURO
+     */
+    function setupDarkModeToggle() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (!darkModeToggle) return;
+        const html = document.documentElement;
 
-            // Cargar preferencia guardada
-            if (localStorage.getItem('darkMode') === 'true' || 
-               (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                html.classList.add('dark');
-            }
-
-            darkModeToggle.addEventListener('click', () => {
-                html.classList.toggle('dark');
-                localStorage.setItem('darkMode', html.classList.contains('dark'));
-            });
+        // Cargar preferencia guardada
+        if (localStorage.getItem('darkMode') === 'true' || 
+           (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
         }
 
-        /**
-         * ANIMACIÓN DE CAOS DE MENSAJES (LÓGICA MEJORADA)
-         */
-        function setupChaosAnimation() {
-            const toggleBtn = document.getElementById('toggleBtn');
-            const chaosCards = document.querySelectorAll('.chaos-card');
-            const solutionCard = document.getElementById('solution-card');
-            const container = document.getElementById('chaos-container');
-            if (!toggleBtn || !chaosCards.length || !solutionCard || !container) return;
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
+        });
+    }
 
-            let showingChaos = true;
+    /**
+     * ANIMACIÓN DE CAOS DE MENSAJES
+     */
+    function setupChaosAnimation() {
+      const caosContainer = document.getElementById('caosContainer');
+      const solutionContainer = document.getElementById('solutionContainer');
+      const caosMsgs = document.querySelectorAll('.caos-msg');
+      const toggle = document.getElementById('toggleCaos');
+      
+      if (!caosContainer || !solutionContainer || caosMsgs.length === 0) return;
 
-            function renderChaos() {
-                // 1. Primero, encoger el contenedor y ocultar la solución
-                container.classList.remove('max-w-2xl', 'h-[250px]', 'md:h-[410px]');
-                container.classList.add('max-w-sm', 'h-[400px]');
-                solutionCard.classList.add('opacity-0', 'scale-90');
-                
-                // 2. Esperar a que termine la transición del contenedor (500ms)
-                setTimeout(() => {
-                    // 3. Luego, mostrar las tarjetas del caos
-                    let delay = 100;
-                    chaosCards.forEach(card => {
-                        setTimeout(() => {
-                            card.classList.remove('opacity-0', 'translate-y-8');
-                        }, delay);
-                        delay += 250; 
-                    });
-                }, 500); // Coincide con la duración de la transición del contenedor
+      let showingChaos = true;
+
+      // Estado inicial de las tarjetas del caos
+      caosMsgs.forEach(msg => msg.classList.add('opacity-0', 'scale-95'));
+
+      function showChaos() {
+        // 1. Fade out solution
+        solutionContainer.classList.add('opacity-0');
+        
+        // 2. Después de la transición, ocúltalo y muestra el contenedor del caos
+        setTimeout(() => {
+          solutionContainer.classList.add('hidden');
+          caosContainer.classList.remove('hidden');
+          
+          // 3. Fade in chaos container
+          requestAnimationFrame(() => {
+            caosContainer.classList.remove('opacity-0');
+          });
+
+          // 4. Animar la entrada de los mensajes
+          let delay = 300; // Inicia después de que el contenedor comience a aparecer
+          caosMsgs.forEach(msg => {
+            setTimeout(() => {
+              msg.classList.remove('opacity-0', 'scale-95');
+            }, delay);
+            delay += 200;
+          });
+        }, 500); // Duración de la transición de opacidad
+      }
+
+      function showSolution() {
+        // 1. Fade out de los mensajes del caos
+        caosMsgs.forEach(msg => {
+          msg.classList.add('opacity-0', 'scale-95');
+        });
+
+        // 2. Fade out del contenedor del caos (después de que los mensajes comiencen a desaparecer)
+        setTimeout(() => {
+          caosContainer.classList.add('opacity-0');
+        }, 300);
+
+        // 3. Después de las transiciones, oculta el caos y muestra la solución
+        setTimeout(() => {
+          caosContainer.classList.add('hidden');
+          solutionContainer.classList.remove('hidden');
+
+          // 4. Fade in de la solución
+          requestAnimationFrame(() => {
+            solutionContainer.classList.remove('opacity-0');
+          });
+        }, 800); // 300ms + 500ms de la transición del contenedor
+      }
+
+      // Animación inicial al cargar la página
+      caosContainer.classList.add('opacity-0');
+      setTimeout(() => {
+          caosContainer.classList.remove('opacity-0');
+          let delay = 300;
+          caosMsgs.forEach(msg => {
+            setTimeout(() => {
+                msg.classList.remove('opacity-0', 'scale-95');
+            }, delay);
+            delay += 200;
+          });
+      }, 500);
+      
+      // Lógica del botón
+      toggle.addEventListener('click', () => {
+        showingChaos = !showingChaos;
+        if (showingChaos) {
+          showChaos();
+          toggle.textContent = 'Ver la solución 💡';
+        } else {
+          showSolution();
+          toggle.textContent = 'Volver al caos 😵‍💫';
+        }
+      });
+    }
+
+    /**
+     * TABLA COMPARATIVA
+     */
+    function setupComparisonTable() {
+        const toggleButton = document.getElementById('toggleComparativo');
+        const table = document.getElementById('tablaComparativa');
+        if (!toggleButton || !table) return;
+
+        toggleButton.addEventListener('click', () => {
+            const isVisible = !table.classList.contains('hidden');
+            if (isVisible) {
+                table.classList.add('hidden');
+                toggleButton.textContent = 'Descubre la diferencia 💡';
+                toggleButton.setAttribute('aria-expanded', 'false');
+            } else {
+                table.classList.remove('hidden');
+                toggleButton.textContent = 'Ocultar comparación 🔒';
+                toggleButton.setAttribute('aria-expanded', 'true');
             }
+        });
+    }
+    
+    /**
+     * FORMULARIO DE REGISTRO
+     */
+    function setupLeadForm() {
+        const form = document.getElementById('leadForm');
+        if (!form) return;
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const submitBtnText = document.getElementById('submitBtnText');
+        const submitBtnSpinner = document.getElementById('submitBtnSpinner');
 
-            function renderSolution() {
-                // 1. Ocultar las tarjetas del caos primero
-                chaosCards.forEach(card => {
-                    card.classList.add('opacity-0', 'translate-y-8');
+        // Lógica de envío del formulario
+        const COMPANY_WHATSAPP = '51942096391';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const profile = form.elements.profile.value.trim();
+            const wa = form.elements.wa.value.trim();
+            const volume = form.elements.volume.value;
+            const email = form.elements.email.value.trim();
+
+            let isValid = true;
+            if (!profile) {
+                showNotification('El perfil de tu negocio es requerido para la validación.');
+                isValid = false;
+            } else if (!volume) {
+                showNotification('Selecciona el volumen de envíos.');
+                isValid = false;
+            } else if (!/^[9]\d{8}$/.test(wa)) {
+                showNotification('Ingresa un número de WhatsApp válido de 9 dígitos (iniciando con 9).');
+                isValid = false;
+            } else if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+                showNotification('Por favor, ingresa un email válido.');
+                isValid = false;
+            }
+            if (!isValid) return;
+
+            submitBtn.disabled = true;
+            submitBtnText.classList.add('hidden');
+            submitBtnSpinner.classList.remove('hidden');
+
+            const payload = { profile, whatsapp: wa, volume, email };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
 
-                // 2. Esperar a que termine la transición de las tarjetas (500ms)
-                setTimeout(() => {
-                    // 3. Luego, expandir el contenedor y mostrar la solución
-                    container.classList.remove('max-w-sm', 'h-[400px]');
-                    container.classList.add('max-w-2xl', 'h-[250px]', 'md:h-[410px]');
-                    solutionCard.classList.remove('opacity-0', 'scale-90');
-                }, 500); // Coincide con la duración de la transición de las tarjetas
-            }
-
-            // Iniciar mostrando la animación del caos
-            setTimeout(renderChaos, 500);
-
-            toggleBtn.addEventListener('click', () => {
-                showingChaos = !showingChaos;
-                if (showingChaos) {
-                    renderChaos();
-                    toggleBtn.textContent = "Ver la solución";
-                } else {
-                    renderSolution();
-                    toggleBtn.textContent = "Volver al problema";
-                }
-            });
-        }
-
-        /**
-         * TABLA COMPARATIVA
-         */
-        function setupComparisonTable() {
-            const toggleButton = document.getElementById('toggleComparativo');
-            const table = document.getElementById('tablaComparativa');
-            if (!toggleButton || !table) return;
-
-            toggleButton.addEventListener('click', () => {
-                const isVisible = !table.classList.contains('hidden');
-                if (isVisible) {
-                    table.classList.add('hidden');
-                    toggleButton.textContent = 'Descubre la diferencia 💡';
-                    toggleButton.setAttribute('aria-expanded', 'false');
-                } else {
-                    table.classList.remove('hidden');
-                    toggleButton.textContent = 'Ocultar comparación 🔒';
-                    toggleButton.setAttribute('aria-expanded', 'true');
-                }
-            });
-        }
-        
-        /**
-         * FORMULARIO DE REGISTRO
-         */
-        function setupLeadForm() {
-            const form = document.getElementById('leadForm');
-            if (!form) return;
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const submitBtnText = document.getElementById('submitBtnText');
-            const submitBtnSpinner = document.getElementById('submitBtnSpinner');
-
-            // Lógica de envío del formulario
-            const COMPANY_WHATSAPP = '51942096391';
-            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
+                showNotification('¡Registro exitoso! Te contactaremos pronto.', 'success');
                 
-                const profile = form.elements.profile.value.trim();
-                const wa = form.elements.wa.value.trim();
-                const volume = form.elements.volume.value;
-                const email = form.elements.email.value.trim();
+                const msg = encodeURIComponent(`👋 ¡Hola! Quiero mi prueba de 15 días para LATAM 5S.\n\n🔗 Perfil: ${profile}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}\n\nGracias`);
+                setTimeout(() => {
+                    window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`, '_blank');
+                }, 1000);
 
-                // Validación mejorada
-                let isValid = true;
-                if (!profile) {
-                    showNotification('El perfil de tu negocio es requerido para la validación.');
-                    isValid = false;
-                } else if (!volume) {
-                    showNotification('Selecciona el volumen de envíos.');
-                    isValid = false;
-                } else if (!/^[9]\d{8}$/.test(wa)) {
-                    showNotification('Ingresa un número de WhatsApp válido de 9 dígitos (iniciando con 9).');
-                    isValid = false;
-                } else if (email && !/^\S+@\S+\.\S+$/.test(email)) {
-                    showNotification('Por favor, ingresa un email válido.');
-                    isValid = false;
-                }
-                if (!isValid) return;
+                form.reset();
+                
+            } catch (err) {
+                console.error('Error al enviar datos:', err);
+                showNotification('Hubo un error al registrar. Inténtalo de nuevo.');
+            } finally {
+                 setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtnText.classList.remove('hidden');
+                    submitBtnSpinner.classList.add('hidden');
+                }, 1500);
+            }
+        });
+    }
+    
+    /**
+     * SISTEMA DE NOTIFICACIONES (REEMPLAZA ALERT)
+     */
+    let notificationTimeout;
+    function showNotification(message, type = 'error') {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
 
-                // Mostrar estado de carga
-                submitBtn.disabled = true;
-                submitBtnText.classList.add('hidden');
-                submitBtnSpinner.classList.remove('hidden');
+        notification.classList.remove('bg-red-500', 'bg-green-500');
+        
+        if (type === 'success') {
+            notification.classList.add('bg-green-500');
+        } else {
+            notification.classList.add('bg-red-500');
+        }
 
-                const payload = { profile, whatsapp: wa, volume, email };
+        notification.classList.remove('translate-x-[120%]');
+        
+        clearTimeout(notificationTimeout);
+        notificationTimeout = setTimeout(() => {
+            notification.classList.add('translate-x-[120%]');
+        }, 5000);
+    }
 
-                try {
-                    await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
+    /**
+     * EFECTO PARALLAX SUAVE PARA EL HERO
+     */
+    function setupParallax() {
+        const hero = document.getElementById('hero');
+        if (!hero) return;
 
-                    showNotification('¡Registro exitoso! Te contactaremos pronto.', 'success');
-                    
-                    const msg = encodeURIComponent(`👋 ¡Hola! Quiero mi prueba de 15 días para LATAM 5S.\n\n🔗 Perfil: ${profile}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}\n\nGracias`);
-                    setTimeout(() => {
-                        window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`, '_blank');
-                    }, 1000);
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            hero.style.backgroundPositionY = `${scrollY * 0.4}px`;
+        });
+    }
 
-                    form.reset();
-                    
-                } catch (err) {
-                    console.error('Error al enviar datos:', err);
-                    showNotification('Hubo un error al registrar. Inténtalo de nuevo.');
-                } finally {
-                    // Restaurar botón
-                     setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtnText.classList.remove('hidden');
-                        submitBtnSpinner.classList.add('hidden');
-                    }, 1500);
+    /**
+     * ANIMACIONES AL HACER SCROLL
+     */
+    function setupScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
                 }
             });
-        }
-        
-        /**
-         * SISTEMA DE NOTIFICACIONES (REEMPLAZA ALERT)
-         */
-        let notificationTimeout;
-        function showNotification(message, type = 'error') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
+        }, { threshold: 0.1 });
 
-            // Limpiar clases anteriores
-            notification.classList.remove('bg-red-500', 'bg-green-500');
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        elements.forEach((el, index) => {
+            // Aplicar clases de estado inicial
+            const delay = el.dataset.delay || (el.classList.contains('benefit-card') ? index * 150 : 0);
+            el.style.transitionDelay = `${delay}ms`;
+            el.classList.add('opacity-0', 'transform', 'translate-y-5');
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             
-            if (type === 'success') {
-                notification.classList.add('bg-green-500');
-            } else {
-                notification.classList.add('bg-red-500');
-            }
+            // Re-pintar para asegurar que la transición se aplique
+            void el.offsetWidth;
 
-            notification.classList.remove('translate-x-[120%]');
-            
-            // Ocultar después de 5 segundos
-            clearTimeout(notificationTimeout);
-            notificationTimeout = setTimeout(() => {
-                notification.classList.add('translate-x-[120%]');
-            }, 5000);
-        }
-        
-        // Inicializar todos los módulos
-        setupDarkModeToggle();
-        setupChaosAnimation();
-        setupComparisonTable();
-        setupLeadForm();
-    });
-    </script>
+            observer.observe(el);
+        });
+
+        // Clase de utilidad para la visibilidad
+        const style = document.createElement('style');
+        style.innerHTML = `.is-visible { opacity: 1 !important; transform: translateY(0) !important; }`;
+        document.head.appendChild(style);
+    }
+    
+    // Inicializar todos los módulos
+    setupDarkModeToggle();
+    setupChaosAnimation();
+    setupComparisonTable();
+    setupLeadForm();
+    setupParallax();
+    setupScrollAnimations();
+});
+</script>
 
 </body>
 </html>
