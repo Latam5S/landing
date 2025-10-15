@@ -1,563 +1,498 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Latam5S — Organiza tus envíos con calma</title>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #fffaf6;
-    --card: #ffffff;
-    --text: #2b2b2b;
-    --muted: #6b6b6b;
-    --accent: #D96B4F;
-    --accent-alt: #FF8B6A;
-    --radius: 14px;
-    --font: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--font);
-    background: linear-gradient(180deg, var(--bg), #fff);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 10px;
-  }
-
-  .page { max-width: 1500px; width: 100%; margin: 0 auto; padding: 20px; display:flex; flex-direction:column; align-items:center; }
-
-  header { display: flex; align-items: center; justify-content: space-between; padding: 0px 0; width:100%; margin-bottom: 20px}
-  .brand { display: flex; align-items: center; gap: 12px; }
-  .logo { width: 56px; height: 56px; border-radius: var(--radius); background: linear-gradient(135deg, var(--accent), #FF9B7A); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; box-shadow: 0 4px 12px rgba(217,107,79,0.25); }
-  header .brand div div { font-weight: 700; }
-  header .brand div div + div { font-size: 13px; color: var(--muted); }
-
-  h2 { text-align:center; margin-bottom:24px; font-size:24px; color:var(--accent) }
-
-  /* === CHAT CENTRAL === */
-  .chat-container {
-    position: relative;
-    width: 360px;
-    max-width: 90%;
-    height: 475px;
-    background: url('https://raw.githubusercontent.com/complicidad/landing/main/Image.jpg') no-repeat center bottom;
-    background-size: cover;
-    border-radius: 20px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-y: auto;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    margin-bottom: 20px;
-  }
-  .messages { display: flex; flex-direction: column; gap: 8px; width:100%; max-width:320px; }
-  .message { padding: 10px 14px; border-radius: 18px; max-width: 80%; font-size: 12px; line-height: 1.3; word-break: break-word; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
-  .message.show { opacity: 1; transform: translateY(0); }
-  .from-user { align-self: flex-start; background: #DCF8C6; text-align: left; }
-  .from-system { align-self: flex-end; background: #FFF; text-align: right; }
-  .btn-toggle { padding: 14px; border: none; border-radius: 999px; background: linear-gradient(135deg,var(--accent),var(--accent-alt)); color: #fff; font-weight: 700; cursor: pointer; transition: 0.25s; box-shadow: 0 6px 20px rgba(217,107,79,0.4); }
-  .btn-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,107,79,0.5); }
-
-  /* === SECCIÓN DE TÍTULO === */
-  .section-title {
-    color: #222;
-    font-size: 2rem;
-    font-weight: 700;
-  }
-  .section-subtitle {
-    color: #555;
-    max-width: 600px;
-    margin: 10px auto 30px;
-  }
-
-  /* === CARRUSEL FADE (Controlado por JS) === */
-  #carrusel-dashboard {
-    width: 100%;
-    text-align: center;
-    margin: 80px auto 40px;
-  }
-
-  .carrusel-container {
-    position: relative; /* Clave para posicionar los botones e imágenes */
-    max-width: 600px;
-    margin: 0 auto;
-    border-radius: var(--radius);
-    box-shadow: 0 10px 30px rgba(15,20,25,0.08);
-  }
-
-  .carrusel {
-    position: relative;
-    /* La altura se ajustará a la imagen */
-  }
-
-  /* === LA MAGIA DEL FADE ESTÁ AQUÍ === */
-  .carousel-slide {
-    width: 100%;
-    height: auto;
-    display: block; /* Para un buen manejo de la imagen */
-
-    /* Todas las imágenes están ocultas por defecto */
-    opacity: 0;
-
-    /* Transición suave para el efecto de desvanecimiento */
-    transition: opacity 0.4s ease-in-out;
-  }
-
-  .carousel-slide.active {
-    /* La imagen activa se hace visible */
-    opacity: 1;
-  }
-
-  /* Para apilar las imágenes, hacemos que todas menos la primera
-     sean absolutas para que no ocupen espacio en el flujo */
-  .carousel-slide:not(:first-child) {
-      position: absolute;
-      top: 0;
-      left: 0;
-  }
-  /* === FIN DE LA MAGIA DEL FADE === */
-
-
-  /* Estilos para los botones de navegación (se mantienen) */
-  .carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.7);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--text);
-    cursor: pointer;
-    z-index: 10;
-    transition: background-color 0.2s;
-  }
-  .carousel-btn:hover {
-    background-color: white;
-  }
-  .carousel-btn.prev {
-    left: 10px;
-  }
-  .carousel-btn.next {
-    right: 10px;
-  }
-  .carousel-btn.hidden {
-    display: none;
-  }
-
-  /* Estilos para los puntos indicadores (se mantienen) */
-  .carousel-dots-container {
-    text-align: center;
-    margin-top: 15px;
-  }
-  .dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background-color: #ccc;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .dot.active {
-    background-color: var(--accent);
-  }
-  
-  /* === SECCIÓN COMPARATIVA === */
-  #comparativo { text-align: center; padding: 60px 20px; }
-
-  #tablaComparativa { max-width: 100%; margin: 40px auto; display: none; transition: all 0.5s ease; }
-  .comparative-table { width: 100%; border-collapse: collapse; font-family: 'Quicksand', sans-serif; table-layout: fixed; }
-  .comparative-table th, .comparative-table td { padding: 10px; }
-  .comparative-table thead tr { background-color: #ffe9e5; color: #333; }
-  .comparative-table thead th { font-size: 1rem; }
-  .comparative-table tbody td:nth-child(2) { background: #fff6f5; }
-  .comparative-table tbody td:nth-child(3) { background: #e8fff1; }
-
-  /* === HERO === */
-  .hero { text-align: center; margin: 10px auto 80px; background: linear-gradient(135deg, var(--accent), #FFB59A); color: #fff; border-radius: 20px; padding: 60px 24px; box-shadow: 0 15px 40px rgba(217,107,79,0.25); }
-  .hero h1 { font-size: 40px; line-height: 1.1; margin-bottom: 16px; }
-  .hero p { font-size: 18px; max-width: 640px; margin: 0 auto 28px; }
-  .hero button { background: #fff; color: var(--accent); border: 0; padding: 14px 26px; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 8px 20px rgba(255,255,255,0.2); transition: 0.25s; }
-  .hero button:hover { background: #ffe5de; }
-
-  /* === BENEFICIOS === */
-  .benefits {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    width: 100%; /* Ocupa el ancho disponible */
-    max-width: 900px; /* ¡La clave está aquí! No crecerá más de 900px */
-    margin: 80px auto; /* 'auto' en los lados para centrar el contenedor */
-  }
-  .benefit { background: #fff; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(15,20,25,0.05); padding: 24px; transition: .3s; }
-  .benefit:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(15,20,25,0.08); }
-  .benefit h4 { font-size: 18px; color: var(--accent); margin-bottom: 8px; }
-  .benefit p { color: var(--muted); font-size: 15px; }
-
-  /* === FORMULARIO === */
-  .form-card { margin-top: 80px; background: var(--card); border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(15,20,25,0.06); }
-  form { display: grid; gap: 18px; }
-  label { font-weight: 700; font-size: 14px; color: var(--muted); }
-  input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); font-size: 15px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .chip { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; font-size: 14px; color: var(--muted); transition: 0.2s; }
-  .chip.selected { background: linear-gradient(90deg,var(--accent),var(--accent-alt)); color: #fff; border-color: transparent; box-shadow: 0 8px 20px rgba(217,107,79,0.12); }
-  .btn-submit { margin-top: 8px; padding: 14px 20px; background: linear-gradient(90deg,var(--accent),var(--accent-alt)); color: #fff; border: 0; border-radius: var(--radius); font-weight: 700; cursor: pointer; font-size: 16px; box-shadow: 0 10px 30px rgba(217,107,79,0.14); transition: 0.2s; }
-  .btn-submit:hover { opacity: .9; }
-
-  /* === BOTÓN FLOTANTE === */
-  .btn-floating {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
-    color: #fff;
-    padding: 16px 20px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 16px;
-    text-decoration: none;
-    box-shadow: 0 8px 24px rgba(217,107,79,0.4);
-    transition: 0.25s;
-    z-index: 999;
-  }
-  .btn-floating:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(217,107,79,0.5); }
-  
-  footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 14px; padding-bottom: 20px; }
-
-  /* === REGLAS RESPONSIVAS === */
-  @media(max-width:700px){
-    .hero h1 { font-size: 30px; }
-    .form-card { padding: 24px; }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latam5S — Organiza tus envíos con calma</title>
+    <meta name="description" content="Organiza tus envíos sin direcciones confusas ni mensajes perdidos. Latam5S es la herramienta para emprendedores que buscan calma y eficiencia.">
     
-    /* Carrusel móvil */
-    .carousel-btn { width: 35px; height: 35px; font-size: 20px; }
-    .carousel-btn.prev { left: 5px; }
-    .carousel-btn.next { right: 5px; }
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     
-    
-    /* Tabla comparativa móvil */
-    .comparative-table { font-size: 0.8rem; }
-    .comparative-table th, .comparative-table td { padding: 8px; word-wrap: break-word; }
-    .comparative-table td { font-size: 0.75rem; }
-  } 
-  
-</style>
+    <!-- Feather Icons for Dark Mode Toggle -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Estilos base y para la fuente personalizada */
+        body {
+            font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        /* Ocultar flechas en inputs de tipo número (para WhatsApp) */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+
+    <script>
+        // Configuración personalizada para Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class', // Habilitar modo oscuro basado en clase
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#fffaf6',
+                        'brand-card': '#ffffff',
+                        'brand-text': '#2b2b2b',
+                        'brand-muted': '#6b6b6b',
+                        'brand-accent': '#D96B4F',
+                        'brand-accent-alt': '#FF8B6A',
+                    },
+                    fontFamily: {
+                        'quicksand': ['Quicksand', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
+<body class="bg-brand-bg dark:bg-gray-900 text-brand-text dark:text-gray-200 transition-colors duration-300">
 
-<div class="page">
-  <header>
-    <div class="brand">
-      <div class="logo">L5S</div>
-      <div>
-        <div>Latam5S</div>
-        <div>Organiza tus envíos</div>
-      </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Encabezado -->
+    <header class="flex items-center justify-between w-full mb-10">
+        <a href="#" class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-accent to-brand-accent-alt flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-accent/30">
+                L5S
+            </div>
+            <div>
+                <div class="font-bold text-lg dark:text-white">Latam5S</div>
+                <div class="text-sm text-brand-muted dark:text-gray-400">Organiza tus envíos</div>
+            </div>
+        </a>
+        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+            <i data-feather="sun" class="text-gray-600 dark:hidden"></i>
+            <i data-feather="moon" class="text-white hidden dark:inline"></i>
+        </button>
+    </header>
+
+    <main>
+        <!-- Sección Hero -->
+        <section class="text-center bg-gradient-to-br from-brand-accent to-orange-400 text-white rounded-3xl py-16 px-6 shadow-2xl shadow-brand-accent/30 mb-20">
+            <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">Organiza tus envíos con calma</h1>
+            <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto">Sin direcciones confusas ni mensajes perdidos. Descubre la nueva versión de Latam5S, hecha para ti.</p>
+            <a href="#form" class="bg-white text-brand-accent font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-100 transition-transform hover:scale-105 inline-block">
+                🚀 Quiero mi acceso
+            </a>
+        </section>
+
+<!-- Sección Caos vs Solución con proporciones dinámicas -->
+<section class="text-center mb-24 px-4">
+  <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
+    Del caos al control total ✨
+  </h2>
+  <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
+    Así se siente pasar de los mensajes desordenados a un panel claro y simple.
+  </p>
+
+  <!-- Contenedor adaptable -->
+  <div id="caosContainer"
+       class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto transition-all duration-700 ease-in-out bg-transparent backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden flex items-center justify-center">
+    
+    <!-- Imagen del Dashboard (Solución) -->
+    <img id="dashboardImage" 
+         src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png"
+         alt="Dashboard Latam5S" 
+         class="absolute inset-0 w-full h-full object-contain rounded-2xl opacity-0 scale-95 transition-all duration-700 ease-in-out">
+
+    <!-- Mensajes del caos -->
+    <div class="caos-msg absolute top-[10%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg opacity-0 -rotate-6 transition-all duration-700 ease-out">
+      <p class="text-xs font-bold text-green-500">Cliente WhatsApp</p>
+      <p class="text-sm dark:text-gray-100">Hola, ¿me pasas la dirección de nuevo? 🙃</p>
     </div>
-  </header>
-
-  <section class="hero">
-    <h1>Organiza tus envíos con calma — sin direcciones confusas ni mensajes perdidos</h1>
-    <p>Más intuitiva, más rápida y lista para tu día a día como emprendedor. Descubre la nueva versión de Latam5S, hecha para ti.</p>
-    <button onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">🚀 Quiero unirme</button>
-  </section>  
-  
-  <h2 class="section-title">¿Cansado del desorden de direcciones?</h2>
-
-  <div class="chat-container">
-    <div class="messages" id="chat"></div>
+    <div class="caos-msg absolute top-[35%] right-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg opacity-0 rotate-3 transition-all duration-700 ease-out">
+      <p class="text-xs font-bold text-pink-500">Mensaje Instagram</p>
+      <p class="text-sm dark:text-gray-100">Amiga, la referencia es una casa con rejas negras 🏠</p>
+    </div>
+    <div class="caos-msg absolute top-[60%] left-[10%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg opacity-0 -rotate-2 transition-all duration-700 ease-out">
+      <p class="text-xs font-bold text-blue-500">Chat Facebook</p>
+      <p class="text-sm dark:text-gray-100">¿Por Olva o Shalom? 🤔</p>
+    </div>
   </div>
-  <button class="btn-toggle" id="toggleBtn">Ver solución</button>
 
-  <section id="carrusel-dashboard">
-    <h2 class="section-title">Explora el Panel de Control</h2>
-    <p class="section-subtitle">Control total al alcance de tus manos</p>
+  <button id="toggleCaos"
+          class="mt-10 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-brand-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all">
+    Ver la solución 💡
+  </button>
+</section>
 
-    <div class="carrusel-container">
-      <div class="carrusel">
-        <div class="carrusel-track" id="carrusel-track">
-          <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard.png" alt="Dashboard 1" class="carousel-slide">
-          <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard2.png" alt="Dashboard 2" class="carousel-slide">
-        </div>
-      </div>
-      <button id="prevBtn" class="carousel-btn prev">‹</button>
-      <button id="nextBtn" class="carousel-btn next">›</button>
+
+
+        
+        <!-- Sección Comparativa -->
+        <section id="comparativo" class="text-center mb-20">
+             <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-2">Pasa del caos al control total</h2>
+            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-8">Mira cómo <strong>Latam5S</strong> transforma tu día a día.</p>
+            <button id="toggleComparativo" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold py-3 px-8 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all" aria-expanded="false">
+                Descubre la diferencia 💡
+            </button>
+            <div id="tablaComparativa" class="hidden mt-8 transition-all duration-500 max-w-4xl mx-auto">
+                <div class="overflow-x-auto rounded-xl shadow-lg">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-orange-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Situación</th>
+                                <th scope="col" class="px-6 py-3">Sin Latam5S 😩</th>
+                                <th scope="col" class="px-6 py-3">Con Latam5S 😌</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Coordinación</td>
+                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Caos y mensajes por todos lados 😵‍💫</td>
+                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Todo ordenado desde un solo lugar ✨</td>
+                            </tr>
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Control de fechas</td>
+                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Se olvidan o confunden los envíos 📅</td>
+                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Fechas a elección y precisas ⏰</td>
+                            </tr>
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Datos para couriers</td>
+                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Datos errados o mal escritos</td>
+                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Datos listos para carga masiva</td>
+                            </tr>
+                            <tr class="bg-white dark:bg-gray-800/50">
+                                <td class="px-6 py-4 font-semibold">Orden y control</td>
+                                <td class="px-6 py-4 bg-red-50 dark:bg-red-900/20">Mensajes repetidos y estrés 📲</td>
+                                <td class="px-6 py-4 bg-green-50 dark:bg-green-900/20">Panel de control centralizado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Beneficios -->
+        <section id="beneficios" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all">
+                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">😌 Sensación de calma</h4>
+                <p class="text-brand-muted dark:text-gray-400 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all">
+                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">⏱️ Más tiempo para vender</h4>
+                <p class="text-brand-muted dark:text-gray-400 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all">
+                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">📊 Decisiones claras</h4>
+                <p class="text-brand-muted dark:text-gray-400 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
+            </div>
+        </section>
+
+        <!-- Sección Formulario -->
+        <section id="form" class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl">
+            <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">Obtén 15 días GRATIS y 50% OFF</h2>
+            <p class="text-center text-brand-muted dark:text-gray-400 mb-8">Completa tus datos, validaremos tu negocio y te enviaremos tu acceso exclusivo.</p>
+            <form id="leadForm" class="grid gap-6">
+                 <div>
+                    <label for="profile" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">Perfil de tu negocio (Instagram, TikTok, etc.)</label>
+                    <input id="profile" name="profile" type="url" placeholder="Ej: instagram.com/latienditadeana" required class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
+                </div>
+                <div>
+                    <label for="volume" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">¿Cuántos envíos haces por semana?</label>
+                    <select id="volume" name="volume" required class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition appearance-none">
+                        <option value="">Selecciona un rango</option>
+                        <option value="Menos de 10">Menos de 10</option>
+                        <option value="10-30">10 - 30</option>
+                        <option value="30-60">30 - 60</option>
+                        <option value="Más de 60">Más de 60</option>
+                    </select>
+                </div>
+                <div>
+                     <label for="wa" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">Tu WhatsApp (para contactarte)</label>
+                    <input id="wa" name="wa" type="number" placeholder="Ej: 987654321" required class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
+                </div>
+                <div>
+                    <label for="email" class="block font-semibold text-sm text-brand-muted dark:text-gray-400 mb-2">Tu email (Opcional)</label>
+                    <input id="email" name="email" type="email" placeholder="Aquí enviaremos tu acceso a la prueba" class="w-full p-3 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition">
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-accent/40 hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2">
+                    <span id="submitBtnText">Solicitar mi acceso GRATIS</span>
+                    <svg id="submitBtnSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-brand-muted dark:text-gray-500 text-sm mt-20 pb-8">
+        © 2025 Latam5S — Organiza tus envíos con calma
+    </footer>
+    
+    <!-- Botón Flotante -->
+    <a href="https://complicidad.github.io/dashboard/" target="_blank" class="fixed bottom-6 right-6 bg-gradient-to-br from-brand-accent to-orange-400 text-white py-3 px-5 rounded-full shadow-2xl shadow-brand-accent/40 hover:-translate-y-1 hover:shadow-brand-accent/60 transition-all z-50 flex items-center gap-2">
+        🚀 <span class="hidden sm:inline">Ir al Dashboard</span>
+    </a>
+    
+    <!-- Contenedor para Notificaciones (reemplaza alert) -->
+    <div id="notification" class="fixed top-5 right-5 bg-red-500 text-white py-3 px-5 rounded-lg shadow-lg transform translate-x-[120%] transition-transform duration-500 z-50">
+        <p>Este es un mensaje de error.</p>
     </div>
 
-    <div id="carousel-dots" class="carousel-dots-container"></div>
-  </section>
-  
-  <section id="comparativo">
-    <h2 class="section-title">Descubre los beneficios de organizar tus envíos 🚀</h2>
-    <p class="section-subtitle">
-      Mira cómo pasa tu día de caos a control con <strong>Latam5S</strong>
-    </p>
-    <button class="btn-toggle" id="toggleComparativo">Descubre la diferencia 💡</button>
-  
-    <div id="tablaComparativa">
-      <table class="comparative-table">
-        <thead>
-          <tr>
-            <th>Situación</th>
-            <th>Sin Latam5S 😩</th>
-            <th>Con Latam5S 😌</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Coordinación de envíos</td>
-            <td>Caos y mensajes por todos lados 😵‍💫</td>
-            <td>Todo ordenado desde un solo lugar ✨</td>
-          </tr>
-          <tr>
-            <td>Control de fechas</td>
-            <td>Se olvidan o confunden los envíos 📅</td>
-            <td>Fechas a elección y precisas ⏰</td>
-          </tr>
-          <tr>
-            <td>Agencias y couriers</td>
-            <td>Datos errados o mal escritos</td>
-            <td>Datos listo para carga masiva</td>
-          </tr>          
-          <tr>
-            <td>Orden y control</td>
-            <td>Mensajes repetidos y estrés 📲</td>
-            <td>Panel de control centralizado </td>
-          </tr>
-          <tr>
-            <td>Tiempo invertido</td>
-            <td>Horas perdidas cada semana 🕓</td>
-            <td>Solo unos minutos al día ⚡</td>
-          </tr>
-          <tr>
-            <td>Sensación general</td>
-            <td>Estrés constante 😩</td>
-            <td>Tranquilidad total 😌</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="beneficios" class="benefits">  
-    <div class="benefit"><h4>😌 Sensación de calma</h4><p>Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p></div>
-    <div class="benefit"><h4>⏱️ Más tiempo para vender</h4><p>Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p></div>
-    <div class="benefit"><h4>📊 Decisiones claras</h4><p>Controla lo que se envía y cuándo — evita reenvíos y problemas con clientes.</p></div>
-  </section>
-
-  <section id="form" class="form-card">
-    <h2>Registrate y participa por un descuento del 50% en el primer mes</h2>
-    <form id="leadForm">
-      <label>Nombre del emprendimiento</label>
-      <input id="business" type="text" placeholder="Ej: La Tiendita de Ana" required>
-
-      <label>¿En qué redes vendes más?</label>
-      <div class="chips" id="networks">
-        <div class="chip" data-value="TikTok">TikTok</div>
-        <div class="chip" data-value="Instagram">Instagram</div>
-        <div class="chip" data-value="WhatsApp">WhatsApp</div>
-        <div class="chip" data-value="Facebook">Facebook</div>
-        <div class="chip" data-value="Otro">Otro</div>
-      </div>
-
-      <label>¿Cuántos envíos haces por semana?</label>
-      <select id="volume" required>
-        <option value="">Selecciona un rango</option>
-        <option value="Menos de 10">Menos de 10</option>
-        <option value="10-30">10 - 30</option>
-        <option value="30-60">30 - 60</option>
-        <option value="Más de 60">Más de 60</option>
-      </select>
-
-      <label>Tu WhatsApp (para contactarte)</label>
-      <input id="wa" type="tel" placeholder="Ej: 9XXXXXXXX" required>
-
-      <button type="submit" class="btn-submit">Registrarme</button>
-    </form>
-  </section>
-  
-  <a href="https://complicidad.github.io/dashboard/" target="_blank" class="btn-floating">🚀 Ir al Dashboard</a>
-  
-  <footer>© 2025 Latam5S — Organiza tus envíos</footer>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* === LÓGICA DEL CARRUSEL FADE === */
-  const carruselContainer = document.getElementById('carrusel-dashboard');
+    // Inicializar iconos
+    feather.replace();
 
-  if (carruselContainer) { // Verificamos que el carrusel exista
-    const slides = Array.from(carruselContainer.querySelectorAll('.carousel-slide'));
-    const nextBtn = document.getElementById('nextBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const dotsContainer = document.getElementById('carousel-dots');
-    let currentIndex = 0;
+    /**
+     * GESTIÓN DEL MODO OSCURO
+     */
+    function setupDarkModeToggle() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
 
-    // Crear los puntos indicadores
-    if (dotsContainer && slides.length > 0) {
-        dotsContainer.innerHTML = ''; // Limpiamos por si acaso
-        slides.forEach((slide, index) => {
-          const dot = document.createElement('button');
-          dot.classList.add('dot');
-          dotsContainer.appendChild(dot);
-          dot.addEventListener('click', () => {
-            currentIndex = index;
-            updateCarousel();
-          });
+        // Cargar preferencia guardada
+        if (localStorage.getItem('darkMode') === 'true' || 
+           (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('darkMode', html.classList.contains('dark'));
         });
     }
-    const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
 
-    // Función para actualizar qué imagen y punto están activos
-    const updateCarousel = () => {
-      // 1. Ocultar todas las imágenes quitando la clase 'active'
-      slides.forEach(slide => slide.classList.remove('active'));
-      // 2. Mostrar solo la imagen actual añadiendo la clase 'active'
-      slides[currentIndex].classList.add('active');
-
-      // 3. Actualizar los puntos
-      if (dots.length > 0) {
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[currentIndex].classList.add('active');
-      }
-
-      // 4. Mostrar u ocultar los botones de navegación
-      prevBtn.classList.toggle('hidden', currentIndex === 0);
-      nextBtn.classList.toggle('hidden', currentIndex === slides.length - 1);
-    };
-
-    // Event Listeners para los botones
-    nextBtn.addEventListener('click', () => {
-      if (currentIndex < slides.length - 1) {
-        currentIndex++;
-        updateCarousel();
-      }
-    });
-
-    prevBtn.addEventListener('click', () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        updateCarousel();
-      }
-    });
-
-    // Llamada inicial para mostrar la primera imagen
-    updateCarousel();
-  }
+    /**
+     * ANIMACIÓN DE CAOS DE MENSAJES
+     */
+function setupChaosAnimation() {
+  const container = document.getElementById('caosContainer');
+  const caosMsgs = document.querySelectorAll('.caos-msg');
+  const dashboard = document.getElementById('dashboardImage');
+  const toggle = document.getElementById('toggleCaos');
   
-  
-  /* === LÓGICA DE LA TABLA COMPARATIVA === */
-  const botonComparativo = document.getElementById('toggleComparativo');
-  const tablaComparativa = document.getElementById('tablaComparativa');
-  let tablaVisible = false;
+  if (!container || !dashboard || caosMsgs.length === 0) return;
 
-  botonComparativo.addEventListener('click', () => {
-    tablaVisible = !tablaVisible;
-    tablaComparativa.style.display = tablaVisible ? 'block' : 'none';
-    botonComparativo.textContent = tablaVisible ? 'Ocultar comparación 🔒' : 'Descubre la diferencia 💡';
-  });
+  let showingChaos = true;
 
-  /* === CHAT SIMULADO === */
-  const chat = document.getElementById('chat');
-  const toggleBtn = document.getElementById('toggleBtn');
+  // Mostrar los mensajes del caos
+  function showChaos() {
+    // Reducir ancho del contenedor
+    container.classList.remove('max-w-3xl', 'h-[480px]');
+    container.classList.add('max-w-sm', 'md:max-w-md', 'h-[400px]');
+    
+    // Ocultar dashboard
+    dashboard.classList.add('opacity-0', 'scale-95');
 
-  const problemMessages = [
-    {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
-    {text:"Ok, ¿me pasas la dirección?", from:"from-system"},
-    {text:"Calle Falsa 123", from:"from-user"},
-    {text:"Ah, ¿y en qué distrito?", from:"from-system"},
-    {text:"San Juan de Lurigancho", from:"from-user"},
-    {text:"Ok, ¿alguna referencia?", from:"from-system"},
-    {text:"Está al lado del parque, entrada amarilla 😅", from:"from-user"},
-    {text:"Perfecto, listo.", from:"from-system"}
-  ];
-
-  const solutionMessages = [
-    {text:"Hola, quiero que me envíen mi pedido.", from:"from-user"},
-    {text:"¡Perfecto! 😃 Para asegurarnos que todo llegue bien, completa tus datos en este enlace:", from:"from-system"},
-    {text:"https://latam5s.com/form", from:"from-system"},
-    {text:"Listo, agregué todos mis datos. Muchas gracias!", from:"from-user"},
-    {text:"¡¡Excelente! Tu envío está programado y organizado. Muchas gracias 🚀", from:"from-system"}
-  ];
-
-  let showingProblem = true;
-
-  function renderChat(messages){
-    chat.innerHTML = '';
-    let delay = 0;
-    messages.forEach(m => {
-      const div = document.createElement('div');
-      div.className = `message ${m.from}`;
-      div.textContent = m.text;
-      chat.appendChild(div);
-      setTimeout(() => div.classList.add('show'), delay);
-      delay += 800;
+    // Mostrar mensajes con retardo progresivo
+    let delay = 200;
+    caosMsgs.forEach(msg => {
+      setTimeout(() => msg.classList.remove('opacity-0', 'translate-y-5'), delay);
+      delay += 250;
     });
   }
 
-  // Iniciar el chat por defecto
-  if (chat) {
-      renderChat(problemMessages);
+  // Mostrar el dashboard (solución)
+  function showSolution() {
+    // Ocultar mensajes primero
+    caosMsgs.forEach(msg => msg.classList.add('opacity-0', 'translate-y-5'));
+
+    // Expandir contenedor y mostrar dashboard
+    setTimeout(() => {
+      container.classList.remove('max-w-sm', 'md:max-w-md', 'h-[400px]');
+      container.classList.add('max-w-3xl', 'h-[480px]');
+      dashboard.classList.remove('opacity-0', 'scale-95');
+    }, 500);
   }
 
-  toggleBtn.addEventListener('click', () => {
-    renderChat(showingProblem ? solutionMessages : problemMessages);
-    toggleBtn.textContent = showingProblem ? "Volver al problema" : "Ver solución";
-    showingProblem = !showingProblem;
-  });
+  // Inicializar animación del caos
+  setTimeout(showChaos, 600);
 
-  /* === FORMULARIO === */
-  const COMPANY_WHATSAPP = '51942096391';
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
-
-  document.getElementById('networks').addEventListener('click', e => {
-    const chip = e.target.closest('.chip');
-    if(chip) chip.classList.toggle('selected');
-  });
-
-  document.getElementById('leadForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const business = document.getElementById('business').value.trim();
-    const wa = document.getElementById('wa').value.trim().replace(/\D/g,'');
-    const volume = document.getElementById('volume').value;
-    const selected = Array.from(document.querySelectorAll('.chip.selected')).map(c=>c.dataset.value);
-
-    if(!business || !volume || !selected.length || !/^9\d{8}$/.test(wa)){
-      alert('Por favor completa todos los campos correctamente.');
-      return;
+  // Botón de alternancia
+  toggle.addEventListener('click', () => {
+    showingChaos = !showingChaos;
+    if (showingChaos) {
+      showChaos();
+      toggle.textContent = 'Ver la solución 💡';
+    } else {
+      showSolution();
+      toggle.textContent = 'Volver al caos 😵‍💫';
     }
-
-    const payload = { business, whatsapp: wa, volume, networks: selected };
-    try {
-      await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-      console.log('Datos enviados a Google Sheets');
-    } catch(err) { console.error('Error al enviar datos:', err); }
-
-    const msg = encodeURIComponent(`👋 Hola, quiero conocer más sobre LATAM 5S.\n📛 Emprendimiento: ${business}\n📱 Redes: ${selected.join(', ')}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}`);
-    window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`,'_blank');
-
-    e.target.reset();
-    document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
   });
+}
 
+    /**
+     * TABLA COMPARATIVA
+     */
+    function setupComparisonTable() {
+        const toggleButton = document.getElementById('toggleComparativo');
+        const table = document.getElementById('tablaComparativa');
+        if (!toggleButton || !table) return;
+
+        toggleButton.addEventListener('click', () => {
+            const isVisible = !table.classList.contains('hidden');
+            if (isVisible) {
+                table.classList.add('hidden');
+                toggleButton.textContent = 'Descubre la diferencia 💡';
+                toggleButton.setAttribute('aria-expanded', 'false');
+            } else {
+                table.classList.remove('hidden');
+                toggleButton.textContent = 'Ocultar comparación 🔒';
+                toggleButton.setAttribute('aria-expanded', 'true');
+            }
+        });
+    }
+    
+    /**
+     * FORMULARIO DE REGISTRO
+     */
+    function setupLeadForm() {
+        const form = document.getElementById('leadForm');
+        if (!form) return;
+        
+        const networksContainer = document.getElementById('networks');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitBtnText = document.getElementById('submitBtnText');
+        const submitBtnSpinner = document.getElementById('submitBtnSpinner');
+
+        // Lógica de los "chips"
+        networksContainer.addEventListener('click', e => {
+            const chip = e.target.closest('.chip');
+            if (chip) {
+                chip.classList.toggle('selected');
+                chip.classList.toggle('bg-gradient-to-r');
+                chip.classList.toggle('from-brand-accent');
+                chip.classList.toggle('to-brand-accent-alt');
+                chip.classList.toggle('text-white');
+                chip.classList.toggle('border-transparent');
+                
+                chip.classList.toggle('bg-gray-100');
+                chip.classList.toggle('dark:bg-gray-700');
+                chip.classList.toggle('text-gray-600');
+                chip.classList.toggle('dark:text-gray-300');
+            }
+        });
+
+        // Lógica de envío del formulario
+        const COMPANY_WHATSAPP = '51942096391';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKHlMOihxCPleUn_Cy0hOyLNDj_qDnv9k_U9Ftm-skDY3SXj-Sm8nQvcvSauIKFddfSw/exec';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const business = form.elements.business.value.trim();
+            const profile = form.elements.profile.value.trim();
+            const wa = form.elements.wa.value.trim();
+            const volume = form.elements.volume.value;
+            const email = form.elements.email.value.trim();
+            const selectedNetworks = Array.from(networksContainer.querySelectorAll('.chip.selected')).map(c => c.dataset.value);
+
+            // Validación mejorada
+            let isValid = true;
+            if (!business) {
+                showNotification('El nombre del emprendimiento es requerido.');
+                isValid = false;
+            } else if (!profile) {
+                showNotification('El perfil de tu negocio es requerido para la validación.');
+                isValid = false;
+            } else if (selectedNetworks.length === 0) {
+                showNotification('Selecciona al menos una red social.');
+                isValid = false;
+            } else if (!volume) {
+                showNotification('Selecciona el volumen de envíos.');
+                isValid = false;
+            } else if (!/^[9]\d{8}$/.test(wa)) {
+                showNotification('Ingresa un número de WhatsApp válido de 9 dígitos (iniciando con 9).');
+                isValid = false;
+            } else if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+                showNotification('Por favor, ingresa un email válido.');
+                isValid = false;
+            }
+            if (!isValid) return;
+
+            // Mostrar estado de carga
+            submitBtn.disabled = true;
+            submitBtnText.classList.add('hidden');
+            submitBtnSpinner.classList.remove('hidden');
+
+            const payload = { business, profile, whatsapp: wa, volume, networks: selectedNetworks.join(', '), email };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                showNotification('¡Registro exitoso! Te contactaremos pronto.', 'success');
+                
+                const msg = encodeURIComponent(`👋 ¡Hola! Quiero mi prueba de 15 días para LATAM 5S.\n\n📛 Emprendimiento: ${business}\n🔗 Perfil: ${profile}\n📦 Envíos/semana: ${volume}\n📞 Mi WhatsApp: ${wa}\n\nGracias`);
+                setTimeout(() => {
+                    window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`, '_blank');
+                }, 1000);
+
+                form.reset();
+                networksContainer.querySelectorAll('.chip.selected').forEach(c => c.click());
+                
+            } catch (err) {
+                console.error('Error al enviar datos:', err);
+                showNotification('Hubo un error al registrar. Inténtalo de nuevo.');
+            } finally {
+                // Restaurar botón
+                 setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtnText.classList.remove('hidden');
+                    submitBtnSpinner.classList.add('hidden');
+                }, 1500);
+            }
+        });
+    }
+    
+    /**
+     * SISTEMA DE NOTIFICACIONES (REEMPLAZA ALERT)
+     */
+    let notificationTimeout;
+    function showNotification(message, type = 'error') {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+
+        // Limpiar clases anteriores
+        notification.classList.remove('bg-red-500', 'bg-green-500');
+        
+        if (type === 'success') {
+            notification.classList.add('bg-green-500');
+        } else {
+            notification.classList.add('bg-red-500');
+        }
+
+        notification.classList.remove('translate-x-[120%]');
+        
+        // Ocultar después de 5 segundos
+        clearTimeout(notificationTimeout);
+        notificationTimeout = setTimeout(() => {
+            notification.classList.add('translate-x-[120%]');
+        }, 5000);
+    }
+    
+    // Inicializar todos los módulos
+    setupDarkModeToggle();
+    setupChaosAnimation();
+    setupComparisonTable();
+    setupLeadForm();
 });
 </script>
 
 </body>
 </html>
+
+
+
+
