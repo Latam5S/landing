@@ -31,6 +31,26 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+        /* Estilos para el acordeón de FAQ */
+        .faq-item summary {
+            list-style: none; /* Ocultar marcador por defecto */
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item .icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .faq-item[open] .icon {
+            transform: rotate(45deg);
+        }
+        /* Estilo para la ola del Hero */
+        .wave-path {
+            fill: #fffaf6; /* Color de 'brand-bg' */
+        }
+        .dark .wave-path {
+            fill: #111827; /* Color de 'dark:bg-gray-900' */
+        }
     </style>
 
     <script>
@@ -55,39 +75,45 @@
         }
     </script>
 </head>
-<body class="bg-brand-bg dark:bg-gray-900 text-brand-text dark:text-gray-200 transition-colors duration-300">
+<body class="bg-brand-bg dark:bg-gray-900 text-brand-text dark:text-gray-200 transition-colors duration-300 leading-relaxed">
+
+<header id="mainHeader" class="bg-gradient-to-br from-brand-accent to-orange-400 sticky top-0 z-40 transition-colors duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+        <a href="#" class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-accent to-brand-accent-alt flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-brand-accent/30">
+                L5S
+            </div>
+            <div id="logoText" class="font-bold text-xl text-white hidden sm:block">Latam5S</div>
+        </a>
+        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+            <i data-feather="sun" class="text-white dark:hidden"></i>
+            <i data-feather="moon" class="text-white hidden dark:inline"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Sección Hero (Full Width) -->
+<section id="hero" class="relative bg-gradient-to-br from-brand-accent to-orange-400 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pb-32 text-center">
+        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">Organización de envíos simplificada para emprendedor@s.</h1>
+        <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto">Centraliza direcciones, fechas y pedidos desde un solo panel — sin caos ni estrés.</p>
+        <a href="#form" class="bg-white text-brand-accent font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-100 transition-transform hover:scale-105 inline-block">
+            🚀 Quiero mi acceso
+        </a>
+    </div>
+    <!-- Wave Shape Divider -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" class="relative block w-full h-[75px]">
+            <path d="M0,80 C300,0 900,160 1200,80 L1200,120 L0,120 Z" class="wave-path"></path>
+        </svg>
+    </div>
+</section>
 
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <!-- Encabezado -->
-    <header class="flex items-center justify-between w-full mb-10">
-        <a href="#" class="flex items-center gap-3">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-accent to-brand-accent-alt flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-accent/30">
-                L5S
-            </div>
-            <div>
-                <div class="font-bold text-lg dark:text-white">Latam5S</div>
-                <div class="text-sm text-brand-muted dark:text-gray-400">Organiza tus envíos</div>
-            </div>
-        </a>
-        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-            <i data-feather="sun" class="text-gray-600 dark:hidden"></i>
-            <i data-feather="moon" class="text-white hidden dark:inline"></i>
-        </button>
-    </header>
-
-    <main>
-        <!-- Sección Hero -->
-        <section id="hero" class="text-center bg-gradient-to-br from-brand-accent to-orange-400 text-white rounded-3xl py-16 px-6 shadow-2xl shadow-brand-accent/30 mb-20">
-            <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">Organiza tus envíos con calma</h1>
-            <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto">Sin direcciones confusas ni mensajes perdidos. Descubre la nueva versión de Latam5S, hecha para ti.</p>
-            <a href="#form" class="bg-white text-brand-accent font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-100 transition-transform hover:scale-105 inline-block">
-                🚀 Quiero mi acceso
-            </a>
-        </section>
-
+    <main class="mt-28">
         <!-- Sección Caos vs Solución con Animación Directa -->
-        <section class="text-center mb-24 px-4 min-h-[500px] animate-on-scroll">
+        <section class="text-center mb-28 px-4 min-h-[500px] animate-on-scroll">
             <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
                 Del caos al control total ✨
             </h2>
@@ -120,7 +146,7 @@
             <div id="solutionContainer" class="hidden w-full max-w-3xl mx-auto transition-opacity duration-500">
                 <img src="https://raw.githubusercontent.com/complicidad/landing/main/mac.png"
                      alt="Dashboard Latam5S" 
-                     class="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-500 ease-in-out">
+                     class="w-full h-full object-cover rounded-3xl shadow-xl transition-all duration-500 ease-in-out">
             </div>
 
             <button id="toggleCaos"
@@ -129,15 +155,73 @@
             </button>
         </section>
 
+        <!-- Sección Beneficios Funcionales -->
+        <section id="funcionalidades" class="text-center mb-28 animate-on-scroll">
+            <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-4">Herramientas que te devuelven el control</h2>
+            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-16">
+                Funciones específicas para que la logística deje de ser un dolor de cabeza.
+            </p>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <!-- Beneficio 1: Formularios -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex items-start gap-6">
+                    <div>
+                        <i data-feather="edit-3" class="w-10 h-10 text-brand-accent dark:text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 dark:text-white">Formularios Inteligentes</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm">
+                            Crea y comparte un enlace único para que tus clientes ingresen sus datos de envío sin errores ni ambigüedades.
+                        </p>
+                    </div>
+                </div>
+                <!-- Beneficio 2: Panel Central -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex items-start gap-6">
+                    <div>
+                        <i data-feather="layout" class="w-10 h-10 text-brand-accent dark:text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 dark:text-white">Panel de Control Centralizado</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm">
+                            Visualiza todos tus envíos en un solo lugar. Filtra por fecha, estado o courier y mantén el orden fácilmente.
+                        </p>
+                    </div>
+                </div>
+                <!-- Beneficio 3: Exportación -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex items-start gap-6">
+                    <div>
+                        <i data-feather="download" class="w-10 h-10 text-brand-accent dark:text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 dark:text-white">Exportación para Couriers</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm">
+                            Genera archivos Excel listos para la carga masiva en las principales agencias (Shalom, Olva, etc.), ahorrando horas de trabajo manual.
+                        </p>
+                    </div>
+                </div>
+                <!-- Beneficio 4: Etiquetas -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex items-start gap-6">
+                    <div>
+                        <i data-feather="tag" class="w-10 h-10 text-brand-accent dark:text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 dark:text-white">Generación de Etiquetas</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm">
+                            Imprime etiquetas de envío estandarizadas con toda la información necesaria para evitar confusiones y agilizar tus despachos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Sección Como Funciona -->
-        <section id="como-funciona" class="text-center mb-24 animate-on-scroll">
+        <section id="como-funciona" class="text-center mb-28 animate-on-scroll">
             <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-4">Así de simple funciona</h2>
-            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-12">
+            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-16">
                 En solo tres pasos, pasas del desorden a la claridad total.
             </p>
             <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Tarjeta Paso 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
                     <img src="https://raw.githubusercontent.com/complicidad/landing/main/paso10.png" alt="Paso 1: Comparte tu link" class="rounded-xl mb-4 w-full h-auto object-cover aspect-video">
                     <h4 class="font-bold text-lg text-brand-text dark:text-white mb-2">
                         <span class="text-brand-accent dark:text-orange-400 font-bold">Paso 1:</span> Tu cliente llena el formulario
@@ -147,7 +231,7 @@
                     </p>
                 </div>
                 <!-- Tarjeta Paso 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
                      <img src="https://raw.githubusercontent.com/complicidad/landing/main/paso20.png" alt="Paso 2: Tu cliente completa" class="rounded-xl mb-4 w-full h-auto object-cover aspect-video">
                     <h4 class="font-bold text-lg text-brand-text dark:text-white mb-2">
                         <span class="text-brand-accent dark:text-orange-400 font-bold">Paso 2:</span> Latam5S organiza todo
@@ -157,7 +241,7 @@
                     </p>
                 </div>
                 <!-- Tarjeta Paso 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
                      <img src="https://raw.githubusercontent.com/complicidad/landing/main/paso30.png" alt="Paso 3: Recibe todo ordenado" class="rounded-xl mb-4 w-full h-auto object-cover aspect-video">
                     <h4 class="font-bold text-lg text-brand-text dark:text-white mb-2">
                         <span class="text-brand-accent dark:text-orange-400 font-bold">Paso 3:</span> Recibe todo ordenado
@@ -172,15 +256,15 @@
         <!-- ====================================================================== -->
         <!-- ================ SECCIÓN DE PLANES DE SUSCRIPCIÓN ================== -->
         <!-- ====================================================================== -->
-        <section id="planes" class="text-center mb-24 animate-on-scroll">
+        <section id="planes" class="text-center mb-28 animate-on-scroll">
             <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-4">Planes pensados para ti</h2>
-            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-12">
+            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-16">
                 Elige la opción que mejor se adapte a tu ritmo de crecimiento.
             </p>
-            <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
                 
                 <!-- Plan Emprendedor -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl border-2 border-transparent h-full flex flex-col">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-md transition-all duration-300 hover:shadow-lg border-2 border-gray-200 dark:border-gray-700 h-full flex flex-col">
                     <h3 class="font-bold text-xl text-brand-accent dark:text-orange-400 mb-2">Emprendedor</h3>
                     <p class="text-4xl font-bold mb-1 dark:text-white">S/ 29 <span class="text-lg font-normal text-brand-muted">/ mes</span></p>
                     <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 min-h-[40px]">Ideal para quienes están comenzando.</p>
@@ -197,7 +281,7 @@
                 </div>
 
                 <!-- Plan Crecimiento (Destacado) -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl transition-all duration-300 border-2 border-brand-accent dark:border-orange-400 relative transform scale-105 h-full flex flex-col">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl transition-all duration-300 border-2 border-brand-accent dark:border-orange-400 relative transform scale-105 h-full flex flex-col">
                     <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-brand-accent text-white text-xs font-bold px-4 py-1 rounded-full">MÁS POPULAR</span>
                     <h3 class="font-bold text-xl text-brand-accent dark:text-orange-400 mb-2">Crecimiento</h3>
                     <p class="text-4xl font-bold mb-1 dark:text-white">S/ 59 <span class="text-lg font-normal text-brand-muted">/ mes</span></p>
@@ -215,7 +299,7 @@
                 </div>
 
                 <!-- Plan Consolidado -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl border-2 border-transparent h-full flex flex-col">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-md transition-all duration-300 hover:shadow-lg border-2 border-gray-200 dark:border-gray-700 h-full flex flex-col">
                     <h3 class="font-bold text-xl text-brand-accent dark:text-orange-400 mb-2">Consolidado</h3>
                     <p class="text-4xl font-bold mb-1 dark:text-white">S/ 99 <span class="text-lg font-normal text-brand-muted">/ mes</span></p>
                     <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 min-h-[40px]">Para negocios con alto volumen de envíos.</p>
@@ -236,25 +320,101 @@
         <!-- ==================================================================== -->
         <!-- ================ FIN DE LA SECCIÓN DE PLANES ======================= -->
         <!-- ==================================================================== -->
+    </main>
+</div>
 
-        <!-- Sección Beneficios -->
-        <section id="beneficios" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 animate-on-scroll">
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
-                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">😌 Sensación de calma</h4>
-                <p class="text-brand-muted dark:text-gray-400 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
+<!-- Fuera del contenedor principal para que sea full-width -->
+<section id="beneficios-wrapper" class="relative bg-gradient-to-br from-brand-accent to-orange-400 mb-28">
+    <!-- Top Wave Shape Divider -->
+    <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0]" style="transform: rotate(180deg);">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" class="relative block w-full h-[75px]">
+            <path d="M0,80 C300,0 900,160 1200,80 L1200,120 L0,120 Z" class="wave-path"></path>
+        </svg>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center animate-on-scroll">
+        <div id="beneficios" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="transition-all duration-300 text-center">
+                <h4 class="font-bold text-xl text-white mb-2">😌 Sensación de calma</h4>
+                <p class="text-white/80 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
             </div>
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 150ms;">
-                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">⏱️ Más tiempo para vender</h4>
-                <p class="text-brand-muted dark:text-gray-400 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
+            <div class="transition-all duration-300 text-center" style="--delay: 150ms;">
+                <h4 class="font-bold text-xl text-white mb-2">⏱️ Más tiempo para vender</h4>
+                <p class="text-white/80 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
             </div>
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 300ms;">
-                <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">📊 Decisiones claras</h4>
-                <p class="text-brand-muted dark:text-gray-400 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
+            <div class="transition-all duration-300 text-center" style="--delay: 300ms;">
+                <h4 class="font-bold text-xl text-white mb-2">📊 Decisiones claras</h4>
+                <p class="text-white/80 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Wave Shape Divider -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" class="relative block w-full h-[75px]">
+            <path d="M0,80 C300,0 900,160 1200,80 L1200,120 L0,120 Z" class="wave-path"></path>
+        </svg>
+    </div>
+</section>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main>
+        <!-- ====================================================================== -->
+        <!-- ================ SECCIÓN DE PREGUNTAS FRECUENTES (FAQ) ============== -->
+        <!-- ====================================================================== -->
+        <section id="faq" class="max-w-3xl mx-auto mb-28 animate-on-scroll">
+            <h2 class="text-2xl md:text-3xl font-bold text-center dark:text-white mb-4">Preguntas Frecuentes</h2>
+            <p class="text-brand-muted dark:text-gray-400 text-center max-w-xl mx-auto mb-12">
+                Resolvemos tus dudas para que empieces con total confianza.
+            </p>
+            <div class="space-y-4">
+                <!-- Pregunta 1 -->
+                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                    <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
+                        ¿Qué necesito para empezar a usar Latam5S?
+                        <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
+                    </summary>
+                    <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
+                        Solo necesitas una cuenta y un link a tu red social o tienda online para validar tu negocio. No necesitas conocimientos técnicos. ¡El proceso es súper rápido y te guiamos en cada paso!
+                    </p>
+                </details>
+                <!-- Pregunta 2 -->
+                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                    <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
+                        ¿Mis clientes necesitan instalar alguna aplicación?
+                        <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
+                    </summary>
+                    <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
+                        No, para nada. Tus clientes solo tienen que hacer clic en el enlace que les compartes y completar el formulario desde cualquier navegador, ya sea en su celular o computadora. Es una experiencia web simple y directa.
+                    </p>
+                </details>
+                <!-- Pregunta 3 -->
+                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                    <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
+                        ¿Funciona con cualquier empresa de courier o agencia?
+                        <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
+                    </summary>
+                    <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
+                        ¡Sí! Latam5S es universal. Puedes exportar los datos en un formato compatible con cualquier courier (Olva, Shalom, etc.) o para tu motorizado particular. Además, puedes crear plantillas personalizadas para los formatos de carga masiva que necesites.
+                    </p>
+                </details>
+                <!-- Pregunta 4 -->
+                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                    <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
+                        ¿Qué pasa si supero el límite de envíos de mi plan?
+                        <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
+                    </summary>
+                    <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
+                        No te preocupes, tu operación no se detendrá. Te notificaremos cuando estés cerca de tu límite para que puedas decidir si deseas pasarte al siguiente plan. Nuestro objetivo es crecer contigo.
+                    </p>
+                </details>
             </div>
         </section>
+        <!-- ==================================================================== -->
+        <!-- ======================= FIN DE LA SECCIÓN FAQ ====================== -->
+        <!-- ==================================================================== -->
 
         <!-- Sección Formulario -->
-        <section id="form" class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl animate-on-scroll">
+        <section id="form" class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-xl animate-on-scroll">
             <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">Obtén 15 días GRATIS y 50% OFF</h2>
             <p class="text-center text-brand-muted dark:text-gray-400 mb-8">Completa tus datos, validaremos tu negocio y te enviaremos tu acceso exclusivo.</p>
             <form id="leadForm" class="grid gap-6">
@@ -289,12 +449,12 @@
                 </button>
             </form>
         </section>
-    </main>
 
-    <!-- Footer -->
-    <footer class="text-center text-brand-muted dark:text-gray-500 text-sm mt-20 pb-8">
-        © 2025 Latam5S — Organiza tus envíos con calma
-    </footer>
+        <footer class="text-center text-brand-muted dark:text-gray-500 text-sm mt-28 pb-8">
+            © 2025 Latam5S — Organiza tus envíos con calma
+        </footer>
+    </main>
+</div>
     
     <!-- Botón Flotante -->
     <a href="https://complicidad.github.io/dashboard/" target="_blank" class="fixed bottom-6 right-6 bg-gradient-to-br from-brand-accent to-orange-400 text-white py-3 px-5 rounded-full shadow-2xl shadow-brand-accent/40 hover:-translate-y-1 hover:shadow-brand-accent/60 transition-all z-50 flex items-center gap-2">
@@ -306,13 +466,56 @@
         <p>Este es un mensaje de error.</p>
     </div>
 
-</div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
     // Inicializar iconos
     feather.replace();
+
+    /**
+     * GESTIÓN DEL HEADER STICKY
+     */
+    function setupStickyHeader() {
+        const header = document.getElementById('mainHeader');
+        const logoText = document.getElementById('logoText');
+        const darkModeButton = document.getElementById('darkModeToggle');
+        const sunIcon = darkModeButton.querySelector('[data-feather="sun"]');
+
+        if (!header || !logoText || !darkModeButton || !sunIcon) return;
+        
+        const scrollClasses = ['bg-brand-card/90', 'dark:bg-gray-900/80', 'backdrop-blur-sm', 'border-b', 'border-gray-200/50', 'dark:border-gray-800/50'];
+        const topClasses = ['bg-gradient-to-br', 'from-brand-accent', 'to-orange-400'];
+
+        const handleScroll = () => {
+            if (window.scrollY > 20) {
+                // Apply scrolled styles
+                header.classList.remove(...topClasses);
+                header.classList.add(...scrollClasses);
+                logoText.classList.remove('text-white');
+                logoText.classList.add('dark:text-white');
+                sunIcon.classList.remove('text-white');
+                sunIcon.classList.add('text-gray-600');
+                darkModeButton.classList.remove('hover:bg-white/20');
+                darkModeButton.classList.add('hover:bg-gray-200', 'dark:hover:bg-gray-700');
+            } else {
+                // Apply top styles
+                header.classList.add(...topClasses);
+                header.classList.remove(...scrollClasses);
+                logoText.classList.add('text-white');
+                logoText.classList.remove('dark:text-white');
+                sunIcon.classList.add('text-white');
+                sunIcon.classList.remove('text-gray-600');
+                darkModeButton.classList.add('hover:bg-white/20');
+                darkModeButton.classList.remove('hover:bg-gray-200', 'dark:hover:bg-gray-700');
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        // Initial check in case page loads already scrolled
+        handleScroll(); 
+    }
 
     /**
      * GESTIÓN DEL MODO OSCURO
@@ -570,6 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Inicializar todos los módulos
+    setupStickyHeader();
     setupDarkModeToggle();
     setupChaosAnimation();
     // setupComparisonTable(); // <--- Eliminado
