@@ -49,21 +49,6 @@
                     },
                     fontFamily: {
                         'quicksand': ['Quicksand', 'sans-serif'],
-                    },
-                    animation: {
-                        'soft-pulse': 'soft-pulse 4s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        'soft-pulse': {
-                            '0%, 100%': {
-                                transform: 'scale(1)',
-                                boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.20)'
-                            },
-                            '50%': {
-                                transform: 'scale(1.01)',
-                                boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.30)'
-                            }
-                        }
                     }
                 }
             }
@@ -101,20 +86,19 @@
             </a>
         </section>
 
-<!-- Sección Caos vs Solución con Lógica de Animación Restaurada -->
-<section class="text-center mb-24 px-4 min-h-[520px] animate-on-scroll">
-    <div class="relative">
-        <!-- Escena del Caos -->
-        <div id="caosContainer" class="transition-all duration-500 ease-in-out">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
-                Del caos al control total ✨
-            </h2>
-            <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
-                Así se siente pasar de los mensajes desordenados a un panel claro y simple.
-            </p>
-            <div class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto">
-                <!-- Mensajes del caos -->
-                <div class="caos-msg absolute top-[5%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-6 transition-all duration-300 ease-out">
+<!-- Sección Caos vs Solución con Animación Directa -->
+<section class="text-center mb-24 px-4 min-h-[500px] animate-on-scroll">
+  <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
+    Del caos al control total ✨
+  </h2>
+  <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
+    Así se siente pasar de los mensajes desordenados a un panel claro y simple.
+  </p>
+
+  <!-- Contenedor del Caos -->
+  <div id="caosContainer" class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto transition-opacity duration-500">
+    <!-- Mensajes del caos -->
+               <div class="caos-msg absolute top-[5%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-6 transition-all duration-300 ease-out">
                     <p class="text-xs font-bold text-green-500">Cliente WhatsApp</p>
                     <p class="text-sm dark:text-gray-100">Es Av. La Paz 456, en San Miguel. Dpto 502. Tocar el intercomunicador de la familia Garcia.</p>
                 </div>
@@ -130,101 +114,24 @@
                     <p class="text-xs font-bold text-blue-500">Chat Facebook</p>
                     <p class="text-sm dark:text-gray-100">Ok, para la agencia los datos son: María Rojas, DNI 87654321. Me avisas a cuál la mandas.</p>
                 </div>
-            </div>
-        </div>
+  </div>
 
-        <!-- Escena de la Solución (Título + Imagen) -->
-        <div id="solutionContainer" class="absolute inset-0 transition-all duration-500 ease-in-out">
-             <div class="w-full max-w-4xl mx-auto text-center">
-                <h2 class="text-2xl md:text-3xl font-bold text-brand-text dark:text-white text-center mb-6">La calma se ve así</h2>
-                <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard1.png"
-                     alt="Dashboard de Latam5S"
-                     class="w-full rounded-2xl shadow-2xl shadow-black/20 animate-soft-pulse">
-            </div>
-        </div>
-    </div>
+  <!-- Contenedor de la Solución (Dashboard) -->
+  <div id="solutionContainer" class="hidden w-full max-w-3xl mx-auto transition-opacity duration-500">
+      <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard0.png"
+           alt="Dashboard Latam5S" 
+           class="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-500 ease-in-out">
+  </div>
 
-    <button id="toggleCaos"
-            class="mt-10 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-brand-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all">
-      Ver la solución 💡
-    </button>
+
+  <button id="toggleCaos"
+          class="mt-10 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-brand-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all">
+    Ver la solución 💡
+  </button>
 </section>
 
-<!-- Sección Cómo Funciona -->
-<section id="how-it-works" class="text-center mb-24 animate-on-scroll">
-    <h2 class="text-3xl md:text-4xl font-bold text-brand-text dark:text-white text-center mb-12">Así de simple es el cambio</h2>
-    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Card 1: El cliente llena el formulario -->
-        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
-            <div class="w-40 h-32 mb-6 flex items-center justify-center">
-                <!-- SVG Ilustración 1 -->
-                <svg viewBox="0 0 150 100" class="w-full h-full">
-                  <g clip-path="url(#clip0_105_2)">
-                    <!-- Persona -->
-                    <path d="M72.5 45C72.5 40.8579 69.1421 37.5 65 37.5C60.8579 37.5 57.5 40.8579 57.5 45C57.5 49.1421 60.8579 52.5 65 52.5C69.1421 52.5 72.5 49.1421 72.5 45Z" fill="#F4A261"/>
-                    <path d="M57.5 45C57.5 42.0293 58.1252 39.2285 59.2312 36.7868C55.4353 38.3117 52.5 42.2479 52.5 46.875V52.5H77.5V46.875C77.5 42.2479 74.5647 38.3117 70.7688 36.7868C69.6628 39.2285 69.0376 42.0293 69.0376 45H57.5Z" fill="#264653"/>
-                    <path d="M65 37.5C60.8579 37.5 57.5 40.8579 57.5 45V52.5H72.5V45C72.5 40.8579 69.1421 37.5 65 37.5Z" fill="#F4A261"/>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M52.5 56.25H77.5V60.9375C77.5 62.9223 75.9223 64.5 73.9375 64.5H56.0625C54.0777 64.5 52.5 62.9223 52.5 60.9375V56.25Z" fill="#E76F51"/>
-                    <path d="M52.5 64.5V68.75C52.5 70.7348 54.0777 72.3125 56.0625 72.3125H73.9375C75.9223 72.3125 77.5 70.7348 77.5 68.75V64.5H52.5Z" fill="#F4A261"/>
-                    <!-- Laptop -->
-                    <rect x="80" y="60" width="60" height="35" rx="5" fill="#E9C46A"/>
-                    <rect x="75" y="95" width="70" height="5" rx="2.5" fill="#2A9D8F"/>
-                     <!-- Chat bubble -->
-                    <path d="M95 40 H115 C117.761 40 120 37.7614 120 35 V25 C120 22.2386 117.761 20 115 20 H95 C92.2386 20 90 22.2386 90 25 V35 C90 37.7614 92.2386 40 95 40 Z" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2"/>
-                    <path d="M98 27H112" stroke="#F4A261" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M98 33H106" stroke="#E0E0E0" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M85 38 L90 35 L85 32" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-                  </g>
-                </svg>
-            </div>
-            <h3 class="text-xl font-bold text-brand-text dark:text-white mb-2">1. Tu cliente llena el formulario</h3>
-            <p class="text-brand-muted dark:text-gray-400">Recibes los datos completos y sin errores.</p>
-        </div>
 
-        <!-- Card 2: Latam5S organiza todo -->
-        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
-            <div class="w-40 h-32 mb-6 flex items-center justify-center">
-                <!-- SVG Ilustración 2 -->
-                <svg viewBox="0 0 100 80" class="w-full h-full">
-                    <rect x="5" y="5" width="90" height="70" rx="8" fill="#FDEFEA" stroke="#F4A261" stroke-width="2"/>
-                    <path d="M5 20 H95" stroke="#F4A261" stroke-width="2"/>
-                    <circle cx="15" cy="12.5" r="3" fill="#E76F51"/>
-                    <circle cx="25" cy="12.5" r="3" fill="#F4A261"/>
-                    <circle cx="35" cy="12.5" r="3" fill="#2A9D8F"/>
-                    <!-- Engranaje -->
-                    <path d="M50 27.5 C42.5 27.5 42.5 27.5 35 27.5 L32.5 31.25 L35 35 H40 L42.5 37.5 L40 40 H35 L32.5 42.5 L35 46.25 H65 L67.5 42.5 L65 40 H60 L57.5 37.5 L60 35 H65 L67.5 31.25 L65 27.5 H50 Z M50 35 C54.1421 35 57.5 38.3579 57.5 42.5 C57.5 46.6421 54.1421 50 50 50 C45.8579 50 42.5 46.6421 42.5 42.5 C42.5 38.3579 45.8579 35 50 35 Z" fill="#E76F51"/>
-                     <path d="M50 32.5 C44.201 32.5 39.5 37.201 39.5 43 C39.5 48.799 44.201 53.5 50 53.5 C55.799 53.5 60.5 48.799 60.5 43 C60.5 37.201 55.799 32.5 50 32.5 Z M50 36.5 C53.5899 36.5 56.5 39.4101 56.5 43 C56.5 46.5899 53.5899 49.5 50 49.5 C46.4101 49.5 43.5 46.5899 43.5 43 C43.5 39.4101 46.4101 36.5 50 36.5 Z" fill="#F4A261"/>
-                </svg>
-            </div>
-            <h3 class="text-xl font-bold text-brand-text dark:text-white mb-2">2. Latam5S organiza todo</h3>
-            <p class="text-brand-muted dark:text-gray-400">Ordena tus envíos por fecha, tipo y agencia.</p>
-        </div>
 
-        <!-- Card 3: Ves envíos listos -->
-        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
-            <div class="w-40 h-32 mb-6 flex items-center justify-center">
-                <!-- SVG Ilustración 3 -->
-                <svg viewBox="0 0 150 100" class="w-full h-full">
-                    <!-- Lista -->
-                    <rect x="10" y="20" width="70" height="60" rx="5" fill="#FEF5EC" stroke="#FBDCC8" stroke-width="2"/>
-                    <path d="M20 30 H60" stroke="#F4A261" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M20 40 H70" stroke="#E9C46A" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M20 50 H50" stroke="#FBDCC8" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M20 60 H70" stroke="#E9C46A" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M20 70 H60" stroke="#F4A261" stroke-width="2" stroke-linecap="round"/>
-
-                    <!-- Caja -->
-                    <path d="M90 50 L115 40 L140 50 L115 60 L90 50 Z" fill="#F4A261" stroke="#264653" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M90 50 V75 L115 85 V60 L90 50 Z" fill="#E9C46A" stroke="#264653" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M140 50 V75 L115 85 V60 L140 50 Z" fill="#E76F51" stroke="#264653" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M95 52 L115 60 L135 52" stroke="#264653" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                </svg>
-            </div>
-            <h3 class="text-xl font-bold text-brand-text dark:text-white mb-2">3. Ves tus envíos listos</h3>
-            <p class="text-brand-muted dark:text-gray-400">Visualiza tu panel e imprime etiquetas.</p>
-        </div>
-    </div>
-</section>
         
         <!-- Sección Comparativa -->
         <section id="comparativo" class="text-center mb-20 animate-on-scroll">
@@ -276,11 +183,11 @@
                 <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">😌 Sensación de calma</h4>
                 <p class="text-brand-muted dark:text-gray-400 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
             </div>
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 150ms;">
                 <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">⏱️ Más tiempo para vender</h4>
                 <p class="text-brand-muted dark:text-gray-400 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
             </div>
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 300ms;">
                 <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">📊 Decisiones claras</h4>
                 <p class="text-brand-muted dark:text-gray-400 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
             </div>
@@ -368,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ANIMACIÓN DE CAOS VS SOLUCIÓN (CON EFECTOS RESTAURADOS)
+     * ANIMACIÓN DE CAOS DE MENSAJES
      */
     function setupChaosAnimation() {
       const caosContainer = document.getElementById('caosContainer');
@@ -376,48 +283,83 @@ document.addEventListener('DOMContentLoaded', () => {
       const caosMsgs = document.querySelectorAll('.caos-msg');
       const toggle = document.getElementById('toggleCaos');
       
-      if (!caosContainer || !solutionContainer || !toggle) return;
+      if (!caosContainer || !solutionContainer || caosMsgs.length === 0) return;
 
       let showingChaos = true;
 
-      // --- Funciones de animación ---
-      function animateCardsIn() {
-        let delay = 200;
-        caosMsgs.forEach(msg => {
-          setTimeout(() => {
-            msg.classList.remove('opacity-0', 'scale-95');
-          }, delay);
-          delay += 150;
-        });
+      // Estado inicial de las tarjetas del caos
+      caosMsgs.forEach(msg => msg.classList.add('opacity-0', 'scale-95'));
+
+      function showChaos() {
+        // 1. Fade out solution
+        solutionContainer.classList.add('opacity-0');
+        
+        // 2. Después de la transición, ocúltalo y muestra el contenedor del caos
+        setTimeout(() => {
+          solutionContainer.classList.add('hidden');
+          caosContainer.classList.remove('hidden');
+          
+          // 3. Fade in chaos container
+          requestAnimationFrame(() => {
+            caosContainer.classList.remove('opacity-0');
+          });
+
+          // 4. Animar la entrada de los mensajes
+          let delay = 300; // Inicia después de que el contenedor comience a aparecer
+          caosMsgs.forEach(msg => {
+            setTimeout(() => {
+              msg.classList.remove('opacity-0', 'scale-95');
+            }, delay);
+            delay += 200;
+          });
+        }, 500); // Duración de la transición de opacidad
       }
 
-      function animateCardsOut() {
+      function showSolution() {
+        // 1. Fade out de los mensajes del caos
         caosMsgs.forEach(msg => {
           msg.classList.add('opacity-0', 'scale-95');
         });
-      }
-      
-      // --- Estado inicial ---
-      solutionContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-      caosMsgs.forEach(msg => msg.classList.add('opacity-0', 'scale-95'));
-      setTimeout(animateCardsIn, 500); // Animar las tarjetas al cargar la página
 
-      // --- Lógica del botón ---
+        // 2. Fade out del contenedor del caos (después de que los mensajes comiencen a desaparecer)
+        setTimeout(() => {
+          caosContainer.classList.add('opacity-0');
+        }, 300);
+
+        // 3. Después de las transiciones, oculta el caos y muestra la solución
+        setTimeout(() => {
+          caosContainer.classList.add('hidden');
+          solutionContainer.classList.remove('hidden');
+
+          // 4. Fade in de la solución
+          requestAnimationFrame(() => {
+            solutionContainer.classList.remove('opacity-0');
+          });
+        }, 800); // 300ms + 500ms de la transición del contenedor
+      }
+
+      // Animación inicial al cargar la página
+      caosContainer.classList.add('opacity-0');
+      setTimeout(() => {
+          caosContainer.classList.remove('opacity-0');
+          let delay = 300;
+          caosMsgs.forEach(msg => {
+            setTimeout(() => {
+                msg.classList.remove('opacity-0', 'scale-95');
+            }, delay);
+            delay += 200;
+          });
+      }, 500);
+      
+      // Lógica del botón
       toggle.addEventListener('click', () => {
         showingChaos = !showingChaos;
-        
         if (showingChaos) {
-            // Mostrar Caos
-            solutionContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-            caosContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-            animateCardsIn();
-            toggle.textContent = 'Ver la solución 💡';
+          showChaos();
+          toggle.textContent = 'Ver la solución 💡';
         } else {
-            // Mostrar Solución
-            animateCardsOut();
-            caosContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-            solutionContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-            toggle.textContent = 'Volver al caos 😵‍💫';
+          showSolution();
+          toggle.textContent = 'Volver al caos 😵‍💫';
         }
       });
     }
@@ -557,42 +499,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ANIMACIONES AL HACER SCROLL (CORREGIDO)
+     * ANIMACIONES AL HACER SCROLL
      */
     function setupScrollAnimations() {
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.remove('opacity-0', 'translate-y-5');
+                    entry.target.classList.add('is-visible');
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .step-card, .benefit-card');
-        
-        elementsToAnimate.forEach((el, index) => {
-            el.classList.add('opacity-0', 'transform', 'translate-y-5');
-            
-            let delay = 0;
-            if (el.classList.contains('step-card') || el.classList.contains('benefit-card')) {
-                delay = (index % 3) * 150;
-            }
-            
-            el.style.transitionProperty = 'opacity, transform';
-            el.style.transitionDuration = '0.6s';
-            el.style.transitionTimingFunction = 'ease-out';
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        elements.forEach((el, index) => {
+            // Aplicar clases de estado inicial
+            const delay = el.dataset.delay || (el.classList.contains('benefit-card') ? index * 150 : 0);
             el.style.transitionDelay = `${delay}ms`;
+            el.classList.add('opacity-0', 'transform', 'translate-y-5');
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             
-            el.addEventListener('transitionend', () => {
-                el.style.transitionProperty = '';
-                el.style.transitionDuration = '';
-                el.style.transitionTimingFunction = '';
-                el.style.transitionDelay = '';
-            }, { once: true });
+            // Re-pintar para asegurar que la transición se aplique
+            void el.offsetWidth;
 
             observer.observe(el);
         });
+
+        // Clase de utilidad para la visibilidad
+        const style = document.createElement('style');
+        style.innerHTML = `.is-visible { opacity: 1 !important; transform: translateY(0) !important; }`;
+        document.head.appendChild(style);
     }
     
     // Inicializar todos los módulos
@@ -607,4 +543,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
