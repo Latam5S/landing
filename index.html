@@ -86,19 +86,19 @@
             </a>
         </section>
 
-<!-- Sección Caos vs Solución con Animación Directa -->
-<section class="text-center mb-24 px-4 min-h-[500px] animate-on-scroll">
-  <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
-    Del caos al control total ✨
-  </h2>
-  <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
-    Así se siente pasar de los mensajes desordenados a un panel claro y simple.
-  </p>
+        <!-- Sección Caos vs Solución con Animación Directa -->
+        <section class="text-center mb-24 px-4 min-h-[500px] animate-on-scroll">
+            <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
+                Del caos al control total ✨
+            </h2>
+            <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
+                Así se siente pasar de los mensajes desordenados a un panel claro y simple.
+            </p>
 
-  <!-- Contenedor del Caos -->
-  <div id="caosContainer" class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto transition-opacity duration-500">
-    <!-- Mensajes del caos -->
-               <div class="caos-msg absolute top-[5%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-6 transition-all duration-300 ease-out">
+            <!-- Contenedor del Caos -->
+            <div id="caosContainer" class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto transition-opacity duration-500">
+                <!-- Mensajes del caos -->
+                <div class="caos-msg absolute top-[5%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-6 transition-all duration-300 ease-out">
                     <p class="text-xs font-bold text-green-500">Cliente WhatsApp</p>
                     <p class="text-sm dark:text-gray-100">Es Av. La Paz 456, en San Miguel. Dpto 502. Tocar el intercomunicador de la familia Garcia.</p>
                 </div>
@@ -106,7 +106,7 @@
                     <p class="text-xs font-bold text-pink-500">Mensaje Instagram</p>
                     <p class="text-sm dark:text-gray-100">Lo envías por Shalom porfa, a la agencia de Arequipa. A nombre de Juan Pérez, DNI 12345678.</p>
                 </div>
-                 <div class="caos-msg absolute top-[50%] left-[10%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg rotate-2 transition-all duration-300 ease-out">
+                <div class="caos-msg absolute top-[50%] left-[10%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg rotate-2 transition-all duration-300 ease-out">
                     <p class="text-xs font-bold text-cyan-500">Otro Chat</p>
                     <p class="text-sm dark:text-gray-100">Para recojo en Olva de Trujillo, a nombre de Lucía Gomez. Su cel es 987654321.</p>
                 </div>
@@ -114,24 +114,65 @@
                     <p class="text-xs font-bold text-blue-500">Chat Facebook</p>
                     <p class="text-sm dark:text-gray-100">Ok, para la agencia los datos son: María Rojas, DNI 87654321. Me avisas a cuál la mandas.</p>
                 </div>
-  </div>
+            </div>
 
-  <!-- Contenedor de la Solución (Dashboard) -->
-  <div id="solutionContainer" class="hidden w-full max-w-3xl mx-auto transition-opacity duration-500">
-      <img src="https://raw.githubusercontent.com/complicidad/landing/main/mac.png"
-           alt="Dashboard Latam5S" 
-           class="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-500 ease-in-out">
-  </div>
+            <!-- Contenedor de la Solución (Dashboard) -->
+            <div id="solutionContainer" class="hidden w-full max-w-3xl mx-auto transition-opacity duration-500">
+                <img src="https://raw.githubusercontent.com/complicidad/landing/main/mac.png"
+                     alt="Dashboard Latam5S" 
+                     class="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-500 ease-in-out">
+            </div>
 
+            <button id="toggleCaos"
+                    class="mt-10 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-brand-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all">
+                Ver la solución 💡
+            </button>
+        </section>
 
-  <button id="toggleCaos"
-          class="mt-10 bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-brand-accent/40 hover:shadow-xl hover:-translate-y-1 transition-all">
-    Ver la solución 💡
-  </button>
-</section>
-
-
-
+        <!-- ====================================================================== -->
+        <!-- ================ INICIO DE LA NUEVA SECCIÓN AÑADIDA ================ -->
+        <!-- ====================================================================== -->
+        <section id="como-funciona" class="text-center mb-24 animate-on-scroll">
+            <h2 class="text-2xl md:text-3xl font-bold dark:text-white mb-4">Así de simple funciona</h2>
+            <p class="text-brand-muted dark:text-gray-400 max-w-xl mx-auto mb-12">
+                En solo tres pasos, pasas del desorden a la claridad total.
+            </p>
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tarjeta Paso 1 -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
+                    <img src="https://raw.githubusercontent.com/complicidad/landing/main/paso10.png" alt="Paso 1: Comparte tu link" class="rounded-xl mb-4 w-full h-auto object-cover aspect-video">
+                    <h4 class="font-bold text-lg text-brand-text dark:text-white mb-2">
+                        <span class="text-brand-accent dark:text-orange-400 font-bold">Paso 1:</span> Comparte tu link
+                    </h4>
+                    <p class="text-brand-muted dark:text-gray-400 text-sm">
+                        Envía a tu cliente un enlace único para que complete sus datos de envío de forma rápida y sin errores.
+                    </p>
+                </div>
+                <!-- Tarjeta Paso 2 -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
+                     <img src="https://raw.githubusercontent.com/complicidad/landing/main/paso20.png" alt="Paso 2: Tu cliente completa" class="rounded-xl mb-4 w-full h-auto object-cover aspect-video">
+                    <h4 class="font-bold text-lg text-brand-text dark:text-white mb-2">
+                        <span class="text-brand-accent dark:text-orange-400 font-bold">Paso 2:</span> Tu cliente completa
+                    </h4>
+                    <p class="text-brand-muted dark:text-gray-400 text-sm">
+                        Tu cliente abre el link, llena un formulario simple e inteligente y confirma su dirección fácilmente.
+                    </p>
+                </div>
+                <!-- Tarjeta Paso 3 -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300 text-left">
+                     <img src="https://raw.githubusercontent.com/complicidad/landing/main/paso30.png" alt="Paso 3: Recibe todo ordenado" class="rounded-xl mb-4 w-full h-auto object-cover aspect-video">
+                    <h4 class="font-bold text-lg text-brand-text dark:text-white mb-2">
+                        <span class="text-brand-accent dark:text-orange-400 font-bold">Paso 3:</span> Recibe todo ordenado
+                    </h4>
+                    <p class="text-brand-muted dark:text-gray-400 text-sm">
+                        Los datos llegan a tu panel, listos para exportar y entregar a tu courier. ¡Cero caos!
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- ==================================================================== -->
+        <!-- ================ FIN DE LA NUEVA SECCIÓN AÑADIDA ================== -->
+        <!-- ==================================================================== -->
         
         <!-- Sección Comparativa -->
         <section id="comparativo" class="text-center mb-20 animate-on-scroll">
@@ -223,8 +264,8 @@
                 <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-brand-accent to-brand-accent-alt text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-accent/40 hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2">
                     <span id="submitBtnText">Solicitar mi acceso GRATIS</span>
                     <svg id="submitBtnSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                 </button>
             </form>
