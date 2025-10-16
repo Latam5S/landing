@@ -214,7 +214,7 @@
                 </div>
                 <!-- Card 5 Centered -->
                 <div class="mt-8 flex justify-center">
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex items-start gap-6 w-full max-w-lg">
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg flex items-start gap-6 w-full max-w-lg text-left">
                          <div>
                              <i data-feather="sliders" class="w-10 h-10 text-brand-accent dark:text-orange-400"></i>
                          </div>
@@ -350,16 +350,25 @@
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center animate-on-scroll">
         <div id="beneficios" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="transition-all duration-300 text-center">
-                <h4 class="font-bold text-xl text-white mb-2">😌 Sensación de calma</h4>
+            <div class="transition-all duration-300 text-center flex flex-col items-center">
+                <div class="mb-4">
+                    <i data-feather="smile" class="w-12 h-12 text-white/90"></i>
+                </div>
+                <h4 class="font-bold text-xl text-white mb-2">Sensación de calma</h4>
                 <p class="text-white/80 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
             </div>
-            <div class="transition-all duration-300 text-center" style="--delay: 150ms;">
-                <h4 class="font-bold text-xl text-white mb-2">⏱️ Más tiempo para vender</h4>
+            <div class="transition-all duration-300 text-center flex flex-col items-center" style="--delay: 150ms;">
+                <div class="mb-4">
+                    <i data-feather="clock" class="w-12 h-12 text-white/90"></i>
+                </div>
+                <h4 class="font-bold text-xl text-white mb-2">Más tiempo para vender</h4>
                 <p class="text-white/80 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
             </div>
-            <div class="transition-all duration-300 text-center" style="--delay: 300ms;">
-                <h4 class="font-bold text-xl text-white mb-2">📊 Decisiones claras</h4>
+            <div class="transition-all duration-300 text-center flex flex-col items-center" style="--delay: 300ms;">
+                <div class="mb-4">
+                    <i data-feather="bar-chart-2" class="w-12 h-12 text-white/90"></i>
+                </div>
+                <h4 class="font-bold text-xl text-white mb-2">Decisiones claras</h4>
                 <p class="text-white/80 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
             </div>
         </div>
@@ -382,39 +391,39 @@
             <p class="text-brand-muted dark:text-gray-400 text-center max-w-xl mx-auto mb-12">
                 Resolvemos tus dudas para que empieces con total confianza.
             </p>
-            <div class="space-y-4">
+            <div class="border-t border-gray-200 dark:border-gray-700">
                 <!-- Pregunta 1 -->
-                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                <details class="faq-item py-6 border-b border-gray-200 dark:border-gray-700 group">
                     <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
                         ¿Qué necesito para empezar a usar Latam5S?
                         <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
                     </summary>
                     <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
-                        Solo necesitas una cuenta y un link a tu red social o tienda online para validar tu negocio. No necesitas conocimientos técnicos. ¡El proceso es súper rápido y te guiamos en cada paso!
+                        Solo una cuenta y el perfil de tu negocio para la validación. Te guiaremos en la configuración inicial para que dejes todo listo en minutos. No se requieren conocimientos técnicos.
                     </p>
                 </details>
                 <!-- Pregunta 2 -->
-                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                <details class="faq-item py-6 border-b border-gray-200 dark:border-gray-700 group">
                     <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
-                        ¿Mis clientes necesitan instalar alguna aplicación?
+                        ¿Es complicado configurar mis fechas y agencias?
                         <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
                     </summary>
                     <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
-                        No, para nada. Tus clientes solo tienen que hacer clic en el enlace que les compartes y completar el formulario desde cualquier navegador, ya sea en su celular o computadora. Es una experiencia web simple y directa.
+                        ¡Para nada! Desde tu panel de configuración, podrás habilitar tus días de despacho, establecer horas de cierre automáticas y seleccionar tus agencias de courier preferidas con solo unos clics. El sistema se encarga del resto.
                     </p>
                 </details>
                 <!-- Pregunta 3 -->
-                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                <details class="faq-item py-6 border-b border-gray-200 dark:border-gray-700 group">
                     <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
-                        ¿Funciona con cualquier empresa de courier o agencia?
+                        ¿Mis clientes verán solo mis opciones de envío?
                         <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
                     </summary>
                     <p class="mt-4 text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
-                        ¡Sí! Latam5S es universal. Puedes exportar los datos en un formato compatible con cualquier courier (Olva, Shalom, etc.) o para tu motorizado particular. Además, puedes crear plantillas personalizadas para los formatos de carga masiva que necesites.
+                        Exacto. El formulario que compartes es inteligente y solo mostrará las fechas y agencias que tú hayas configurado previamente. Esto elimina errores y preguntas repetitivas de tus clientes.
                     </p>
                 </details>
                 <!-- Pregunta 4 -->
-                <details class="faq-item bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm transition-all duration-300 group">
+                <details class="faq-item py-6 border-b border-gray-200 dark:border-gray-700 group">
                     <summary class="flex items-center justify-between font-semibold cursor-pointer text-brand-text dark:text-white">
                         ¿Qué pasa si supero el límite de envíos de mi plan?
                         <i data-feather="plus" class="w-5 h-5 text-brand-accent icon"></i>
