@@ -51,7 +51,7 @@
         .dark .wave-path {
             fill: #111827; /* Color de 'dark:bg-gray-900' */
         }
-        /* NUEVOS ESTILOS PARA ANIMACIÓN SUAVE DEL FAQ CON CSS GRID */
+        /* Animación suave del FAQ con CSS Grid */
         .faq-answer-container {
             display: grid;
             grid-template-rows: 0fr;
@@ -62,6 +62,41 @@
         }
         .faq-answer-content {
             overflow: hidden;
+        }
+        
+        /* === ESTILOS PARA HEADER CON SCROLL === */
+        #mainHeader.scrolled {
+            background-color: rgba(255, 250, 246, 0.85); /* brand-bg con opacidad */
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .dark #mainHeader.scrolled {
+            background-color: rgba(17, 24, 39, 0.85); /* gray-900 con opacidad */
+        }
+        #mainHeader.scrolled .logo-text {
+            color: #2b2b2b; /* brand-text */
+        }
+        .dark #mainHeader.scrolled .logo-text {
+            color: #fffaf6; /* brand-bg */
+        }
+        #mainHeader.scrolled .logo-subtitle {
+            color: #6b6b6b; /* brand-muted */
+        }
+        .dark #mainHeader.scrolled .logo-subtitle {
+            color: #9ca3af; /* gray-400 */
+        }
+        #mainHeader.scrolled .sun-icon {
+            color: #2b2b2b; /* brand-text */
+        }
+        #mainHeader:not(.scrolled) #darkModeToggle:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        #mainHeader.scrolled #darkModeToggle:hover {
+            background-color: #e5e7eb; /* gray-200 */
+        }
+        .dark #mainHeader.scrolled #darkModeToggle:hover {
+            background-color: #374151; /* gray-700 */
         }
     </style>
 
@@ -89,20 +124,20 @@
 </head>
 <body class="bg-brand-bg dark:bg-gray-900 text-brand-text dark:text-gray-200 transition-colors duration-300 leading-relaxed">
 
-<header id="mainHeader" class="bg-gradient-to-br from-brand-accent to-orange-400 sticky top-0 z-40 transition-colors duration-300">
+<header id="mainHeader" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
         <a href="#" class="flex items-center">
             <div>
-                <div id="logoText" class="font-bold text-2xl text-white transition-colors duration-300">
-                    <span>Latam</span><span id="logoText5s" class="transition-colors duration-300">5S</span>
+                <div class="font-bold text-2xl text-[#fffaf6] logo-text transition-colors duration-300">
+                    Latam5S
                 </div>
-                <div id="logoSubtitle" class="h-5 text-sm text-white/80 transition-all duration-300">
+                <div id="logoSubtitle" class="h-5 text-sm text-white/80 logo-subtitle transition-all duration-300">
                     <!-- JS will manage this -->
                 </div>
             </div>
         </a>
-        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-white/20 transition-colors">
-            <i data-feather="sun" class="text-white dark:hidden"></i>
+        <button id="darkModeToggle" class="p-2 rounded-full transition-colors">
+            <i data-feather="sun" class="sun-icon text-white dark:hidden"></i>
             <i data-feather="moon" class="text-white hidden dark:inline"></i>
         </button>
     </div>
@@ -110,7 +145,7 @@
 
 <!-- Sección Hero (Full Width) -->
 <section id="hero" class="relative bg-gradient-to-br from-brand-accent to-orange-400 text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pb-32 text-center">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-44 pb-32 text-center">
         <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">Organización de envíos simplificada para emprendedor@s.</h1>
         <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto">Centraliza direcciones, fechas y pedidos desde un solo panel — sin caos ni estrés.</p>
         <a href="#form" class="bg-white text-brand-accent font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-100 transition-transform hover:scale-105 inline-block">
@@ -532,55 +567,22 @@ document.addEventListener('DOMContentLoaded', () => {
     feather.replace();
 
     /**
-     * GESTIÓN DEL HEADER STICKY
+     * GESTIÓN DEL HEADER STICKY CON LÓGICA REFACTORIZADA
      */
     function setupStickyHeader() {
         const header = document.getElementById('mainHeader');
-        const logoText = document.getElementById('logoText');
-        const logoText5s = document.getElementById('logoText5s');
-        const logoSubtitle = document.getElementById('logoSubtitle');
-        const darkModeButton = document.getElementById('darkModeToggle');
-        const sunIcon = darkModeButton.querySelector('[data-feather="sun"]');
-
-        if (!header || !logoText || !logoText5s || !logoSubtitle || !darkModeButton || !sunIcon) return;
-        
-        const scrollClasses = ['bg-brand-card/90', 'dark:bg-gray-900/80', 'backdrop-blur-sm', 'border-b', 'border-gray-200/50', 'dark:border-gray-800/50'];
-        const topClasses = ['bg-gradient-to-br', 'from-brand-accent', 'to-orange-400'];
+        if (!header) return;
 
         const handleScroll = () => {
             if (window.scrollY > 20) {
-                // Apply scrolled styles
-                header.classList.remove(...topClasses);
-                header.classList.add(...scrollClasses);
-                logoText.classList.remove('text-white');
-                logoText.classList.add('text-brand-text', 'dark:text-white');
-                logoText5s.classList.remove('opacity-75');
-                logoText5s.classList.add('text-brand-accent', 'dark:text-orange-400');
-                logoSubtitle.classList.remove('text-white/80');
-                logoSubtitle.classList.add('text-brand-muted', 'dark:text-gray-400');
-                sunIcon.classList.remove('text-white');
-                sunIcon.classList.add('text-gray-600');
-                darkModeButton.classList.remove('hover:bg-white/20');
-                darkModeButton.classList.add('hover:bg-gray-200', 'dark:hover:bg-gray-700');
+                header.classList.add('scrolled');
             } else {
-                // Apply top styles
-                header.classList.add(...topClasses);
-                header.classList.remove(...scrollClasses);
-                logoText.classList.add('text-white');
-                logoText.classList.remove('text-brand-text', 'dark:text-white');
-                logoText5s.classList.remove('text-brand-accent', 'dark:text-orange-400');
-                logoText5s.classList.add('opacity-75');
-                logoSubtitle.classList.add('text-white/80');
-                logoSubtitle.classList.remove('text-brand-muted', 'dark:text-gray-400');
-                sunIcon.classList.add('text-white');
-                sunIcon.classList.remove('text-gray-600');
-                darkModeButton.classList.add('hover:bg-white/20');
-                darkModeButton.classList.remove('hover:bg-gray-200', 'dark:hover:bg-gray-700');
+                header.classList.remove('scrolled');
             }
         };
 
         window.addEventListener('scroll', handleScroll);
-        handleScroll(); 
+        handleScroll(); // Set initial state
     }
 
     /**
