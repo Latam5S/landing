@@ -98,6 +98,15 @@
         .dark #mainHeader.scrolled #darkModeToggle:hover {
             background-color: #374151; /* gray-700 */
         }
+        /* Typing cursor effect for subtitle */
+        #logoSubtitle::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: inherit }
+        }
     </style>
 
     <script>
@@ -605,27 +614,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ANIMACIÓN DE SUBTÍTULO DEL LOGO
+     * ANIMACIÓN DE SUBTÍTULO DEL LOGO CON EFECTO TYPEWRITER
      */
     function setupSubtitleAnimation() {
         const subtitleEl = document.getElementById('logoSubtitle');
         if (!subtitleEl) return;
 
         const words = ['Organiza', 'Simplifica', 'Crece'];
-        let currentIndex = 0;
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
-        subtitleEl.textContent = words[currentIndex];
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            let displayText = '';
 
-        setInterval(() => {
-            subtitleEl.classList.add('opacity-0');
+            if (isDeleting) {
+                displayText = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                displayText = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
 
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % words.length;
-                subtitleEl.textContent = words[currentIndex];
-                subtitleEl.classList.remove('opacity-0');
-            }, 300);
+            subtitleEl.textContent = displayText;
 
-        }, 2500);
+            let typeSpeed = isDeleting ? 100 : 150;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2000; // Pause at the end of the word
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                typeSpeed = 500; // Pause before typing the next word
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+
+        typeEffect();
     }
 
     /**
