@@ -86,20 +86,18 @@
             </a>
         </section>
 
-<!-- Sección Caos vs Solución con Animación Mejorada -->
+<!-- Sección Caos vs Solución con Lógica de Animación Restaurada -->
 <section class="text-center mb-24 px-4 min-h-[520px] animate-on-scroll">
-    <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
-        Del caos al control total ✨
-    </h2>
-    <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
-        Así se siente pasar de los mensajes desordenados a un panel claro y simple.
-    </p>
-
-    <!-- Contenedor Escenario para la animación -->
-    <div class="relative w-full mx-auto min-h-[450px]">
+    <div class="relative">
         <!-- Escena del Caos -->
-        <div id="caosContainer" class="absolute inset-0 flex justify-center items-center transition-all duration-500 ease-in-out">
-            <div class="relative w-full max-w-sm md:max-w-md h-[400px]">
+        <div id="caosContainer" class="transition-all duration-500 ease-in-out">
+            <h2 class="text-2xl md:text-3xl font-bold text-brand-accent dark:text-orange-400 mb-4">
+                Del caos al control total ✨
+            </h2>
+            <p class="text-brand-muted dark:text-gray-400 max-w-md mx-auto mb-10">
+                Así se siente pasar de los mensajes desordenados a un panel claro y simple.
+            </p>
+            <div class="relative w-full max-w-sm md:max-w-md h-[400px] mx-auto">
                 <!-- Mensajes del caos -->
                 <div class="caos-msg absolute top-[5%] left-[5%] w-4/5 p-3 rounded-xl bg-white/40 dark:bg-gray-700/50 backdrop-blur-md shadow-lg -rotate-6 transition-all duration-300 ease-out">
                     <p class="text-xs font-bold text-green-500">Cliente WhatsApp</p>
@@ -120,12 +118,13 @@
             </div>
         </div>
 
-        <!-- Escena de la Solución (Dashboard) -->
-        <div id="solutionContainer" class="absolute inset-0 flex justify-center items-center transition-all duration-[1000ms] ease-in-out">
-            <div class="w-full max-w-3xl">
+        <!-- Escena de la Solución (Título + Imagen) -->
+        <div id="solutionContainer" class="absolute inset-0 transition-all duration-500 ease-in-out">
+             <div class="w-full max-w-4xl mx-auto text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-brand-text dark:text-white text-center mb-6">La calma se ve así</h2>
                 <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard1.png"
-                     alt="Dashboard Latam5S" 
-                     class="w-full h-full object-cover rounded-3xl shadow-2xl">
+                     alt="Dashboard de Latam5S"
+                     class="w-full rounded-2xl shadow-2xl shadow-black/20">
             </div>
         </div>
     </div>
@@ -136,12 +135,12 @@
     </button>
 </section>
 
-<!-- Sección Cómo Funciona (NUEVA) -->
+<!-- Sección Cómo Funciona -->
 <section id="how-it-works" class="text-center mb-24 animate-on-scroll">
-    <h2 class="text-3xl md:text-4xl font-bold text-brand-text dark:text-white text-center mb-12">Así de simple funciona</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-brand-text dark:text-white text-center mb-12">Así de simple es el cambio</h2>
     <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Card 1: El cliente llena el formulario -->
-        <div class="bg-white dark:bg-gray-800 border border-orange-100 dark:border-gray-700 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5">
+        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
             <div class="w-40 h-32 mb-6 flex items-center justify-center">
                 <!-- SVG Ilustración 1 -->
                 <svg viewBox="0 0 150 100" class="w-full h-full">
@@ -168,7 +167,7 @@
         </div>
 
         <!-- Card 2: Latam5S organiza todo -->
-        <div class="bg-white dark:bg-gray-800 border border-orange-100 dark:border-gray-700 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5">
+        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
             <div class="w-40 h-32 mb-6 flex items-center justify-center">
                 <!-- SVG Ilustración 2 -->
                 <svg viewBox="0 0 100 80" class="w-full h-full">
@@ -187,7 +186,7 @@
         </div>
 
         <!-- Card 3: Ves envíos listos -->
-        <div class="bg-white dark:bg-gray-800 border border-orange-100 dark:border-gray-700 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5">
+        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
             <div class="w-40 h-32 mb-6 flex items-center justify-center">
                 <!-- SVG Ilustración 3 -->
                 <svg viewBox="0 0 150 100" class="w-full h-full">
@@ -211,7 +210,6 @@
         </div>
     </div>
 </section>
-
         
         <!-- Sección Comparativa -->
         <section id="comparativo" class="text-center mb-20 animate-on-scroll">
@@ -263,11 +261,11 @@
                 <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">😌 Sensación de calma</h4>
                 <p class="text-brand-muted dark:text-gray-400 text-sm">Menos mensajes perdidos y direcciones confusas — más tranquilidad para ti.</p>
             </div>
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 150ms;">
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
                 <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">⏱️ Más tiempo para vender</h4>
                 <p class="text-brand-muted dark:text-gray-400 text-sm">Menos horas organizando envíos, más horas haciendo crecer tu negocio.</p>
             </div>
-            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300" style="--delay: 300ms;">
+            <div class="benefit-card bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
                 <h4 class="font-bold text-lg text-brand-accent dark:text-orange-400 mb-2">📊 Decisiones claras</h4>
                 <p class="text-brand-muted dark:text-gray-400 text-sm">Controla lo que se envía y cuándo — evita reenvíos y problemas.</p>
             </div>
@@ -355,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ANIMACIÓN DE CAOS DE MENSAJES
+     * ANIMACIÓN DE CAOS VS SOLUCIÓN (CON EFECTOS RESTAURADOS)
      */
     function setupChaosAnimation() {
       const caosContainer = document.getElementById('caosContainer');
@@ -363,18 +361,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const caosMsgs = document.querySelectorAll('.caos-msg');
       const toggle = document.getElementById('toggleCaos');
       
-      if (!caosContainer || !solutionContainer || caosMsgs.length === 0) return;
+      if (!caosContainer || !solutionContainer || !toggle) return;
 
       let showingChaos = true;
 
       // --- Funciones de animación ---
       function animateCardsIn() {
-        let delay = 300;
+        let delay = 200;
         caosMsgs.forEach(msg => {
           setTimeout(() => {
             msg.classList.remove('opacity-0', 'scale-95');
           }, delay);
-          delay += 200;
+          delay += 150;
         });
       }
 
@@ -383,40 +381,28 @@ document.addEventListener('DOMContentLoaded', () => {
           msg.classList.add('opacity-0', 'scale-95');
         });
       }
-
-      // --- Funciones de control de escenas ---
-      function showChaos() {
-        // Oculta la solución
-        solutionContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-        // Muestra el caos
-        caosContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-        // Anima las tarjetas del caos para que entren
-        animateCardsIn();
-      }
-
-      function showSolution() {
-        // Anima las tarjetas del caos para que salgan
-        animateCardsOut();
-        // Oculta el caos (la transición de opacidad se encarga del resto)
-        caosContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-        // Muestra la solución
-        solutionContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-      }
-
-      // --- Estado y animación inicial ---
+      
+      // --- Estado inicial ---
       solutionContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
       caosMsgs.forEach(msg => msg.classList.add('opacity-0', 'scale-95'));
-      setTimeout(animateCardsIn, 500);
-      
+      setTimeout(animateCardsIn, 500); // Animar las tarjetas al cargar la página
+
       // --- Lógica del botón ---
       toggle.addEventListener('click', () => {
         showingChaos = !showingChaos;
+        
         if (showingChaos) {
-          showChaos();
-          toggle.textContent = 'Ver la solución 💡';
+            // Mostrar Caos
+            solutionContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            caosContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+            animateCardsIn();
+            toggle.textContent = 'Ver la solución 💡';
         } else {
-          showSolution();
-          toggle.textContent = 'Volver al caos 😵‍💫';
+            // Mostrar Solución
+            animateCardsOut();
+            caosContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            solutionContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+            toggle.textContent = 'Volver al caos 😵‍💫';
         }
       });
     }
@@ -556,36 +542,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ANIMACIONES AL HACER SCROLL
+     * ANIMACIONES AL HACER SCROLL (CORREGIDO)
      */
     function setupScrollAnimations() {
-        const observer = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
+                    entry.target.classList.remove('opacity-0', 'translate-y-5');
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        const elements = document.querySelectorAll('.animate-on-scroll');
-        elements.forEach((el, index) => {
-            // Aplicar clases de estado inicial
-            const delay = el.dataset.delay || (el.classList.contains('benefit-card') ? index * 150 : 0);
-            el.style.transitionDelay = `${delay}ms`;
+        const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .step-card, .benefit-card');
+        
+        elementsToAnimate.forEach((el, index) => {
             el.classList.add('opacity-0', 'transform', 'translate-y-5');
-            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             
-            // Re-pintar para asegurar que la transición se aplique
-            void el.offsetWidth;
+            let delay = 0;
+            if (el.classList.contains('step-card') || el.classList.contains('benefit-card')) {
+                delay = (index % 3) * 150;
+            }
+            
+            el.style.transitionProperty = 'opacity, transform';
+            el.style.transitionDuration = '0.6s';
+            el.style.transitionTimingFunction = 'ease-out';
+            el.style.transitionDelay = `${delay}ms`;
+            
+            el.addEventListener('transitionend', () => {
+                // Una vez que termina la animación de entrada, se eliminan los estilos en línea
+                // para que las transiciones de las clases de Tailwind (hover) puedan tomar el control.
+                el.style.transition = '';
+                el.style.transitionProperty = '';
+                el.style.transitionDuration = '';
+                el.style.transitionTimingFunction = '';
+                el.style.transitionDelay = '';
+            }, { once: true });
 
             observer.observe(el);
         });
-
-        // Clase de utilidad para la visibilidad
-        const style = document.createElement('style');
-        style.innerHTML = `.is-visible { opacity: 1 !important; transform: translateY(0) !important; }`;
-        document.head.appendChild(style);
     }
     
     // Inicializar todos los módulos
