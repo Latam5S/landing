@@ -49,6 +49,21 @@
                     },
                     fontFamily: {
                         'quicksand': ['Quicksand', 'sans-serif'],
+                    },
+                    animation: {
+                        'soft-pulse': 'soft-pulse 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'soft-pulse': {
+                            '0%, 100%': {
+                                transform: 'scale(1)',
+                                boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.20)'
+                            },
+                            '50%': {
+                                transform: 'scale(1.01)',
+                                boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.30)'
+                            }
+                        }
                     }
                 }
             }
@@ -124,7 +139,7 @@
                 <h2 class="text-2xl md:text-3xl font-bold text-brand-text dark:text-white text-center mb-6">La calma se ve así</h2>
                 <img src="https://raw.githubusercontent.com/complicidad/landing/main/dashboard1.png"
                      alt="Dashboard de Latam5S"
-                     class="w-full rounded-2xl shadow-2xl shadow-black/20">
+                     class="w-full rounded-2xl shadow-2xl shadow-black/20 animate-soft-pulse">
             </div>
         </div>
     </div>
@@ -140,7 +155,7 @@
     <h2 class="text-3xl md:text-4xl font-bold text-brand-text dark:text-white text-center mb-12">Así de simple es el cambio</h2>
     <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Card 1: El cliente llena el formulario -->
-        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
+        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
             <div class="w-40 h-32 mb-6 flex items-center justify-center">
                 <!-- SVG Ilustración 1 -->
                 <svg viewBox="0 0 150 100" class="w-full h-full">
@@ -167,7 +182,7 @@
         </div>
 
         <!-- Card 2: Latam5S organiza todo -->
-        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
+        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
             <div class="w-40 h-32 mb-6 flex items-center justify-center">
                 <!-- SVG Ilustración 2 -->
                 <svg viewBox="0 0 100 80" class="w-full h-full">
@@ -186,7 +201,7 @@
         </div>
 
         <!-- Card 3: Ves envíos listos -->
-        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
+        <div class="step-card bg-white dark:bg-gray-800 rounded-2xl p-8 text-center flex flex-col items-center shadow-lg hover:shadow-xl hover:shadow-brand-accent/20 dark:hover:shadow-orange-400/20 hover:-translate-y-1.5 transition-all duration-300">
             <div class="w-40 h-32 mb-6 flex items-center justify-center">
                 <!-- SVG Ilustración 3 -->
                 <svg viewBox="0 0 150 100" class="w-full h-full">
@@ -570,9 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.transitionDelay = `${delay}ms`;
             
             el.addEventListener('transitionend', () => {
-                // Una vez que termina la animación de entrada, se eliminan los estilos en línea
-                // para que las transiciones de las clases de Tailwind (hover) puedan tomar el control.
-                el.style.transition = '';
                 el.style.transitionProperty = '';
                 el.style.transitionDuration = '';
                 el.style.transitionTimingFunction = '';
