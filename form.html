@@ -316,7 +316,7 @@
             listaAgencias.appendChild(div);
           });
         }
-        fetch("https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json")
+        fetch("https://raw.githubusercontent.com/complicidad/landing/main/lstShalom.json")
           .then(res => res.json())
           .then(data => {
             agencias = data.map(item => `${item.Agencia}\n${item.Direccion}`);
