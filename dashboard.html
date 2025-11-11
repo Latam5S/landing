@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <meta charset="UTF-8" />
     <title>Panel de Control — Latam5S</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -651,6 +650,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Variables globales
     let todosLosEnvios = []; // Variable global para almacenar todos los envíos.
     const STORAGE_KEY = 'demoEnvios'; // Clave para LocalStorage
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0A5AU5l51v57exJ9Y1fvLooora6fv3LNk6d7f_JUcTnBOSWWMQAx_sjjQCCcwXCEH/exec";
+
     const openLaunchModalBtn = document.getElementById('openLaunchModalBtn');
 
     // --- Nuevas Funciones Auxiliares para LocalStorage ---
@@ -911,22 +912,51 @@ _Atte. CompliEnvíos_ 🥰
         });
 
         // Envío del formulario
-        launchForm.addEventListener('submit', (e) => {
+        launchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Aquí podrías enviar el email a tu servicio (en el futuro)
-            // --- INICIO: Captura de datos del formulario ---
+            const submitBtn = document.getElementById('submitLaunchFormBtn');
             const email = document.getElementById('launchEmail').value;
             const whatsapp = document.getElementById('launchWhatsapp').value;
 
-            // (En el futuro, aquí enviarías 'email' y 'whatsapp' a tu servicio)
-            console.log("Email para lanzamiento:", email, "WhatsApp:", whatsapp);
-            // --- FIN: Captura de datos del formulario ---
+            if (!email) {
+                showToast('Por favor, ingresa un email válido.');
+                return;
+            }
 
-            // Cierra el modal
-            closeLaunchModal();
+            // Estado de "Cargando..."
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="animate-spin h-5 w-5 mr-3 border-2 border-white border-t-transparent rounded-full"></span> Enviando...';
 
-            // Muestra un agradecimiento
-            showToast('¡Gracias! Te avisaremos.');
+            const payload = { email, whatsapp };
+
+            try {
+                // Envía los datos al Google Script
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Importante para evitar errores de CORS con Google Script
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Nota: Con 'no-cors', no podemos leer la respuesta,
+                // así que asumimos que fue exitoso si no hay un error de red.
+                console.log("Datos enviados a Google Sheets (modo no-cors)");
+
+                // Cierra el modal y muestra agradecimiento
+                closeLaunchModal();
+                showToast('¡Gracias! Te avisaremos.');
+
+            } catch (error) {
+                console.error('Error enviando a Google Sheet:', error);
+                showToast('Hubo un error al enviar tus datos. Inténtalo de nuevo.');
+
+            } finally {
+                // Restaura el botón
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '¡Anotarme al lanzamiento!';
+            }
         });
     }
     // ================== FIN: Controles del Modal de Lanzamiento ==================
