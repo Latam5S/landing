@@ -6,19 +6,19 @@
     "Distrito": "Barranco"
   },
   {
-    "Distrito": "Bellavista (Solo Av Principal)"
+    "Distrito": "Bellavista"
   },
   {
     "Distrito": "Breña"
   },
   {
-    "Distrito": "Callao (Solo Av Principal)"
+    "Distrito": "Callao "
   },
   {
-    "Distrito": "Carabayllo (Hasta Km 24)"
+    "Distrito": "Carabayllo"
   },
   {
-    "Distrito": "Carmen De La Legua Reynoso (Solo Av Principal)"
+    "Distrito": "Carmen De La Legua Reynoso"
   },
   {
     "Distrito": "Cercado De Lima"
@@ -27,10 +27,10 @@
     "Distrito": "Chorrillos"
   },
   {
-    "Distrito": "Comas (No Collique)"
+    "Distrito": "Comas"
   },
   {
-    "Distrito": "El Agustino (Solo En Plaza Vea El Agustino)"
+    "Distrito": "El Agustino"
   },
   {
     "Distrito": "Huaycan"
@@ -45,7 +45,7 @@
     "Distrito": "La Molina"
   },
   {
-    "Distrito": "La Perla (Solo Av Principal)"
+    "Distrito": "La Perla"
   },
   {
     "Distrito": "La Victoria"
@@ -75,7 +75,7 @@
     "Distrito": "Puente Piedra"
   },
   {
-    "Distrito": "Rímac (Zona Segura)"
+    "Distrito": "Rímac"
   },
   {
     "Distrito": "Salamanca Ate"
@@ -87,10 +87,10 @@
     "Distrito": "San Isidro"
   },
   {
-    "Distrito": "San Juan De Lurigancho (No Cerro)"
+    "Distrito": "San Juan De Lurigancho"
   },
   {
-    "Distrito": "San Juan De Miraflores (No Cerro)"
+    "Distrito": "San Juan De Miraflores"
   },
   {
     "Distrito": "San Luis"
@@ -114,9 +114,9 @@
     "Distrito": "Ventanilla"
   },
   {
-    "Distrito": "Villa El Salvador (Zona Segura)"
+    "Distrito": "Villa El Salvador"
   },
   {
-    "Distrito": "Villa María Del Triunfo (No Cerro)"
+    "Distrito": "Villa María Del Triunfo"
   }
 ]
