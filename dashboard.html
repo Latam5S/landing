@@ -629,6 +629,26 @@
                     ¡Anotarme al lanzamiento!
                 </button>
             </form>
+
+            <!-- ================== INICIO: Estado de Éxito del Modal (NUEVO) ================== -->
+            <div id="launchSuccessMessage" class="hidden">
+                <i data-feather="check-circle" class="w-16 h-16 text-green-500 mx-auto mb-4"></i>
+
+                <h3 class="text-2xl leading-6 font-bold text-gray-900">¡Listo! Ya estás en la lista.</h3>
+                <p class="mt-3 text-base text-gray-600">
+                    Eres oficialmente parte del grupo de fundadores. ¡Gracias por confiar en Latam5S!
+                </p>
+                <p class="mt-3 text-sm text-gray-500">
+                    Te avisaremos por correo (y WhatsApp, si lo dejaste) el día que abramos las puertas.
+                    Estamos emocionados de ayudarte a recuperar tu calma.
+                </p>
+
+                <button type="button" id="closeLaunchSuccessBtn" class="mt-6 w-full inline-flex justify-center rounded-xl border border-transparent bg-gray-600 px-4 py-3 text-sm font-bold text-white shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200">
+                    Entendido
+                </button>
+            </div>
+            <!-- ================== FIN: Estado de Éxito del Modal ================== -->
+
         </div>
     </div>
     <!-- ================== FIN: Modal de Lanzamiento ================== -->
@@ -887,6 +907,14 @@ _Atte. CompliEnvíos_ 🥰
     const closeLaunchModalBtn = document.getElementById('closeLaunchModalBtn');
     const launchForm = document.getElementById('launchForm');
 
+
+    // --- INICIO: Conectar botón de Éxito ---
+    const closeLaunchSuccessBtn = document.getElementById('closeLaunchSuccessBtn');
+    if (closeLaunchSuccessBtn) {
+        closeLaunchSuccessBtn.addEventListener('click', closeLaunchModal);
+    }
+    // --- FIN: Conectar botón de Éxito ---
+
     // --- Conectar el botón flotante ---
     if (openLaunchModalBtn) {
         openLaunchModalBtn.addEventListener('click', showLaunchModal); 
@@ -894,11 +922,28 @@ _Atte. CompliEnvíos_ 🥰
     // --- Fin de la conexión ---
 
     function closeLaunchModal() {
-        // Guarda para no volver a mostrar
-        // localStorage.setItem('hasSeenLaunchForm', 'true');
         // Animación de salida
         launchModalCard.classList.add('scale-95');
-        setTimeout(() => launchModal.classList.add('hidden'), 300);
+
+        setTimeout(() => {
+            // 1. Oculta el modal principal
+            launchModal.classList.add('hidden');
+
+            // 2. REARME: Oculta el éxito
+            const successMessage = document.getElementById('launchSuccessMessage');
+            if (successMessage) {
+                successMessage.classList.add('hidden');
+            }
+
+            // 3. REARME: Vuelve a mostrar el formulario
+            launchForm.classList.remove('hidden');
+
+            // 4. REARME: Restaura el botón de envío
+            const submitBtn = document.getElementById('submitLaunchFormBtn');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '¡Anotarme al lanzamiento!';
+
+        }, 300); // Espera a que la animación de salida termine
     }
 
     if (launchModal && closeLaunchModalBtn && launchForm) {
@@ -945,9 +990,21 @@ _Atte. CompliEnvíos_ 🥰
                 // así que asumimos que fue exitoso si no hay un error de red.
                 console.log("Datos enviados a Google Sheets (modo no-cors)");
 
-                // Cierra el modal y muestra agradecimiento
-                closeLaunchModal();
-                showToast('¡Gracias! Te avisaremos.');
+                // --- INICIO DEL CAMBIO: Intercambiar contenido en lugar de cerrar ---
+
+                // 1. Ocultar el formulario
+                launchForm.classList.add('hidden');
+
+                // 2. Mostrar el mensaje de éxito
+                const successMessage = document.getElementById('launchSuccessMessage');
+                if (successMessage) {
+                    successMessage.classList.remove('hidden');
+                }
+
+                // 3. Dibujar el nuevo ícono de "check"
+                feather.replace();
+
+                // --- FIN DEL CAMBIO ---
 
             } catch (error) {
                 console.error('Error enviando a Google Sheet:', error);
