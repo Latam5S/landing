@@ -783,24 +783,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             destinoBlock = `* _Distrito: ${distritoMostrado}_
 * _Dirección: ${envio.direccion || 'N/A'}_
-* _Referencia: ${envio.referencia || '(Sin referencia)'}_
-*Pago del DELIVERY* 💚
-* _Día de pago: ${diaPago} (máx. 6pm)_
-* _tarifa plana: ${tarifaMostrada}_
-* _Yape: 981391159 - 975100450_
-* _Titular: Rosalinda Barzola_`;
+* _Referencia: ${envio.referencia || '(Sin referencia)'}_`;
         } else {
             destinoBlock = `* _DNI: ${envio.DNI || 'N/A'}_
 * _Agencia (Destino): ${envio.agencia || 'N/A'}_`;
         }
 
-        const mensaje = `*¡Hola bonita!* 😊💖
+        const mensaje = `*¡Hola!* 😊
 _Tu pedido ya está programado 💫_
+
 *Envío por ${envio.courier || 'N/A'}* 📦
 * _Fecha de envío: ${envio.fechaEnvioDisplay || 'Por programar'}_
 * _Destinatario: ${envio.nombre || 'N/A'} (${envio.telefono || 'N/A'})_
 ${destinoBlock}
-_Atte. CompliEnvíos_ 🥰
+
+_Atte. Tu tienda_ 🥰
 `;
         let numeroFormateado = envio.cliente.replace(/[^\d]/g, '');
         if (numeroFormateado.length === 9 && !numeroFormateado.startsWith('51')) {
