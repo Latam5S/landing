@@ -277,7 +277,7 @@
         fetch("lstDistritos.json")
           .then(res => res.json())
           .then(data => {
-            distritos = data.map(item => `${item.Distrito} | ${item.Precio}`);
+            distritos = data.map(item => `${item.Distrito}`);
             mostrarDistritos(distritos);
           })
           .catch(err => console.error("Error cargando distritos:", err));
@@ -316,7 +316,7 @@
             listaAgencias.appendChild(div);
           });
         }
-        fetch("https://raw.githubusercontent.com/complicidad/landing/main/lstShalom.json")
+        fetch("lstShalom.json")
           .then(res => res.json())
           .then(data => {
             agencias = data.map(item => `${item.Agencia}\n${item.Direccion}`);
