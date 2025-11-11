@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agenda tu envío</title>
+
+    <!-- Meta Tags (sin cambios) -->
+    <meta property="og:title" content="Agenda tu envío" />
+    <meta property="og:description" content="Agenda tu envío de manera simple, rápida y segura." />
+    <meta property="og:image" content="https://complicidad.github.io/form/Spin.png" />
+    <meta property="og:url" content="https://complicidad.github.io/form" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Agenda tu envío" />
+    <meta name="twitter:description" content="Agenda tu envío de manera simple, rápida y segura." />
+    <meta name="twitter:image" content="https://complicidad.github.io/form/Spin.png" />
+
+    <!-- ======================= INICIO: SDK de Firebase (ELIMINADO) ======================= -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> -->
+    <!-- ======================= FIN: SDK de Firebase (ELIMINADO) ======================= -->
+
+    <!-- jQuery (se mantiene) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Fuente Quicksand (se mantiene) -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN (se mantiene) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos (sin cambios) */
+        @layer base { body { font-family: 'Quicksand', sans-serif; } }
+        :root {
+            --brand-accent: #D96B4F;
+            --brand-accent-alt: #FF8B6A;
+            --danger-color: #d93025; 
+        }
+        .is-invalid {
+            border-color: var(--danger-color) !important;
+            box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.15) !important;
+        }
+    </style>
+    <script>
+        // Config de Tailwind (sin cambios)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#fffaf6',
+                        'brand-card': '#ffffff',
+                        'brand-text': '#2b2b2b',
+                        'brand-muted': '#6b6b6b',
+                        'brand-accent': '#D96B4F',
+                        'brand-accent-alt': '#FF8B6A',
+                        danger: '#d93025',
+                    },
+                    borderRadius: { 'xl': '12px', },
+                    fontFamily: { 'quicksand': ['Quicksand', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="flex flex-col bg-brand-bg text-brand-text">
+
+    <!-- Contenido HTML del formulario (sin cambios) -->
+    <main class="flex-grow p-5 max-w-xl mx-auto font-quicksand w-full">
+        <div class="bg-brand-card p-6 md:p-8 rounded-xl shadow-2xl">
+            <!-- Este es el nuevo placeholder de logo (neutral) -->
+            <div class="mx-auto w-24 h-24 rounded-full border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-center text-gray-500 font-bold text-lg p-2">
+                Tu Logo
+            </div>  
+            <form id="formulario" novalidate>
+                <h2 class="mt-4 mb-2 text-center text-2xl font-bold text-brand-text">Agenda tu envío</h2>
+                
+                <label for="telefonoUsado" class="block mt-4 font-semibold text-sm text-brand-text">WhatsApp con el que compraste <span class="text-danger">*</span></label>
+                <input
+                    type="tel"
+                    id="telefonoUsado"
+                    name="telefonoUsado"
+                    required
+                    placeholder="Ej. 9XXXXXXXX"
+                    pattern="^9\d{8}$"
+                    title="Ingresa un número de teléfono válido de 9 dígitos (debe empezar con 9)"
+                    class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text"
+                />
+                
+                <label for="tipoAccion" class="block mt-4 font-semibold text-sm text-brand-text">Selecciona el tipo de servicio <span class="text-danger">*</span></label>
+                <select id="tipoAccion" name="tipoAccion" required
+                    class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text">
+                    <option value="" disabled selected>Elige una opción</option>
+                    <option value="delivery">Envío a domicilio/trabajo (Delivery)</option>
+                    <option value="shalom">Retiro en agencia Shalom</option>
+                    <option value="usado">Usar mi dirección registrada</option>
+                </select>
+
+                <!-- Fieldset: Delivery -->
+                <fieldset id="camposDelivery" class="mt-8 border-none p-0" hidden>
+                    <legend class="text-xl font-bold mb-1 text-brand-text">📦 Delivery</legend>
+                    <p class="text-sm text-brand-muted mb-3">Datos de la persona que recibirá el pedido.</p>
+                    <label for="nombreDelivery" class="block mt-4 font-semibold text-sm text-brand-text">Nombre: <span class="text-danger">*</span></label>
+                    <input type="text" id="nombreDelivery" name="nombre" required
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text" />
+                    <label for="telefonoDelivery" class="block mt-4 font-semibold text-sm text-brand-text">Teléfono: <span class="text-danger">*</span></label>
+                    <input
+                        type="tel"
+                        id="telefonoDelivery"
+                        name="telefono"
+                        required
+                        pattern="^9\d{8}$"
+                        title="Ingresa un número de teléfono válido de 9 dígitos"
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text"
+                    />
+                    <div class="mt-1 flex items-center">
+                        <input type="checkbox" id="usarMismoTelefonoDelivery" class="h-4 w-4 text-brand-accent rounded border-gray-300 focus:ring-brand-accent-alt" />
+                        <label for="usarMismoTelefonoDelivery" class="ml-2 block text-sm text-brand-muted cursor-pointer">Usar mi número de WhatsApp (<span id="telefonoDisplayDelivery" class="font-semibold"></span>)</label>
+                    </div>
+                    <label for="distrito" class="block mt-4 font-semibold text-sm text-brand-text">Distrito: <span class="text-danger">*</span></label>
+                    <input type="text" id="distrito" name="distrito" required readonly
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 cursor-pointer text-brand-text" />
+                    <label for="direccion" class="block mt-4 font-semibold text-sm text-brand-text">Dirección: <span class="text-danger">*</span></label>
+                    <input type="text" id="direccion" name="direccion" required
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text" />
+                    <label for="referencia" class="block mt-4 font-semibold text-sm text-brand-text">Referencia: <span class="text-danger">*</span></label>
+                    <input type="text" id="referencia" name="referencia" required
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text" />
+                    <div class="modal hidden fixed inset-0 bg-brand-text bg-opacity-50 z-50 flex justify-center items-start pt-5 pb-5" id="modalDistrito">
+                        <div class="modal-content bg-brand-card p-5 rounded-xl w-[350px] max-h-[95vh] shadow-2xl flex flex-col overflow-hidden">
+                            <input type="text" id="buscadorDistrito" placeholder="Buscar distrito..."
+                                class="w-full p-2 mb-3 rounded-lg border border-gray-300 focus:border-brand-accent focus:ring-2 focus:ring-brand-accent-alt/40 text-brand-text" />
+                            <div id="listaDistritos" class="list list-none p-0 m-0 text-brand-text overflow-y-auto"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Fieldset: Shalom -->
+                <fieldset id="camposShalom" class="mt-8 border-none p-0" hidden>
+                    <legend class="text-xl font-bold mb-1 text-brand-text">📦 Shalom</legend>
+                    <p class="text-sm text-brand-muted mb-3">Datos para retiro en agencia Shalom.</p>
+                    <label for="nombreShalom" class="block mt-4 font-semibold text-sm text-brand-text">Nombre completo: <span class="text-danger">*</span></label>
+                    <input type="text" id="nombreShalom" name="nombre" required
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text" />
+                    <label for="telefonoShalom" class="block mt-4 font-semibold text-sm text-brand-text">Teléfono: <span class="text-danger">*</span></label>
+                    <input
+                        type="tel"
+                        id="telefonoShalom"
+                        name="telefono"
+                        required
+                        pattern="^9\d{8}$"
+                        title="Ingresa un número de teléfono válido de 9 dígitos"
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text"
+                    />
+                    <div class="mt-1 flex items-center">
+                        <input type="checkbox" id="usarMismoTelefonoShalom" class="h-4 w-4 text-brand-accent rounded border-gray-300 focus:ring-brand-accent-alt" />
+                        <label for="usarMismoTelefonoShalom" class="ml-2 block text-sm text-brand-muted cursor-pointer">Usar mi número de WhatsApp (<span id="telefonoDisplayShalom" class="font-semibold"></span>)</label>
+                    </div>
+                    <label for="DNI" class="block mt-4 font-semibold text-sm text-brand-text">DNI/CE: <span class="text-danger">*</span></label>
+                    <input type="text" id="DNI" name="DNI" required pattern="[A-Za-z0-9]{5,15}" title="Ingresa un DNI (8 dígitos) o CE válido (5-15 caracteres)"
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text" />
+                    <label for="agencia" class="block mt-4 font-semibold text-sm text-brand-text">Agencia: <span class="text-danger">*</span></label>
+                    <input type="text" id="agencia" name="agencia" required readonly
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 cursor-pointer text-brand-text" />
+                    <div class="modal hidden fixed inset-0 bg-brand-text bg-opacity-50 z-50 flex justify-center items-start pt-5 pb-5" id="modalAgencia">
+                        <div class="modal-content bg-brand-card p-5 rounded-xl w-[350px] max-h-[95vh] shadow-2xl flex flex-col overflow-hidden">
+                            <input type="text" id="buscadorAgencia" placeholder="Buscar agencia..."
+                                class="w-full p-2 mb-3 rounded-lg border border-gray-300 focus:border-brand-accent focus:ring-2 focus:ring-brand-accent-alt/40 text-brand-text" />
+                            <div id="listaAgencias" class="list list-none p-0 m-0 text-brand-text overflow-y-auto"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Fieldset: Usado -->
+                <fieldset id="camposUsados" class="mt-8 border-none p-0" hidden>
+                    <legend class="text-xl font-bold mb-1 text-brand-text">📦 Dirección registrada</legend>
+                    <p class="text-sm text-brand-muted mb-3">Usaremos tu dirección guardada.</p>
+                </fieldset>
+
+                <!-- Campo de fecha -->
+                <div id="contenedorFecha" class="mt-4" style="display: none;">
+                    <label for="fecha" class="block font-semibold text-sm text-brand-text">Fecha de envío: <span class="text-danger">*</span></label>
+                    <select id="fecha" name="fecha" required
+                        class="w-full p-2 mt-1 rounded-xl border border-gray-300 bg-white outline-none transition duration-150 ease-in-out focus:border-brand-accent focus:ring-4 focus:ring-brand-accent-alt/40 text-brand-text"></select>
+                </div>
+
+                <!-- Botón de envío -->
+                <div class="flex justify-center w-full mt-6">
+                    <button type="submit"
+                        class="p-3 text-lg cursor-pointer bg-brand-accent text-white font-semibold border-none rounded-xl w-full transition duration-150 ease-in-out hover:bg-brand-accent-alt shadow-lg">
+                        Enviar y Ver la Magia
+                    </button>
+                </div>
+
+                <!-- Texto de privacidad -->
+                <div class="mt-4 text-sm text-brand-muted text-center">
+                    Usaremos tus datos solo para procesar y entregar tu pedido.
+                    <a href="https://complicidad.github.io/privacy/" target="_blank" class="text-brand-accent hover:text-brand-accent-alt underline">Ver política de privacidad</a>
+                </div>
+            </form>
+
+            <!-- Bloque de Éxito -->
+            <div id="successMessage" class="hidden flex-col items-center justify-center p-4 text-center">
+                <svg class="w-16 h-16 text-brand-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <h2 class="mt-4 text-2xl font-bold text-brand-text">¡Envío agendado con éxito!</h2>
+                <p class="mt-2 text-brand-muted">Tu pedido ha sido registrado. Gracias por tu confianza.</p>
+                <p class="mt-6 font-semibold text-brand-text">Mientras esperas, ¡síguenos!</p>
+                <div class="mt-4 flex justify-center gap-4">
+                    <a href="https://wa.me/51981391159" target="_blank" rel="noopener noreferrer" class="inline-flex items-center hover:opacity-80 transition">
+                        <img src="https://raw.githubusercontent.com/complicidad/form/main/whatsapp.png" alt="WhatsApp" width="28" height="28">
+                    </a>
+                    <a href="https://www.tiktok.com/@complicidadboutique" target="_blank" rel="noopener noreferrer" class="inline-flex items-center hover:opacity-80 transition">
+                        <img src="https://raw.githubusercontent.com/complicidad/form/main/tik-tok.png" alt="TikTok" width="28" height="28">
+                    </a>
+                    <a href="https://www.instagram.com/complicidadboutique" target="_blank" rel="noopener noreferrer" class="inline-flex items-center hover:opacity-80 transition">
+                        <img src="https://raw.githubusercontent.com/complicidad/form/main/instagram.png" alt="Instagram" width="28" height="28">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-0 mb-5 text-center text-gray-500 text-xs">
+        <p>Hecho con ❤️ para tu emprendimiento.</p>
+    </footer>
+
+    <!-- Toast de Notificación -->
+    <div class="toast fixed right-5 top-5 text-white p-3 rounded-xl shadow-xl shadow-brand-accent/25 opacity-0 translate-y-2 transition-all duration-300 z-50 max-w-sm" id="toast">Acción aplicada</div>
+
+    <!-- Spinner de Carga -->
+    <div id="spinner" class="fixed inset-0 bg-brand-bg bg-opacity-85 z-50 flex justify-center items-center flex-col hidden">
+        <!-- ESTA ES LA LÍNEA NUEVA -->
+        <div class="w-16 h-16 border-4 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
+        <p class="mt-4 text-lg text-brand-text">Cargando...</p>
+    </div>
+    
+    <!-- Script para los modales de lista (sin cambios) -->
+    <script>
+        // --- Lógica del modal de Distritos (Vanilla JS) ---
+        const campoDistrito = document.getElementById("distrito");
+        const overlay = document.getElementById("modalDistrito");
+        const buscador = document.getElementById("buscadorDistrito");
+        const listaDistritos = document.getElementById("listaDistritos");
+        let distritos = [];
+        campoDistrito.addEventListener("click", () => {
+          overlay.style.display = "flex";
+          buscador.value = "";
+          mostrarDistritos(distritos);
+          buscador.focus();
+        });
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) overlay.style.display = "none";
+        });
+        buscador.addEventListener("input", () => {
+          const filtro = buscador.value.toLowerCase();
+          const filtrados = distritos.filter(d => d.toLowerCase().includes(filtro));
+          mostrarDistritos(filtrados);
+        });
+        function mostrarDistritos(lista) {
+          listaDistritos.innerHTML = "";
+          lista.forEach(d => {
+            const div = document.createElement("div");
+            div.className = "p-2 cursor-pointer border-b border-gray-100 hover:bg-gray-100 transition list-item";
+            div.textContent = d;
+            div.addEventListener("click", () => {
+              campoDistrito.value = d;
+              overlay.style.display = "none";
+            });
+            listaDistritos.appendChild(div);
+          });
+        }
+        fetch("https://raw.githubusercontent.com/complicidad/form/main/lstDinsides.json")
+          .then(res => res.json())
+          .then(data => {
+            distritos = data.map(item => `${item.Distrito} | ${item.Precio}`);
+            mostrarDistritos(distritos);
+          })
+          .catch(err => console.error("Error cargando distritos:", err));
+        
+        // --- Lógica del modal de Agencias (Vanilla JS) ---
+        const campoAgencia = document.getElementById("agencia");
+        const overlayAgencia = document.getElementById("modalAgencia");
+        const buscadorAgencia = document.getElementById("buscadorAgencia");
+        const listaAgencias = document.getElementById("listaAgencias");
+        let agencias = [];
+        campoAgencia.addEventListener("click", () => {
+          overlayAgencia.style.display = "flex";
+          buscadorAgencia.value = "";
+          mostrarAgencias(agencias);
+          buscadorAgencia.focus();
+        });
+        overlayAgencia.addEventListener("click", (e) => {
+          if (e.target === overlayAgencia) overlayAgencia.style.display = "none";
+        });
+        buscadorAgencia.addEventListener("input", () => {
+          const filtro = buscadorAgencia.value.toLowerCase();
+          const filtrados = agencias.filter(a => a.toLowerCase().includes(filtro));
+          mostrarAgencias(filtrados);
+        });
+        function mostrarAgencias(lista) {
+          listaAgencias.innerHTML = "";
+          lista.forEach(a => {
+            const [titulo, ...resto] = a.split("\n");
+            const div = document.createElement("div");
+            div.className = "p-2 cursor-pointer border-b border-gray-100 hover:bg-gray-100 transition list-item";
+            div.innerHTML = `<span class="font-semibold">${titulo}</span>${resto.length ? "<br><span class='text-sm text-gray-600'>" + resto.join("<br>") + "</span>" : ""}`;
+            div.addEventListener("click", () => {
+              campoAgencia.value = titulo;
+              overlayAgencia.style.display = "none";
+            });
+            listaAgencias.appendChild(div);
+          });
+        }
+        fetch("https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json")
+          .then(res => res.json())
+          .then(data => {
+            agencias = data.map(item => `${item.Agencia}\n${item.Direccion}`);
+            mostrarAgencias(agencias);
+          })
+          .catch(err => console.error("Error cargando agencias:", err));
+
+        // --- Lógica principal del formulario (jQuery) ---
+        $(document).ready(function () {
+
+            // --- INICIO: Lógica de LocalStorage ---
+            const ENVIOS_KEY = 'demoEnvios'; // Clave para los envíos (coincide con el panel)
+            const CLIENTES_KEY = 'demoClientes'; // Clave para los perfiles de clientes
+
+            /**
+             * Obtiene los envíos desde LocalStorage.
+             * @returns {Array} Array de envíos.
+             */
+            function getEnviosFromStorage() {
+                try {
+                    const data = localStorage.getItem(ENVIOS_KEY);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    console.error("Error leyendo envíos de LocalStorage:", e);
+                    return [];
+                }
+            }
+
+            /**
+             * Guarda el array de envíos en LocalStorage.
+             * @param {Array} envios - El array de envíos a guardar.
+             */
+            function saveEnviosToStorage(envios) {
+                try {
+                    localStorage.setItem(ENVIOS_KEY, JSON.stringify(envios));
+                } catch (e) {
+                    console.error("Error guardando envíos en LocalStorage:", e);
+                }
+            }
+
+            /**
+             * Obtiene los perfiles de clientes (objeto) desde LocalStorage.
+             * @returns {object} Objeto donde la clave es el teléfono del cliente.
+             */
+            function getClientesFromStorage() {
+                try {
+                    const data = localStorage.getItem(CLIENTES_KEY);
+                    return data ? JSON.parse(data) : {};
+                } catch (e) {
+                    console.error("Error leyendo clientes de LocalStorage:", e);
+                    return {};
+                }
+            }
+
+            /**
+             * Guarda el objeto de perfiles de clientes en LocalStorage.
+             * @param {object} clientes - El objeto de clientes a guardar.
+             */
+            function saveClientesToStorage(clientes) {
+                try {
+                    localStorage.setItem(CLIENTES_KEY, JSON.stringify(clientes));
+                } catch (e) {
+                    console.error("Error guardando clientes en LocalStorage:", e);
+                }
+            }
+            // --- FIN: Lógica de LocalStorage ---
+
+            // Resto de la lógica del formulario (sin cambios)
+            const $telefonoUsado = $("#telefonoUsado");
+            const $telefonoDelivery = $("#telefonoDelivery");
+            const $telefonoShalom = $("#telefonoShalom");
+            const $usarMismoTelefonoDelivery = $("#usarMismoTelefonoDelivery");
+            const $usarMismoTelefonoShalom = $("#usarMismoTelefonoShalom");
+            const $telefonoDisplayDelivery = $("#telefonoDisplayDelivery");
+            const $telefonoDisplayShalom = $("#telefonoDisplayShalom");
+            
+            // Lógica de fechas (sin cambios)
+            function obtenerFechasEnvio() {
+                const ahora = new Date();
+                const opciones = [];
+                const diasPermitidos = [2, 5]; // martes = 2, viernes = 5
+                const horaCorte = 10; // 10:00 a.m.
+                const limite = new Date();
+                limite.setDate(ahora.getDate() + 14);
+                let fecha = new Date();
+                fecha.setHours(0, 0, 0, 0);
+                while (fecha <= limite) {
+                    const diaSemana = fecha.getDay();
+                    if (diasPermitidos.includes(diaSemana)) {
+                        const fechaCorte = new Date(fecha);
+                        fechaCorte.setDate(fecha.getDate() - 1);
+                        fechaCorte.setHours(horaCorte, 0, 0, 0);
+                        if (ahora < fechaCorte) {
+                            opciones.push(new Date(fecha));
+                        }
+                    }
+                    fecha.setDate(fecha.getDate() + 1);
+                }
+                return opciones;
+            }
+            function formatearFecha(fecha) {
+                return fecha.toLocaleDateString("es-ES", {
+                    weekday: "long", day: "2-digit", month: "long", year: "numeric",
+                });
+            }
+            const $selectFecha = $("#fecha");
+            $selectFecha.append($("<option>").val("").text("Elige una fecha de envío...").prop("disabled", true).prop("selected", true));
+            const fechas = obtenerFechasEnvio();
+            fechas.forEach((f) => {
+                $selectFecha.append($("<option>").val(f.toISOString().split("T")[0]).text(formatearFecha(f)));
+            });
+
+            // `limpiarCampos` (sin cambios)
+            function limpiarCampos(idContenedor) {
+                const selector = `#${idContenedor} input, #${idContenedor} select`;
+                document.querySelectorAll(selector).forEach((campo) => {
+                    if (campo.tagName === "SELECT") $(campo).val(null).trigger("change");
+                    else campo.value = "";
+                    $(campo).removeClass("is-invalid");
+                    if(campo.id === 'telefonoDelivery' || campo.id === 'telefonoShalom') {
+                        $(campo).prop('readonly', false).removeClass('bg-gray-100');
+                    }
+                });
+                $usarMismoTelefonoDelivery.prop('checked', false);
+                $usarMismoTelefonoShalom.prop('checked', false);
+            }
+            
+            // `mostrarMensajeTelefono` (Toast, sin cambios)
+            function mostrarMensajeTelefono(mensaje, tipo = "success") {
+                const $toast = $("#toast");
+                $toast.removeClass("bg-gradient-to-r from-brand-accent to-brand-accent-alt from-red-500 to-red-600 opacity-100 translate-y-0");
+                if (tipo === "success") $toast.addClass("bg-gradient-to-r from-brand-accent to-brand-accent-alt shadow-brand-accent/25");
+                else $toast.addClass("bg-gradient-to-r from-red-500 to-red-600 shadow-red-500/25");
+                $toast.text(mensaje);
+                setTimeout(() => $toast.addClass("opacity-100 translate-y-0"), 50);
+                clearTimeout($toast.data('timer'));
+                const timer = setTimeout(() => {
+                    $toast.removeClass("opacity-100 translate-y-0").addClass("opacity-0 translate-y-2");
+                    setTimeout(() => $toast.removeClass("from-brand-accent to-brand-accent-alt from-red-500 to-red-600 shadow-brand-accent/25 shadow-red-500/25"), 300);
+                }, 5000); 
+                $toast.data('timer', timer);
+            }
+
+            // Lógica de "usar mismo teléfono" (sin cambios)
+            function updateTelefonoDisplay() {
+                const val = $telefonoUsado.val() || 'N/A';
+                $telefonoDisplayDelivery.text(val);
+                $telefonoDisplayShalom.text(val);
+            }
+            updateTelefonoDisplay();
+            $telefonoUsado.on('input', function() {
+                updateTelefonoDisplay();
+                if ($usarMismoTelefonoDelivery.is(':checked')) $telefonoDelivery.val($(this).val());
+                if ($usarMismoTelefonoShalom.is(':checked')) $telefonoShalom.val($(this).val());
+            });
+            $usarMismoTelefonoDelivery.on('change', function() {
+                const checked = $(this).is(':checked');
+                if (checked) {
+                    $telefonoDelivery.val($telefonoUsado.val());
+                    $telefonoDelivery.prop('readonly', true).addClass('bg-gray-100').removeClass('is-invalid');
+                } else {
+                    $telefonoDelivery.val('').prop('readonly', false).removeClass('bg-gray-100').focus();
+                }
+            });
+            $usarMismoTelefonoShalom.on('change', function() {
+                const checked = $(this).is(':checked');
+                if (checked) {
+                    $telefonoShalom.val($telefonoUsado.val());
+                    $telefonoShalom.prop('readonly', true).addClass('bg-gray-100').removeClass('is-invalid');
+                } else {
+                    $telefonoShalom.val('').prop('readonly', false).removeClass('bg-gray-100').focus();
+                }
+            });
+
+            // Lógica de mostrar/ocultar secciones (sin cambios)
+            $("#tipoAccion").on("change", function () {
+                limpiarCampos("camposDelivery");
+                limpiarCampos("camposShalom");
+                limpiarCampos("camposUsados");
+                $("#camposDelivery, #camposShalom, #camposUsados").attr("hidden", true).find("input, select").prop("disabled", true);
+                $usarMismoTelefonoDelivery.prop('checked', false);
+                $usarMismoTelefonoShalom.prop('checked', false);
+
+                const valor = $(this).val();
+                if (valor === "delivery") $("#camposDelivery").attr("hidden", false).find("input, select").prop("disabled", false);
+                else if (valor === "shalom") $("#camposShalom").attr("hidden", false).find("input, select").prop("disabled", false);
+                else if (valor === "usado") $("#camposUsados").attr("hidden", false).find("input, select").prop("disabled", false);
+
+                const $contenedorFecha = $("#contenedorFecha");
+                $contenedorFecha.hide();
+                if (["delivery", "shalom", "usado"].includes(valor)) {
+                    if (valor === "delivery") $("#camposDelivery").append($contenedorFecha);
+                    else if (valor === "shalom") $("#camposShalom").append($contenedorFecha);
+                    else $("#camposUsados").append($contenedorFecha);
+                    $contenedorFecha.show();
+                    $("#fecha").prop("disabled", false);
+                } else {
+                    $("#fecha").prop("disabled", true);
+                }
+                
+                let targetId = null; 
+                if (valor === "delivery") targetId = "nombreDelivery";
+                else if (valor === "shalom") targetId = "nombreShalom";
+                else if (valor === "usado") targetId = "fecha";
+                if (targetId) {
+                    setTimeout(() => {
+                        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100); 
+                }
+            });
+
+            // --- INICIO: LÓGICA DE ENVÍO (Modificada para LocalStorage) ---
+            $("#formulario").on("submit", async function (e) {
+                e.preventDefault();
+                $("#toast").removeClass("opacity-100 translate-y-0").addClass("opacity-0 translate-y-2");
+                
+                function mostrarMensaje(mensaje, tipo = "success") {
+                    mostrarMensajeTelefono(mensaje, tipo);
+                }
+
+                const tipoAccion = $("#tipoAccion").val();
+
+                function aplicarClaseError(id) {
+                    $(`#${id}`).addClass('is-invalid');
+                    $(`#${id}`).on('input change', function() { $(this).removeClass('is-invalid'); });
+                }
+
+                // Validaciones (sin cambios)
+                if (tipoAccion === "delivery" && !$("#distrito").val()) {
+                    mostrarMensaje("Por favor, selecciona un distrito de la lista", "error");
+                    aplicarClaseError("distrito"); return;
+                }
+                if (tipoAccion === "shalom" && !$("#agencia").val()) {
+                    mostrarMensaje("Por favor, selecciona una agencia de la lista", "error");
+                    aplicarClaseError("agencia"); return;
+                }
+                if (!this.checkValidity()) {
+                    $(this).find(':invalid').each(function() { aplicarClaseError(this.id); });
+                    this.reportValidity(); return;
+                }
+
+                const spinnerOverlay = document.getElementById('spinner');
+                spinnerOverlay.classList.remove('hidden');
+                spinnerOverlay.classList.add('flex');
+
+                try {
+                    // --- Autenticación de Firebase ELIMINADA ---
+                    // ya no hay 'await authPromise'
+
+                    const telefonoCliente = $("#telefonoUsado").val().replace(/\D/g, "");
+                    
+                    // 1. Preparar el documento de ENVÍO
+                    const envioData = {
+                        // Usar un timestamp como ID único para LocalStorage
+                        id: String(new Date().getTime()), 
+                        // Formato YYYY-MM-DD para fecha de registro
+                        fechaRegistro: new Date().toISOString().split('T')[0], 
+                        cliente: telefonoCliente,
+                        courier: tipoAccion.toUpperCase(),
+                        fechaEnvio: $("#fecha").val(), // Formato YYYY-MM-DD
+                        estado: "PENDIENTE",
+                        // Inicializar todos los campos posibles
+                        nombre: "", telefono: "", DNI: "", distrito: "",
+                        direccion: "", referencia: "", agencia: ""
+                    };
+
+                    // 2. Preparar el documento de CLIENTE
+                    let clienteData = {};
+                    let esEnvioNuevo = false;
+
+                    if (tipoAccion === "delivery") {
+                        clienteData.nombre = $("#nombreDelivery").val();
+                        clienteData.telefono = $("#telefonoDelivery").val();
+                        clienteData.distrito = $("#distrito").val();
+                        clienteData.direccion = $("#direccion").val();
+                        clienteData.referencia = $("#referencia").val();
+                        clienteData.tipoUltimoEnvio = "delivery";
+                        esEnvioNuevo = true;
+                        // Sobrescribir los campos del envío
+                        Object.assign(envioData, clienteData); 
+
+                    } else if (tipoAccion === "shalom") {
+                        clienteData.nombre = $("#nombreShalom").val();
+                        clienteData.telefono = $("#telefonoShalom").val();
+                        clienteData.DNI = $("#DNI").val();
+                        clienteData.agencia = $("#agencia").val();
+                        clienteData.tipoUltimoEnvio = "shalom";
+                        esEnvioNuevo = true;
+                        // Sobrescribir los campos del envío
+                        Object.assign(envioData, clienteData);
+                    
+                    } else if (tipoAccion === "usado") {
+                        // Leer desde el LocalStorage de Clientes
+                        const clientes = getClientesFromStorage();
+                        const datosCliente = clientes[telefonoCliente];
+
+                        if (!datosCliente) {
+                            mostrarMensaje("El número ingresado no está registrado.", "error");
+                            aplicarClaseError("telefonoUsado");
+                            $("#telefonoUsado").focus();
+                            spinnerOverlay.classList.remove('flex');
+                            spinnerOverlay.classList.add('hidden');
+                            return; // Detener
+                        } else {
+                            // Copiar datos del cliente al envío
+                            envioData.courier = (datosCliente.tipoUltimoEnvio || 'usado').toUpperCase();
+                            envioData.nombre = datosCliente.nombre || "";
+                            envioData.telefono = datosCliente.telefono || "";
+                            envioData.distrito = datosCliente.distrito || "";
+                            envioData.direccion = datosCliente.direccion || "";
+                            envioData.referencia = datosCliente.referencia || "";
+                            envioData.DNI = datosCliente.DNI || "";
+                            envioData.agencia = datosCliente.agencia || "";
+                        }
+                    }
+
+                    // 3. Ejecutar las escrituras en LocalStorage
+                    console.log("Guardando en LocalStorage...");
+                    
+                    // 3a. Siempre guardar el nuevo envío
+                    const todosEnvios = getEnviosFromStorage();
+                    todosEnvios.push(envioData);
+                    saveEnviosToStorage(todosEnvios);
+                    
+                    // 3b. Si es un envío nuevo (Delivery/Shalom), guardar perfil del cliente
+                    if (esEnvioNuevo) {
+                        console.log("Guardando perfil de cliente en LocalStorage");
+                        const clientes = getClientesFromStorage();
+                        // Crear o actualizar el perfil del cliente
+                        clientes[telefonoCliente] = { ...clientes[telefonoCliente], ...clienteData };
+                        saveClientesToStorage(clientes);
+                    }
+
+                    console.log("¡Guardado en LocalStorage completado!");
+
+                    // 4. Lógica de Éxito (sin cambios)
+                    $("#formulario").hide();
+                    $("#successMessage").removeClass('hidden').addClass('flex');
+
+                    // ================== INICIO: NUEVA REDIRECCIÓN ==================
+                    // Esperar 3 segundos para que el usuario vea el mensaje de éxito
+                    setTimeout(() => {
+                        // Redirigir a la URL del panel de usuario
+                        window.location.href = "https://complicidad.github.io/demo/";
+                    }, 3000); // 3000 milisegundos = 3 segundos
+                    // ================== FIN: NUEVA REDIRECCIÓN ==================
+
+                    $("#formulario")[0].reset();
+                    $("#camposDelivery, #camposShalom, #camposUsados")
+                        .attr("hidden", true)
+                        .find("input, select")
+                        .prop("disabled", true);
+                    $("#contenedorFecha").hide();
+                    $("#fecha").empty();
+                    $("#fecha").append($("<option>").val("").text("Elige una fecha de envío...").prop("disabled", true).prop("selected", true));
+                    const nuevasFechas = obtenerFechasEnvio();
+                    nuevasFechas.forEach(f => {
+                        $("#fecha").append($("<option>").val(f.toISOString().split("T")[0]).text(formatearFecha(f)));
+                    });
+                    $usarMismoTelefonoDelivery.prop('checked', false);
+                    $usarMismoTelefonoShalom.prop('checked', false);
+                    $telefonoDelivery.prop('readonly', false).removeClass('bg-gray-100');
+                    $telefonoShalom.prop('readonly', false).removeClass('bg-gray-100');
+
+                } catch (err) {
+                    // 5. Manejo de Errores
+                    console.error("Error al guardar en LocalStorage:", err);
+                    mostrarMensaje("Ocurrió un error al guardar tus datos", "error");
+                } finally {
+                    // 6. Ocultar el spinner
+                    spinnerOverlay.classList.remove('flex');
+                    spinnerOverlay.classList.add('hidden');
+                }
+                // --- FIN DE LA LÓGICA DE ENVÍO ---
+            });
+        });  
+    </script>
+</body>
+</html>

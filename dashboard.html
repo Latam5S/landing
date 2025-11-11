@@ -1,697 +1,1731 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Panel del Cliente</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  :root {
-    --bg: #fffaf6;
-    --card: #ffffff;
-    --text: #2b2b2b;
-    --muted: #6b6b6b;
-    --accent: #D96B4F;
-    --accent-2: #C9B5E6;
-    --radius: 14px;
-    font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  }
-
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background:linear-gradient(180deg,var(--bg),#fff);
-    color:var(--text);
-    font-family:var(--font);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-  }
-
-  /* ---------- HEADER ---------- */
-  header {
-    background:linear-gradient(90deg,var(--accent),#FF8B6A);
-    color:#fff;
-    padding:18px 24px;
-    box-shadow:0 6px 20px rgba(217,107,79,0.25);
-  }
-  header h1{margin:0;font-size:22px;font-weight:700;}
-  header p{margin:4px 0 0;font-size:14px;opacity:.9;}
-
-  /* ---------- NAV ---------- */
-  nav{
-    background:#fff;
-    border-bottom:1px solid rgba(0,0,0,0.06);
-    display:flex;
-    gap:18px;
-    padding:10px 20px;
-    justify-content:center;
-  }
-  nav a{
-    color:var(--text);
-    text-decoration:none;
-    font-weight:600;
-    font-size:14px;
-    transition:.2s;
-  }
-  nav a:hover{color:var(--accent);}
-
-  /* ---------- CONTENIDO PRINCIPAL ---------- */
-  main{
-    padding:24px;
-    max-width:1200px;
-    margin:auto;
-  }
-  h2{margin:0 0 14px;font-size:20px;color:var(--accent);}
-
-  .card{
-    background:var(--card);
-    border-radius:var(--radius);
-    box-shadow:0 10px 30px rgba(15,20,25,0.05);
-    padding:20px;
-    border:1px solid rgba(0,0,0,0.04);
-  }
-
-  /* ---------- BOTONES ---------- */
-  .acciones{
-    display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:14px;
-  }
-  .btn{
-    border:0;
-    padding:10px 14px;
-    border-radius:var(--radius);
-    cursor:pointer;
-    font-weight:700;
-    transition:.2s;
-  }
-  .btn.primary{
-    background:linear-gradient(90deg,var(--accent),#FF8B6A);
-    color:#fff;
-    box-shadow:0 4px 10px rgba(217,107,79,0.2);
-  }
-  .btn.primary:hover{opacity:.9;}
-  .btn.ghost{
-    background:#fff;
-    border:1px solid rgba(0,0,0,0.06);
-    color:var(--accent);
-  }
-  .btn.ghost:hover{background:#fff3ef;}
-
-  .btn.small{padding:6px 10px;font-size:13px;}
-
-  /* ---------- FILTROS ---------- */
-  .filtros{
-    display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0 14px;
-  }
-  .filtros label{
-    font-size:13px;color:var(--muted);font-weight:600;
-  }
-  .filtros input,.filtros select{
-    padding:9px;
-    border:1px solid rgba(0,0,0,0.08);
-    border-radius:10px;
-    background:#fff;
-    font-family:inherit;
-  }
-
-  /* ---------- LOTE ---------- */
-  .lote{
-    display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:8px 0 10px;
-  }
-  .lote-left,.lote-right{
-    display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-  }
-
-  /* ---------- TABLA ---------- */
-  table{
-    width:100%;
-    border-collapse:collapse;
-    background:#fff;
-    border-radius:var(--radius);
-    overflow:hidden;
-    box-shadow:0 6px 20px rgba(15,20,25,0.04);
-  }
-  th,td{
-    border-top:1px solid rgba(0,0,0,0.05);
-    padding:10px;
-    text-align:left;
-    font-size:13px;
-    vertical-align:top;
-  }
-  thead th{
-    background:#fff3ef;
-    color:var(--accent);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:0.3px;
-  }
-  tbody tr:hover{
-    background:#fff7f3;
-    transition:.2s;
-  }
-
-  /* ---------- BADGES ---------- */
-  .badge{
-    padding:4px 10px;
-    border-radius:999px;
-    font-size:12px;
-    font-weight:700;
-    display:inline-block;
-  }
-  .b-pendiente{
-    background:#fff6e6;
-    color:#9a6200;
-    border:1px solid #ffd899;
-  }
-  .b-enviado{
-    background:#fce8e2;
-    color:var(--accent);
-    border:1px solid #ffd3c1;
-  }
-  .b-entregado{
-    background:#e9f8ee;
-    color:#1b7f3a;
-    border:1px solid #bfe7cd;
-  }
-  .b-reprogramado{
-    background:#fae9f9;
-    color:#a84ca8;
-    border:1px solid #e3b4f1;
-  }
-
-  /* ---------- SELECT ESTADO ---------- */
-  .status-select{
-    padding:6px;
-    border:1px solid rgba(0,0,0,0.08);
-    border-radius:10px;
-    background:#fff;
-  }
-
-  /* ---------- TOAST ---------- */
-  .toast{
-    position:fixed;
-    right:16px;
-    bottom:16px;
-    background:linear-gradient(90deg,var(--accent),#FF8B6A);
-    color:#fff;
-    padding:10px 16px;
-    border-radius:12px;
-    box-shadow:0 8px 20px rgba(217,107,79,0.25);
-    opacity:0;
-    transform:translateY(8px);
-    transition:.25s;
-  }
-  .toast.show{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-  .nowrap{white-space:nowrap;}
-  
-  .oculto{ display: none !important;}
-  
-  footer{margin-top:80px;text-align:center;color:var(--muted);font-size:14px;padding-bottom:20px}
-  
-</style>
-  
-</head>
-<body>
-  <header>
-    <div style="display:flex;align-items:center;gap:15px;justify-content:center;">
-      <!-- Logo dinámico -->
-      <img id="headerLogo" src="" alt="Logo Emprendimiento" style="height:50px; display:none; border-radius:6px;">
-
-      <!-- Título -->
-      <div>
-        <h1 style="margin:0;">📋 Panel del Control</h1>
-        <p style="margin:4px 0 0;color:#e5eefb">Bienvenido, <strong>[Nombre del emprendimiento]</strong></p>
-      </div>
-    </div>
-  </header>
-
-  <nav>
-    <a href="#envios">🚀 Envíos</a>
-    <a href="#reportes">📊 Reportes</a>
-    <a href="#cuenta">⚙️ Mi Cuenta</a>
-  </nav>
-
-  <main>
-    <section class="card" id="envios">
-      <h2>🚀 Mis Envíos</h2>
-
-      <!-- Botonera superior -->
-      <div class="acciones">
-        <button class="btn ghost" id="btnTplShalom">📥 Descargar Plantilla SHALOM</button>
-        <button class="btn ghost" id="btnTplDinsides">📥 Descargar Plantilla DINSIDES</button>
-        <button class="btn" id="btnEtiquetas">🏷️ Imprimir Etiquetas</button>
-      </div>
-
-      <!-- Filtros -->
-      <div class="filtros">
-        <label>Cliente (Celular)
-          <input type="text" id="filtroCliente" placeholder="Ej: 987654321" />
-        </label>
-        <label>Fecha de Envío
-          <input type="date" id="filtroFecha" />
-        </label>
-        <label>Tipo
-          <select id="filtroTipo">
-            <option value="DELIVERY" selected>DELIVERY</option>
-            <option value="SHALOM">SHALOM</option>
-            <option value="">Todos</option> <!-- ✅ Nueva opción -->
-          </select>
-        </label>
-
-        <button class="btn" id="btnAplicarFiltros">Filtrar</button>
-      </div>
-
-      <!-- Acciones en lote -->
-      <div class="lote">
-        <div class="lote-left">
-          <label class="nowrap"><input type="checkbox" id="checkTodos" /> Seleccionar todo</label>
-          <span style="color:var(--muted);font-size:13px" id="selCount">0 seleccionados</span>
-        </div>
-        <div class="lote-right">
-          <select id="accionLote" class="status-select">
-            <option value="" selected>Acción en lote…</option>
-            <option value="ENVIADO">Marcar como Enviado</option>
-            <option value="ENTREGADO">Marcar como Entregado</option>
-            <option value="REPROGRAMADO">Reprogramar</option>
-          </select>
-          <input type="date" id="fechaReprog" class="oculto" />
-          <button class="btn primary" id="btnAplicarLote">Aplicar</button>
-        </div>
-      </div>
-
-      <!-- Tabla -->
-      <div style="overflow:auto">
-        <table id="tablaEnvios">
-          <thead>
-            <tr>
-              <th style="width:36px"><input type="checkbox" id="thCheckTodos" /></th>
-              <th>Fecha de Registro</th>
-              <th>Cliente (Celular)</th>
-              <th>Tipo</th>
-              <th>Nombre</th>
-              <th>Teléfono</th>
-              <th class="col-distrito">Distrito</th>
-              <th class="col-direccion">Dirección</th>
-              <th class="col-referencia">Referencia</th>
-              <th class="col-dni">DNI/CE</th>
-              <th class="col-agencia">Agencia</th>
-              <th>Fecha de Envío</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyEnvios">
-            <!-- Datos de ejemplo -->
-            <tr data-tipo="SHALOM" data-cliente="912345678" data-fechaenvio="2025-08-20">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-18</td>
-              <td>912345678</td>
-              <td>SHALOM</td>
-              <td>María López</td>
-              <td>912345678</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">87654321</td>
-              <td class="col-agencia">Lima / Lima / Chorrillos / Chorrillos Los Faisanes</td>
-              <td>2025-08-20</td>
-              <td class="estado"><span class="badge b-enviado">Enviado</span></td>
-            </tr>
-            <tr data-tipo="SHALOM" data-cliente="912345678" data-fechaenvio="2025-08-20">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-18</td>
-              <td>912345678</td>
-              <td>SHALOM</td>
-              <td>María López</td>
-              <td>912345678</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">87654321</td>
-              <td class="col-agencia">	Ancash / Huaraz / Huaraz / Huaraz</td>
-              <td>2025-08-20</td>
-              <td class="estado"><span class="badge b-enviado">Enviado</span></td>
-            </tr>
-            <tr data-tipo="DELIVERY" data-cliente="987654321" data-fechaenvio="2025-08-22">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-20</td>
-              <td>987654321</td>
-              <td>DELIVERY</td>
-              <td>Juan Pérez</td>
-              <td>987654321</td>
-              <td class="col-distrito">Lima</td>
-              <td class="col-direccion">Av. Principal 123</td>
-              <td class="col-referencia">Frente al parque</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-08-22</td>
-              <td class="estado"><span class="badge b-pendiente">Pendiente</span></td>
-            </tr>
-            <tr data-tipo="DELIVERY" data-cliente="900111222" data-fechaenvio="2025-08-23">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-21</td>
-              <td>900111222</td>
-              <td>DELIVERY</td>
-              <td>Pedro Rojas</td>
-              <td>900111222</td>
-              <td class="col-distrito">Miraflores</td>
-              <td class="col-direccion">Calle 9 #456</td>
-              <td class="col-referencia">2do piso</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-08-23</td>
-              <td class="estado"><span class="badge b-pendiente">Pendiente</span></td>
-            </tr>
-
-            <tr data-tipo="SHALOM" data-cliente="911223344" data-fechaenvio="2025-08-25">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-22</td>
-              <td>911223344</td>
-              <td>SHALOM</td>
-              <td>Lucía Gutiérrez</td>
-              <td>911223344</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">75342190</td>
-              <td class="col-agencia">Lima / Lima / Los Olivos / Mega Plaza</td>
-              <td>2025-08-25</td>
-              <td class="estado"><span class="badge b-pendiente">Pendiente</span></td>
-            </tr>
-
-            <tr data-tipo="DELIVERY" data-cliente="987111222" data-fechaenvio="2025-08-26">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-23</td>
-              <td>987111222</td>
-              <td>DELIVERY</td>
-              <td>Rosa Valdivia</td>
-              <td>987111222</td>
-              <td class="col-distrito">San Miguel</td>
-              <td class="col-direccion">Av. Universitaria 240</td>
-              <td class="col-referencia">Frente al Metro</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-08-26</td>
-              <td class="estado"><span class="badge b-entregado">Entregado</span></td>
-            </tr>
-
-            <tr data-tipo="SHALOM" data-cliente="915556677" data-fechaenvio="2025-08-27">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-24</td>
-              <td>915556677</td>
-              <td>SHALOM</td>
-              <td>Carla Torres</td>
-              <td>915556677</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">87431209</td>
-              <td class="col-agencia">Cusco / Cusco / Wanchaq / Terminal Terrestre</td>
-              <td>2025-08-27</td>
-              <td class="estado"><span class="badge b-enviado">Enviado</span></td>
-            </tr>
-
-            <tr data-tipo="DELIVERY" data-cliente="944332211" data-fechaenvio="2025-08-28">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-25</td>
-              <td>944332211</td>
-              <td>DELIVERY</td>
-              <td>José Fernández</td>
-              <td>944332211</td>
-              <td class="col-distrito">Surco</td>
-              <td class="col-direccion">Calle Los Jazmines 123</td>
-              <td class="col-referencia">Cerca al Wong</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-08-28</td>
-              <td class="estado"><span class="badge b-pendiente">Pendiente</span></td>
-            </tr>
-
-            <tr data-tipo="SHALOM" data-cliente="988667755" data-fechaenvio="2025-08-29">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-26</td>
-              <td>988667755</td>
-              <td>SHALOM</td>
-              <td>Valeria Campos</td>
-              <td>988667755</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">78451236</td>
-              <td class="col-agencia">Piura / Piura / Castilla / Piura Central</td>
-              <td>2025-08-29</td>
-              <td class="estado"><span class="badge b-reprogramado">Reprogramado</span></td>
-            </tr>
-
-            <tr data-tipo="DELIVERY" data-cliente="900555888" data-fechaenvio="2025-08-30">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-27</td>
-              <td>900555888</td>
-              <td>DELIVERY</td>
-              <td>Camila Morales</td>
-              <td>900555888</td>
-              <td class="col-distrito">La Molina</td>
-              <td class="col-direccion">Av. El Sol 777</td>
-              <td class="col-referencia">Al costado del BCP</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-08-30</td>
-              <td class="estado"><span class="badge b-entregado">Entregado</span></td>
-            </tr>
-
-            <tr data-tipo="SHALOM" data-cliente="913456789" data-fechaenvio="2025-09-01">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-29</td>
-              <td>913456789</td>
-              <td>SHALOM</td>
-              <td>Fiorella Vega</td>
-              <td>913456789</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">70892135</td>
-              <td class="col-agencia">Arequipa / Arequipa / Cerro Colorado / Principal</td>
-              <td>2025-09-01</td>
-              <td class="estado"><span class="badge b-pendiente">Pendiente</span></td>
-            </tr>
-
-            <tr data-tipo="DELIVERY" data-cliente="922333444" data-fechaenvio="2025-09-02">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-30</td>
-              <td>922333444</td>
-              <td>DELIVERY</td>
-              <td>Daniela Silva</td>
-              <td>922333444</td>
-              <td class="col-distrito">San Isidro</td>
-              <td class="col-direccion">Av. Javier Prado 350</td>
-              <td class="col-referencia">Frente a Real Plaza</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-09-02</td>
-              <td class="estado"><span class="badge b-enviado">Enviado</span></td>
-            </tr>
-
-            <tr data-tipo="DELIVERY" data-cliente="933999777" data-fechaenvio="2025-09-03">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-08-31</td>
-              <td>933999777</td>
-              <td>DELIVERY</td>
-              <td>Andrea Navarro</td>
-              <td>933999777</td>
-              <td class="col-distrito">Barranco</td>
-              <td class="col-direccion">Jr. Unión 222</td>
-              <td class="col-referencia">3er piso</td>
-              <td class="col-dni">-</td>
-              <td class="col-agencia">-</td>
-              <td>2025-09-03</td>
-              <td class="estado"><span class="badge b-entregado">Entregado</span></td>
-            </tr>
-
-            <tr data-tipo="SHALOM" data-cliente="955666333" data-fechaenvio="2025-09-04">
-              <td><input type="checkbox" class="rowCheck" /></td>
-              <td>2025-09-01</td>
-              <td>955666333</td>
-              <td>SHALOM</td>
-              <td>Gabriela Ruiz</td>
-              <td>955666333</td>
-              <td class="col-distrito">-</td>
-              <td class="col-direccion">-</td>
-              <td class="col-referencia">-</td>
-              <td class="col-dni">75643218</td>
-              <td class="col-agencia">Trujillo / La Libertad / Trujillo / Terminal Centro</td>
-              <td>2025-09-04</td>
-              <td class="estado"><span class="badge b-enviado">Enviado</span></td>
-            </tr>            
-            
-            
-          </tbody>
-        </table>
-      </div>
-      
-      
-    </section> 
-
- <footer>© 2025 Latam5S — Renovado para emprendedores peruanos</footer>    
+    <meta charset="UTF-8" />
+    <title>Panel de Control — Latam5S</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
     
-  </main>
+    <!-- Librería de Excel (SheetJS) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-  <div class="toast" id="toast">Acción aplicada</div>
-  
-  
-  <script>
-    const filtroTipo = document.getElementById('filtroTipo');
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuración de Tailwind (sin cambios)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'accent': '#D96B4F',
+                        'accent-alt': '#FF8B6A',
+                        'bg-soft': '#fffaf6',
+                        'badge-pending': '#9a6200',
+                        'badge-sent': '#D96B4F',
+                        'badge-notificado': '#1b7f3a',
+                        'badge-rescheduled': '#8e44ad',
+                        'brand-accent': '#D96B4F',
+                        'sidebar-bg': '#1f2937',
+                        'sidebar-hover': '#374151',
+                        'sidebar-active-bg': '#D96B4F',
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+                    },
+                    borderRadius: { 'xl': '14px' }
+                },
+            }
+        }
+    </script>
+    
+    <!-- SDK de Firebase ELIMINADO -->
+
+    <style>
+        /* Estilos (sin cambios) */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        @media (min-width: 768px) {
+            html, body, #root-container { height: 100%; }
+        }
+        #sidebar { z-index: 60; }
+        #sidebarOverlay { z-index: 50; }
+        header { position: sticky; top: 0; z-index: 40; }      
+        body { background-color: #fffaf6; color: #2b2b2b; line-height: 1.6; }
+        .oculto { display: none !important; }
+        main > section { display: none; }
+        main > section.active { display: flex; flex-direction: column; }
+        .nowrap { white-space: nowrap; }
+        #editPanel { transition: transform 0.3s ease-in-out; }
+        #tablaEnvios > thead > tr > th {
+            position: -webkit-sticky; position: sticky; top: 0; z-index: 5;
+            background-color: #fef3c7;
+        }
+        .print-container { display: none; }
+
+        @media print {
+            /* Estilos de impresión (sin cambios) */
+            #root-container, .toast, #deleteModal, #editPanelOverlay, #editPanel { display: none !important; }
+            .print-container { 
+                display: block !important; width: 100%; column-count: 2; 
+                column-gap: 1cm; padding: 0.5cm; 
+            }
+            .label-card {
+                font-family: 'Quicksand', sans-serif; break-inside: avoid;
+                page-break-inside: avoid; margin-bottom: 1cm; border: 1px solid #e0e0e0;
+                border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;
+                background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            }
+            .label-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 12px 16px; background-color: #fffaf6; border-bottom: 1px solid #e0e0e0;
+            }
+            .label-logo { max-height: 40px; max-width: 100px; object-fit: contain; }
+            .label-business-name { font-size: 16px; font-weight: 700; color: #333; text-align: right; }
+            .label-body { padding: 16px; flex-grow: 1; }
+            .label-section { margin-bottom: 12px; }
+            .label-section-title {
+                font-size: 10px; font-weight: 700; color: #D96B4F;
+                text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+            }
+            .label-recipient-name { font-size: 20px; font-weight: 700; color: #000; line-height: 1.2; }
+            .label-recipient-phone { font-size: 14px; color: #555; }
+            .label-destination-text { font-size: 14px; line-height: 1.5; color: #333; }
+            .label-footer {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 12px 16px; background-color: #f9fafb; border-top: 1px solid #e0e0e0;
+            }
+            .label-courier-info {
+                font-size: 12px; font-weight: 600; color: #555;
+                display: flex; align-items: center; gap: 6px;
+            }
+            .label-courier-info svg { width: 16px; height: 16px; stroke-width: 2.5; }
+            .label-qr-code {
+                width: 60px; height: 60px; border: 1px solid #ccc; display: flex;
+                align-items: center; justify-content: center; font-size: 10px;
+                color: #888; text-align: center;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body:not(.scroll-enabled) #root-container { overflow: hidden; }
+            body.scroll-enabled #mainContent { overflow-y: auto; }
+        }
+        .col-hidden { display: none; }
+        
+        /* Estilos inline edit (sin cambios) */
+        .inline-edit-container { display: flex; align-items: center; gap: 4px; }
+        .inline-edit-estado {
+            min-width: 120px; flex-shrink: 0; padding: 0.3rem 0.5rem !important;
+            font-size: 0.75rem !important; border-radius: 0.5rem !important;
+        }
+        .inline-edit-fecha {
+             max-width: 150px; flex-shrink: 0; padding: 0.3rem 0.5rem !important;
+             font-size: 0.75rem !important; border-radius: 0.5rem !important;
+         }
+        .inline-save-btn {
+             padding: 4px 8px !important; flex-shrink: 0;
+             font-size: 0.75rem !important; border-radius: 0.5rem !important;
+        }
+        .inline-save-btn svg { width: 14px !important; height: 14px !important; }
+        
+        /* Ajustes móviles (sin cambios) */
+        #mobileCardContainer .inline-edit-container {
+            flex-direction: column; align-items: flex-start; margin-top: 8px;
+            gap: 8px; padding-top: 8px; border-top: 1px solid #eee;
+        }
+         #mobileCardContainer .inline-edit-fecha {
+             max-width: none; width: 100%; padding: 0.5rem !important;
+             font-size: 0.875rem !important;
+         }
+          #mobileCardContainer .inline-edit-estado {
+             width: 100%; padding: 0.5rem !important;
+             font-size: 0.875rem !important;
+         }
+         #mobileCardContainer .inline-save-btn {
+            width: 100%; justify-content: center; padding: 0.5rem 1rem !important;
+            font-size: 0.875rem !important;
+         }
+        
+        /* ============ CAMBIO: CSS para Login ELIMINADO ============ */
+        /* #root-container { display: none; } */ /* <--- ELIMINADO */
+        /* #loginScreen { display: flex; } */ /* <--- ELIMINADO */
+        /* ========================================================== */
+    </style>
+</head>
+<body class="font-sans bg-bg-soft text-gray-900 antialiased">
+    
+    <!-- ============ CAMBIO: Contenedor visible por defecto ============ -->
+    <div id="root-container" class="flex bg-bg-soft min-h-screen">
+        <!-- Menú Vertical -->
+        <aside id="sidebar" class="w-64 bg-sidebar-bg text-white flex flex-col fixed h-full shadow-lg z-40 transform -translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="p-6 border-b border-gray-700 flex items-center gap-3">
+                <img id="sidebarLogo" src="" alt="Logo" class="h-10 w-10 rounded-md object-cover bg-white p-1 hidden">
+                <h1 id="sidebarTitle" class="text-2xl font-bold text-white">Panel</h1>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#envios" class="nav-link active flex items-center gap-3 p-3 rounded-lg font-semibold transition-colors duration-200">
+                    <i data-feather="truck" class="w-5 h-5"></i><span>Envíos</span>
+                </a>
+                <a href="#link" class="nav-link flex items-center gap-3 p-3 rounded-lg font-semibold transition-colors duration-200">
+                    <i data-feather="link" class="w-5 h-5"></i><span>Link Mágico</span>
+                </a>
+                <a href="#cuenta" class="nav-link flex items-center gap-3 p-3 rounded-lg font-semibold transition-colors duration-200">
+                    <i data-feather="settings" class="w-5 h-5"></i><span>Mi Cuenta</span>
+                </a>
+            </nav>
+            <!-- ============ CAMBIO: Botón de Logout ELIMINADO ============ -->
+            <!-- <div class="p-4 border-t border-gray-700 text-sm">
+                <a href="#" id="logoutButton-sidebar" class="text-accent-alt hover:underline">Cerrar Sesión</a>
+            </div> -->
+            <!-- ========================================================== -->
+        </aside>
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+        <!-- Fin Menú Vertical -->
+
+        <div id="mainContent" class="flex-1 flex flex-col transition-all duration-300 ease-in-out">
+             <!-- Header (sin cambios) -->
+            <header class="bg-gradient-to-br from-brand-accent to-orange-400 text-white p-6 shadow-xl shadow-accent/25 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-4">
+                    <button id="sidebarToggle" class="text-white p-2 rounded-md hover:bg-black/20 focus:outline-none focus:ring-2 focus:ring-white">
+                        <i data-feather="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h1 id="headerTitle" class="text-2xl font-bold">Envíos</h1>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-3">
+                    <div class="text-right">
+                         <p class="text-sm opacity-90">Bienvenido,</p>
+                         <strong id="headerBusinessName" class="font-bold">[Nombre del emprendimiento]</strong>
+                    </div>
+                    <img id="headerLogo" src="" alt="Logo" class="h-12 w-12 rounded-md object-cover bg-white p-1 hidden">
+                </div>
+            </header>
+
+            <main class="flex-grow p-4 md:p-6">
+                
+                <!-- Sección Envíos (sin cambios en HTML) -->
+                <section class="active md:h-full" id="envios">
+                    <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-4 md:p-6 border border-gray-200 flex flex-col md:h-full">
+                        <!-- Filtros y botones (sin cambios en HTML) -->
+                        <div class="flex-shrink-0">
+                            <!-- ================== INICIO: Botón de Acordeón (Solo Móvil) ================== -->
+                            <button id="accordionToggleBtn" class="md:hidden w-full flex justify-between items-center p-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-bold mb-4">
+                                <span>Filtros y Acciones</span>
+                                <i data-feather="chevron-down" class="w-5 h-5 transition-transform duration-300"></i>
+                            </button>
+                            <!-- ================== FIN: Botón de Acordeón ================== -->
+                            <!-- ================== INICIO: Contenido del Acordeón (Oculto en móvil) ================== -->
+                            <!-- En desktop (md:), el 'md:block' lo hará visible -->
+                            <div id="accordionContent" class="hidden md:block">                               
+                                <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 border-b border-gray-200 pb-4 mb-4 flex-wrap">
+                                    <!-- Grupo de Filtros -->
+                                    <div class="flex flex-col md:flex-row md:items-end gap-2 flex-wrap">
+                                        <label class="text-xs text-gray-500 font-semibold md:w-36">Cliente (N° Exacto)<input type="text" id="filtroCliente" placeholder="N° exacto (987654321)" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1" /></label>
+                                        <label class="text-xs text-gray-500 font-semibold md:w-36">Fecha de Envío<input type="date" id="filtroFecha" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1" /></label>
+                                        <label class="text-xs text-gray-500 font-semibold md:w-36"">Courier
+                                            <select id="filtroTipo" class="select p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1">
+                                                <option value="">Todos</option>
+                                                <option value="SHALOM">Shalom</option>
+                                                <option value="OLVA">Olva</option>
+                                                <option value="DELIVERY">Delivery Propio</option>
+                                            </select>
+                                        </label>
+                                        <button class="btn primary bg-gradient-to-r from-accent to-accent-alt text-white py-2.5 px-4 rounded-xl font-bold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200" id="btnAplicarFiltros">Filtrar</button>
+                                        <button id="btnLimpiarFiltros" class="btn ghost bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 py-2.5 px-4 rounded-xl font-bold text-sm transition-all duration-200">Limpiar</button>
+                                        <label class="flex items-center text-sm text-gray-700 ml-4 cursor-pointer">
+                                            <input type="checkbox" id="filtroDuplicados" class="rounded border-gray-300 text-accent focus:ring-accent mr-2">
+                                            <span>Mostrar solo duplicados</span>
+                                        </label>
+                                    </div>
+                                    <!-- Grupo de Acciones -->
+                                    <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="btn ghost bg-transparent border border-gray-200 text-gray-900 hover:bg-gray-50 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2 w-full" id="plantillasDropdownBtn">
+                                                <i data-feather="download" class="w-4 h-4"></i>
+                                                <span>Descargar Plantilla</span>
+                                                <i data-feather="chevron-down" class="w-4 h-4 -mr-1 ml-2"></i>
+                                            </button>
+                                            <div id="plantillasDropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-10">
+                                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="plantillasDropdownBtn">
+                                                    <a href="#" id="btnTplDelivery" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Plantilla DELIVERY (.xlsx)</a>
+                                                    <a href="#" id="btnTplShalom" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Plantilla SHALOM (.xlsx)</a>
+                                                    <a href="#" id="btnTplOlva" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Plantilla OLVA (.xlsx)</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn primary bg-gradient-to-r from-accent to-accent-alt text-white shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2" id="btnEtiquetas"><i data-feather="tag" class="w-4 h-4"></i>Imprimir Etiquetas</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ================== FIN: Contenido del Acordeón ================== -->
+                            <!-- Acciones en lote (sin cambios en HTML) -->
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 my-3 hidden" id="batchActionsContainer">
+                                <div class="lote-left flex gap-3 items-center flex-wrap">
+                                    <label class="nowrap text-sm text-gray-900"><input type="checkbox" id="checkTodos" class="rounded border-gray-300 text-accent focus:ring-accent" /> Seleccionar todo</label>
+                                    <span class="text-gray-500 text-sm hidden" id="selCount">0 seleccionados</span>
+                                    <span id="visibleCount" class="text-gray-500 text-sm border-l border-gray-300 pl-3 ml-3"></span>
+                                </div>
+                                <div class="lote-right flex flex-col sm:flex-row gap-2 items-center w-full md:w-auto hidden">
+                                    <select id="accionLote" class="select p-2.5 border border-gray-200 rounded-xl bg-white w-full sm:w-auto text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                                        <option value="" selected>Acción en lote…</option>
+                                        <option value="PENDIENTE">Marcar como Pendiente</option>                                       
+                                        <option value="NOTIFICADO">Marcar como Notificado</option>
+                                        <option value="ENVIADO">Marcar como Enviado</option>
+                                        <option value="REPROGRAMADO">Reprogramar</option>
+                                        <option value="ELIMINAR" class="text-red-600 font-semibold">Eliminar Seleccionados</option>
+                                    </select>
+                                    <input type="date" id="fechaReprog" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full sm:w-auto text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 oculto" />
+                                    <button class="btn primary bg-accent text-white py-2.5 px-4 rounded-xl font-bold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto" id="btnAplicarLote">Aplicar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contenedor de Tabla (sin cambios en HTML) -->
+                        <div id="tableContainer" class="md:flex-grow md:relative md:min-h-0">
+                            <div class="overflow-auto absolute inset-0 hidden md:block shadow-lg shadow-gray-100 rounded-xl border border-gray-200">
+                                <table id="tablaEnvios" class="w-full border-collapse bg-white">
+                                    <thead>
+                                        <tr>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider rounded-tl-xl w-12"><input type="checkbox" id="thCheckTodos" class="rounded border-gray-300 text-accent focus:ring-accent" /></th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Fecha Reg.</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Cliente</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Courier</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Destinatario</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Destino</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Fecha Envío</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider">Estado</th>
+                                            <th class="p-3 text-left text-xs font-bold text-accent uppercase tracking-wider rounded-tr-xl">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyEnvios"></tbody>
+                                </table>
+                            </div>
+                             <div id="mobileCardContainer" class="md:hidden space-y-4 md:overflow-y-auto md:absolute md:inset-0">
+                                <!-- Tarjetas móviles -->
+                            </div>
+                        </div>
+
+                        <!-- Empty State (sin cambios en HTML) -->
+                        <div id="emptyStateContainer" class="hidden text-center p-10 border-2 border-dashed rounded-xl mt-4 flex-grow items-center justify-center flex-col">
+                            <i data-feather="gift" class="w-16 h-16 mx-auto text-gray-300"></i>
+                            <h3 class="mt-4 text-xl font-bold text-gray-800">¡Bienvenido a tu panel de control!</h3>
+                            <p class="mt-2 text-sm text-gray-500 max-w-sm mx-auto">Aún no tienes envíos registrados. El primer paso es configurar tu 'Link Mágico' y compartirlo con tus clientes.</p>
+                            <button id="goToAccountBtn" class="mt-6 btn primary bg-gradient-to-r from-accent to-accent-alt text-white shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center gap-2">
+                                <i data-feather="link" class="w-4 h-4"></i> ¡Prueba el 'Link Mágico'!
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección Link Mágico (sin cambios en HTML) -->
+                <section id="link" class="h-full">
+                    <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                        <p class="text-gray-500 text-sm mb-5">Comparte este link único con tus clientes. Ellos completarán sus datos de envío directamente y la información aparecerá en tu panel, ¡sin errores y sin que tengas que transcribir nada!</p>
+                        <div class="form-group">
+                            <label for="linkUnicoInput" class="block text-sm text-gray-500 font-semibold mb-1.5">Tu enlace personal</label>
+                            <div id="linkUnicoContainer" class="flex flex-col sm:flex-row gap-2">
+                                <input type="text" id="linkUnicoInput" class="input p-2.5 border border-gray-200 rounded-xl bg-gray-50 flex-grow text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" value="Reemplaza todo lo relacionado con firestore con localstore para el codigo del panel del admi/form/tu-tienda" readonly>
+                                <button class="btn ghost bg-transparent border border-gray-200 text-gray-900 hover:bg-gray-50 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2 w-full sm:w-auto" id="btnCopiarLink"><i data-feather="copy" class="w-4 h-4"></i>Copiar</button>
+                                <button class="btn primary bg-gradient-to-r from-accent to-accent-alt text-white shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center justify-center gap-2 w-full sm:w-auto" id="btnCompartirLink"><i data-feather="share-2" class="w-4 h-4"></i>Compartir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="p-4 bg-bg-soft flex-shrink-0 flex justify-center items-center gap-2 text-gray-500 text-sm mt-auto">
+                        <span>Powered by</span>
+                        <svg height="20" viewBox="0 0 90 22" xmlns="http://www.w3.org/2000/svg">
+                            <text x="0" y="18" style="font-family: Quicksand, sans-serif; font-size: 20px; font-weight: 700; fill: #D96B4F;">Latam5S</text>
+                        </svg>
+                    </footer>
+                </section>
+
+                <!-- Sección Mi Cuenta (sin cambios en HTML) -->
+                <section id="cuenta">
+                    <div class="flex-grow p-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                            <div class="lg:col-span-3 space-y-6">
+                                <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                                    <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-3 mb-4"><i data-feather="briefcase" class="w-5 h-5 text-accent"></i> Perfil del Negocio</h3>
+                                    <div class="space-y-4">
+                                        <div class="form-group">
+                                            <label for="businessName" class="block text-sm text-gray-500 font-semibold mb-1.5">Nombre del Emprendimiento</label>
+                                            <input type="text" id="businessName" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="Ej: La Tiendita de Ana" value="Mi Tienda de Prueba">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="logoInput" class="block text-sm text-gray-500 font-semibold mb-1.5">Logo del Negocio</label>
+                                            <input type="file" id="logoInput" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm file:mr-4 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-accent hover:file:bg-orange-100" accept="image/*">
+                                            <img id="logoPreview" src="" alt="Vista previa del logo" class="max-h-20 rounded-lg object-contain border border-dashed border-gray-300 p-1 mt-3 hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                                    <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-3 mb-4"><i data-feather="calendar" class="w-5 h-5 text-accent"></i> Opciones de Despacho</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="space-y-3">
+                                            <label class="block text-sm text-gray-500 font-semibold">Couriers Habilitados</label>
+                                            <div class="space-y-2">
+                                                <label class="block text-sm text-gray-900"><input type="checkbox" checked class="rounded border-gray-300 text-accent focus:ring-accent mr-2"> Delivery</label>
+                                                <label class="block text-sm text-gray-900"><input type="checkbox" checked class="rounded border-gray-300 text-accent focus:ring-accent mr-2"> Shalom</label>
+                                                <label class="block text-sm text-gray-900"><input type="checkbox" class="rounded border-gray-300 text-accent focus:ring-accent mr-2"> Olva</label>
+                                                <label class="block text-sm text-gray-900"><input type="checkbox" class="rounded border-gray-300 text-accent focus:ring-accent mr-2"> Dinsides</label>
+                                            </div>
+                                        </div>
+                                         <div class="space-y-3">
+                                            <label class="block text-sm text-gray-500 font-semibold">Días de Despacho</label>
+                                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                                                <label class="inline-flex items-center"><input type="checkbox" class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Lun</label>
+                                                <label class="inline-flex items-center"><input type="checkbox" checked class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Mar</label>
+                                                <label class="inline-flex items-center"><input type="checkbox" class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Mié</label>
+                                                <label class="inline-flex items-center"><input type="checkbox" checked class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Jue</label>
+                                                <label class="inline-flex items-center"><input type="checkbox" class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Vie</label>
+                                                <label class="inline-flex items-center"><input type="checkbox" checked class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Sáb</label>
+                                                <label class="inline-flex items-center"><input type="checkbox" class="rounded border-gray-300 text-accent focus:ring-accent mr-1"> Dom</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group md:col-span-2">
+                                            <label for="cutoffTime" class="block text-sm text-gray-500 font-semibold mb-1.5">Hora de Cierre de Pedidos</label>
+                                            <input type="time" id="cutoffTime" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full md:w-auto text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                                    <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-3 mb-4"><i data-feather="share-2" class="w-5 h-5 text-accent"></i> Redes Sociales</h3>
+                                    <div class="space-y-4">
+                                        <p class="text-sm text-gray-500 -mt-2">Estos enlaces aparecerán en tu formulario para que tus clientes puedan contactarte.</p>
+                                        <div class="form-group">
+                                            <label for="instagramUser" class="block text-sm text-gray-500 font-semibold mb-1.5">Usuario de Instagram</label>
+                                            <div class="relative">
+                                                <i data-feather="instagram" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></i>
+                                                <input type="text" id="instagramUser" class="input p-2.5 pl-9 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="mitiendaonline">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="whatsappNumber" class="block text-sm text-gray-500 font-semibold mb-1.5">Número de WhatsApp</label>
+                                            <div class="relative">
+                                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">+51</span>
+                                                <input type="number" id="whatsappNumber" class="input p-2.5 pl-10 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="987654321">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="facebookUser" class="block text-sm text-gray-500 font-semibold mb-1.5">Usuario de Facebook</label>
+                                            <div class="relative">
+                                                <i data-feather="facebook" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></i>
+                                                <input type="text" id="facebookUser" class="input p-2.5 pl-9 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="mitiendaonlinefb">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tiktokUser" class="block text-sm text-gray-500 font-semibold mb-1.5">Usuario de TikTok</label>
+                                            <div class="relative">
+                                                <i data-feather="music" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></i>
+                                                <input type="text" id="tiktokUser" class="input p-2.5 pl-9 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="mitienda.tiktok">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:col-span-2 space-y-6">
+                                <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                                    <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-3 mb-4"><i data-feather="award" class="w-5 h-5 text-accent"></i> Tu Suscripción</h3>
+                                    <div class="space-y-3 text-sm">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-500">Plan Actual:</span>
+                                            <span class="font-bold text-gray-900">Crecimiento</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-500">Estado:</span>
+                                            <span class="font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full text-xs">Activo</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-500">Próximo Pago:</span>
+                                            <span class="font-bold text-gray-900">15 Nov, 2025</span>
+                                        </div>
+                                        <div class="pt-2">
+                                            <button class="btn ghost bg-transparent border border-gray-200 text-gray-900 hover:bg-gray-50 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center gap-2 w-full justify-center">Administrar Suscripción</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                                    <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-3 mb-4"><i data-feather="lock" class="w-5 h-5 text-accent"></i> Seguridad de la Cuenta</h3>
+                                    <div class="space-y-4">
+                                        <div class="form-group">
+                                            <label for="userEmail" class="block text-sm text-gray-500 font-semibold mb-1.5">Email de la Cuenta</label>
+                                            <input type="email" id="userEmail" class="input p-2.5 border border-gray-200 rounded-xl bg-gray-100 w-full text-sm text-gray-600 cursor-not-allowed" value="ana.ventas@email.com" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPassword" class="block text-sm text-gray-500 font-semibold mb-1.5">Nueva Contraseña</label>
+                                            <input type="password" id="newPassword" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="Deja en blanco para no cambiar">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-6 border border-gray-200">
+                                    <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-3 mb-4"><i data-feather="users" class="w-5 h-5 text-accent"></i> Gestión de Equipo</h3>
+                                    <div class="space-y-4">
+                                        <p class="text-sm text-gray-500 -mt-2">Invita a miembros de tu equipo para que colaboren en la gestión de envíos (Función del Plan Consolidado).</p>
+                                        <div class="flex gap-2">
+                                            <input type="email" placeholder="email@ejemplo.com" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 flex-grow">
+                                            <button class="btn primary bg-accent text-white py-2.5 px-4 rounded-xl font-bold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap">Invitar</button>
+                                        </div>
+                                        <div class="space-y-2 pt-2">
+                                            <label class="block text-sm text-gray-500 font-semibold mb-1">Miembros Actuales:</label>
+                                            <div class="flex justify-between items-center text-sm p-2 bg-gray-50 rounded-lg">
+                                                <span>ana.ventas@email.com (Tú)</span>
+                                                <span class="font-bold text-accent">Admin</span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-sm p-2 bg-gray-50 rounded-lg">
+                                                <span>carlos.logistica@email.com</span>
+                                                <span class="text-gray-500">Miembro</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-6">
+                            <button class="btn primary bg-gradient-to-r from-accent to-accent-alt text-white shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 py-2.5 px-4 rounded-xl font-bold text-sm inline-flex items-center gap-2" id="btnGuardarConfig"><i data-feather="save" class="w-4 h-4"></i>Guardar Cambios</button>
+                        </div>
+                    </div>
+                    <footer class="p-4 bg-bg-soft flex-shrink-0 flex justify-center items-center gap-2 text-gray-500 text-sm mt-6">
+                        <span>Powered by</span>
+                        <svg height="20" viewBox="0 0 90 22" xmlns="http://www.w3.org/2000/svg">
+                            <text x="0" y="18" style="font-family: Quicksand, sans-serif; font-size: 20px; font-weight: 700; fill: #D96B4F;">Latam5S</text>
+                        </svg>
+                    </footer>
+                </section>
+                
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Elementos Flotantes (sin cambios en HTML) -->
+    <div class="toast fixed right-5 bottom-5 bg-gradient-to-r from-accent to-accent-alt text-white p-3 rounded-xl shadow-xl shadow-accent/25 opacity-0 translate-y-2 transition-all duration-300 z-50" id="toast">Acción aplicada</div>
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md text-center">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0">
+                <i data-feather="alert-triangle" class="h-6 w-6 text-red-600"></i>
+            </div>
+            <h3 class="text-lg leading-6 font-bold text-gray-900 mt-4" id="modal-title">Confirmar Eliminación</h3>
+            <div class="mt-2"><p class="text-sm text-gray-500" id="modalMessage">...</p></div>
+            <div class="mt-6 flex justify-center gap-4">
+                <button type="button" id="confirmDeleteBtn" class="inline-flex justify-center rounded-xl border border-transparent bg-red-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200">Eliminar</button>
+                <button type="button" id="cancelDeleteBtn" class="inline-flex justify-center rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 transition-all duration-200">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición (sin cambios en HTML) -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-lg text-left">
+            <h3 class="text-lg leading-6 font-bold text-gray-900 flex items-center gap-2" id="edit-modal-title">
+                <i data-feather="edit-2" class="w-5 h-5 text-accent"></i>
+                Editar Envío
+            </h3>
+            
+            <form id="editForm" class="mt-4 space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+                <input type="hidden" id="editEnvioId">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Columna Izquierda -->
+                    <div class="space-y-4">
+                        <div>
+                            <label for="editCliente" class="block text-sm text-gray-500 font-semibold mb-1.5">Cliente (Celular)</label>
+                            <input type="text" id="editCliente" class="input p-2.5 border border-gray-300 rounded-xl bg-gray-100 cursor-not-allowed w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" readonly>
+                        </div>
+                        <div>
+                            <label for="editNombre" class="block text-sm text-gray-500 font-semibold mb-1.5">Destinatario (Nombre)</label>
+                            <input type="text" id="editNombre" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                        <div>
+                            <label for="editTelefono" class="block text-sm text-gray-500 font-semibold mb-1.5">Destinatario (Teléfono)</label>
+                            <input type="text" id="editTelefono" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                        <div>
+                            <label for="editDNI" class="block text-sm text-gray-500 font-semibold mb-1.5">Destinatario (DNI)</label>
+                            <input type="text" id="editDNI" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                        <div>
+                            <label for="editCourier" class="block text-sm text-gray-500 font-semibold mb-1.5">Courier</label>
+                            <select id="editCourier" class="select p-2.5 border border-gray-300 rounded-xl bg-gray-100 cursor-not-allowed w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" disabled>
+                                <option value="SHALOM">Shalom</option>
+                                <option value="OLVA">Olva</option>
+                                <option value="DELIVERY">Delivery Propio</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Columna Derecha -->
+                    <div class="space-y-4">
+                        <div>
+                            <label for="editDistrito" class="block text-sm text-gray-500 font-semibold mb-1.5">Distrito</label>
+                            <input type="text" id="editDistrito" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                        <div>
+                            <label for="editDireccion" class="block text-sm text-gray-500 font-semibold mb-1.5">Dirección</label>
+                            <input type="text" id="editDireccion" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                        <div>
+                            <label for="editReferencia" class="block text-sm text-gray-500 font-semibold mb-1.5">Referencia</label>
+                            <input type="text" id="editReferencia" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                        <div>
+                            <label for="editAgencia" class="block text-sm text-gray-500 font-semibold mb-1.5">Agencia</gabel>
+                            <input type="text" id="editAgencia" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción Y Checkbox (sin cambios en HTML) -->
+                <div class="mt-6 flex flex-col md:flex-row justify-between items-center gap-4 pt-4 border-t border-gray-100">
+                    <div class="w-full md:w-auto">
+                        <label for="editActualizarPerfil" class="flex items-center text-sm text-gray-700 font-medium cursor-pointer">
+                            <input type="checkbox" id="editActualizarPerfil" class="rounded border-gray-300 text-accent focus:ring-accent mr-2">
+                            <span>Actualizar perfil de cliente</span>
+                        </label>
+                        <p class="text-xs text-gray-500 ml-6 md:ml-0"> (Para futuros envíos)</p>
+                    </div>
+                    <div class="flex justify-end gap-4 w-full md:w-auto">
+                        <button type="button" id="cancelEditBtn" class="inline-flex justify-center rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 transition-all duration-200">Cancelar</button>
+                        <button type="submit" id="confirmEditBtn" class="inline-flex justify-center rounded-xl border border-transparent bg-accent px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-accent-alt focus:outline-none focus:ring-2 focus:ring-accent-alt focus:ring-offset-2 transition-all duration-200">Guardar Cambios</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Fin Modal Edición -->
+
+    <!-- ================== INICIO: Modal de Lanzamiento ================== -->
+    <div id="launchModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 w-full max-w-md text-center transform scale-95 transition-all duration-300" id="launchModalCard">
+            
+            <button id="closeLaunchModalBtn" class="absolute -top-3 -right-3 bg-gray-700 text-white rounded-full p-1.5 shadow-lg hover:bg-gray-900 transition-all">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+            
+            <i data-feather="rocket" class="w-16 h-16 text-accent mx-auto mb-4"></i>
+            
+            <h3 class="text-2xl leading-6 font-bold text-gray-900" id="modal-title">¡Gracias por probar la demo!</h3>
+            <p class="mt-3 text-base text-gray-600">
+                Parece que te gustó. Esta es una versión de prueba.
+                ¡Anótate para ser el primero en saber sobre el lanzamiento oficial!
+            </p>
+
+            <form id="launchForm" class="mt-6 space-y-4">
+                <div>
+                    <label for="launchEmail" class="sr-only">Tu correo</label>
+                    <input type="email" id="launchEmail" required class="input p-3 border border-gray-300 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="tu-correo@ejemplo.com">
+                </div>
+                <div class="relative">
+                    <label for="launchWhatsapp" class="sr-only">Tu WhatsApp</label>
+                    <!-- Icono -->
+                    <i data-feather="phone" class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    <!-- Input -->
+                    <input type="tel" id="launchWhatsapp" class="input p-3 pl-10 border border-gray-300 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="Tu WhatsApp (Opcional)">
+                </div>
+                <button type="submit" id="submitLaunchFormBtn" class="w-full inline-flex justify-center rounded-xl border border-transparent bg-accent px-4 py-3 text-sm font-bold text-white shadow-md shadow-accent/20 hover:bg-accent-alt focus:outline-none focus:ring-2 focus:ring-accent-alt focus:ring-offset-2 transition-all duration-200">
+                    ¡Anotarme al lanzamiento!
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- ================== FIN: Modal de Lanzamiento ================== -->
+
+    <!-- ================== INICIO: Botón Flotante para Lanzamiento ================== -->
+    <button id="openLaunchModalBtn" class="fixed bottom-6 right-6 bg-gradient-to-r from-accent to-accent-alt text-white p-4 rounded-full shadow-xl shadow-accent/30 hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-1 transition-all z-40 hidden">
+        ¡Siguiente Paso!
+    </button>
+    <!-- ================== FIN: Botón Flotante ================== -->
+
+    <!-- Contenedor de impresión -->
+    <div id="print-container" class="print-container"></div>
+
+<!-- ======================= INICIO: SCRIPT PRINCIPAL (Modificado para LocalStorage) ======================= -->
+<script type="module">
+document.addEventListener('DOMContentLoaded', async () => {
+    feather.replace();
+
+    // ======================= INICIO: Lógica de LocalStorage =======================
+    // Variables globales
+    let todosLosEnvios = []; // Variable global para almacenar todos los envíos.
+    const STORAGE_KEY = 'demoEnvios'; // Clave para LocalStorage
+    const openLaunchModalBtn = document.getElementById('openLaunchModalBtn');
+
+    // --- Nuevas Funciones Auxiliares para LocalStorage ---
+    
+    /**
+     * Obtiene todos los envíos desde LocalStorage.
+     * @returns {Array} Un array de objetos de envío.
+     */
+    function getEnviosFromStorage() {
+        try {
+            const data = localStorage.getItem(STORAGE_KEY);
+            // Parsear datos. Asegurarse de que las fechas se manejen bien.
+            const envios = data ? JSON.parse(data) : [];
+            // Convertir strings de fecha guardados a formatos de UI
+            return envios.map(envio => {
+                const fechaReg = formatLocalDate(envio.fechaRegistro); // YYYY-MM-DD -> dd-mm-yyyy
+                const fechaEnvio = formatLocalDate(envio.fechaEnvio); // YYYY-MM-DD -> dd-mm-yyyy
+                return {
+                    ...envio,
+                    id: String(envio.id), // Asegurarse que el ID sea string
+                    fechaReg: fechaReg.display,
+                    fechaEnvioDisplay: fechaEnvio.display,
+                    fechaEnvioInput: fechaEnvio.input
+                };
+            });
+        } catch (e) {
+            console.error("Error leyendo de LocalStorage:", e);
+            return [];
+        }
+    }
+
+    /**
+     * Guarda el array completo de envíos en LocalStorage.
+     * @param {Array} envios - El array de envíos a guardar.
+     */
+    function saveEnviosToStorage(envios) {
+        try {
+            // Antes de guardar, nos aseguramos de no guardar los formatos de UI
+            const enviosToSave = envios.map(envio => {
+                const { fechaReg, fechaEnvioDisplay, fechaEnvioInput, ...rest } = envio;
+                // Solo guardamos los datos crudos (fechaEnvio ya es YYYY-MM-DD)
+                return rest;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(enviosToSave));
+        } catch (e) {
+            console.error("Error guardando en LocalStorage:", e);
+            showToast("Error al guardar datos localmente.");
+        }
+    }
+
+    /**
+     * Formatea una fecha en string (YYYY-MM-DD) a formatos de display.
+     * @param {string} dateString - Fecha en formato YYYY-MM-DD.
+     * @returns {object} { display: 'dd-mm-yyyy', input: 'YYYY-MM-DD' }
+     */
+    function formatLocalDate(dateString) {
+        if (typeof dateString === 'string' && dateString.includes('-')) {
+            const parts = dateString.split('-');
+            if (parts.length === 3) {
+                return {
+                    display: `${parts[2]}-${parts[1]}-${parts[0]}`, // dd-mm-yyyy
+                    input: dateString // YYYY-MM-DD
+                };
+            }
+        }
+        return { display: '', input: '' }; // Vacío si no es válido
+    }
+
+    // ======================= FIN: Lógica de LocalStorage =======================
+
+
+    // ============ CAMBIO: LÓGICA DE LOGIN SIMULADO ELIMINADA ============
+    // Se eliminaron las variables y funciones:
+    // loginScreen, rootContainerEl, loginForm, loginEmail, loginPassword,
+    // loginError, loginButton, showMainPanel, showLoginScreen,
+    // handleLogin, handleLogout
+    // =================================================================
+
+
+    // --- LÓGICA DE WHATSAPP (Sin cambios, no depende de Firebase) ---
+    function handleNotifyClick(id) {
+        const envio = todosLosEnvios.find(e => e.id === id);
+        if (!envio) {
+            showToast('Error: No se encontró el envío.');
+            return;
+        }
+        if (!envio.cliente) {
+            showToast('Este envío no tiene un número de teléfono asignado.');
+            return;
+        }
+        const businessName = localStorage.getItem('businessName') || 'Tu Emprendimiento';
+        
+        let destinoBlock = '';
+        const courier = (envio.courier || 'OTRO').toUpperCase();
+
+        if (courier === 'DELIVERY') {
+            let diaPago = 'N/A';
+            let distritoMostrado = envio.distrito || 'N/A';
+            let tarifaMostrada = 'S/. 12'; 
+            if (envio.fechaEnvioInput) {
+                try {
+                    const fecha = new Date(envio.fechaEnvioInput + 'T12:00:00');
+                    const fechaPago = new Date(fecha);
+                    fechaPago.setDate(fecha.getDate() - 1);
+                    diaPago = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short' }).format(fechaPago);
+                } catch (e) { console.error("Error al parsear fecha para plantilla: ", e); }
+            }
+            if (envio.distrito && envio.distrito.includes('|')) {
+                const partes = envio.distrito.split('|');
+                distritoMostrado = partes[0].trim();
+                tarifaMostrada = partes[1].trim();
+            }
+            destinoBlock = `* _Distrito: ${distritoMostrado}_
+* _Dirección: ${envio.direccion || 'N/A'}_
+* _Referencia: ${envio.referencia || '(Sin referencia)'}_
+*Pago del DELIVERY* 💚
+* _Día de pago: ${diaPago} (máx. 6pm)_
+* _tarifa plana: ${tarifaMostrada}_
+* _Yape: 981391159 - 975100450_
+* _Titular: Rosalinda Barzola_`;
+        } else {
+            destinoBlock = `* _DNI: ${envio.DNI || 'N/A'}_
+* _Agencia (Destino): ${envio.agencia || 'N/A'}_`;
+        }
+
+        const mensaje = `*¡Hola bonita!* 😊💖
+_Tu pedido ya está programado 💫_
+*Envío por ${envio.courier || 'N/A'}* 📦
+* _Fecha de envío: ${envio.fechaEnvioDisplay || 'Por programar'}_
+* _Destinatario: ${envio.nombre || 'N/A'} (${envio.telefono || 'N/A'})_
+${destinoBlock}
+_Atte. CompliEnvíos_ 🥰
+`;
+        let numeroFormateado = envio.cliente.replace(/[^\d]/g, '');
+        if (numeroFormateado.length === 9 && !numeroFormateado.startsWith('51')) {
+            numeroFormateado = '51' + numeroFormateado;
+        }
+        const whatsappUrl = `https://wa.me/${numeroFormateado}?text=${encodeURIComponent(mensaje)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    // --- FIN: LÓGICA DE WHATSAPP ---
+
+
+    // --- LÓGICA UI (Menú, Dropdowns, etc. - Sin cambios) ---
+    const rootContainer = document.getElementById('root-container');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+    }
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+    }
+    sidebarToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar();
+    });
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    const plantillasBtn = document.getElementById('plantillasDropdownBtn');
+    const plantillasMenu = document.getElementById('plantillasDropdownMenu');
+    plantillasBtn.addEventListener('click', () => {
+        plantillasMenu.classList.toggle('hidden');
+    });
+    // ================== INICIO: NUEVA LÓGICA DE ACORDEÓN PARA MÓVIL ==================
+    const accordionToggleBtn = document.getElementById('accordionToggleBtn');
+    const accordionContent = document.getElementById('accordionContent');
+    if (accordionToggleBtn && accordionContent) {
+        accordionToggleBtn.addEventListener('click', () => {
+            const isHidden = accordionContent.classList.toggle('hidden');
+            const icon = accordionToggleBtn.querySelector('i[data-feather="chevron-down"]');
+
+            // Rotar el ícono
+            if (icon) {
+                icon.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        });
+    }
+    // ================== FIN: NUEVA LÓGICA DE ACORDEÓN ==================
+    window.addEventListener('click', (e) => {
+        if (!plantillasBtn.contains(e.target) && !plantillasMenu.contains(e.target)) {
+            plantillasMenu.classList.add('hidden');
+        }
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('main > section');
+    const headerTitle = document.getElementById('headerTitle');
+    const activeClasses = ['bg-sidebar-active-bg', 'text-white'];
+    const inactiveClasses = ['text-gray-300', 'hover:bg-sidebar-hover', 'hover:text-white'];
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const newTitle = link.querySelector('span').textContent;
+            headerTitle.textContent = newTitle;
+            
+            document.body.classList.toggle('scroll-enabled', targetId === 'cuenta');
+
+            navLinks.forEach(l => l.classList.remove(...activeClasses) && l.classList.add(...inactiveClasses));
+            link.classList.add(...activeClasses) && link.classList.remove(...inactiveClasses);
+
+            sections.forEach(sec => sec.classList.remove('active'));
+            document.getElementById(targetId)?.classList.add('active');
+            
+            closeSidebar();        
+        });
+    });
+    document.querySelector('.nav-link.active')?.classList.remove(...inactiveClasses);
+    document.querySelector('.nav-link.active')?.classList.add(...activeClasses);
+    // --- FIN LÓGICA UI ---
+
+    // ================== INICIO: Función Reutilizable para Mostrar Modal ==================
+    function showLaunchModal() {
+        const modal = document.getElementById('launchModal');
+        const modalCard = document.getElementById('launchModalCard');
+
+        if (modal && modal.classList.contains('hidden')) { 
+            modal.classList.remove('hidden');
+            setTimeout(() => modalCard.classList.remove('scale-95'), 50); 
+            feather.replace(); 
+        }
+    }
+    // ================== FIN: Función Reutilizable para Mostrar Modal ==================
+
+    // ================== INICIO: Controles del Modal de Lanzamiento ==================
+    const launchModal = document.getElementById('launchModal');
+    const launchModalCard = document.getElementById('launchModalCard');
+    const closeLaunchModalBtn = document.getElementById('closeLaunchModalBtn');
+    const launchForm = document.getElementById('launchForm');
+
+    // --- Conectar el botón flotante ---
+    if (openLaunchModalBtn) {
+        openLaunchModalBtn.addEventListener('click', showLaunchModal); 
+    }
+    // --- Fin de la conexión ---
+
+    function closeLaunchModal() {
+        // Guarda para no volver a mostrar
+        // localStorage.setItem('hasSeenLaunchForm', 'true');
+        // Animación de salida
+        launchModalCard.classList.add('scale-95');
+        setTimeout(() => launchModal.classList.add('hidden'), 300);
+    }
+
+    if (launchModal && closeLaunchModalBtn && launchForm) {
+        // Clic en el botón "X"
+        closeLaunchModalBtn.addEventListener('click', closeLaunchModal);
+
+        // Clic en el fondo oscuro
+        launchModal.addEventListener('click', (e) => {
+            if (e.target === launchModal) {
+                closeLaunchModal();
+            }
+        });
+
+        // Envío del formulario
+        launchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Aquí podrías enviar el email a tu servicio (en el futuro)
+            // --- INICIO: Captura de datos del formulario ---
+            const email = document.getElementById('launchEmail').value;
+            const whatsapp = document.getElementById('launchWhatsapp').value;
+
+            // (En el futuro, aquí enviarías 'email' y 'whatsapp' a tu servicio)
+            console.log("Email para lanzamiento:", email, "WhatsApp:", whatsapp);
+            // --- FIN: Captura de datos del formulario ---
+
+            // Cierra el modal
+            closeLaunchModal();
+
+            // Muestra un agradecimiento
+            showToast('¡Gracias! Te avisaremos.');
+        });
+    }
+    // ================== FIN: Controles del Modal de Lanzamiento ==================
+
+    // --- LÓGICA DEL PANEL (Ahora con LocalStorage) ---
+    
+    // Elementos del DOM (sin cambios)
+    const btnLimpiarFiltros = document.getElementById('btnLimpiarFiltros');
+    const templateLinks = document.querySelectorAll('#plantillasDropdownMenu a');
+    const btnEtiquetas = document.getElementById('btnEtiquetas');
+    const tbodyEnvios = document.getElementById('tbodyEnvios');
+    const mobileCardContainer = document.getElementById('mobileCardContainer');
     const filtroCliente = document.getElementById('filtroCliente');
     const filtroFecha = document.getElementById('filtroFecha');
+    const filtroTipo = document.getElementById('filtroTipo');
+    const filtroDuplicados = document.getElementById('filtroDuplicados');
     const btnAplicarFiltros = document.getElementById('btnAplicarFiltros');
-
-    const fechaReprog = document.getElementById('fechaReprog');
-    const accionLote = document.getElementById('accionLote');
-    const btnAplicarLote = document.getElementById('btnAplicarLote');
-
-    const tbody = document.getElementById('tbodyEnvios');
+    const tableContainer = document.getElementById('tableContainer').querySelector('.overflow-auto');
+    const mobileContainerParent = document.getElementById('mobileCardContainer').parentElement;
+    const emptyStateContainer = document.getElementById('emptyStateContainer');
+    const batchActionsContainer = document.getElementById('batchActionsContainer');
     const checkTodos = document.getElementById('checkTodos');
     const thCheckTodos = document.getElementById('thCheckTodos');
     const selCount = document.getElementById('selCount');
-    const toast = document.getElementById('toast');
+    const accionLote = document.getElementById('accionLote');
+    const fechaReprog = document.getElementById('fechaReprog');
+    const btnAplicarLote = document.getElementById('btnAplicarLote');
+    const goToAccountBtn = document.getElementById('goToAccountBtn');
+    
+    // ======================= REEMPLAZO: DE FIRESTORE A LOCALSTORAGE =======================
+    /**
+     * Carga los envíos desde LocalStorage y aplica los filtros.
+     * Esta función reemplaza a onSnapshot.
+     */
+    function ejecutarConsultaEnvios() {
+        showToast('Cargando datos locales...');
+        
+        // 1. Cargar TODOS los envíos desde LocalStorage
+        // getEnviosFromStorage() ya formatea las fechas
+        todosLosEnvios = getEnviosFromStorage();
+        
+        // 2. Aplicar filtros (la función aplicarFiltros ya usa la variable global)
+        aplicarFiltros();
+        
+        showToast('Datos locales cargados.');
+    }
+    // ======================= FIN DEL REEMPLAZO =======================
 
-    // ---------- Columnas dinámicas por tipo + filtrado de filas ----------
+    // --- LÓGICA DE LA TABLA Y FILTROS (Modificada para LocalStorage) ---
+
     function aplicarFiltros() {
-      const tipo = filtroTipo.value;
-      const cel = filtroCliente.value.trim().toLowerCase();
-      const fecha = filtroFecha.value; // yyyy-mm-dd
+        const clienteFilter = filtroCliente.value.toLowerCase();
+        const fechaFilter = filtroFecha.value; // YYYY-MM-DD
+        const tipoFilter = filtroTipo.value;
+        const mostrarSoloDuplicados = filtroDuplicados.checked;
 
-      // Mostrar todas las columnas primero
-      document.querySelectorAll('.col-distrito,.col-direccion,.col-referencia,.col-dni,.col-agencia')
-        .forEach(el => el.classList.remove('oculto'));
+        // Lógica de duplicados (sin cambios)
+        const seen = {};
+        const duplicates = new Set();
+        todosLosEnvios.forEach(envio => {
+            const key = `${envio.cliente}-${envio.fechaEnvioDisplay || ''}`;
+            if (seen[key]) duplicates.add(key); else seen[key] = true;
+        });
 
-      // Ocultar columnas según tipo
-      if (tipo === 'DELIVERY') {
-        document.querySelectorAll('.col-dni,.col-agencia').forEach(el => el.classList.add('oculto'));
-      } else if (tipo === 'SHALOM') {
-        document.querySelectorAll('.col-distrito,.col-direccion,.col-referencia').forEach(el => el.classList.add('oculto'));
-      }
+        // Aplicar filtros locales
+        const enviosFiltrados = todosLosEnvios.filter(envio => {
+            const clienteMatch = !clienteFilter || (envio.cliente && envio.cliente.toLowerCase() === clienteFilter);
+            const fechaMatch = !fechaFilter || (envio.fechaEnvioInput === fechaFilter);
+            const tipoMatch = !tipoFilter || (envio.courier === tipoFilter);
 
-      // Filtrar filas por tipo + cliente + fecha de envío
-      [...tbody.rows].forEach(tr => {
-        const t = tr.dataset.tipo || '';
-        const c = (tr.dataset.cliente || '').toLowerCase();
-        let f = tr.dataset.fechaenvio || '';
+            // Lógica de filtro "PENDIENTE" por defecto
+            const algunFiltroActivo = clienteFilter || fechaFilter || tipoFilter || mostrarSoloDuplicados;
+            const estadoMatch = algunFiltroActivo ? true : (envio.estado === 'PENDIENTE');
 
-        // Recortar ISO con "T" si viniera así
-        if (typeof f === 'string' && f.includes('T')) f = f.split('T')[0];
-
-        const okTipo = (tipo === '' || t === tipo);     // si quisieras "Todos" usa opción vacía
-        const okCli  = (cel === '' || c.includes(cel));
-        const okFec  = (fecha === '' || f === fecha);
-
-        tr.style.display = (okTipo && okCli && okFec) ? '' : 'none';
-      });
-
-      // Al cambiar filtros, limpia selección
-      deseleccionarTodo();
+            if (mostrarSoloDuplicados) {
+                const key = `${envio.cliente}-${envio.fechaEnvioDisplay || ''}`;
+                const esDuplicado = duplicates.has(key);
+                return esDuplicado && clienteMatch && fechaMatch && tipoMatch && estadoMatch;
+            }
+            
+            return clienteMatch && fechaMatch && tipoMatch && estadoMatch;
+        });
+          
+        // Ordenar (sin cambios)
+        enviosFiltrados.sort((a, b) => {
+            const fechaA = a.fechaEnvio || '';
+            const fechaB = b.fechaEnvio || '';
+            const clienteA = String(a.cliente || '');
+            const clienteB = String(b.cliente || '');
+            const comparacionFecha = fechaB.localeCompare(fechaA);
+            if (comparacionFecha !== 0) return comparacionFecha;
+            return clienteB.localeCompare(clienteA);
+        });        
+        
+        renderizarTabla(enviosFiltrados, duplicates);
     }
 
-    // ---------- Selección múltiple ----------
-    function contarSeleccionados(){
-      const count = document.querySelectorAll('.rowCheck:checked').length;
-      selCount.textContent = count + ' seleccionados';
-    }
-    function seleccionarTodo(checked){
-      document.querySelectorAll('.rowCheck').forEach(cb => {
-        const row = cb.closest('tr');
-        if (row.style.display !== 'none') cb.checked = checked; // solo visibles
-      });
-      thCheckTodos.checked = checked;
-      checkTodos.checked = checked;
-      contarSeleccionados();
-    }
-    function deseleccionarTodo(){ seleccionarTodo(false); }
+    // `renderizarTabla` no necesita cambios, ya que lee la variable `envios`
+    function renderizarTabla(envios, duplicates) {
+        tbodyEnvios.innerHTML = '';
+        mobileCardContainer.innerHTML = '';
 
-    checkTodos.addEventListener('change', e => seleccionarTodo(e.target.checked));
-    thCheckTodos.addEventListener('change', e => seleccionarTodo(e.target.checked));
-    tbody.addEventListener('change', e => { if(e.target.classList.contains('rowCheck')) contarSeleccionados(); });
-
-    // ---------- Acción en lote ----------
-    accionLote.addEventListener('change', () => {
-      const v = accionLote.value;
-      fechaReprog.classList.toggle('oculto', v !== 'REPROGRAMADO');
-      if (v !== 'REPROGRAMADO') fechaReprog.value = '';
-    });
-
-    btnAplicarLote.addEventListener('click', () => {
-      const action = accionLote.value;
-      if (!action){ showToast('Elige una acción en lote'); return; }
-
-      if (action === 'REPROGRAMADO' && !fechaReprog.value){
-        showToast('Selecciona fecha para reprogramar'); return;
-      }
-
-      const seleccionados = [...document.querySelectorAll('.rowCheck:checked')].map(cb => cb.closest('tr'));
-      if (seleccionados.length === 0){ showToast('No hay envíos seleccionados'); return; }
-
-      // “Aplicar” visualmente en la tabla (mock)
-      seleccionados.forEach(tr => {
-        const tdEstado = tr.querySelector('.estado');
-        if (action === 'ENVIADO') {
-          tdEstado.innerHTML = '<span class="badge b-enviado">Enviado</span>';
-        } else if (action === 'ENTREGADO') {
-          tdEstado.innerHTML = '<span class="badge b-entregado">Entregado</span>';
-        } else if (action === 'REPROGRAMADO') {
-          // Actualiza fecha de envío + estado
-          tr.dataset.fechaenvio = fechaReprog.value;
-          tr.cells[11].textContent = fechaReprog.value; // Columna "Fecha de Envío"
-          tdEstado.innerHTML = '<span class="badge b-reprogramado">Reprogramado</span>';
+        const visibleCountEl = document.getElementById('visibleCount');
+        if(visibleCountEl) {
+            visibleCountEl.textContent = `Mostrando ${envios.length} de ${todosLosEnvios.length} envíos`;
         }
-      });
 
-      showToast('Acción aplicada a ' + seleccionados.length + ' envío(s)');
-      deseleccionarTodo();
+        const hasEnvios = envios.length > 0;
 
-      // 👉 Aquí tu socio debe:
-      // - Enviar los IDs/filas seleccionadas + acción + (fechaReprog si aplica) al backend (Apps Script / API)
-      // - Actualizar Google Sheets y responder con éxito/errores
-    });
+        // ================== INICIO: Lógica del Botón Flotante ==================
+        // Si hay envíos, muestra el botón; si no, lo oculta.
+        if (openLaunchModalBtn) {
+            if (hasEnvios) {
+                openLaunchModalBtn.classList.remove('hidden');
+                
+                // --- ¡ESTA ES LA LÍNEA QUE FALTA! ---
+                // Vuelve a dibujar los íconos para que el cohete aparezca
+                feather.replace(); 
+                // --- FIN DE LA LÍNEA QUE FALTA ---
 
-    // ---------- Botones de plantillas / etiquetas (mock) ----------
-    document.getElementById('btnTplShalom').onclick   = () => showToast('Descargando plantilla SHALOM...');
-    document.getElementById('btnTplDinsides').onclick = () => showToast('Descargando plantilla DINSIDES...');
-    document.getElementById('btnEtiquetas').onclick   = () => showToast('Abriendo impresor de etiquetas...');
+            } else {
+                openLaunchModalBtn.classList.add('hidden');
+            }
+        }
+        // ================== FIN: Lógica del Botón Flotante ==================
 
-    // ---------- Utilidades ----------
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(()=> toast.classList.remove('show'), 2000);
+        tableContainer.parentElement.classList.toggle('hidden', !hasEnvios);
+        emptyStateContainer.classList.toggle('hidden', hasEnvios);
+        batchActionsContainer.classList.toggle('hidden', !hasEnvios);
+
+        if (hasEnvios) {
+            envios.forEach(envio => {
+                const key = `${envio.cliente}-${envio.fechaEnvioDisplay || ''}`;
+                const isDuplicate = duplicates.has(key);
+                const duplicateClass = isDuplicate ? 'bg-yellow-200/50' : '';
+                
+                // --- Renderizar para tabla (Desktop) ---
+                const tr = document.createElement('tr');
+                tr.className = `border-b border-gray-100 hover:bg-orange-50/50 transition-colors duration-200 ${duplicateClass}`;
+                tr.dataset.id = envio.id; // ID de LocalStorage (timestamp)
+                tr.innerHTML = `
+                    <td class="p-3 text-center"><input type="checkbox" class="rowCheck rounded border-gray-300 text-accent focus:ring-accent" data-id="${envio.id}"></td>
+                    <td class="p-3 text-sm text-gray-700">${envio.fechaReg || ''}</td>
+                    <td class="p-3 text-sm text-gray-700">${envio.cliente}</td>
+                    <td class="p-3 text-sm text-gray-700">${envio.courier}</td>
+                    <td class="p-3 text-sm text-gray-700">
+                        <span class="font-bold text-gray-900">${envio.nombre || 'N/A'}</span>
+                        <span class="block text-sm text-gray-500">${envio.telefono || 'N/A'}</span>
+                        ${ (envio.DNI) ? `<span class="block text-sm text-gray-500 mt-1 pt-1 border-t border-gray-100">${envio.DNI}</span>` : '' }
+                    </td>
+                    <td class="p-3 text-sm text-gray-700">
+                        ${
+                            (envio.courier === 'DELIVERY')
+                            ? `
+                                <span class="font-semibold text-gray-800">${envio.distrito || 'N/A'}</span>
+                                <span class="block text-xs text-gray-500">${envio.direccion || 'N/A'}</span>
+                                <span class="block text-xs text-gray-500 italic">${envio.referencia || 'N/A'}</span>
+                            `
+                            : `
+                                <span class="font-semibold text-gray-800">${envio.agencia || 'N/A'}</span>
+                            `
+                        }
+                    </td>
+                    <td class="p-3 text-sm text-gray-700">${envio.fechaEnvioDisplay || ''}</td>
+                    <td class="p-3 text-sm">
+                        <div class="inline-edit-container">
+                            <select class="inline-edit-estado select border border-gray-200 bg-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100" data-original-estado="${envio.estado}">
+                                <option value="PENDIENTE" ${envio.estado === 'PENDIENTE' ? 'selected' : ''}>Pendiente</option>
+                                <option value="ENVIADO" ${envio.estado === 'ENVIADO' ? 'selected' : ''}>Enviado</option>
+                                <option value="NOTIFICADO" ${envio.estado === 'NOTIFICADO' ? 'selected' : ''}>Notificado</option>
+                                <option value="REPROGRAMADO" ${envio.estado === 'REPROGRAMADO' ? 'selected' : ''}>Reprogramado</option>
+                                <option value="ELIMINAR" class="text-red-600 font-semibold">Eliminar...</option>
+                            </select>
+                            <input type="date" class="inline-edit-fecha input border border-gray-200 bg-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100 oculto" value="${envio.fechaEnvioInput || ''}" data-original-fecha="${envio.fechaEnvioInput || ''}">
+                            <button class="inline-save-btn btn primary bg-accent text-white shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center justify-center gap-1 oculto">
+                                <i data-feather="save" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </td>                    
+                    <td class="p-3 text-center">
+                        <div class="flex justify-center items-center gap-2">
+                            <button data-id="${envio.id}" class="btn-edit-full text-blue-600 hover:text-blue-800" title="Editar Envío Completo">
+                                <i data-feather="edit-2" class="w-4 h-4"></i>
+                            </button>
+                            <button data-id="${envio.id}" class="btn-notify text-green-600 hover:text-green-800" title="Notificar por WhatsApp">
+                                <i data-feather="send" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbodyEnvios.appendChild(tr);
+
+                // --- Renderizar para tarjetas (Móvil) ---
+                const card = document.createElement('div');
+                const cardBgClass = isDuplicate ? 'bg-yellow-200/50' : 'bg-white';
+                card.className = `${cardBgClass} rounded-xl shadow p-4 border border-gray-200 space-y-3`;
+                card.dataset.id = envio.id; // ID de LocalStorage (timestamp)
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" class="rowCheck rounded border-gray-300 text-accent focus:ring-accent" data-id="${envio.id}">
+                            <div>
+                                <p class="font-bold text-gray-800">${envio.nombre}</p>
+                                <p class="text-sm text-gray-500">${(envio.courier === 'DELIVERY') ? (envio.distrito || 'N/A') : (envio.agencia || 'N/A')}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2 pl-8">
+                        <p><strong class="text-gray-500">Cliente:</strong> ${envio.cliente}</p>
+                        <p><strong class="text-gray-500">Courier:</strong> ${envio.courier}</p>
+                        <p><strong class="text-gray-500">Fecha Envío:</strong> ${envio.fechaEnvioDisplay || ''}</p>
+                    </div>
+                    <div class="inline-edit-container">
+                        <label class="block text-xs text-gray-500 font-semibold mb-1">Estado:</label>
+                        <select class="inline-edit-estado select p-2 border border-gray-200 rounded-lg bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100" data-original-estado="${envio.estado}">
+                            <option value="PENDIENTE" ${envio.estado === 'PENDIENTE' ? 'selected' : ''}>Pendiente</option>
+                            <option value="ENVIADO" ${envio.estado === 'ENVIADO' ? 'selected' : ''}>Enviado</option>
+                            <option value="NOTIFICADO" ${envio.estado === 'NOTIFICADO' ? 'selected' : ''}>Notificado</option>
+                            <option value="REPROGRAMADO" ${envio.estado === 'REPROGRAMADO' ? 'selected' : ''}>Reprogramado</option>
+                        </select>
+                        <input type="date" class="inline-edit-fecha input p-2 border border-gray-200 rounded-lg bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100 oculto" value="${envio.fechaEnvioInput || ''}" data-original-fecha="${envio.fechaEnvioInput || ''}">
+                        <button class="inline-save-btn btn primary bg-accent text-white rounded-lg font-bold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center justify-center gap-1 oculto py-2">
+                            <i data-feather="save" class="w-4 h-4"></i> Guardar Cambio
+                        </button>
+                    </div>
+                    <div class="flex justify-end items-center pt-2 gap-4">
+                        <button data-id="${envio.id}" class="btn-edit-full text-blue-600 hover:text-blue-800 text-sm font-bold inline-flex items-center gap-1" title="Editar Envío Completo">
+                            <i data-feather="edit-2" class="w-4 h-4"></i> Editar
+                        </button>
+                        <button data-id="${envio.id}" class="btn-notify text-green-600 hover:text-green-800 text-sm font-bold inline-flex items-center gap-1" title="Notificar por WhatsApp">
+                            <i data-feather="send" class="w-4 h-4"></i> Notificar
+                        </button>
+                    </div>
+                `;
+                mobileCardContainer.appendChild(card);
+            });
+            feather.replace();
+        }
+        contarSeleccionados();
     }
 
-    // Estado inicial: filtrar por DELIVERY
-    btnAplicarFiltros.addEventListener('click', aplicarFiltros);
-    window.addEventListener('load', aplicarFiltros);
-  
-    // Mostrar vista previa del logo y actualizar el header
-    const logoInput = document.getElementById("logoInput");
-    const logoPreview = document.getElementById("logoPreview");
-    const headerLogo = document.getElementById("headerLogo");
+    // `obtenerIdsSeleccionados` no necesita cambios
+    function obtenerIdsSeleccionados() {
+        const selector = (window.innerWidth < 768) ? '#mobileCardContainer' : '#tbodyEnvios';
+        return [...document.querySelector(selector).querySelectorAll('.rowCheck:checked')].map(chk => chk.dataset.id);
+    }
 
-    logoInput.addEventListener("change", function() {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          logoPreview.src = e.target.result;
-          logoPreview.style.display = "block";
+    // `contarSeleccionados` y `seleccionarTodos` no necesitan cambios
+    function contarSeleccionados() {
+        const seleccionados = obtenerIdsSeleccionados().length;
+        const totalVisibleRows = (window.innerWidth < 768) 
+            ? mobileCardContainer.children.length 
+            : tbodyEnvios.rows.length;
+        
+        selCount.textContent = `${seleccionados} seleccionados`;
+        const allChecked = totalVisibleRows > 0 && seleccionados === totalVisibleRows;
+        checkTodos.checked = allChecked;
+        thCheckTodos.checked = allChecked;
 
-          // ✅ Actualizar logo en el header
-          headerLogo.src = e.target.result;
-          headerLogo.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      } else {
-        logoPreview.style.display = "none";
-        headerLogo.style.display = "none";
-      }
+        const loteRightControls = batchActionsContainer.querySelector('.lote-right');
+        const hasSelections = seleccionados > 0;
+        selCount.classList.toggle('hidden', !hasSelections);
+        if (loteRightControls) loteRightControls.classList.toggle('hidden', !hasSelections);
+    }
+    function seleccionarTodos(checked) {
+        document.querySelectorAll('.rowCheck').forEach(chk => chk.checked = checked);
+        contarSeleccionados();
+    }
+
+    // `accionLote.addEventListener` no necesita cambios
+    accionLote.addEventListener('change', () => {
+        fechaReprog.classList.toggle('oculto', accionLote.value !== 'REPROGRAMADO');
+    });    
+
+    // --- LÓGICA DE ACCIONES EN LOTE (Modificada para LocalStorage) ---
+    btnAplicarLote.addEventListener('click', async () => {
+        const seleccionadosIds = obtenerIdsSeleccionados(); // IDs son strings
+        const accion = accionLote.value;
+
+        if (seleccionadosIds.length === 0 || !accion) {
+            showToast(!accion ? 'Por favor, selecciona una acción.' : 'No has seleccionado ningún envío.');
+            return;
+        }
+
+        if (accion === 'ELIMINAR') {
+            abrirModalConfirmacion(seleccionadosIds); // Esto llama a la función de borrado local
+            return;
+        }
+
+        // ======================= REEMPLAZO: DE FIRESTORE A LOCALSTORAGE =======================
+        let updates = {};
+        if (accion === 'REPROGRAMADO') {
+            if (!fechaReprog.value) {
+                showToast('Debes seleccionar una fecha para reprogramar.');
+                return;
+            }
+            updates = { estado: 'REPROGRAMADO', fechaEnvio: fechaReprog.value };
+        } else {
+            updates = { estado: accion };
+        }
+
+        showToast('Aplicando cambios...');
+        
+        let updatedCount = 0;
+        // Mapear sobre la lista global y actualizar los seleccionados
+        todosLosEnvios = todosLosEnvios.map(envio => {
+            if (seleccionadosIds.includes(envio.id)) {
+                updatedCount++;
+                return { ...envio, ...updates }; // Aplicar los cambios
+            }
+            return envio;
+        });
+
+        saveEnviosToStorage(todosLosEnvios); // Guardar el array modificado
+        aplicarFiltros(); // Volver a renderizar la tabla/filtros
+        
+        showToast(`Acción en lote (${updatedCount}) aplicada con éxito.`);
+        
+        accionLote.value = '';
+        fechaReprog.classList.add('oculto');
+        // ======================= FIN DEL REEMPLAZO =======================
     });
-  
-  </script>
+
+    // Event listeners de checkboxes (sin cambios)
+    checkTodos.addEventListener('change', (e) => seleccionarTodos(e.target.checked));
+    thCheckTodos.addEventListener('change', (e) => seleccionarTodos(e.target.checked));
+    document.getElementById('envios').addEventListener('change', (e) => {
+        if(e.target.classList.contains('rowCheck')) {
+            const id = e.target.dataset.id;
+            const isChecked = e.target.checked;
+            document.querySelectorAll(`.rowCheck[data-id="${id}"]`).forEach(chk => {
+                if (chk !== e.target) chk.checked = isChecked;
+            });
+            contarSeleccionados();
+        }
+    });
+
+    // Event Listeners (Exportar, Etiquetas, Filtros - sin cambios)
+    btnEtiquetas.addEventListener('click', () => {
+        const seleccionadosIds = obtenerIdsSeleccionados();
+        if (seleccionadosIds.length === 0) {
+            showToast('Debes seleccionar al menos un envío para imprimir etiquetas.');
+            return;
+        }
+        const enviosSeleccionados = todosLosEnvios.filter(envio => seleccionadosIds.includes(envio.id));
+        const printContainer = document.getElementById('print-container');
+        const businessName = localStorage.getItem('businessName') || 'Tu Emprendimiento';
+        const logoSrc = localStorage.getItem('businessLogo');
+
+        let labelsHtml = '';
+        enviosSeleccionados.forEach(envio => {
+            let destinationHtml = '';
+            let detailsHtml = '';
+            if (envio.courier === 'DELIVERY') {
+                let distritoMostrado = envio.distrito || 'N/A';
+                if (envio.distrito && envio.distrito.includes('|')) {
+                    distritoMostrado = envio.distrito.split('|')[0].trim();
+                }
+                destinationHtml = `
+                    <div class="label-section">
+                        <div class="label-section-title">Destino:</div>
+                        <p class="label-destination-text">
+                            <strong>Distrito:</strong> ${distritoMostrado}<br>
+                            <strong>Fecha Entrega:</strong> ${envio.fechaEnvioDisplay || ''}<br>
+                            <strong>Detalle:</strong> Ropa<br>
+                            <strong>Cobrar:</strong> S/. 0,00<br>
+                        </p>
+                    </div>`;
+            } else {
+                destinationHtml = `
+                    <div class="label-section">
+                        <div class="label-section-title">Destino:</div>
+                        <p class="label-destination-text">
+                            <strong>DNI/CE:</strong> ${envio.DNI || 'N/A'}<br>
+                            <strong>Agencia:</strong> ${envio.agencia || 'N/A'}
+                        </p>
+                    </div>`;
+            }
+            labelsHtml += `
+                <div class="label-card">
+                    <div class="label-header">
+                        ${logoSrc ? `<img src="${logoSrc}" alt="Logo" class="label-logo">` : '<div></div>'}
+                        <div class="label-business-name">${businessName}</div>
+                    </div>
+                    <div class="label-body">
+                        <div class="label-section">
+                            <div class="label-section-title">Para:</div>
+                            <div class="label-recipient-name">${String(envio.nombre || '').toUpperCase()}</div>
+                            <div class="label-recipient-phone">${envio.telefono || 'Sin teléfono'}</div>
+                        </div>
+                        ${destinationHtml}
+                        ${detailsHtml}
+                    </div>
+                    <div class="label-footer">
+                        <div class="label-courier-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            <span>${envio.courier || 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>`;
+        });
+        printContainer.innerHTML = labelsHtml;
+        window.print();
+    });
+
+    templateLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            plantillasMenu.classList.add('hidden');
+            const seleccionadosIds = obtenerIdsSeleccionados();
+            if (seleccionadosIds.length === 0) {
+                showToast('Debes seleccionar al menos un envío para exportar.');
+                return;
+            }
+            const templateId = e.target.id;
+            let targetCourier = '';
+            let filename = 'exportacion_filtrada.xlsx';
+            if (templateId === 'btnTplDelivery') { targetCourier = 'DELIVERY'; filename = 'exportacion_delivery.xlsx'; }
+            else if (templateId === 'btnTplShalom') { targetCourier = 'SHALOM'; filename = 'exportacion_shalom.xlsx'; }
+            else if (templateId === 'btnTplOlva') { targetCourier = 'OLVA'; filename = 'exportacion_olva.xlsx'; }
+            else { showToast('Tipo de plantilla no reconocido.'); return; }
+
+            const enviosSeleccionados = todosLosEnvios.filter(envio => 
+                seleccionadosIds.includes(envio.id) && envio.courier === targetCourier
+            );
+            if (enviosSeleccionados.length === 0) {
+                showToast(`No se encontró ningún envío de tipo "${targetCourier}" en tu selección.`);
+                return;
+            }
+            showToast(`Exportando ${enviosSeleccionados.length} envío(s) de tipo ${targetCourier}...`);
+            const headers = ['ID', 'Fecha Reg.', 'Cliente', 'Courier', 'Destinatario', 'Teléfono', 'DNI', 'Distrito', 'Dirección', 'Referencia', 'Agencia', 'Fecha Envío', 'Estado'];
+            const dataToExport = [headers];
+            enviosSeleccionados.forEach(envio => {
+                const row = [
+                    envio.id, envio.fechaReg, envio.cliente, envio.courier, envio.nombre,
+                    envio.telefono, envio.DNI, envio.distrito, envio.direccion,
+                    envio.referencia, envio.agencia, envio.fechaEnvioDisplay, envio.estado
+                ];
+                dataToExport.push(row);
+            });
+            try {
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(dataToExport);
+                XLSX.utils.book_append_sheet(wb, ws, 'Envios');
+                XLSX.writeFile(wb, filename); 
+            } catch (error) {
+                console.error("Error al generar el XLSX:", error);
+                showToast("Error al generar el archivo Excel.");
+            }
+        });
+    });
+
+    btnAplicarFiltros.addEventListener('click', ejecutarConsultaEnvios);
+    filtroCliente.addEventListener('keyup', (e) => { if(e.key === 'Enter') aplicarFiltros() }); // <-- CAMBIO: aplicarFiltros (local)
+    filtroFecha.addEventListener('change', aplicarFiltros); // <-- AÑADIDO: aplicarFiltros (local)
+    filtroTipo.addEventListener('change', aplicarFiltros); // <-- AÑADIDO: aplicarFiltros (local)
+    filtroDuplicados.addEventListener('change', aplicarFiltros); // <-- AÑADIDO: aplicarFiltros (local)
+
+    btnLimpiarFiltros.addEventListener('click', () => {
+        filtroCliente.value = '';
+        filtroFecha.value = '';
+        filtroTipo.value = '';
+        filtroDuplicados.checked = false;
+        ejecutarConsultaEnvios(); // Recarga y aplica filtros por defecto
+        showToast('Filtros limpiados.');
+    });
+
+    // Sincronización "Mi Cuenta" (sin cambios, usa LocalStorage)
+    const businessNameInput = document.getElementById('businessName');
+    const headerBusinessName = document.getElementById('headerBusinessName');
+    const logoInput = document.getElementById('logoInput');
+    const logoPreview = document.getElementById('logoPreview');
+    const btnGuardarConfig = document.getElementById('btnGuardarConfig');
+    const sidebarTitle = document.getElementById('sidebarTitle');
+    const sidebarLogo = document.getElementById('sidebarLogo');
+    const headerLogo = document.getElementById('headerLogo');
+
+    function syncBusinessInfo() {
+        const name = localStorage.getItem('businessName') || 'Mi Tienda de Prueba';
+        businessNameInput.value = name;
+        headerBusinessName.textContent = name;
+        sidebarTitle.textContent = name;     
+        const logoSrc = localStorage.getItem('businessLogo');
+        if (logoSrc) {
+            sidebarLogo.src = logoSrc;
+            headerLogo.src = logoSrc;
+            logoPreview.src = logoSrc;
+            sidebarLogo.classList.remove('hidden');
+            headerLogo.classList.remove('hidden');
+            logoPreview.classList.remove('hidden');
+        } else {
+            sidebarLogo.classList.add('hidden');
+            headerLogo.classList.add('hidden');
+            logoPreview.classList.add('hidden');
+        }
+        // ============ CAMBIO: Lógica de Login ELIMINADA ============
+        // const loginLogo = document.getElementById('loginLogo');
+        // const loginBusinessName = document.getElementById('loginBusinessName');
+        // ...
+        // ==========================================================
+    }
+    
+    logoInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                localStorage.setItem('businessLogo', e.target.result);
+                syncBusinessInfo();
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+    btnGuardarConfig.addEventListener('click', () => {
+        localStorage.setItem('businessName', businessNameInput.value);
+        showToast('Cambios guardados con éxito.');
+        syncBusinessInfo();
+    });
+
+    goToAccountBtn.addEventListener('click', () => {
+        // Esta es la nueva URL que especificaste
+        const demoFormUrl = "form";
+        
+        // Le decimos al navegador que la abra en la misma pestaña
+        window.location.href = demoFormUrl;
+    });
+
+    // --- LÓGICA DE EDICIÓN INLINE (Modificada para LocalStorage) ---
+    async function saveInlineChanges(buttonElement) {
+        buttonElement.disabled = true;
+        showToast('Guardando...');
+
+        const row = buttonElement.closest('tr[data-id], div[data-id]');
+        const id = row.dataset.id; // ID es string (timestamp)
+        const estadoSelect = row.querySelector('.inline-edit-estado');
+        const fechaInput = row.querySelector('.inline-edit-fecha');
+
+        const nuevoEstado = estadoSelect.value;
+        let nuevaFecha = fechaInput.value;
+
+        const envioOriginal = todosLosEnvios.find(e => e.id === id);
+        if (!envioOriginal) {
+            showToast('Error: No se encontró el envío original.');
+            buttonElement.disabled = false;
+            return;
+        }
+        
+        const datosParaActualizar = {
+            estado: nuevoEstado,
+            fechaEnvio: envioOriginal.fechaEnvioInput // Mantiene la fecha original por defecto
+        };
+
+        if (nuevoEstado === 'REPROGRAMADO') {
+            if (!nuevaFecha) {
+                 showToast('Selecciona una fecha para reprogramar.');
+                 buttonElement.disabled = false;
+                 return;
+            }
+            datosParaActualizar.fechaEnvio = nuevaFecha;
+        }
+        
+        // ======================= REEMPLAZO: DE FIRESTORE A LOCALSTORAGE =======================
+        try {
+            // Actualizar el array global
+            todosLosEnvios = todosLosEnvios.map(envio => 
+                envio.id === id ? { ...envio, ...datosParaActualizar } : envio
+            );
+            
+            saveEnviosToStorage(todosLosEnvios); // Guardar en LocalStorage
+            aplicarFiltros(); // Re-renderizar
+            
+            showToast('Envío actualizado.');
+        } catch (error) {
+            console.error('Error actualizando inline en LocalStorage:', error);
+            showToast(`Error al guardar: ${error.message}`);
+            buttonElement.disabled = false;
+        }
+        // ======================= FIN DEL REEMPLAZO =======================
+    }
+
+    // Listener delegado para cambios (sin cambios)
+    document.getElementById('envios').addEventListener('change', (e) => {
+        if (e.target.classList.contains('inline-edit-estado')) {
+            const selectEstado = e.target;
+            const container = selectEstado.closest('.inline-edit-container');
+            const fechaInput = container.querySelector('.inline-edit-fecha');
+            const saveBtn = container.querySelector('.inline-save-btn');
+            const originalEstado = selectEstado.dataset.originalEstado;
+            const nuevoEstado = selectEstado.value;
+
+            if (nuevoEstado === 'ELIMINAR') {
+                const row = selectEstado.closest('tr[data-id], div[data-id]');
+                abrirModalConfirmacion([row.dataset.id]); // ID es string
+                selectEstado.value = originalEstado; // Restaurar
+                return;
+            }
+
+            const esReprogramado = nuevoEstado === 'REPROGRAMADO';
+            fechaInput.classList.toggle('oculto', !esReprogramado);
+            const estadoCambiado = nuevoEstado !== originalEstado;
+            const fechaCambiada = esReprogramado && (fechaInput.value !== fechaInput.dataset.originalFecha); 
+            saveBtn.classList.toggle('oculto', !(estadoCambiado || fechaCambiada));
+        } 
+        else if (e.target.classList.contains('inline-edit-fecha')) {
+            const fechaInput = e.target;
+            const container = fechaInput.closest('.inline-edit-container');
+            const saveBtn = container.querySelector('.inline-save-btn');
+            const selectEstado = container.querySelector('.inline-edit-estado');
+            const fechaCambiada = fechaInput.value !== fechaInput.dataset.originalFecha;
+            const estadoCambiado = selectEstado.value !== selectEstado.dataset.originalEstado;
+            saveBtn.classList.toggle('oculto', !(fechaCambiada || estadoCambiado));
+        }
+    });
+
+    // Listener delegado para clics (sin cambios)
+    document.getElementById('envios').addEventListener('click', (e) => {
+         const button = e.target.closest('.inline-save-btn');
+         if (button) {
+             e.preventDefault();
+             saveInlineChanges(button);
+         }
+        const notifyButton = e.target.closest('.btn-notify');
+        if (notifyButton) {
+            e.preventDefault();
+            handleNotifyClick(notifyButton.dataset.id);
+        }
+        const editButton = e.target.closest('.btn-edit-full');
+        if (editButton) {
+            e.preventDefault();
+            const envioId = editButton.dataset.id;
+            const envio = todosLosEnvios.find(e => e.id === envioId);
+            if (envio) {
+                abrirModalEdicion(envio);
+            } else {
+                showToast('Error: No se encontró el envío para editar.');
+            }
+        }
+    });
+
+    // --- LÓGICA DEL MODAL DE CONFIRMACIÓN (Modificado para LocalStorage) ---
+    const deleteModal = document.getElementById('deleteModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const modalMessage = document.getElementById('modalMessage');
+    let idsParaEliminar = []; // IDs son strings
+
+    // --- LÓGICA DEL MODAL DE EDICIÓN (Modificado para LocalStorage) ---
+    const editModal = document.getElementById('editModal');
+    const editForm = document.getElementById('editForm');
+    const confirmEditBtn = document.getElementById('confirmEditBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const editActualizarPerfil = document.getElementById('editActualizarPerfil');
+    const editEnvioId = document.getElementById('editEnvioId');
+    const editCliente = document.getElementById('editCliente');
+    const editNombre = document.getElementById('editNombre');
+    const editTelefono = document.getElementById('editTelefono');
+    const editDNI = document.getElementById('editDNI');
+    const editCourier = document.getElementById('editCourier');
+    const editDistrito = document.getElementById('editDistrito');
+    const editDireccion = document.getElementById('editDireccion');
+    const editReferencia = document.getElementById('editReferencia');
+    const editAgencia = document.getElementById('editAgencia');
+
+    // `abrirModalEdicion` y `cerrarModalEdicion` no necesitan cambios
+    function abrirModalEdicion(envio) {
+        editEnvioId.value = envio.id;
+        editCliente.value = envio.cliente || '';
+        editNombre.value = envio.nombre || '';
+        editTelefono.value = envio.telefono || '';
+        editDNI.value = envio.DNI || '';
+        editCourier.value = envio.courier || 'DELIVERY';
+        editDistrito.value = envio.distrito || '';
+        editDireccion.value = envio.direccion || '';
+        editReferencia.value = envio.referencia || '';
+        editAgencia.value = envio.agencia || '';
+        editModal.classList.remove('hidden');
+    }
+    function cerrarModalEdicion() {
+        editModal.classList.add('hidden');
+        editForm.reset();
+        editActualizarPerfil.checked = false;
+    }
+
+    // --- Guardar Edición (Modificado para LocalStorage) ---
+    async function guardarCambiosEdicion(e) {
+        e.preventDefault();
+        const id = editEnvioId.value; // ID es string (timestamp)
+        const clienteId = editCliente.value;
+        if (!id || !clienteId) {
+            showToast('Error: ID de envío o Cliente no encontrado.');
+            return;
+        }
+
+        const updatesEnvio = {
+            nombre: editNombre.value,
+            telefono: editTelefono.value,
+            DNI: editDNI.value,
+            distrito: editDistrito.value,
+            direccion: editDireccion.value,
+            referencia: editReferencia.value,
+            agencia: editAgencia.value
+        };
+
+        showToast('Guardando cambios...');
+        // ======================= REEMPLAZO: DE FIRESTORE A LOCALSTORAGE =======================
+        try {
+            // Actualizar el array global
+            todosLosEnvios = todosLosEnvios.map(envio => 
+                envio.id === id ? { ...envio, ...updatesEnvio } : envio
+            );
+            saveEnviosToStorage(todosLosEnvios); // Guardar
+            
+            // La lógica de 'Actualizar perfil' se omite en LocalStorage
+            // porque no tenemos una colección 'clientes' separada aquí.
+            if (editActualizarPerfil.checked) {
+                 showToast('Envío actualizado (Perfil no se actualiza en modo demo).');
+            } else {
+                showToast('Envío actualizado con éxito.');
+            }
+            
+            aplicarFiltros(); // Re-renderizar
+            cerrarModalEdicion();
+            
+        } catch (error) {
+            console.error("Error al actualizar el envío en LocalStorage:", error);
+            showToast("Error al guardar los cambios.");
+        }
+        // ======================= FIN DEL REEMPLAZO =======================
+    }
+
+    cancelEditBtn.addEventListener('click', cerrarModalEdicion);
+    editForm.addEventListener('submit', guardarCambiosEdicion);
+
+    // --- Modal de Confirmación (sin cambios) ---
+    function abrirModalConfirmacion(ids) {
+        idsParaEliminar = ids;
+        modalMessage.textContent = `¿Estás seguro de que quieres eliminar ${ids.length} envío(s) seleccionados? Esta acción no se puede deshacer.`;
+        deleteModal.classList.remove('hidden');
+    }
+    function cerrarModalConfirmacion() {
+        deleteModal.classList.add('hidden');
+        idsParaEliminar = [];
+    }
+
+    // --- Confirmar Eliminación (Modificado para LocalStorage) ---
+    confirmDeleteBtn.addEventListener('click', async () => {
+        const eliminadosCount = idsParaEliminar.length;
+        if (eliminadosCount === 0) return;
+
+        showToast('Eliminando envíos...');
+        
+        // ======================= REEMPLAZO: DE FIRESTORE A LOCALSTORAGE =======================
+        try {
+            // Filtrar el array global, excluyendo los IDs a eliminar
+            todosLosEnvios = todosLosEnvios.filter(envio => !idsParaEliminar.includes(envio.id));
+            
+            saveEnviosToStorage(todosLosEnvios); // Guardar el nuevo array
+            
+            cerrarModalConfirmacion();
+            aplicarFiltros(); // Re-renderizar
+            showToast(`${eliminadosCount} envío(s) eliminados correctamente.`);
+
+        } catch (error) {
+            console.error('Error eliminando de LocalStorage:', error);
+            showToast('Error al eliminar los envíos.');
+        } finally {
+            accionLote.value = '';
+        }
+        // ======================= FIN DEL REEMPLAZO =======================
+    });
+
+    cancelDeleteBtn.addEventListener('click', cerrarModalConfirmacion);
+
+    // --- UTILIDADES (sin cambios) ---
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+    function showToast(msg){
+        clearTimeout(toastTimeout);
+        toast.textContent = msg;
+        toast.classList.remove('opacity-0', 'translate-y-2');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('opacity-100', 'translate-y-0');
+            toast.classList.add('opacity-0', 'translate-y-2');
+        }, 2500);
+    }
+
+    // ============ CAMBIO: INICIALIZACIÓN (Sin Login) ============
+    // Se eliminó el listener de loginForm y el condicional de logoutBtn
+    
+    // Cargar todo al inicio
+    syncBusinessInfo();
+    ejecutarConsultaEnvios();
+    
+    // ==========================================================
+});
+</script>
+
+<!-- ============ CAMBIO: Pantalla de Login ELIMINADA ============ -->
+<!-- <div id="loginScreen" ...> ... </div> -->
+<!-- ========================================================== -->
+
 </body>
 </html>
