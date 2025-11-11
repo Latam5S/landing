@@ -781,7 +781,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 distritoMostrado = partes[0].trim();
                 tarifaMostrada = partes[1].trim();
             }
-            destinoBlock = `* _Distrito: ${distritoMostrado}_
+            destinoBlock = `* _Distrito: ${distritoMostrado.trim()}_
 * _Dirección: ${envio.direccion || 'N/A'}_
 * _Referencia: ${envio.referencia || '(Sin referencia)'}_`;
         } else {
