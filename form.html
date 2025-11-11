@@ -274,7 +274,7 @@
             listaDistritos.appendChild(div);
           });
         }
-        fetch("https://raw.githubusercontent.com/complicidad/form/main/lstDinsides.json")
+        fetch("lstDistritos.json")
           .then(res => res.json())
           .then(data => {
             distritos = data.map(item => `${item.Distrito} | ${item.Precio}`);
