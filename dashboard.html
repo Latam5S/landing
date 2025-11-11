@@ -599,21 +599,17 @@
     <!-- ================== INICIO: Modal de Lanzamiento ================== -->
     <div id="launchModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 w-full max-w-md text-center transform scale-95 transition-all duration-300" id="launchModalCard">
-            
-            <button id="closeLaunchModalBtn" class="absolute -top-3 -right-3 bg-gray-700 text-white rounded-full p-1.5 shadow-lg hover:bg-gray-900 transition-all">
-                <i data-feather="x" class="w-5 h-5"></i>
-            </button>
-            
-            <i data-feather="rocket" class="w-16 h-16 text-accent mx-auto mb-4"></i>
-            
-            <h3 class="text-2xl leading-6 font-bold text-gray-900" id="modal-title">¡Gracias por probar la demo!</h3>
-            <p class="mt-3 text-base text-gray-600">
-                Viste la magia, ¡y esto es solo el comienzo!
-                La versión real (con clientes 100% reales) está casi lista.
-                ¡Anótate para ser el primero en saber sobre el lanzamiento oficial!
-            </p>
-
+                
             <form id="launchForm" class="mt-6 space-y-4">
+                <button id="closeLaunchModalBtn" class="absolute -top-3 -right-3 bg-gray-700 text-white rounded-full p-1.5 shadow-lg hover:bg-gray-900 transition-all">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>                                   
+                <h3 class="text-2xl leading-6 font-bold text-gray-900" id="modal-title">¡Gracias por probar la demo!</h3>
+                <p class="mt-3 text-base text-gray-600">
+                    Viste la magia, ¡y esto es solo el comienzo!
+                    La versión real (con clientes 100% reales) está casi lista.
+                    ¡Anótate para ser el primero en saber sobre el lanzamiento oficial!
+                </p>
                 <div>
                     <label for="launchEmail" class="sr-only">Tu correo</label>
                     <input type="email" id="launchEmail" required class="input p-3 border border-gray-300 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100" placeholder="tu-correo@ejemplo.com">
