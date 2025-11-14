@@ -210,7 +210,7 @@
                 
                 <!-- Sección Envíos (sin cambios en HTML) -->
                 <section class="active md:h-full" id="envios">
-                    <div class="card bg-white rounded-xl shadow-lg shadow-gray-100 p-4 md:p-6 border border-gray-200 flex flex-col md:h-full">
+                    <div class="card flex flex-col md:h-full">
                         <!-- Filtros y botones (sin cambios en HTML) -->
                         <div class="flex-shrink-0">
                             <!-- ================== INICIO: Botón de Acordeón (Solo Móvil) ================== -->
@@ -286,8 +286,8 @@
                         </div>
                         
                         <!-- Contenedor de Tabla (sin cambios en HTML) -->
-                        <div id="tableContainer" class="md:flex-grow md:relative md:min-h-0">
-                            <div class="overflow-auto absolute inset-0 hidden md:block shadow-lg shadow-gray-100 rounded-xl border border-gray-200">
+                        <div id="tableContainer">
+                            <div class="overflow-auto absolute inset-0 hidden shadow-lg shadow-gray-100 rounded-xl border border-gray-200">
                                 <table id="tablaEnvios" class="w-full border-collapse bg-white">
                                     <thead>
                                         <tr>
@@ -305,7 +305,7 @@
                                     <tbody id="tbodyEnvios"></tbody>
                                 </table>
                             </div>
-                             <div id="mobileCardContainer" class="md:hidden space-y-4 md:overflow-y-auto md:absolute md:inset-0">
+                             <div id="cardContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                                 <!-- Tarjetas móviles -->
                             </div>
                         </div>
@@ -781,7 +781,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 distritoMostrado = partes[0].trim();
                 tarifaMostrada = partes[1].trim();
             }
-            destinoBlock = `* _Distrito: ${distritoMostrado.trim()}_
+            destinoBlock = `* _Distrito: ${distritoMostrado}_
 * _Dirección: ${envio.direccion || 'N/A'}_
 * _Referencia: ${envio.referencia || '(Sin referencia)'}_`;
         } else {
@@ -1019,14 +1019,13 @@ _Atte. Tu tienda_ 🥰
     const templateLinks = document.querySelectorAll('#plantillasDropdownMenu a');
     const btnEtiquetas = document.getElementById('btnEtiquetas');
     const tbodyEnvios = document.getElementById('tbodyEnvios');
-    const mobileCardContainer = document.getElementById('mobileCardContainer');
+    const cardContainer = document.getElementById('cardContainer');
     const filtroCliente = document.getElementById('filtroCliente');
     const filtroFecha = document.getElementById('filtroFecha');
     const filtroTipo = document.getElementById('filtroTipo');
     const filtroDuplicados = document.getElementById('filtroDuplicados');
     const btnAplicarFiltros = document.getElementById('btnAplicarFiltros');
-    const tableContainer = document.getElementById('tableContainer').querySelector('.overflow-auto');
-    const mobileContainerParent = document.getElementById('mobileCardContainer').parentElement;
+    const tableContainer = document.getElementById('tableContainer');
     const emptyStateContainer = document.getElementById('emptyStateContainer');
     const batchActionsContainer = document.getElementById('batchActionsContainer');
     const checkTodos = document.getElementById('checkTodos');
@@ -1108,7 +1107,7 @@ _Atte. Tu tienda_ 🥰
     // `renderizarTabla` no necesita cambios, ya que lee la variable `envios`
     function renderizarTabla(envios, duplicates) {
         tbodyEnvios.innerHTML = '';
-        mobileCardContainer.innerHTML = '';
+        cardContainer.innerHTML = '';
 
         const visibleCountEl = document.getElementById('visibleCount');
         if(visibleCountEl) {
@@ -1134,7 +1133,6 @@ _Atte. Tu tienda_ 🥰
         }
         // ================== FIN: Lógica del Botón Flotante ==================
 
-        tableContainer.parentElement.classList.toggle('hidden', !hasEnvios);
         emptyStateContainer.classList.toggle('hidden', hasEnvios);
         batchActionsContainer.classList.toggle('hidden', !hasEnvios);
 
@@ -1242,7 +1240,7 @@ _Atte. Tu tienda_ 🥰
                         </button>
                     </div>
                 `;
-                mobileCardContainer.appendChild(card);
+                cardContainer.appendChild(card);
             });
             feather.replace();
         }
@@ -1251,16 +1249,14 @@ _Atte. Tu tienda_ 🥰
 
     // `obtenerIdsSeleccionados` no necesita cambios
     function obtenerIdsSeleccionados() {
-        const selector = (window.innerWidth < 768) ? '#mobileCardContainer' : '#tbodyEnvios';
+        const selector = '#cardContainer';
         return [...document.querySelector(selector).querySelectorAll('.rowCheck:checked')].map(chk => chk.dataset.id);
     }
 
     // `contarSeleccionados` y `seleccionarTodos` no necesitan cambios
     function contarSeleccionados() {
         const seleccionados = obtenerIdsSeleccionados().length;
-        const totalVisibleRows = (window.innerWidth < 768) 
-            ? mobileCardContainer.children.length 
-            : tbodyEnvios.rows.length;
+        const totalVisibleRows = cardContainer.children.length;
         
         selCount.textContent = `${seleccionados} seleccionados`;
         const allChecked = totalVisibleRows > 0 && seleccionados === totalVisibleRows;
