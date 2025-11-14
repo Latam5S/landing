@@ -1351,7 +1351,7 @@ _Atte. Tu tienda_ 🥰
         const enviosSeleccionados = todosLosEnvios.filter(envio => seleccionadosIds.includes(envio.id));
         const printContainer = document.getElementById('print-container');
         const businessName = localStorage.getItem('businessName') || 'Tu Emprendimiento';
-        const logoSrc = localStorage.getItem('businessLogo');
+        const logoSrc = localStorage.getItem('businessLogo') || 'Tu Logo';
 
         let labelsHtml = '';
         enviosSeleccionados.forEach(envio => {
