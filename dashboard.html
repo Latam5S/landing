@@ -225,7 +225,7 @@
                                 <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 border-b border-gray-200 pb-4 mb-4 flex-wrap">
                                     <!-- Grupo de Filtros -->
                                     <div class="flex flex-col md:flex-row md:items-end gap-2 flex-wrap">
-                                        <label class="text-xs text-gray-500 font-semibold md:w-36">Cliente (N° Exacto)<input type="text" id="filtroCliente" placeholder="N° exacto (987654321)" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1" /></label>
+                                        <label class="text-xs text-gray-500 font-semibold md:w-36">Cliente (N° Exacto)<input type="text" id="filtroCliente" placeholder="Ej. 9XXXXXXXX" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1" /></label>
                                         <label class="text-xs text-gray-500 font-semibold md:w-36">Fecha de Envío<input type="date" id="filtroFecha" class="input p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1" /></label>
                                         <label class="text-xs text-gray-500 font-semibold md:w-36"">Courier
                                             <select id="filtroTipo" class="select p-2.5 border border-gray-200 rounded-xl bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-3 focus:ring-orange-100 mt-1">
@@ -1351,7 +1351,7 @@ _Atte. Tu tienda_ 🥰
         const enviosSeleccionados = todosLosEnvios.filter(envio => seleccionadosIds.includes(envio.id));
         const printContainer = document.getElementById('print-container');
         const businessName = localStorage.getItem('businessName') || 'Tu Emprendimiento';
-        const logoSrc = localStorage.getItem('businessLogo') || 'Tu Logo';
+        const logoSrc = localStorage.getItem('businessLogo');
 
         let labelsHtml = '';
         enviosSeleccionados.forEach(envio => {
