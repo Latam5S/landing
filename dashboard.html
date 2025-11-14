@@ -150,10 +150,39 @@
             font-size: 0.875rem !important;
          }
         
-        /* ============ CAMBIO: CSS para Login ELIMINADO ============ */
-        /* #root-container { display: none; } */ /* <--- ELIMINADO */
-        /* #loginScreen { display: flex; } */ /* <--- ELIMINADO */
-        /* ========================================================== */
+    /* ============ INICIO: Estilos para Tarjetas Colapsables ============ */
+        .card-collapsible-header {
+            cursor: pointer; /* Indica que se puede hacer clic */
+            transition: background-color 0.2s ease;
+        }
+        .card-collapsible-header:hover {
+            background-color: rgba(255, 250, 246, 0.5); /* bg-bg-soft/50 */
+        }
+
+        .card-collapsible-body {
+            max-height: 0; /* Oculto por defecto */
+            overflow: hidden;
+            transition: max-height 0.3s ease-out; /* Animación */
+        }
+
+        .card-collapsible.is-open .card-collapsible-body {
+            max-height: 500px; /* Altura suficiente para mostrar el contenido */
+            /* Se añade un borde superior para separar del header */
+            border-top: 1px solid #eee; 
+            padding-top: 0.75rem; /* 12px */
+            margin-top: 0.75rem; /* 12px */
+        }
+
+        .chevron-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .card-collapsible.is-open .chevron-icon {
+            transform: rotate(180deg);
+        }
+        /* ============ FIN: Estilos para Tarjetas Colapsables ============ */
+
+
     </style>
 </head>
 <body class="font-sans bg-bg-soft text-gray-900 antialiased">
@@ -1199,12 +1228,17 @@ _Atte. Tu tienda_ 🥰
                 tbodyEnvios.appendChild(tr);
 
                 // --- Renderizar para tarjetas (Móvil) ---
+                // --- Renderizar para tarjetas (Ahora la vista principal) ---
                 const card = document.createElement('div');
                 const cardBgClass = isDuplicate ? 'bg-yellow-200/50' : 'bg-white';
-                card.className = `${cardBgClass} rounded-xl shadow p-4 border border-gray-200 space-y-3`;
-                card.dataset.id = envio.id; // ID de LocalStorage (timestamp)
+                // Añadimos la clase 'card-collapsible'
+                card.className = `${cardBgClass} card-collapsible rounded-xl shadow p-4 border border-gray-200 flex flex-col`;
+                card.dataset.id = envio.id;
+
+                // Dividimos la tarjeta en Cabecera (clicable) y Cuerpo (colapsable)
                 card.innerHTML = `
-                    <div class="flex justify-between items-start">
+                    <!-- ================== INICIO: CABECERA DE TARJETA ================== -->
+                    <div class="card-collapsible-header flex justify-between items-start">
                         <div class="flex items-center gap-3">
                             <input type="checkbox" class="rowCheck rounded border-gray-300 text-accent focus:ring-accent" data-id="${envio.id}">
                             <div>
@@ -1212,34 +1246,50 @@ _Atte. Tu tienda_ 🥰
                                 <p class="text-sm text-gray-500">${(envio.courier === 'DELIVERY') ? (envio.distrito || 'N/A') : (envio.agencia || 'N/A')}</p>
                             </div>
                         </div>
+                        <!-- Icono de flecha -->
+                        <div class="flex-shrink-0 p-1">
+                            <i data-feather="chevron-down" class="chevron-icon w-5 h-5 text-gray-400"></i>
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-600 space-y-2 pl-8">
-                        <p><strong class="text-gray-500">Cliente:</strong> ${envio.cliente}</p>
-                        <p><strong class="text-gray-500">Courier:</strong> ${envio.courier}</p>
-                        <p><strong class="text-gray-500">Fecha Envío:</strong> ${envio.fechaEnvioDisplay || ''}</p>
+                    <!-- ================== FIN: CABECERA DE TARJETA ================== -->
+
+                    <!-- ================== INICIO: CUERPO DE TARJETA (COLAPSABLE) ================== -->
+                    <div class="card-collapsible-body">
+                        <!-- Detalles (antes en flex-grow) -->
+                        <div class="text-sm text-gray-600 space-y-2 mb-4">
+                            <p><strong class="text-gray-500">Cliente:</strong> ${envio.cliente}</p>
+                            <p><strong class="text-gray-500">Courier:</strong> ${envio.courier}</p>
+                            <p><strong class="text-gray-500">Fecha Envío:</strong> ${envio.fechaEnvioDisplay || ''}</p>
+                        </div>
+
+                        <!-- Controles de Edición (antes en flex-shrink-0) -->
+                        <div>
+                            <div class="inline-edit-container">
+                                <label class="block text-xs text-gray-500 font-semibold mb-1">Estado:</label>
+                                <select class="inline-edit-estado select p-2 border border-gray-200 rounded-lg bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100" data-original-estado="${envio.estado}">
+                                    <option value="PENDIENTE" ${envio.estado === 'PENDIENTE' ? 'selected' : ''}>Pendiente</option>
+                                    <option value="ENVIADO" ${envio.estado === 'ENVIADO' ? 'selected' : ''}>Enviado</option>
+                                    <option value="NOTIFICADO" ${envio.estado === 'NOTIFICADO' ? 'selected' : ''}>Notificado</option>
+                                    <option value="REPROGRAMADO" ${envio.estado === 'REPROGRAMADO' ? 'selected' : ''}>Reprogramado</option>
+                                </select>
+                                <input type="date" class="inline-edit-fecha input p-2 border border-gray-200 rounded-lg bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100 oculto" value="${envio.fechaEnvioInput || ''}" data-original-fecha="${envio.fechaEnvioInput || ''}">
+                                <button class="inline-save-btn btn primary bg-accent text-white rounded-lg font-bold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center justify-center gap-1 oculto py-2">
+                                    <i data-feather="save" class="w-4 h-4"></i> Guardar Cambio
+                                </button>
+                            </div>
+                            <div class="flex justify-end items-center pt-2 gap-4">
+                                <button data-id="${envio.id}" class="btn-edit-full text-blue-600 hover:text-blue-800 text-sm font-bold inline-flex items-center gap-1" title="Editar Envío Completo">
+                                    <i data-feather="edit-2" class="w-4 h-4"></i> Editar
+                                </button>
+                                <button data-id="${envio.id}" class="btn-notify text-green-600 hover:text-green-800 text-sm font-bold inline-flex items-center gap-1" title="Notificar por WhatsApp">
+                                    <i data-feather="send" class="w-4 h-4"></i> Notificar
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="inline-edit-container">
-                        <label class="block text-xs text-gray-500 font-semibold mb-1">Estado:</label>
-                        <select class="inline-edit-estado select p-2 border border-gray-200 rounded-lg bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100" data-original-estado="${envio.estado}">
-                            <option value="PENDIENTE" ${envio.estado === 'PENDIENTE' ? 'selected' : ''}>Pendiente</option>
-                            <option value="ENVIADO" ${envio.estado === 'ENVIADO' ? 'selected' : ''}>Enviado</option>
-                            <option value="NOTIFICADO" ${envio.estado === 'NOTIFICADO' ? 'selected' : ''}>Notificado</option>
-                            <option value="REPROGRAMADO" ${envio.estado === 'REPROGRAMADO' ? 'selected' : ''}>Reprogramado</option>
-                        </select>
-                        <input type="date" class="inline-edit-fecha input p-2 border border-gray-200 rounded-lg bg-white w-full text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-orange-100 oculto" value="${envio.fechaEnvioInput || ''}" data-original-fecha="${envio.fechaEnvioInput || ''}">
-                        <button class="inline-save-btn btn primary bg-accent text-white rounded-lg font-bold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center justify-center gap-1 oculto py-2">
-                            <i data-feather="save" class="w-4 h-4"></i> Guardar Cambio
-                        </button>
-                    </div>
-                    <div class="flex justify-end items-center pt-2 gap-4">
-                        <button data-id="${envio.id}" class="btn-edit-full text-blue-600 hover:text-blue-800 text-sm font-bold inline-flex items-center gap-1" title="Editar Envío Completo">
-                            <i data-feather="edit-2" class="w-4 h-4"></i> Editar
-                        </button>
-                        <button data-id="${envio.id}" class="btn-notify text-green-600 hover:text-green-800 text-sm font-bold inline-flex items-center gap-1" title="Notificar por WhatsApp">
-                            <i data-feather="send" class="w-4 h-4"></i> Notificar
-                        </button>
-                    </div>
+                    <!-- ================== FIN: CUERPO DE TARJETA ================== -->
                 `;
+
                 cardContainer.appendChild(card);
             });
             feather.replace();
@@ -1619,6 +1669,25 @@ _Atte. Tu tienda_ 🥰
 
     // Listener delegado para clics (sin cambios)
     document.getElementById('envios').addEventListener('click', (e) => {
+    // ================== INICIO: Lógica de Colapso de Tarjeta ==================
+        const header = e.target.closest('.card-collapsible-header');
+        if (header) {
+            // ¡Importante! No colapsar si se hizo clic en el checkbox.
+            // El checkbox es manejado por otro listener.
+            if (e.target.closest('input[type="checkbox"]')) {
+                return; 
+            }
+
+            const card = header.closest('.card-collapsible');
+            if (card) {
+                card.classList.toggle('is-open');
+            }
+        }
+        // ================== FIN: Lógica de Colapso de Tarjeta ==================
+
+        // El resto del código (if (button), if (notifyButton), etc.) continúa...
+
+
          const button = e.target.closest('.inline-save-btn');
          if (button) {
              e.preventDefault();
