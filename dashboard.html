@@ -110,7 +110,10 @@
             }
         }
 
-
+        @media (min-width: 768px) {
+            body:not(.scroll-enabled) #root-container { overflow: hidden; }
+            body.scroll-enabled #mainContent { overflow-y: auto; }
+        }
         .col-hidden { display: none; }
         
         /* Estilos inline edit (sin cambios) */
