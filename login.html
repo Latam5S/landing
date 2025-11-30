@@ -342,8 +342,8 @@
                         <div class="space-y-6">
                             <div class="glass-card p-6 rounded-3xl space-y-5">
                                 <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Datos Públicos</h3>
-                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Tienda</label><input id="inp-store-name" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
-                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Pedidos</label><input id="inp-whatsapp" type="tel" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Tienda</label><input id="inp-store-name" oninput="app.updateConfigInput('merchantName', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Pedidos</label><input id="inp-whatsapp" type="tel" oninput="app.updateConfigInput('whatsapp', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
                             </div>
                             
                             <div class="glass-card p-6 rounded-3xl">
@@ -364,7 +364,7 @@
                                 <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Logística</h3>
                                 <label class="text-xs font-bold text-slate-400 uppercase block">Couriers</label><div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
                                 <label class="text-xs font-bold text-slate-400 uppercase block mt-2">Días Envío</label><div id="container-days" class="flex flex-wrap gap-2"></div>
-                                <div class="flex items-center gap-3 mt-4 bg-black/20 p-3 rounded-xl border border-white/5"><span class="text-sm font-bold text-slate-300">Hora Corte:</span><input type="time" id="inp-time" class="bg-transparent border border-white/10 rounded px-2 py-1 text-sm text-white outline-none focus:border-primary"></div>
+                                <div class="flex items-center gap-3 mt-4 bg-black/20 p-3 rounded-xl border border-white/5"><span class="text-sm font-bold text-slate-300">Hora Corte:</span><input type="time" id="inp-time" onchange="app.updateConfigInput('updateTime', this.value)" class="bg-transparent border border-white/10 rounded px-2 py-1 text-sm text-white outline-none focus:border-primary"></div>
                             </div>
                         </div>
                     </div>
@@ -686,6 +686,11 @@
         };
 
         window.app = {
+
+            updateConfigInput: (key, value) => {
+                state.config[key] = value;
+            },
+
             toggleLoading: (show) => { const el = document.getElementById('loading-overlay'); show ? (el.classList.remove('hidden'), setTimeout(()=>el.classList.remove('opacity-0'),10)) : (el.classList.add('opacity-0'), setTimeout(()=>el.classList.add('hidden'),300)); },
             
             // --- UI HELPERS: Modal & Toast ---
