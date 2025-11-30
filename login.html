@@ -65,13 +65,16 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        /* Glassmorphism Utilities - AHORA SÓLIDO (OPACO) */
         .glass-card {
-            /* Fondo con degradado sutil pero base oscura fuerte para evitar transparencia excesiva */
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
-            backdrop-filter: blur(16px); /* Mayor blur para solidez */
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil */
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Sombra profunda */
+            /* CAMBIO: Usamos colores HEX sólidos (#1e293b y #0f172a) en lugar de RGBA con transparencia */
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            
+            /* El backdrop-filter ya no es necesario si el fondo es opaco, pero no daña dejarlo */
+            /* backdrop-filter: blur(16px); */
+            
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         /* Scrollbar Personalizada Dark */
