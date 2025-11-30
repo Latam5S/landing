@@ -640,7 +640,7 @@
 
         // --- APP LOGIC ---
 
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbxtGqSzFnkYDRip90Bzei9MuVfRGezNNjtRQWVWDff0m7NQ__GWteUgJr3nU9ViWuBfmg/exec";
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbz5_FO5mG1jqBhswQRaPZhJjIno3fFpycM5dvZokjkGW530dr_JGKZjafuNTybKhLV_kw/exec";
         const JSON_DISTRITOS = "https://raw.githubusercontent.com/complicidad/form/main/lstDinsides.json";
         const JSON_SHALOM = "https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json";
 
@@ -872,10 +872,40 @@
             
             adminLoadUsers: async () => { 
                 const l = document.getElementById('admin-users-list'); 
-                l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Cargando datos seguros...</td></tr>'; 
+                
+                // Verificamos si tenemos el token guardado en el estado del usuario
+                // state.user.token viene del cambio que hicimos en loginUser en el backend
+                const secretToken = state.user && state.user.token ? state.user.token : null;
+
+                if (!secretToken) {
+                    l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">⛔ Error de sesión: Relogueate como Admin</td></tr>';
+                    return;
+                }
+
+                l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400"><i data-lucide="shield-check" class="inline w-4 h-4 mr-1"></i> Autorizando...</td></tr>'; 
+                lucide.createIcons();
+
+                app.toggleLoading(true);
                 let u = []; 
-                try { const res = await fetch(`${state.apiUrl}?action=getUsers`); const json = await res.json(); if(json.users) u = json.users; } catch(e){} 
-                l.innerHTML = u.length ? u.map(user => `<tr class="bg-white border-b hover:bg-slate-50"><td class="px-6 py-4 font-bold text-slate-700">${escapeHtml(user.phone)}</td><td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${escapeHtml(user.plan||'Gratis')}</span></td><td class="px-6 py-4 text-xs text-slate-400">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</td><td class="px-6 py-4 text-right flex gap-2 justify-end"><button onclick="app.adminResend('${escapeHtml(user.uid)}','${escapeHtml(user.phone)}')" class="text-indigo-600 text-xs font-bold hover:bg-indigo-50 px-2 py-1 rounded">Clave</button><select onchange="app.adminUpdatePlan('${escapeHtml(user.uid)}', this.value)" class="text-xs border rounded p-1 bg-slate-50 cursor-pointer outline-none"><option value="" disabled selected>Cambiar Plan</option><option value="Gratis">Gratis</option><option value="Pro">Pro</option><option value="Empresa">Empresa</option></select></td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center">Base de datos vacía</td></tr>'; 
+                
+                try { 
+                    // ENVIAMOS EL TOKEN AUTOMÁTICAMENTE (Ya no pide prompt)
+                    // Nota: Enviamos 'adminSecret' con el valor del token
+                    const res = await fetch(`${state.apiUrl}?action=getUsers&adminSecret=${encodeURIComponent(secretToken)}`); 
+                    const json = await res.json(); 
+                    
+                    if(json.users) {
+                        u = json.users; 
+                        // Renderizado de la tabla (Tu código visual original)
+                        l.innerHTML = u.length ? u.map(user => `<tr class="bg-white border-b hover:bg-slate-50"><td class="px-6 py-4 font-bold text-slate-700">${escapeHtml(user.phone)}</td><td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${escapeHtml(user.plan||'Gratis')}</span></td><td class="px-6 py-4 text-xs text-slate-400">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</td><td class="px-6 py-4 text-right flex gap-2 justify-end"><button onclick="app.adminResend('${escapeHtml(user.uid)}','${escapeHtml(user.phone)}')" class="text-indigo-600 text-xs font-bold hover:bg-indigo-50 px-2 py-1 rounded">Clave</button><select onchange="app.adminUpdatePlan('${escapeHtml(user.uid)}', this.value)" class="text-xs border rounded p-1 bg-slate-50 cursor-pointer outline-none"><option value="" disabled selected>Cambiar Plan</option><option value="Gratis">Gratis</option><option value="Pro">Pro</option><option value="Empresa">Empresa</option></select></td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center">Base de datos vacía</td></tr>'; 
+                    } else {
+                        l.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500 font-bold">⛔ Acceso Denegado (Token inválido)</td></tr>`;
+                    }
+                } catch(e){ 
+                    console.error(e);
+                    l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">Error de conexión</td></tr>';
+                } 
+                
                 app.toggleLoading(false); 
             },
             
