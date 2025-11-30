@@ -159,12 +159,12 @@
 
                 <!-- CTA & Mobile Toggle -->
                 <div class="flex items-center gap-4">
-                    <!-- NUEVO: Botón de Ingreso Desktop -->
-                    <a href="login" class="hidden lg:block text-sm font-bold text-gray-300 hover:text-white transition-colors">
+                    <!-- Login: Abre en nueva pestaña -->
+                    <a href="user.html" target="_blank" class="hidden lg:block text-sm font-bold text-gray-300 hover:text-white transition-colors">
                         Ingresar
                     </a>
 
-                    <!-- CTA Principal -->
+                    <!-- CTA Principal: WhatsApp -->
                     <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20interesa%20el%20Plan%20Inicial%20Gratis.%20¿Me%20ayudan%20con%20el%20acceso?" target="_blank" class="hidden sm:flex bg-white text-dark_bg px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition-all shadow-glow hover:shadow-white/20 transform hover:-translate-y-0.5">
                         Empezar Gratis
                     </a>
@@ -184,8 +184,8 @@
                 <a href="#como-funciona" class="font-medium text-gray-300 py-2" onclick="toggleMenu()">Cómo funciona</a>
                 <a href="#pricing" class="font-medium text-gray-300 py-2" onclick="toggleMenu()">Precios</a>
                 
-                <!-- NUEVO: Botón de Ingreso Mobile -->
-                <a href="login" class="font-bold text-primary py-2 border-t border-white/10 mt-2 pt-4">Ingresar al Sistema</a>
+                <!-- Login Mobile: Abre en nueva pestaña -->
+                <a href="user.html" target="_blank" class="font-bold text-primary py-2 border-t border-white/10 mt-2 pt-4">Ingresar al Sistema</a>
             </div>
         </div>
     </header>
@@ -217,6 +217,7 @@
                     </p>
                     
                     <div class="mt-10 flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
+                        <!-- Solo botón de probar demo -->
                         <a href="#live-test" class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-blue-600 text-white font-bold rounded-full shadow-neon transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-base">
                             <i data-feather="zap" class="w-5 h-5"></i> Probar Demo
                         </a>
@@ -235,25 +236,25 @@
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: PHONES DEMO -->
+                <!-- RIGHT COLUMN: PHONES DEMO (Robust Layout) -->
                 <div class="relative flex justify-center lg:justify-end mt-12 lg:mt-0 w-full">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-full blur-[80px] pointer-events-none"></div>
                     
                     <div class="flex justify-center items-end gap-4 sm:gap-8 w-full max-w-[550px]">
                         <!-- PHONE 1: MANUAL -->
-                        <div class="relative w-[45%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-1 ring-white/10 flex flex-col opacity-60 hover:opacity-100 transition-opacity duration-500">
+                        <div class="relative w-[48%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-1 ring-white/10 flex flex-col opacity-60 hover:opacity-100 transition-opacity duration-500">
                             <div class="absolute inset-0 bg-red-500/5 pointer-events-none z-30 mix-blend-overlay"></div>
-                            <div class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5">
+                            <div class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5 shrink-0">
                                 <div class="flex items-center gap-1.5 sm:gap-2">
                                     <i class="fas fa-chevron-left text-gray-400 text-xs"></i>
                                     <div class="w-5 h-5 sm:w-8 sm:h-8 bg-gray-600 rounded-full flex items-center justify-center"><i class="fas fa-user text-[8px] sm:text-xs text-white"></i></div>
                                     <span class="text-[9px] sm:text-xs text-gray-300 font-medium truncate w-12 sm:w-auto">Manual</span>
                                 </div>
                             </div>
-                            <div id="manual-chat-view" class="flex-1 bg-[#0b141a] relative w-full overflow-hidden flex flex-col">
+                            <div id="manual-chat-view" class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative">
                                 <div class="whatsapp-bg absolute inset-0 opacity-20"></div>
                                 <div id="manual-messages" class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2"></div>
-                                <div class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2">
+                                <div class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 shrink-0">
                                     <div class="flex-1 bg-[#2a3942] rounded-full h-6 sm:h-8 px-2 sm:px-3 flex items-center">
                                         <span class="text-[8px] sm:text-[10px] text-gray-400 animate-pulse">Escribiendo...</span>
                                     </div>
@@ -262,10 +263,10 @@
                             </div>
                         </div>
 
-                        <!-- PHONE 2: LATAM5S -->
+                        <!-- PHONE 2: LATAM5S (Fixed Layout) -->
                         <div class="relative w-[50%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-2 ring-primary shadow-neon transform scale-105 z-20 mb-4 sm:mb-0">
                             <div class="absolute top-4 -right-8 bg-primary text-white text-[8px] sm:text-[10px] font-bold px-8 py-1 rotate-45 z-50 shadow-lg">AUTO</div>
-                            <div class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5">
+                            <div class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5 shrink-0">
                                 <div class="flex items-center gap-1.5 sm:gap-2">
                                     <i class="fas fa-chevron-left text-primary text-xs"></i>
                                     <div class="w-5 h-5 sm:w-8 sm:h-8 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-500/50"><i class="fas fa-robot text-[8px] sm:text-xs text-blue-400"></i></div>
@@ -275,10 +276,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="opt-chat-view" class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative">
+                            
+                            <!-- CHAT CONTAINER: STRICT FLEX COLUMN -->
+                            <div id="opt-chat-view" class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative h-full">
                                 <div class="whatsapp-bg absolute inset-0 opacity-20 pointer-events-none"></div>
-                                <div id="opt-messages" class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2"></div>
-                                <div class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 border-t border-white/5 shrink-0">
+                                
+                                <!-- Messages Area: Takes up all available space -->
+                                <div id="opt-messages" class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2 min-h-0 w-full">
+                                    <!-- Messages injected here -->
+                                </div>
+                                
+                                <!-- Input Area: Fixed height, stuck to bottom by flex flow -->
+                                <div class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 border-t border-white/5 shrink-0 w-full">
                                     <div class="flex-1 bg-[#2a3942] rounded-full h-6 sm:h-8 px-2 sm:px-3 flex items-center">
                                         <span class="text-[8px] sm:text-[10px] text-gray-400">Latam5S activo...</span>
                                     </div>
@@ -475,6 +484,7 @@
             </div>
 
             <div class="relative">
+                <!-- Línea conectora (Desktop) -->
                 <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent z-0"></div>
 
                 <div class="grid md:grid-cols-3 gap-12 relative z-10">
@@ -537,7 +547,7 @@
                         <li class="flex items-start gap-3"><i data-feather="check" class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Gestión en Dashboard</span></li>
                     </ul>
                     
-                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20interesa%20el%20Plan%20Inicial%20Gratis.%20¿Me%20ayudan%20con%20el%20acceso?" target="_blank" class="block w-full py-3 border border-white/10 rounded-xl text-sm font-bold text-white text-center hover:bg-white/5 transition-colors">Crear Cuenta Gratis</a>
+                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20interesa%20crear%20una%20cuenta%20Gratuita." target="_blank" class="block w-full py-3 border border-white/10 rounded-xl text-sm font-bold text-white text-center hover:bg-white/5 transition-colors">Crear Cuenta Gratis</a>
                 </div>
                 
                 <!-- Plan PRO -->
@@ -555,7 +565,7 @@
                         <li class="flex items-start gap-3"><i data-feather="plus" class="text-primary w-4 h-4 mt-0.5"></i> <span class="text-gray-400">Todo lo del plan Inicial</span></li>
                     </ul>
                     
-                    <a href="#live-test" class="block w-full py-4 bg-primary text-white rounded-xl text-sm font-bold hover:bg-blue-600 shadow-neon transition-all text-center">Prueba 7 días gratis</a>
+                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20quiero%20la%20prueba%20de%207%20días%20del%20Plan%20Profesional." target="_blank" class="block w-full py-4 bg-primary text-white rounded-xl text-sm font-bold hover:bg-blue-600 shadow-neon transition-all text-center">Prueba 7 días gratis</a>
                 </div>
                 
                 <!-- Plan EMPRESA -->
@@ -571,7 +581,7 @@
                         <li class="flex items-start gap-3"><i data-feather="plus" class="text-purple-400 w-4 h-4 mt-0.5"></i> <span class="text-gray-500">Todo lo del plan Pro</span></li>
                     </ul>
                     
-                    <a href="#live-test" class="block w-full py-3 border border-white/10 rounded-xl text-sm font-bold text-white text-center hover:bg-white/5 transition-colors">Contactar Ventas</a>
+                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20quiero%20información%20sobre%20el%20Plan%20Empresa." target="_blank" class="block w-full py-3 border border-white/10 rounded-xl text-sm font-bold text-white text-center hover:bg-white/5 transition-colors">Contactar Ventas</a>
                 </div>
             </div>
 
@@ -728,7 +738,7 @@
         // ----------------------------------------------------
         // LOGICA DE CARGA Y BÚSQUEDA DE AGENCIAS SHALOM
         // ----------------------------------------------------
-        const shalomUrl = 'lstShalom.json';
+        const shalomUrl = 'https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json';
         const inputSede = document.getElementById('demo-sede');
         const dropdownSede = document.getElementById('sedes-dropdown');
         let agencias = [];
@@ -846,7 +856,7 @@
                 // Mensaje en formato Markdown para WhatsApp
                 const message = `Hola Latam5S, quiero probar la demo:%0A%0A• *Courier:* ${agency.toUpperCase()}%0A• *Cliente:* ${n}%0A• *Cel:* ${p}%0A• *DNI/CE:* ${dni}%0A• *Agencia:* ${agency}%0A• *Sede:* ${sedeName}%0A• *Dirección:* ${direccion}%0A%0A•••••••••••••••••••••••••••••••••••••%0A%0AEsta información también la tienes en tu panel de control de envíos.`;
                 
-                window.open(`https://wa.me/51982767073?text=${message}`, '_blank');
+                window.open(`https://wa.me/51904774275?text=${message}`, '_blank');
                 btn.innerHTML = originalContent;
             }, 800);
         });
@@ -884,7 +894,7 @@
             const id = 'manual-messages'; const el = document.getElementById(id); if(!el) return;
             while(true) {
                 el.innerHTML = ''; await wait(1000);
-                addMsg(id, 'Hola, precio envío', 'in'); await wait(1500); addMsg(id, 'Hola 👋 ¿A qué ciudad y por qué agencia?', 'out'); await wait(2000);
+                addMsg(id, 'Hola, quiero mi envío', 'in'); await wait(1500); addMsg(id, 'Hola 👋 ¿A qué ciudad y por qué agencia?', 'out'); await wait(2000);
                 addMsg(id, 'Arequipa', 'in'); await wait(1500); addMsg(id, '¿Por Shalom, Olva o Marvisur? ¿Qué sede?', 'out'); await wait(2500);
                 addMsg(id, 'Por Shalom... la de la Av Ejército', 'in'); await wait(2000); addMsg(id, '¿Cuál de todas? Hay 3 en esa avenida 😓', 'out'); await wait(3000); 
                 addMsg(id, 'Mmm... no sé, la principal creo', 'in'); await wait(2000); addMsg(id, 'Necesito DNI y nombre completo exacto', 'out'); await wait(3000);
@@ -895,8 +905,8 @@
             const id = 'opt-messages'; const el = document.getElementById(id); if(!el) return;
             while(true) {
                 el.innerHTML = ''; await wait(1000);
-                addMsg(id, 'Quiero envío a provincia 📦', 'in'); await wait(800);
-                addMsg(id, '¡Claro! Elige tu agencia aquí: <span class="text-[#53bdeb] underline">latam5s.com/envio</span>', 'out'); await wait(2000);
+                addMsg(id, 'Hola, quiero mi envío 📦', 'in'); await wait(800);
+                addMsg(id, '¡Claro! Agenda tu envío aquí: <span class="text-[#53bdeb] underline">latam5s.com/envio</span>', 'out'); await wait(2000);
                 
                 // Mensaje estandarizado simulado en la animación (MEJORADO Y LLAMATIVO)
                 const card = `
@@ -907,16 +917,14 @@
                     • <b>DNI/CE:</b> 12345678<br>
                     • <b>Agencia:</b> Shalom<br>
                     • <b>Sede:</b> Arequipa - Cercado<br>
-                    • <b>Dirección:</b> Av. Ejército 123 - Frente al mall<br><br>
-                    •••••••••••••••••••••••••••••••••••••<br><br>
-                    Esta información también la tienes en tu panel de control de envíos.
+                    • <b>Dirección:</b> Av. Ejército 123 - Frente al mall
                 `;
                 
                 // Lo enviamos como mensaje del usuario ('in') para simular que el cliente envía los datos
                 addMsg(id, card, 'in'); 
                 
                 await wait(1000); 
-                addMsg(id, '¡Perfecto! Generando rótulo... 🖨️', 'out'); await wait(4000);
+                addMsg(id, '¡Genial!', 'out'); await wait(4000);
             }
         }
         
