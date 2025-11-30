@@ -56,19 +56,22 @@
             color: #e2e8f0; /* Slate-200 */
         }
         
-        /* Glassmorphism Utilities */
+        /* Glassmorphism Utilities - UNIFICADO Y CONSISTENTE */
         .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(15, 23, 42, 0.7); /* Base oscura sólida */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .glass-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            /* Fondo con degradado sutil pero base oscura fuerte para evitar transparencia excesiva */
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+            backdrop-filter: blur(16px); /* Mayor blur para solidez */
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Sombra profunda */
         }
         
         /* Scrollbar Personalizada Dark */
@@ -125,24 +128,24 @@
         <p id="loading-text" class="text-primary font-bold mt-6 animate-pulse tracking-widest text-xs uppercase">Conectando...</p>
     </div>
 
-    <!-- MODAL CONFIRMACIÓN GENÉRICO (Glass) -->
+    <!-- MODAL CONFIRMACIÓN GENÉRICO (Glass Unificado) -->
     <div id="modal-confirm" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center transition-opacity duration-200 opacity-0">
-        <div id="modal-card" class="glass-card rounded-2xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-200 border border-white/10">
-            <div class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary mx-auto shadow-neon">
+        <div id="modal-card" class="glass-card rounded-3xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-200">
+            <div class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary mx-auto shadow-neon border border-primary/20">
                 <i data-lucide="alert-circle" class="w-7 h-7"></i>
             </div>
             <h3 class="text-xl font-bold text-white mb-3 text-center">Confirmación</h3>
             <p id="modal-msg" class="text-slate-400 text-sm mb-8 leading-relaxed text-center">...</p>
             <div class="flex gap-3">
-                <button onclick="app.closeModal('modal-confirm')" class="flex-1 py-3 rounded-xl font-bold text-slate-400 hover:text-white hover:bg-white/5 transition border border-transparent">Cancelar</button>
+                <button onclick="app.closeModal('modal-confirm')" class="flex-1 py-3 rounded-xl font-bold text-slate-400 hover:text-white hover:bg-white/5 transition border border-white/10">Cancelar</button>
                 <button id="modal-btn-confirm" class="flex-1 py-3 rounded-xl font-bold bg-primary text-white hover:bg-blue-600 transition shadow-neon">Confirmar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL SELECCIÓN DE ESTADO (Glass) -->
+    <!-- MODAL SELECCIÓN DE ESTADO (Glass Unificado) -->
     <div id="modal-status" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center transition-opacity duration-200 opacity-0">
-        <div id="modal-status-card" class="glass-card w-full max-w-sm rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-200 mx-4 border border-white/10">
+        <div id="modal-status-card" class="glass-card w-full max-w-sm rounded-3xl p-8 shadow-2xl transform scale-95 transition-transform duration-200 mx-4">
             <h3 class="text-xl font-bold text-white mb-2 text-center">Actualizar Estado</h3>
             <p class="text-xs text-slate-400 text-center mb-6">Se aplicará a los elementos seleccionados.</p>
             <div class="space-y-4">
@@ -152,13 +155,13 @@
                 <button onclick="app.setStatus('PENDIENTE')" class="w-full py-4 rounded-xl font-bold bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/30 flex items-center justify-center gap-3 transition">
                     <i data-lucide="clock" class="w-5 h-5"></i> MARCAR COMO PENDIENTE
                 </button>
-                <button onclick="app.closeModal('modal-status')" class="w-full py-3 rounded-xl font-bold text-slate-400 hover:text-white hover:bg-white/5 mt-2 transition">Cancelar</button>
+                <button onclick="app.closeModal('modal-status')" class="w-full py-3 rounded-xl font-bold text-slate-400 hover:text-white hover:bg-white/5 mt-2 transition border border-white/10">Cancelar</button>
             </div>
         </div>
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] glass-card border border-secondary/30 text-white px-6 py-3 rounded-full shadow-neon-green flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0">
+    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] glass-card border-l-4 border-secondary text-white px-6 py-3 rounded-xl shadow-neon-green flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0">
         <i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i>
         <span id="toast-msg" class="font-bold text-sm">Acción completada</span>
     </div>
@@ -168,8 +171,7 @@
 
     <!-- VISTA AUTH (Login) -->
     <div id="view-auth" class="flex-1 h-full flex flex-col items-center justify-center p-4 hidden overflow-y-auto no-print relative z-10">
-        
-        <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-white/10 slide-up my-auto relative z-10">
+        <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl overflow-hidden slide-up my-auto relative z-10">
             <div class="bg-card_bg/50 p-8 text-center relative overflow-hidden border-b border-white/5">
                 <div class="absolute top-0 right-0 p-4 opacity-5"><i data-lucide="box" class="w-32 h-32 text-white"></i></div>
                 <div class="relative z-10">
@@ -215,27 +217,27 @@
             <button onclick="app.logout()" class="text-xs font-bold bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg transition border border-white/5">Salir</button>
         </header>
         <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-5xl mx-auto w-full space-y-6 pb-20">
-            <div class="glass-card p-6 rounded-2xl">
+            <div class="glass-card p-6 rounded-3xl">
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5 text-primary"></i> Alta de Emprendedor</h2>
                 <form onsubmit="app.adminCreateUser(event)" class="flex flex-col md:flex-row gap-4 items-end">
                     <div class="flex-1 w-full">
                         <label class="block text-xs font-bold text-slate-400 uppercase mb-2">WhatsApp del Cliente</label>
-                        <input id="admin-new-phone" type="tel" required placeholder="Ej: 999888777" class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary transition">
+                        <input id="admin-new-phone" type="tel" required placeholder="Ej: 999888777" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary transition">
                     </div>
                     <div class="w-full md:w-40">
                         <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Plan</label>
-                        <select id="admin-new-plan" class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary cursor-pointer">
+                        <select id="admin-new-plan" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary cursor-pointer">
                             <option value="Gratis" class="bg-card_bg">Gratis</option>
                             <option value="Pro" class="bg-card_bg">Pro</option>
                             <option value="Empresa" class="bg-card_bg">Empresa</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full md:w-auto bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-600 transition flex items-center justify-center gap-2 shadow-neon">
+                    <button type="submit" class="w-full md:w-auto bg-primary text-white px-6 py-4 rounded-xl font-bold hover:bg-blue-600 transition flex items-center justify-center gap-2 shadow-neon">
                         <i data-lucide="zap" class="w-4 h-4"></i> Crear
                     </button>
                 </form>
             </div>
-            <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="glass-card rounded-3xl overflow-hidden">
                 <div class="p-6 border-b border-white/5 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-white">Usuarios Registrados</h2>
                     <button onclick="app.adminLoadUsers()" class="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white transition"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
@@ -303,33 +305,45 @@
         
         <!-- Contenedor Principal -->
         <main class="flex-1 relative overflow-hidden flex flex-col">
+            <!-- Decoración de fondo sutil -->
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
+                <div class="absolute top-[10%] right-[10%] w-64 h-64 bg-primary/30 rounded-full blur-[100px]"></div>
+            </div>
             
-            <!-- PESTAÑA CONFIGURACIÓN -->
+            <!-- PESTAÑA CONFIGURACIÓN (Aplicado glass-card unificado, ancho completo) -->
             <div id="tab-config" class="tab-content w-full h-full overflow-y-auto p-4 md:p-8 hidden no-scrollbar z-10">
-                <div class="max-w-2xl mx-auto space-y-6 slide-up pb-32">
-                    <div class="flex justify-between items-center"><h2 class="text-2xl font-bold text-white">Configuración</h2><button id="btn-save-config" onclick="app.saveConfig()" class="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-600 transition flex gap-2 shadow-neon"><i data-lucide="save" class="w-4 h-4"></i> Guardar</button></div>
+                <div class="max-w-7xl mx-auto slide-up pb-32">
+                    <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-white">Configuración</h2><button id="btn-save-config" onclick="app.saveConfig()" class="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-600 transition flex gap-2 shadow-neon"><i data-lucide="save" class="w-4 h-4"></i> Guardar</button></div>
                     
-                    <div class="glass-card p-6 rounded-2xl space-y-5">
-                        <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Datos Públicos</h3>
-                        <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Tienda</label><input id="inp-store-name" class="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-primary transition"></div>
-                        <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Pedidos</label><input id="inp-whatsapp" type="tel" class="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-primary transition"></div>
-                    </div>
-                    
-                    <div class="glass-card p-6 rounded-2xl space-y-5">
-                        <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Logística</h3>
-                        <label class="text-xs font-bold text-slate-400 uppercase block">Couriers</label><div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
-                        <label class="text-xs font-bold text-slate-400 uppercase block mt-2">Días Envío</label><div id="container-days" class="flex flex-wrap gap-2"></div>
-                        <div class="flex items-center gap-3 mt-4 bg-black/20 p-3 rounded-lg"><span class="text-sm font-bold text-slate-300">Hora Corte:</span><input type="time" id="inp-time" class="bg-transparent border border-white/10 rounded px-2 py-1 text-sm text-white outline-none focus:border-primary"></div>
-                    </div>
-                    
-                    <div class="glass-card p-6 rounded-2xl">
-                        <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 flex items-center gap-2 border-b border-white/5 pb-2"><i data-lucide="lock" class="w-3 h-3"></i> Seguridad</h3>
-                        <div class="flex gap-3 items-end">
-                            <div class="flex-1">
-                                <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nueva Contraseña</label>
-                                <input id="inp-new-pass" type="password" class="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white outline-none focus:border-primary transition">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Columna Izquierda: Datos y Seguridad -->
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 rounded-3xl space-y-5">
+                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Datos Públicos</h3>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Tienda</label><input id="inp-store-name" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Pedidos</label><input id="inp-whatsapp" type="tel" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
                             </div>
-                            <button id="btn-change-pass" onclick="app.changePassword()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-bold hover:bg-indigo-700 transition h-[46px] shadow-lg">Actualizar</button>
+                            
+                            <div class="glass-card p-6 rounded-3xl">
+                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 flex items-center gap-2 border-b border-white/5 pb-2"><i data-lucide="lock" class="w-3 h-3"></i> Seguridad</h3>
+                                <div class="flex gap-3 items-end">
+                                    <div class="flex-1">
+                                        <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nueva Contraseña</label>
+                                        <input id="inp-new-pass" type="password" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition">
+                                    </div>
+                                    <button id="btn-change-pass" onclick="app.changePassword()" class="bg-indigo-600 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-indigo-700 transition h-[56px] shadow-lg">Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna Derecha: Logística (Full Height) -->
+                        <div class="flex flex-col">
+                            <div class="glass-card p-6 rounded-3xl space-y-5 h-full">
+                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Logística</h3>
+                                <label class="text-xs font-bold text-slate-400 uppercase block">Couriers</label><div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
+                                <label class="text-xs font-bold text-slate-400 uppercase block mt-2">Días Envío</label><div id="container-days" class="flex flex-wrap gap-2"></div>
+                                <div class="flex items-center gap-3 mt-4 bg-black/20 p-3 rounded-xl border border-white/5"><span class="text-sm font-bold text-slate-300">Hora Corte:</span><input type="time" id="inp-time" class="bg-transparent border border-white/10 rounded px-2 py-1 text-sm text-white outline-none focus:border-primary"></div>
+                            </div>
                         </div>
                     </div>
                     
@@ -339,7 +353,7 @@
                 </div>
             </div>
             
-            <!-- PESTAÑA COMPARTIR -->
+            <!-- PESTAÑA COMPARTIR (Ya tenía glass-card, se mantiene igual) -->
             <div id="tab-share" class="tab-content w-full h-full overflow-y-auto p-4 hidden no-scrollbar z-10">
                 <div class="min-h-full flex flex-col items-center justify-center py-8 pb-32">
                     <div class="glass-card p-8 rounded-3xl text-center max-w-md w-full slide-up border border-white/10">
@@ -370,18 +384,18 @@
                 </div>
             </div>
             
-            <!-- PESTAÑA ENVÍOS -->
+            <!-- PESTAÑA ENVÍOS (Actualizada a rounded-3xl) -->
             <div id="tab-orders" class="tab-content hidden w-full h-full flex flex-col p-3 md:p-8 z-10">
                 
                 <!-- Toolbar Compacta Glass -->
-                <div class="glass-card p-3 rounded-xl mb-3 flex flex-col gap-3 flex-shrink-0">
+                <div class="glass-card p-4 rounded-3xl mb-3 flex flex-col gap-3 flex-shrink-0">
                     <!-- Línea 1: Filtros -->
                     <div class="flex gap-2">
                         <div class="relative flex-grow">
                             <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"></i>
-                            <input id="inp-search-orders" oninput="app.renderOrders()" class="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/10 rounded-lg text-sm text-white focus:border-primary outline-none placeholder-slate-500" placeholder="Buscar cliente, DNI, ref...">
+                            <input id="inp-search-orders" oninput="app.renderOrders()" class="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/10 rounded-xl text-sm text-white focus:border-primary outline-none placeholder-slate-500" placeholder="Buscar cliente, DNI, ref...">
                         </div>
-                        <input type="date" id="date-specific" onchange="app.renderOrders()" class="bg-black/30 border border-white/10 rounded-lg px-2 py-2 text-sm w-32 text-white focus:border-primary outline-none flex-shrink-0">
+                        <input type="date" id="date-specific" onchange="app.renderOrders()" class="bg-black/30 border border-white/10 rounded-xl px-2 py-2 text-sm w-32 text-white focus:border-primary outline-none flex-shrink-0">
                     </div>
                     
                     <!-- Línea 2: Herramientas -->
@@ -414,7 +428,7 @@
                 </div>
 
                 <!-- Lista Glass -->
-                <div class="flex-1 min-h-0 flex flex-col glass-card rounded-xl relative">
+                <div class="flex-1 min-h-0 flex flex-col glass-card rounded-3xl relative">
                     <div class="overflow-y-auto p-2 space-y-1 h-full pb-32 custom-scrollbar" id="orders-list">
                         <!-- Items -->
                     </div>
@@ -427,34 +441,34 @@
         </main>
     </div>
 
-    <!-- VISTA CLIENTE (Light Theme para el usuario final) -->
-    <div id="view-client" class="flex-1 h-full hidden overflow-y-auto no-print bg-slate-50 text-slate-800">
-        <div class="max-w-2xl mx-auto min-h-screen bg-white shadow-2xl flex flex-col relative overflow-hidden">
-            <div class="bg-slate-900 text-white p-6 sticky top-0 z-30 shadow-md flex items-center gap-3">
-                <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center"><i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400"></i></div>
-                <div><h1 id="client-title" class="font-bold text-lg leading-tight">Cargando...</h1><p class="text-xs text-slate-400">Datos de Envío</p></div>
+    <!-- VISTA CLIENTE (Dark Theme para consistencia) -->
+    <div id="view-client" class="flex-1 h-full hidden overflow-y-auto no-print bg-dark_bg text-slate-200 z-10">
+        <div class="max-w-2xl mx-auto min-h-screen glass-card rounded-3xl shadow-2xl flex flex-col relative overflow-hidden border border-white/10 my-4">
+            <div class="bg-black/20 p-6 sticky top-0 z-30 shadow-md flex items-center gap-3 border-b border-white/5">
+                <div class="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center text-secondary shadow-neon-green"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
+                <div><h1 id="client-title" class="font-bold text-lg leading-tight text-white">Cargando...</h1><p class="text-xs text-slate-400">Datos de Envío</p></div>
             </div>
 
             <div class="flex-1 p-6 space-y-8 pb-32">
-                <div class="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-r-lg shadow-sm"><p class="text-xs text-orange-700">📅 Pedidos para hoy cierran a las <strong id="client-time">--:--</strong>.</p></div>
+                <div class="bg-yellow-500/10 border-l-4 border-yellow-500 p-4 rounded-r-lg shadow-sm"><p class="text-xs text-yellow-400">📅 Pedidos para hoy cierran a las <strong id="client-time">--:--</strong>.</p></div>
 
                 <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-8">
                     <div class="space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 mb-2">Agencia / Delivery</label>
+                                <label class="block text-xs font-semibold text-slate-400 mb-2">Agencia / Delivery</label>
                                 <div class="relative">
-                                    <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-white border border-slate-300 rounded-xl py-3 pl-4 pr-10 text-slate-700 font-medium focus:ring-2 focus:ring-slate-800 outline-none cursor-pointer">
-                                        <option value="" disabled selected>Elige una opción...</option>
+                                    <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-black/30 border border-white/10 rounded-xl py-3 pl-4 pr-10 text-white font-medium focus:border-primary outline-none cursor-pointer">
+                                        <option value="" disabled selected class="bg-card_bg">Elige una opción...</option>
                                     </select>
                                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-500"><i data-lucide="chevron-down" class="w-4 h-4"></i></div>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 mb-2">Fecha de Despacho</label>
+                                <label class="block text-xs font-semibold text-slate-400 mb-2">Fecha de Despacho</label>
                                 <div class="relative">
-                                    <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-white border border-slate-300 rounded-xl py-3 pl-4 pr-10 text-slate-700 font-medium focus:ring-2 focus:ring-slate-800 outline-none cursor-pointer">
-                                        <option value="" disabled selected>Elige fecha...</option>
+                                    <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-black/30 border border-white/10 rounded-xl py-3 pl-4 pr-10 text-white font-medium focus:border-primary outline-none cursor-pointer">
+                                        <option value="" disabled selected class="bg-card_bg">Elige fecha...</option>
                                     </select>
                                     <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-4 h-4"></i></div>
                                 </div>
@@ -468,44 +482,44 @@
                             <div class="relative z-20">
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-slate-400"></i></div>
-                                    <input id="c-agency" type="text" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-10 pr-10 py-3 outline-none focus:ring-2 focus:ring-slate-800 transition placeholder-slate-400" placeholder="Buscar Sede (Calle / Distrito)..." autocomplete="off" oninput="app.searchAgency(this.value)">
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center"><button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="h-5 w-5"></i></button></div>
-                                    <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
+                                    <input id="c-agency" type="text" class="w-full bg-black/30 border border-white/10 text-white rounded-xl pl-10 pr-10 py-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="Buscar Sede (Calle / Distrito)..." autocomplete="off" oninput="app.searchAgency(this.value)">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center"><button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden text-slate-400 hover:text-white p-1"><i data-lucide="x" class="h-5 w-5"></i></button></div>
+                                    <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-card_bg border border-white/10 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 divide-y divide-white/5"></div>
                                 </div>
                             </div>
-                            <div><input id="c-dni" type="tel" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="DNI / CE"></div>
+                            <div><input id="c-dni" type="tel" class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="DNI / CE"></div>
                         </div>
 
                         <div id="fields-home" class="hidden space-y-4">
                             <div class="relative z-20">
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="map-pin" class="h-5 w-5 text-slate-400"></i></div>
-                                    <input id="c-district" type="text" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-10 pr-10 py-3 outline-none focus:ring-2 focus:ring-slate-800 transition placeholder-slate-400" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center"><button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="h-5 w-5"></i></button></div>
-                                    <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
+                                    <input id="c-district" type="text" class="w-full bg-black/30 border border-white/10 text-white rounded-xl pl-10 pr-10 py-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center"><button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden text-slate-400 hover:text-white p-1"><i data-lucide="x" class="h-5 w-5"></i></button></div>
+                                    <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-card_bg border border-white/10 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 divide-y divide-white/5"></div>
                                     </div>
                             </div>
-                            <div><input id="c-address" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Dirección Exacta (Calle / Av / Jr)"></div>
-                            <div><input id="c-ref" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Referencia (Frente a...)"></div>
+                            <div><input id="c-address" class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="Dirección Exacta (Calle / Av / Jr)"></div>
+                            <div><input id="c-ref" class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="Referencia (Frente a...)"></div>
                         </div>
 
                         <div class="space-y-4 pt-1">
-                            <div><input id="c-name" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Nombre Completo"></div>
-                            <div><input id="c-phone" type="tel" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Celular / WhatsApp"></div>
+                            <div><input id="c-name" required class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="Nombre Completo"></div>
+                            <div><input id="c-phone" type="tel" required class="w-full bg-black/30 border border-white/10 text-white rounded-lg p-3 outline-none focus:border-primary transition placeholder-slate-500" placeholder="Celular / WhatsApp"></div>
                         </div>
 
                     </div>
 
-                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 flex justify-center max-w-2xl mx-auto z-10">
-                        <button type="submit" id="btn-submit-order" disabled class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                    <div class="fixed bottom-0 left-0 right-0 p-4 bg-card_bg/90 backdrop-blur border-t border-white/10 flex justify-center max-w-2xl mx-auto z-10">
+                        <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-4 rounded-xl shadow-neon-green transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" class="w-6 h-6">
                                 <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                            </svg> Enviar por WhatsApp
+                            </svg> Enviar Datos
                         </button>
                     </div>
                 </form>
                 
-                <div class="text-center text-[10px] text-slate-300 uppercase font-bold tracking-widest mt-8 pb-4">
+                <div class="text-center text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-8 pb-4">
                     POWERED BY LATAM5S
                 </div>
             </div>
@@ -631,8 +645,8 @@
                 const card = el.firstElementChild; 
                 el.classList.add('opacity-0'); 
                 if(card) {
-                    card.classList.remove('scale-100'); 
-                    card.classList.add('scale-95');
+                    card.classList.remove('scale-100', 'translate-y-0', 'md:translate-y-10'); 
+                    card.classList.add('scale-95', 'translate-y-full');
                 }
                 setTimeout(() => el.classList.add('hidden'), 300);
             },
