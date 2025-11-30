@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Latam5S</title>
+    <title>Logística B2B | Latam5s</title>
     
     <!-- Fuente Quicksand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,9 +98,23 @@
             .no-print { display: none !important; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
+
+        /* Canvas Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0; /* Detrás de todo */
+            pointer-events: none; /* Click-through */
+        }
     </style>
 </head>
-<body class="bg-dark_bg text-slate-200 h-[100dvh] overflow-hidden flex flex-col selection:bg-primary selection:text-white">
+<body class="bg-dark_bg text-slate-200 h-[100dvh] overflow-hidden flex flex-col selection:bg-primary selection:text-white relative">
+
+    <!-- CANVAS DE FONDO (PARTÍCULAS) -->
+    <canvas id="particles-js"></canvas>
 
     <!-- OVERLAY CARGA -->
     <div id="loading-overlay" class="fixed inset-0 bg-dark_bg/95 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300 hidden pointer-events-none opacity-0 backdrop-blur-sm">
@@ -153,13 +167,8 @@
     <div id="print-area" class="hidden bg-white p-4 text-black"></div>
 
     <!-- VISTA AUTH (Login) -->
-    <div id="view-auth" class="flex-1 h-full flex flex-col items-center justify-center p-4 bg-dark_bg hidden overflow-y-auto no-print relative">
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-            <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
-            <div class="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
-        </div>
-
+    <div id="view-auth" class="flex-1 h-full flex flex-col items-center justify-center p-4 hidden overflow-y-auto no-print relative z-10">
+        
         <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-white/10 slide-up my-auto relative z-10">
             <div class="bg-card_bg/50 p-8 text-center relative overflow-hidden border-b border-white/5">
                 <div class="absolute top-0 right-0 p-4 opacity-5"><i data-lucide="box" class="w-32 h-32 text-white"></i></div>
@@ -175,7 +184,7 @@
                 <form onsubmit="app.handleLogin(event)" class="space-y-6">
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-primary uppercase tracking-wider ml-1">WhatsApp</label>
-                        <input id="auth-phone" type="tel" required placeholder="Ingresa tu número" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-slate-600">
+                        <input id="auth-phone" type="tel" required placeholder="Ingresa tu número" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition font-mono placeholder-slate-600">
                     </div>
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-primary uppercase tracking-wider ml-1">Contraseña</label>
@@ -197,7 +206,7 @@
     </div>
 
     <!-- VISTA ADMIN -->
-    <div id="view-admin" class="flex-1 flex flex-col h-full hidden bg-dark_bg no-print overflow-hidden">
+    <div id="view-admin" class="flex-1 flex flex-col h-full hidden no-print overflow-hidden z-10">
         <header class="glass-panel p-4 flex justify-between items-center shadow-lg z-20">
             <div class="flex items-center gap-3">
                 <div class="bg-primary/20 p-2 rounded-lg text-primary border border-primary/20"><i data-lucide="shield" class="w-5 h-5"></i></div>
@@ -247,7 +256,7 @@
     </div>
 
     <!-- VISTA DASHBOARD (EMPRENDEDOR) -->
-    <div id="view-dashboard" class="flex-1 flex flex-col md:flex-row h-full hidden no-print overflow-hidden">
+    <div id="view-dashboard" class="flex-1 flex flex-col md:flex-row h-full hidden no-print overflow-hidden z-10">
         <aside class="w-full md:w-72 glass-panel md:border-r border-b border-white/5 flex flex-col shadow-lg z-20 flex-shrink-0">
             <!-- HEADER ADAPTATIVO -->
             <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center bg-black/20">
@@ -294,10 +303,6 @@
         
         <!-- Contenedor Principal -->
         <main class="flex-1 relative overflow-hidden flex flex-col">
-            <!-- Decoración de fondo sutil -->
-            <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-                <div class="absolute top-[10%] right-[10%] w-64 h-64 bg-primary/30 rounded-full blur-[100px]"></div>
-            </div>
             
             <!-- PESTAÑA CONFIGURACIÓN -->
             <div id="tab-config" class="tab-content w-full h-full overflow-y-auto p-4 md:p-8 hidden no-scrollbar z-10">
@@ -508,9 +513,87 @@
     </div>
 
     <script>
+        // --- PARTICLES ANIMATION ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        // Resize
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5; // Velocidad lenta
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)'; // Azul primary
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Init Particles
+        function initParticles() {
+            particles = [];
+            const numParticles = Math.min(window.innerWidth / 10, 100); // Ajustar densidad
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        // Animate Loop
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update & Draw
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // Draw Connections
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${1 - distance / 150})`; // Fade out
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // --- APP LOGIC ---
+
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbzWQ_j4OzEZcbGvrNNB8UcmbBk644m9Ta70xeLU7CfvVZUwY03LpHezAgqj2G9BxBxqnQ/exec";
-        const JSON_DISTRITOS = "lstDistritos";
-        const JSON_SHALOM = "lstShalom";
+        const JSON_DISTRITOS = "https://raw.githubusercontent.com/complicidad/form/main/lstDinsides.json";
+        const JSON_SHALOM = "https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json";
 
         const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Flores": "agency", "Cruz del Sur": "agency", "Rappi": "home", "PedidosYa": "home", "Motorizado": "home", "DHL": "home", "FedEx": "home", "Tienda": "home" };
         const SafeStorage = { memory: {}, setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } };
@@ -548,8 +631,8 @@
                 const card = el.firstElementChild; 
                 el.classList.add('opacity-0'); 
                 if(card) {
-                    card.classList.remove('scale-100', 'translate-y-0', 'md:translate-y-10'); 
-                    card.classList.add('scale-95', 'translate-y-full');
+                    card.classList.remove('scale-100'); 
+                    card.classList.add('scale-95');
                 }
                 setTimeout(() => el.classList.add('hidden'), 300);
             },
