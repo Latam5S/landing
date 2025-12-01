@@ -918,17 +918,14 @@
             
             setTimeout(() => {
                 // Mensaje en formato Markdown para WhatsApp
-                const message = `Hola Latam5S, acabo de probar la demo y me encantó la automatización:%0A%0A
-*✅ DATOS DE PRUEBA RECIBIDOS:*%0A
+                const message = `✅ DATOS DE PRUEBA RECIBIDOS:*%0A
 * *Cliente:* ${n}%0A
 * *Cel:* ${p}%0A
 * *DNI/CE:* ${dni}%0A
 * *Agencia:* ${agency}%0A
 * *Sede:* ${sedeName}%0A%0A
-*¡QUIERO EMPEZAR!* %0A
-Para solicitar tu plan, envía la opción deseada:%0A
-👉 *PRO* (Prueba 7 días gratis)%0A
-👉 *BASICO* (Plan gratuito)`;
+*¡SOLICITA TU ACCESO GRATIS AL PLAN BÁSICO!* %0A%0A
+https://complicidad.github.io/landing/login`;
                 
                 window.open(`https://wa.me/51904774275?text=${message}`, '_blank');
                 btn.innerHTML = originalContent;
