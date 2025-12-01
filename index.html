@@ -335,7 +335,7 @@
                         Completa este formulario como si fueras un cliente. Verás cómo la magia ocurre en tu propio WhatsApp en 3 segundos.
                     </p>
                     <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500">
-                        <div class="flex items-center gap-2"><i data-feather="check-circle" class="text-primary w-4 h-4"></i> Formato DNI Correcto</div>
+                        <div class="flex items-center gap-2"><i data-feather="check-circle" class="text-primary w-4 h-4"></i> Formatos Verificados</div>
                         <div class="flex items-center gap-2"><i data-feather="check-circle" class="text-primary w-4 h-4"></i> Buscador de Sedes</div>
                         <div class="flex items-center gap-2"><i data-feather="check-circle" class="text-primary w-4 h-4"></i> 100% Gratis</div>
                     </div>
@@ -357,17 +357,17 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Tu Celular</label>
-                                    <input type="tel" id="demo-phone" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600" placeholder="999..." required>
+                                    <input type="tel" id="demo-phone" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600" placeholder="999..." required maxlength="9" pattern="9[0-9]{8}" title="Solo se permite números de 9 dígitos.">
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">DNI / CE</label>
-                                    <input type="tel" id="demo-dni" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600" placeholder="8 dígitos" required maxlength="12">
+                                    <input type="tel" id="demo-dni" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600" placeholder="8 dígitos" required maxlength="12" pattern="[0-9]{8,12}">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Agencia</label>
-                                    <select id="demo-agency" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white outline-none focus:ring-2 focus:ring-primary cursor-pointer text-sm">
+                                    <select id="demo-agency" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white outline-none focus:ring-2 focus:ring-primary cursor-pointer">
                                         <option value="Shalom" selected>Shalom</option>
                                         <option value="Olva" disabled class="text-gray-500 bg-gray-800">Olva Courier</option>
                                         <option value="Marvisur" disabled class="text-gray-500 bg-gray-800">Marvisur</option>
@@ -887,7 +887,7 @@
             // Efecto visual de carga
             const btn = e.target.querySelector('button');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             
             setTimeout(() => {
                 // Mensaje en formato Markdown para WhatsApp
