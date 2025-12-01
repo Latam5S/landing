@@ -275,7 +275,7 @@
                                 <div class="flex items-center gap-1.5 sm:gap-2">
                                     <i class="fas fa-chevron-left text-gray-400 text-xs"></i>
                                     <div class="w-5 h-5 sm:w-8 sm:h-8 bg-gray-600 rounded-full flex items-center justify-center"><i class="fas fa-user text-[8px] sm:text-xs text-white"></i></div>
-                                    <span class="text-[9px] sm:text-xs text-gray-300 font-medium truncate w-12 sm:w-auto">Manual</span>
+                                    <span class="text-[9px] sm:text-xs text-gray-300 font-medium truncate w-12 sm:w-auto">Ana</span>
                                 </div>
                             </div>
                             <div id="manual-chat-view" class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative">
@@ -291,34 +291,25 @@
                         </div>
 
                         <!-- PHONE 2: LATAM5S (Fixed Layout) -->
-                        <div class="relative w-[50%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-2 ring-primary shadow-neon transform scale-105 z-20 mb-4 sm:mb-0">
-                            <div class="absolute top-4 -right-8 bg-primary text-white text-[8px] sm:text-[10px] font-bold px-8 py-1 rotate-45 z-50 shadow-lg">AUTO</div>
+                        <div class="relative w-[50%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-2 ring-primary flex flex-col shadow-neon transform scale-105 z-20 mb-4 sm:mb-0">
+                            
                             <div class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5 shrink-0">
                                 <div class="flex items-center gap-1.5 sm:gap-2">
                                     <i class="fas fa-chevron-left text-primary text-xs"></i>
-                                    <div class="w-5 h-5 sm:w-8 sm:h-8 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-500/50"><i class="fas fa-robot text-[8px] sm:text-xs text-blue-400"></i></div>
-                                    <div class="flex flex-col">
-                                        <span class="text-[9px] sm:text-xs text-white font-bold truncate">Latam5S</span>
-                                        <span class="text-[7px] sm:text-[9px] text-primary">En línea</span>
-                                    </div>
+                                    <div class="w-5 h-5 sm:w-8 sm:h-8 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-500/50"><i class="fas fa-user text-[8px] sm:text-xs text-blue-400"></i></div>
+                                    <span class="text-[9px] sm:text-xs text-gray-300 font-medium truncate w-12 sm:w-auto">Ana</span>
                                 </div>
                             </div>
                             
                             <!-- CHAT CONTAINER: STRICT FLEX COLUMN -->
-                            <div id="opt-chat-view" class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative h-full">
-                                <div class="whatsapp-bg absolute inset-0 opacity-20 pointer-events-none"></div>
-                                
-                                <!-- Messages Area: Takes up all available space -->
-                                <div id="opt-messages" class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2 min-h-0 w-full">
-                                    <!-- Messages injected here -->
-                                </div>
-                                
-                                <!-- Input Area: Fixed height, stuck to bottom by flex flow -->
-                                <div class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 border-t border-white/5 shrink-0 w-full">
+                            <div id="opt-chat-view" class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative">
+                                <div class="whatsapp-bg absolute inset-0 opacity-20"></div>
+                                <div id="opt-messages" class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2"></div>
+                                <div class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 shrink-0">
                                     <div class="flex-1 bg-[#2a3942] rounded-full h-6 sm:h-8 px-2 sm:px-3 flex items-center">
-                                        <span class="text-[8px] sm:text-[10px] text-gray-400">Latam5S activo...</span>
+                                        <span class="text-[8px] sm:text-[10px] text-gray-400 animate-pulse">Escribiendo...</span>
                                     </div>
-                                    <div class="w-6 h-6 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center text-white text-[8px] sm:text-xs shadow-lg"><i class="fas fa-paper-plane"></i></div>
+                                    <div class="w-6 h-6 sm:w-8 sm:h-8 bg-[#00a884] rounded-full flex items-center justify-center text-white text-[8px] sm:text-xs shadow-lg"><i class="fas fa-microphone"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -350,7 +341,7 @@
                 </div>
 
                 <div class="flex-1 w-full max-w-md">
-                    <div class="bg-gray-900/80 rounded-2xl p-6 border border-white/10 shadow-2xl relative overflow-visible group">
+                    <div class="bg-gray-900/80 rounded-2xl p-6 border border-white/10 shadow-2xl relative overflow-visible group ">
                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary rounded-t-2xl"></div>
                         <div class="mb-4 pb-2 border-b border-gray-800">
                              <h3 class="text-white font-bold text-lg">Datos de Envío</h3>
@@ -377,9 +368,10 @@
                                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Agencia</label>
                                     <select id="demo-agency" class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white outline-none focus:ring-2 focus:ring-primary cursor-pointer text-sm">
                                         <option value="Shalom" selected>Shalom</option>
-                                        <option value="Olva" disabled class="text-gray-500 bg-gray-800">Olva Courier (Próximamente)</option>
-                                        <option value="Marvisur" disabled class="text-gray-500 bg-gray-800">Marvisur (Próximamente)</option>
-                                        <option value="Delivery" disabled class="text-gray-500 bg-gray-800">Delivery (Próximamente)</option>
+                                        <option value="Olva" disabled class="text-gray-500 bg-gray-800">Olva Courier</option>
+                                        <option value="Marvisur" disabled class="text-gray-500 bg-gray-800">Marvisur</option>
+                                        <option value="Marvisur" disabled class="text-gray-500 bg-gray-800">Flores</option>
+                                        <option value="Delivery" disabled class="text-gray-500 bg-gray-800">Delivery</option>
                                     </select>
                                 </div>
                             </div>
@@ -564,7 +556,7 @@
                 <!-- Plan INICIAL -->
                 <div class="glass-panel p-8 rounded-3xl border border-white/5 order-2 md:order-1 hover:bg-white/[0.02] transition-colors text-left">
                     <h3 class="font-bold text-gray-400 mb-2 tracking-widest text-sm uppercase">Inicial</h3>
-                    <div class="text-4xl font-bold mb-4 text-white">$0</div>
+                    <div class="text-4xl font-bold mb-4 text-white">S/. 0</div>
                     <p class="text-gray-500 text-sm mb-8 border-b border-white/10 pb-8">Para validar tu negocio.</p>
                     
                     <ul class="space-y-4 mb-8 text-sm text-gray-300">
@@ -581,7 +573,7 @@
                 <div class="bg-gradient-to-b from-[#1e293b] to-[#0f172a] p-8 rounded-3xl border border-primary/50 relative transform md:scale-105 shadow-2xl order-1 md:order-2 z-10 text-left">
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-bold px-4 py-1 rounded-full shadow-lg tracking-wider">MÁS VENDIDO</div>
                     <h3 class="font-bold text-primary_glow mb-2 tracking-widest text-sm uppercase">Profesional</h3>
-                    <div class="text-5xl font-bold mb-4 text-white tracking-tight">$19<span class="text-base font-normal text-gray-500">/mes</span></div>
+                    <div class="text-5xl font-bold mb-4 text-white tracking-tight">S/. 29<span class="text-base font-normal text-gray-500">/mes</span></div>
                     <p class="text-gray-400 text-sm mb-8 border-b border-white/10 pb-8">Automatización total.</p>
                     
                     <ul class="space-y-4 mb-8 text-sm text-white">
@@ -598,7 +590,7 @@
                 <!-- Plan EMPRESA -->
                 <div class="glass-panel p-8 rounded-3xl border border-white/5 order-3 hover:bg-white/[0.02] transition-colors text-left">
                     <h3 class="font-bold text-purple-400 mb-2 tracking-widest text-sm uppercase">Empresa</h3>
-                    <div class="text-4xl font-bold mb-4 text-white">$49<span class="text-base font-normal text-gray-500">/mes</span></div>
+                    <div class="text-4xl font-bold mb-4 text-white">S/. 59<span class="text-base font-normal text-gray-500">/mes</span></div>
                     <p class="text-gray-500 text-sm mb-8 border-b border-white/10 pb-8">Para equipos grandes.</p>
                     
                     <ul class="space-y-4 mb-8 text-sm text-gray-300">
@@ -955,7 +947,7 @@
                 // Mensaje estandarizado simulado en la animación (MEJORADO Y LLAMATIVO)
                 const card = `
                     Hola, estos son mi datos de envío:<br><br>
-                    • <b>Cliente:</b> Juan Pérez<br>
+                    • <b>Cliente:</b> Ana Pérez<br>
                     • <b>Cel:</b> 999 123 456<br>
                     • <b>DNI/CE:</b> 12345678<br>
                     • <b>Agencia:</b> Shalom<br>
