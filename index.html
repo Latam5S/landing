@@ -98,6 +98,27 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
         
+        /* Custom Logo Gradient para Navbar */
+        .logo-icon-gradient {
+            /* Degradado para el fondo del círculo (simula el Favicon) */
+            background: linear-gradient(to bottom right, #3B82F6, #2DD4BF); 
+        }
+        .logo-text-gradient {
+            /* Degradado horizontal para el texto Latam5S (simula las redes sociales) */
+            background: linear-gradient(to right, #3B82F6, #60A5FA, #2DD4BF, #10B981); 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; /* Compatible con otros navegadores */
+            color: transparent; /* Fallback */
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #60A5FA, #34D399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
         /* Demo Chat Styles */
         .whatsapp-bg {
             background-color: #0b141a; /* Dark WA theme base */
@@ -121,13 +142,7 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] summary ~ * { animation: sweep .3s ease-in-out; }
         @keyframes sweep { 0% {opacity: 0; transform: translateY(-10px)} 100% {opacity: 1; transform: translateY(0)} }
-
-        /* Gradient Text */
-        .text-gradient {
-            background: linear-gradient(to right, #60A5FA, #34D399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        
         
         /* Custom Scrollbar for Dropdown */
         .custom-scrollbar::-webkit-scrollbar {
@@ -154,11 +169,13 @@
             <nav class="glass-panel rounded-full px-6 py-3 flex items-center justify-between shadow-lg shadow-primary/5">
                 <!-- Logo -->
                 <a href="#" class="flex items-center gap-2 group">
-                    <div class="relative w-8 h-8 flex items-center justify-center">
-                        <div class="absolute inset-0 bg-gradient-to-tr from-primary to-secondary rounded-lg blur opacity-70 group-hover:opacity-100 transition duration-500"></div>
-                        <div class="relative w-full h-full bg-dark_bg rounded-lg border border-white/10 flex items-center justify-center text-white font-bold text-lg">L</div>
+                    <!-- 1. Icono 'L' con fondo degradado y forma de círculo (como el favicon) -->
+                    <div class="w-8 h-8 flex items-center justify-center logo-icon-gradient rounded-full shadow-lg border border-white/20">
+                        <!-- 'L' en blanco -->
+                        <span class="font-extrabold text-white text-lg">L</span>
                     </div>
-                    <span class="font-bold text-lg tracking-tight">Latam<span class="text-primary">5S</span></span>
+                    <!-- 2. Texto 'Latam5S' con el degradado de las redes sociales -->
+                    <span class="font-extrabold text-lg tracking-tight logo-text-gradient">Latam5S</span>
                 </a>
                 
                 <!-- Desktop Menu -->
@@ -751,14 +768,22 @@
         // ----------------------------------------------------
         // LOGICA DE CARGA Y BÚSQUEDA DE AGENCIAS SHALOM
         // ----------------------------------------------------
-        const shalomUrl = 'https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json';
+        // CORRECCIÓN: Usar la URL absoluta de GitHub para asegurar la carga
+        const shalomUrl = "https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json";
         const inputSede = document.getElementById('demo-sede');
         const dropdownSede = document.getElementById('sedes-dropdown');
         let agencias = [];
         let validOptions = new Set(); 
+        
+        // Helper para sanitizar HTML (necesario para renderDropdown)
+        function escapeHtml(unsafe) {
+            if (typeof unsafe !== 'string') return unsafe;
+            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        };
 
         async function loadAgencies() {
             try {
+                // console.log("Intentando cargar agencias desde:", shalomUrl); // DEBUG
                 const response = await fetch(shalomUrl);
                 if (!response.ok) throw new Error('Error al cargar agencias');
                 
@@ -768,11 +793,14 @@
                     const nombre = item.Agencia || item.c_nom_agencia || 'Agencia';
                     const direccion = item.Direccion || item.c_direccion || '';
                     const fullText = `${nombre} ${direccion}`.toLowerCase();
-                    const value = `${nombre} - ${direccion}`;
+                    // Usar replace para evitar que las comillas simples rompan el JS en el click handler
+                    const safeName = nombre.replace(/'/g, "\\'"); 
+                    const safeDireccion = direccion.replace(/'/g, "\\'"); 
+                    const value = `${safeName} - ${safeDireccion}`;
                     
                     validOptions.add(value);
 
-                    return { nombre, direccion, fullText, value };
+                    return { nombre: nombre, direccion: direccion, fullText: fullText, value: value };
                 });
 
                 inputSede.placeholder = "Escribe tu destino (Ej: Arequipa)";
@@ -793,12 +821,13 @@
                     const li = document.createElement('li');
                     li.className = "px-4 py-3 hover:bg-gray-800 cursor-pointer border-b border-gray-800 last:border-0 transition-colors";
                     
-                    // CORRECCIÓN: Usar escapeHtml para evitar inyecciones
+                    // Diseño de 2 líneas con escape HTML
                     li.innerHTML = `
                         <div class="font-bold text-white text-sm">${escapeHtml(item.nombre)}</div>
                         <div class="text-[11px] text-gray-400 mt-1 whitespace-normal leading-snug">${escapeHtml(item.direccion)}</div>
                     `;
                     
+                    // Nota: El item.value ya tiene las comillas escapadas para JS.
                     li.addEventListener('click', () => {
                         inputSede.value = item.value; 
                         dropdownSede.classList.add('hidden');
@@ -811,7 +840,7 @@
             dropdownSede.classList.remove('hidden');
         }
 
-        // Event Listeners para el Input
+        // Event Listeners para el Input (Demo)
         inputSede.addEventListener('input', (e) => {
             inputSede.classList.remove('border-red-500', 'animate-shake');
             inputSede.classList.add('border-gray-700');
@@ -847,6 +876,7 @@
             const sedeFull = inputSede.value; 
 
             // --- VALIDACIÓN ESTRICTA DE SEDE ---
+            // Buscamos si el valor ingresado coincide con alguna opción válida
             if (!validOptions.has(sedeFull)) {
                 inputSede.classList.remove('border-gray-700');
                 inputSede.classList.add('border-red-500', 'animate-shake');
