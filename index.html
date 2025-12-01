@@ -381,7 +381,23 @@
                                 <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Buscar Sede (Calle/Distrito)</label>
                                 <div class="relative">
                                     <i class="fas fa-search absolute left-3 top-3.5 text-gray-500 text-xs z-10"></i>
-                                    <input type="text" id="demo-sede" class="w-full pl-9 pr-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600" placeholder="Cargando agencias..." required autocomplete="off">
+
+                                    <!-- EL INPUT AHORA TIENE MÁS ESPACIO A LA DERECHA (pr-10) -->
+                                    <input type="text" id="demo-sede" 
+                                        class="w-full pl-9 pr-10 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600" 
+                                        placeholder="Cargando agencias..." 
+                                        required 
+                                        autocomplete="off">
+
+                                    <!-- NUEVO BOTÓN 'X' -->
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <button type="button" id="btn-clear-demo" 
+                                                onclick="app.clearDemoAgency()" 
+                                                class="hidden text-gray-400 hover:text-white p-1">
+                                            <i data-feather="x" class="h-5 w-5"></i>
+                                        </button>
+                                    </div>
+
                                     <ul id="sedes-dropdown" class="hidden absolute left-0 right-0 mt-1 max-h-60 overflow-y-auto custom-scrollbar bg-gray-900 border border-gray-700 rounded-xl shadow-2xl z-50">
                                         <li class="p-3 text-sm text-gray-500 text-center">Escribe para buscar...</li>
                                     </ul>
@@ -836,6 +852,17 @@
 
         // Event Listeners para el Input (Demo)
         inputSede.addEventListener('input', (e) => {
+            const button = document.getElementById('btn-clear-demo');
+            
+            // Lógica para mostrar/ocultar la X
+            if (e.target.value.length > 0) {
+                button.classList.remove('hidden');
+            } else {
+                button.classList.add('hidden');
+                dropdownSede.classList.add('hidden'); // Si se borra el texto, ocultar dropdown
+            }
+
+            // ... (rest of your existing logic)
             inputSede.classList.remove('border-red-500', 'animate-shake');
             inputSede.classList.add('border-gray-700');
 
@@ -901,6 +928,19 @@
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
+
+        // Nueva Función para borrar el campo de búsqueda de la demo
+        window.app = window.app || {}; // Asegura que app exista si no se ha usado
+        window.app.clearDemoAgency = () => {
+            const input = document.getElementById('demo-sede');
+            const button = document.getElementById('btn-clear-demo');
+            const dropdown = document.getElementById('sedes-dropdown');
+            
+            input.value = ''; // Borra el texto
+            dropdown.classList.add('hidden'); // Oculta el dropdown
+            button.classList.add('hidden'); // Oculta la 'X'
+            input.focus(); // Vuelve el foco al campo
+        };
 
         // CHAOS ANIMATION
         function setupChaos() {
