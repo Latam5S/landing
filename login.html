@@ -359,8 +359,8 @@
                         <div class="space-y-6">
                             <div class="glass-card p-6 rounded-3xl space-y-5">
                                 <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Datos Públicos</h3>
-                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Tienda</label><input id="inp-store-name" oninput="app.updateConfigInput('merchantName', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
-                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Pedidos</label><input id="inp-whatsapp" type="tel" oninput="app.updateConfigInput('whatsapp', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Emprendimiento</label><input id="inp-store-name" oninput="app.updateConfigInput('merchantName', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Emprendimiento</label><input id="inp-whatsapp" type="tel" oninput="app.updateConfigInput('whatsapp', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
                             </div>
                             
                             <div class="glass-card p-6 rounded-3xl">
@@ -704,9 +704,9 @@
             }
         };
 
-        const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Flores": "agency", "Cruz del Sur": "agency", "Rappi": "home", "PedidosYa": "home", "Motorizado": "home", "DHL": "home", "FedEx": "home", "Tienda": "home" };
+        const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Flores": "agency", "Cruz del Sur": "agency", "Rappi": "home", "PedidosYa": "home", "Delivery": "home", "DHL": "home", "FedEx": "home", "Recojo en Tienda": "home" };
         const SafeStorage = { memory: {}, setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } };
-        const ALL_COURIERS = ["Olva Courier", "Shalom", "Rappi", "PedidosYa", "DHL", "FedEx", "Motorizado", "Tienda"];
+        const ALL_COURIERS = ["Shalom", "Olva Courier", "Delivery", "Recojo en Tienda"];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
@@ -841,7 +841,7 @@
                 if (order.clientAgency) {
                     destinationInfo = `🏢 *Agencia:* ${order.clientAgency} (DNI: ${order.clientDni})`;
                 } else {
-                    destinationInfo = `🏠 *Dirección:* ${order.clientAddress}, ${order.clientDistrict} (Ref: ${order.clientRef})`;
+                    destinationInfo = `🏠 *Dirección:* ${order.clientDistrict}, ${order.clientAddress} (Ref: ${order.clientRef})`;
                 }
 
                 const message = `Hola *${order.clientName}*! 👋\n` +
@@ -1032,7 +1032,8 @@
 
             shareOnWhatsapp: () => {
                 const url = document.getElementById('share-link').innerText;
-                window.open(`https://wa.me/?text=${encodeURIComponent("Hola! Visita mi tienda de envíos: " + url)}`, '_blank');
+                const message = `${url}\n*PROGRAMA TU ENVÍO AQUÍ* ☝️`; // \n = salto de línea en WhatsApp
+                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
             },
 
             openClientLink: () => {
