@@ -976,7 +976,7 @@
                 app.showModal(`¿Resetear clave para ${phone}?`, async () => {
                     app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); 
                     try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "changePassword", merchantId: uid, newPassword: np }) }); } catch(e){} 
-                    window.open(`https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 Recuperación\n📱 ${phone}\n🔑 Nueva: *${np}*`)}`, '_blank'); 
+                    window.open(`https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación de clave:*\n\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`, '_blank'); 
                     app.toggleLoading(false);
                     app.showToast('Contraseña restablecida');
                 });
