@@ -914,66 +914,79 @@
             submitOrder: async (e) => { 
                 e.preventDefault(); 
                 
-                // --- VALIDACIÓN DE DATOS CON FOCO AUTOMÁTICO ---
+                // --- CAPTURA DE VALORES ---
                 const phone = document.getElementById('c-phone').value.trim();
                 const name = document.getElementById('c-name').value.trim();
                 const day = document.getElementById('c-date-select').value;
                 
-                // 1. Validar Nombre
+                // --- VALIDACIONES GENERALES ---
                 if (name.length < 3) {
-                    document.getElementById('c-name').focus(); // <--- Foco al nombre
+                    document.getElementById('c-name').focus();
                     return app.showToast("⚠️ Ingresa un nombre válido");
                 }
             
-                // 2. Validar Celular (Perú: 9 dígitos)
                 if (!/^9\d{8}$/.test(phone)) {
-                    document.getElementById('c-phone').focus(); // <--- Foco al celular
+                    document.getElementById('c-phone').focus();
                     return app.showToast("⚠️ El celular debe tener 9 dígitos y empezar con 9");
                 }
             
-                // 3. Validar Fecha
                 if (!day) {
-                    document.getElementById('c-date-select').focus(); // <--- Foco a la fecha
+                    document.getElementById('c-date-select').focus();
                     return app.showToast("⚠️ Selecciona una fecha de despacho");
                 }
             
-                // 4. Validaciones específicas por tipo de envío
                 let dni = "";
                 
+                // --- VALIDACIONES POR TIPO ---
                 if (state.selectedCourierType === 'agency') {
-                    // --- CASO AGENCIA ---
                     
-                    // Validar Agencia seleccionada
-                    const ag = document.getElementById('c-agency').value.trim();
-                    if (ag.length < 3) {
-                         document.getElementById('c-agency').focus(); // <--- Foco a agencia
-                         return app.showToast("⚠️ Debes buscar y seleccionar una Agencia");
-                    }
-            
-                    // Validar DNI/CE
+                    // 1. Validar DNI primero
                     dni = document.getElementById('c-dni').value.trim();
                     if (!/^\d{8,12}$/.test(dni)) {
-                        document.getElementById('c-dni').focus(); // <--- Foco al DNI
+                        document.getElementById('c-dni').focus();
                         return app.showToast("⚠️ El DNI/CE debe tener entre 8 y 12 números");
+                    }
+            
+                    // 2. VALIDACIÓN ESTRICTA DE AGENCIA (NUEVO BLOQUE DE SEGURIDAD)
+                    const agInput = document.getElementById('c-agency');
+                    const agValue = agInput.value.trim();
+                    
+                    // Verificamos si la lista de agencias ya cargó
+                    const listaAgencias = state.externalData.agencies || [];
+                    
+                    if (listaAgencias.length > 0) {
+                        // Buscamos si lo que escribió el usuario coincide EXACTAMENTE con alguna agencia de la lista
+                        // El formato que usas en el buscador es: "Agencia - Direccion"
+                        const existe = listaAgencias.some(a => {
+                            const formatoLista = `${a.Agencia} - ${a.Direccion}`;
+                            return formatoLista === agValue;
+                        });
+            
+                        if (!existe) {
+                            agInput.value = ""; // Borramos el texto inválido
+                            agInput.focus();    // Llevamos el cursor ahí
+                            // Forzamos al usuario a usar el buscador
+                            app.searchAgency(""); 
+                            return app.showToast("⚠️ Debes SELECCIONAR una agencia válida de la lista");
+                        }
+                    } else {
+                         // Fallback por si no cargó el JSON (raro, pero posible)
+                         if (agValue.length < 5) return app.showToast("⚠️ Agencia inválida");
                     }
                     
                 } else {
                     // --- CASO DOMICILIO ---
-                    
-                    // Validar Distrito
                     if (document.getElementById('c-district').value.trim().length < 3) {
-                         document.getElementById('c-district').focus(); // <--- Foco al distrito
+                         document.getElementById('c-district').focus();
                          return app.showToast("⚠️ Debes indicar el distrito");
                     }
-            
-                    // Validar Dirección
                     if (document.getElementById('c-address').value.trim().length < 5) {
-                         document.getElementById('c-address').focus(); // <--- Foco a la dirección
+                         document.getElementById('c-address').focus();
                          return app.showToast("⚠️ La dirección es muy corta, sé más específico");
                     }
                 }
-                // -------------------------------------------
             
+                // --- PROCESO DE ENVÍO ---
                 app.toggleLoading(true); 
             
                 let data = { 
@@ -993,8 +1006,7 @@
                     data.clientAgency = ag; 
                     
                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
-                         `👤 ${name}\n` +
-                         `📱 ${phone}\n` +
+                         `👤 ${name} | 📱 ${phone}\n` +
                          `🆔 DNI: ${dni}\n` +
                          `🏢 Agencia: ${ag}\n\n` +
                          `🚚 ${state.selectedCourier}\n` +
@@ -1008,8 +1020,7 @@
                     data.clientRef = rf; 
                     
                     wa = `📦 *NUEVO ENVÍO (CASA)*\n\n` +
-                         `👤 ${name}\n` +
-                         `📱 ${phone}\n` +
+                         `👤 ${name} | 📱 ${phone}\n` +
                          `📍 ${ds}\n` +
                          `🏠 ${ad}\n` +
                          `🗺️ Ref: ${rf}\n\n` +
@@ -1017,22 +1028,19 @@
                          `📅 ${day}`; 
                 } 
             
-                // Abrir WhatsApp inmediatamente
                 const whatsappUrl = `https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`;
                 window.open(whatsappUrl, '_blank');
             
-                // Limpieza UI
                 document.getElementById('client-form').reset();
                 document.getElementById('dynamic-form-section').classList.add('hidden');
                 document.getElementById('btn-submit-order').setAttribute('disabled','true');
                 app.toggleLoading(false); 
             
-                // Guardar Backend (Silencioso)
                 try { 
                     fetch(state.apiUrl, { 
                         method: "POST", 
                         body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
-                    }).catch(err => console.error("Error guardando backup:", err));
+                    }).catch(err => console.error("Error backup:", err));
                 } catch(e) {} 
             },
             
