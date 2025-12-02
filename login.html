@@ -1223,11 +1223,19 @@
                     const txt = `${x.clientName} ${x.clientPhone} ${x.clientDistrict || ''} ${x.clientAgency || ''}`.toLowerCase();
                     if (!txt.includes(q)) return false;
                     
+                    // 2. CORRECCIÓN: Filtro por Fecha de Despacho (shippingDate)
                     if (dSpec) {
-                        const dateA = new Date(x.createdAt || x.date).toLocaleDateString();
-                        const [y, m, d] = dSpec.split('-');
-                        const dateB = new Date(y, m-1, d).toLocaleDateString();
-                        if (dateA !== dateB) return false;
+                        // El input date viene formato "YYYY-MM-DD" (Ej: 2023-11-25)
+                        const [year, month, day] = dSpec.split('-');
+                        
+                        // Tu shippingDate es texto: "Lunes 25/11" o "Mar 25/11"
+                        // Construimos lo que vamos a buscar: "25/11"
+                        const searchStr = `${day}/${month}`;
+            
+                        // Si el pedido no tiene fecha de envío o no contiene "25/11", lo ocultamos
+                        if (!x.shippingDate || !x.shippingDate.includes(searchStr)) {
+                            return false;
+                        }
                     }
                     return true;
                 });
