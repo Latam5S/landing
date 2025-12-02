@@ -687,7 +687,7 @@
 
         // --- APP LOGIC ---
 
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbz5_FO5mG1jqBhswQRaPZhJjIno3fFpycM5dvZokjkGW530dr_JGKZjafuNTybKhLV_kw/exec";
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwvezhNSWgTCy3ZHM3pJzDAlPfQZNK-yN1mSFBSnYSpHi0LfiyiUxlOLkqPoPd_YbKSAw/exec";
         const JSON_DISTRITOS = "lstDistritos.json";
         const JSON_SHALOM = "lstShalom.json";
 
@@ -828,12 +828,14 @@
             sendClientSummary: (orderId) => {
                 const order = state.allOrders.find(o => String(o.orderId || o.createdAt) === String(orderId));
                 if (!order) return app.showToast("Error: No se encontró el pedido.");
-
+            
                 const storeName = state.config.merchantName || "Nuestra Tienda";
                 let phone = (order.clientPhone || "").replace(/[^0-9]/g, "");
                 if (phone.length === 9) { phone = "51" + phone; }
+                
+                // Validación básica de número
                 if (phone.length < 9) return app.showToast("El número de teléfono no es válido.");
-
+            
                 const statusEmoji = order.status === 'ENVIADO' ? '✅' : '📦';
                 const statusText = order.status === 'ENVIADO' ? 'Enviado' : 'Registrado';
                 
@@ -843,7 +845,8 @@
                 } else {
                     destinationInfo = `🏠 *Dirección:* ${order.clientDistrict}, ${order.clientAddress} (Ref: ${order.clientRef})`;
                 }
-
+            
+                // CORRECCIÓN CLAVE: Usamos \n en lugar de %0A y emojis literales
                 const message = `Hola *${order.clientName}*! 👋\n` +
                                 `Tu pedido en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
                                 `📝 *Detalles del Envío:*\n` +
@@ -851,7 +854,8 @@
                                 `🚚 Courier: ${order.courier}\n` +
                                 `${destinationInfo}\n\n` +
                                 `Gracias por tu compra! ✨`;
-
+            
+                // CORRECCIÓN CLAVE: encodeURIComponent envuelve TODO el mensaje
                 const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
             },
@@ -887,12 +891,14 @@
                 if (state.selectedCourierType === 'agency') { 
                     const dni = document.getElementById('c-dni').value, ag = document.getElementById('c-agency').value; 
                     data.clientDni = dni; data.clientAgency = ag; 
+                    // Usamos \n para saltos de línea
                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name} | 📱 ${phone}\n🆔 DNI: ${dni}\n🏢 Agencia: ${ag}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`; 
                 } else { 
                     const ad = document.getElementById('c-address').value, ds = document.getElementById('c-district').value, rf = document.getElementById('c-ref').value; 
                     data.clientAddress = ad; data.clientDistrict = ds; data.clientRef = rf; 
+                    // Usamos \n para saltos de línea
                     wa = `📦 *NUEVO ENVÍO (CASA)*\n\n👤 ${name} | 📱 ${phone}\n📍 ${ds}\n🏠 ${ad}\n🗺️ Ref: ${rf}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`; 
-                } 
+                }
                 
                 try { 
                     await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) }); 
@@ -901,7 +907,8 @@
                     document.getElementById('dynamic-form-section').classList.add('hidden');
                     document.getElementById('btn-submit-order').setAttribute('disabled','true');
                     
-                    window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank'); 
+                    // CORRECCIÓN: encodeURIComponent(wa) se asegura que los emojis viajen bien
+                    window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
                 } catch(e){} 
                 app.toggleLoading(false); 
             },
