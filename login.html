@@ -837,7 +837,7 @@
                 if (phone.length < 9) return app.showToast("El número de teléfono no es válido.");
             
                 const statusEmoji = order.status === 'ENVIADO' ? '✅' : '📦';
-                const statusText = order.status === 'ENVIADO' ? 'Enviado' : 'Registrado';
+                const statusText = order.status === 'ENVIADO' ? 'Enviado' : 'Programado';
                 
                 let destinationInfo = "";
                 if (order.clientAgency) {
@@ -848,10 +848,9 @@
             
                 // CORRECCIÓN CLAVE: Usamos \n en lugar de %0A y emojis literales
                 const message = `Hola *${order.clientName}*! 👋\n` +
-                                `Tu pedido en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
-                                `📝 *Detalles del Envío:*\n` +
-                                `📅 Fecha: ${order.shippingDate}\n` +
-                                `🚚 Courier: ${order.courier}\n` +
+                                `Tu envío en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
+                                `📅 *Fecha:* ${order.shippingDate}\n` +
+                                `🚚 *Courier:* ${order.courier}\n` +
                                 `${destinationInfo}\n\n` +
                                 `Gracias por tu compra! ✨`;
             
@@ -912,7 +911,7 @@
                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
                          `👤 ${name}\n` +
                          `📱 ${phone}\n` +
-                         `🆔 DNI: ${dni}\n` +
+                         `🆔 DNI/CE: ${dni}\n` +
                          `🏢 Agencia: ${ag}\n\n` +
                          `🚚 ${state.selectedCourier}\n` +
                          `📅 ${day}`; 
