@@ -29,6 +29,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -1331,22 +1332,63 @@
             },
 
             exportExcel: () => {
-                const list = state.visibleOrders;
-                if(!list.length) return app.showToast('No hay datos');
-                let csvContent = "\uFEFFFecha,Courier,Cliente,Teléfono,Destino,Referencia/DNI,Estado\n";
-                list.forEach(x => {
-                    const destino = x.clientAgency ? `AGENCIA: ${x.clientAgency}` : `CASA: ${x.clientDistrict} - ${x.clientAddress}`;
-                    const ref = x.clientAgency ? `DNI: ${x.clientDni}` : `REF: ${x.clientRef}`;
-                    const row = [ x.shippingDate, x.courier, x.clientName.replace(/,/g, ''), x.clientPhone, destino.replace(/,/g, ''), ref.replace(/,/g, ''), x.status || 'PENDIENTE' ].join(",");
-                    csvContent += row + "\n";
+                const list = state.visibleOrders; // Usamos los visibles (filtrados)
+                if (!list.length) return app.showToast('No hay datos para exportar');
+                
+                app.toggleLoading(true); // Mostramos carga porque generar Excel toma unos milisegundos
+            
+                // 1. Preparamos los datos limpios para Excel
+                const dataToExport = list.map(x => {
+                    // Lógica para unificar destino (Igual que tenías antes)
+                    const destino = x.clientAgency 
+                        ? `AGENCIA: ${x.clientAgency}` 
+                        : `CASA: ${x.clientDistrict} - ${x.clientAddress}`;
+                        
+                    const referencia = x.clientAgency 
+                        ? `DNI: ${x.clientDni}` 
+                        : `REF: ${x.clientRef}`;
+            
+                    return {
+                        "Fecha Envío": x.shippingDate, // Usamos la fecha de despacho, no la de registro
+                        "Courier": x.courier,
+                        "Cliente": x.clientName,
+                        "Teléfono": x.clientPhone,
+                        "Destino": destino,
+                        "Referencia / DNI": referencia,
+                        "Estado": x.status || "PENDIENTE",
+                        "Fecha Registro": new Date(x.createdAt || Date.now()).toLocaleDateString()
+                    };
                 });
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
-                link.setAttribute("download", `envios_${new Date().toLocaleDateString()}.csv`);
-                document.body.appendChild(link); link.click(); document.body.removeChild(link);
-                app.showToast('Descargando Excel...');
+            
+                // 2. Crear una Hoja de Cálculo (Worksheet)
+                const ws = XLSX.utils.json_to_sheet(dataToExport);
+            
+                // Opcional: Ajustar ancho de columnas automáticamente (UX Pro)
+                const wscols = [
+                    {wch: 15}, // Fecha Envío
+                    {wch: 15}, // Courier
+                    {wch: 25}, // Cliente
+                    {wch: 15}, // Teléfono
+                    {wch: 40}, // Destino
+                    {wch: 20}, // Referencia
+                    {wch: 15}, // Estado
+                    {wch: 15}  // Fecha Registro
+                ];
+                ws['!cols'] = wscols;
+            
+                // 3. Crear el Libro (Workbook) y agregar la hoja
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Envíos Latam5S");
+            
+                // 4. Generar nombre de archivo con fecha
+                const today = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+                const fileName = `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`;
+            
+                // 5. Descargar
+                XLSX.writeFile(wb, fileName);
+                
+                app.toggleLoading(false);
+                app.showToast('Excel (.xlsx) descargado correctamente');
             },
 
             printLabels: () => {
