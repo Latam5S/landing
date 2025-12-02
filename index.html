@@ -920,16 +920,16 @@
             
             setTimeout(() => {
                 // Mensaje en formato Markdown para WhatsApp
-                const message = `*✅ DATOS DE PRUEBA:*%0A
-* *Cliente:* ${n}%0A
-* *Cel:* ${p}%0A
-* *DNI/CE:* ${dni}%0A
-* *Agencia:* ${agency}%0A
-* *Sede:* ${sedeName}%0A%0A
-______________________________%0A
-*¡Envía BÁSICO y recibe tu usuario y contraseña 🔑!*`;
+                const message = `*✅ DATOS DE PRUEBA:*\n` + // Usar \n
+                                `* *Cliente:* ${n}\n` +
+                                `* *Cel:* ${p}\n` +
+                                `* *DNI/CE:* ${dni}\n` +
+                                `* *Agencia:* ${agency}\n` +
+                                `* *Sede:* ${sedeName}\n\n` +
+                                `______________________________\n` +
+                                `*¡Envía BÁSICO y recibe tu usuario y contraseña 🔑!*`;
                 
-                window.open(`https://wa.me/51904774275?text=${message}`, '_blank');
+                window.open(`https://wa.me/51904774275?text=${encodeURIComponent(message)}`, '_blank');
                 btn.innerHTML = originalContent;
             }, 800);
         });
