@@ -910,7 +910,7 @@
             generateDateOptions: () => { const s = document.getElementById('c-date-select'); s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; const ad = state.config.shippingDays || []; if (!ad.length) return; const now = new Date(); const [ch, cm] = (state.config.updateTime || "18:00").split(':').map(Number); const cut = new Date(now); cut.setHours(ch, cm, 0, 0); for(let i=0;i<14;i++) { const f = new Date(now); f.setDate(now.getDate()+i); if(i===0 && now>cut) continue; const di = f.getDay(); if(ad.some(n => DAY_INDEX_MAP[n]===di)) { const val = `${DAY_NAMES_FULL[di]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; const lbl = `${DAY_NAMES_FULL[di]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; const o = document.createElement('option'); o.value = val; o.innerText = lbl; s.appendChild(o); } } },
             onCourierChange: (c) => { const type = COURIER_TYPES[c] || "home"; state.selectedCourierType = type; state.selectedCourier = c; document.getElementById('dynamic-form-section').classList.remove('hidden'); const af = document.getElementById('fields-agency'), hf = document.getElementById('fields-home'); ['c-dni','c-agency','c-address','c-district'].forEach(id => document.getElementById(id).removeAttribute('required')); if(type === 'agency') { af.classList.remove('hidden'); hf.classList.add('hidden'); document.getElementById('c-dni').setAttribute('required','true'); const ag = document.getElementById('c-agency'); ag.setAttribute('required','true'); ag.value=""; app.clearAgency(); app.clearDistrict(); if(c.includes('Shalom')) ag.placeholder="Escribe para buscar sede..."; else ag.placeholder="Nombre de Agencia / Dirección"; } else { af.classList.add('hidden'); hf.classList.remove('hidden'); document.getElementById('c-address').setAttribute('required','true'); document.getElementById('c-district').setAttribute('required','true'); app.clearAgency(); app.clearDistrict(); } app.validateForm(); },
             validateForm: () => { const btn = document.getElementById('btn-submit-order'), c = document.getElementById('c-courier-select').value, d = document.getElementById('c-date-select').value; if(c && d) btn.removeAttribute('disabled'); else btn.setAttribute('disabled','true'); },
-            
+
             submitOrder: async (e) => { 
                 e.preventDefault(); 
                 
@@ -919,7 +919,7 @@
                 const name = document.getElementById('c-name').value.trim();
                 const day = document.getElementById('c-date-select').value;
                 
-                // --- VALIDACIONES GENERALES ---
+                // --- VALIDACIONES GENERALES (Nombre, Celular, Fecha) ---
                 if (name.length < 3) {
                     document.getElementById('c-name').focus();
                     return app.showToast("⚠️ Ingresa un nombre válido");
@@ -943,6 +943,7 @@
                 
                 if (state.selectedCourierType === 'agency') {
                     // ---------------- CASO AGENCIA ----------------
+                    // (Aquí NO pedimos referencia, pedimos DNI y Agencia)
                     
                     // 1. Validar DNI
                     dni = document.getElementById('c-dni').value.trim();
@@ -951,19 +952,17 @@
                         return app.showToast("⚠️ El DNI/CE debe tener entre 8 y 12 números");
                     }
             
-                    // 2. VALIDACIÓN ESTRICTA DE AGENCIA
+                    // 2. Validación Estricta de Agencia
                     const agInput = document.getElementById('c-agency');
                     const agValue = agInput.value.trim();
                     const listaAgencias = state.externalData.agencies || [];
                     
                     if (listaAgencias.length > 0) {
-                        // Buscamos coincidencia exacta "Agencia - Direccion"
                         const existe = listaAgencias.some(a => `${a.Agencia} - ${a.Direccion}` === agValue);
-            
                         if (!existe) {
                             agInput.value = ""; 
                             agInput.focus();
-                            app.searchAgency(""); // Reactiva el buscador visualmente
+                            app.searchAgency(""); 
                             return app.showToast("⚠️ Debes SELECCIONAR una agencia de la lista");
                         }
                     } else {
@@ -972,24 +971,22 @@
                     
                 } else {
                     // ---------------- CASO DOMICILIO ----------------
+                    // (Aquí SI pedimos Distrito, Dirección y Referencia)
             
-                    // 1. VALIDACIÓN ESTRICTA DE DISTRITO (NUEVO BLOQUE)
+                    // 1. Validación Estricta de Distrito
                     const distInput = document.getElementById('c-district');
                     const distValue = distInput.value.trim();
-                    const listaDistritos = state.externalData.districts || []; // Array de strings ["Lima", "Miraflores"...]
+                    const listaDistritos = state.externalData.districts || [];
             
                     if (listaDistritos.length > 0) {
-                        // Verificamos si el texto escrito existe EXACTAMENTE en la lista
                         const existe = listaDistritos.includes(distValue);
-            
                         if (!existe) {
-                            distInput.value = ""; // Borramos el dato erróneo
-                            distInput.focus();    // Llevamos el cursor ahí
-                            app.searchDistrict(""); // Abrimos las sugerencias
+                            distInput.value = ""; 
+                            distInput.focus();    
+                            app.searchDistrict(""); 
                             return app.showToast("⚠️ Debes SELECCIONAR un distrito de la lista");
                         }
                     } else {
-                         // Fallback si no cargó la lista
                          if (distValue.length < 3) {
                              document.getElementById('c-district').focus();
                              return app.showToast("⚠️ Debes indicar el distrito");
@@ -1000,6 +997,13 @@
                     if (document.getElementById('c-address').value.trim().length < 5) {
                          document.getElementById('c-address').focus();
                          return app.showToast("⚠️ La dirección es muy corta, sé más específico");
+                    }
+            
+                    // 3. VALIDAR REFERENCIA (NUEVO BLOQUE OBLIGATORIO)
+                    // Obligamos a que tenga al menos 3 caracteres (ej: "Frente al parque")
+                    if (document.getElementById('c-ref').value.trim().length < 3) {
+                         document.getElementById('c-ref').focus(); // <--- Foco automático
+                         return app.showToast("⚠️ La referencia es obligatoria (Ej: Fachada azul)");
                     }
                 }
             
@@ -1023,7 +1027,8 @@
                     data.clientAgency = ag; 
                     
                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
-                         `👤 ${name} | 📱 ${phone}\n` +
+                         `👤 ${name}\n` +
+                         `📱 ${phone}\n` +
                          `🆔 DNI: ${dni}\n` +
                          `🏢 Agencia: ${ag}\n\n` +
                          `🚚 ${state.selectedCourier}\n` +
@@ -1037,7 +1042,8 @@
                     data.clientRef = rf; 
                     
                     wa = `📦 *NUEVO ENVÍO (CASA)*\n\n` +
-                         `👤 ${name} | 📱 ${phone}\n` +
+                         `👤 ${name}\n` +
+                         `📱 ${phone}\n` +
                          `📍 ${ds}\n` +
                          `🏠 ${ad}\n` +
                          `🗺️ Ref: ${rf}\n\n` +
