@@ -585,7 +585,7 @@
                                     <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 divide-y divide-gray-100"></div>
                                 </div>
                             </div>
-                            <div><input id="c-dni" type="tel" class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-gray-400 shadow-sm" placeholder="DNI / CE"></div>
+                            <div><input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-gray-400 shadow-sm" placeholder="DNI / CE"></div>
                         </div>
 
                         <div id="fields-home" class="hidden space-y-4">
@@ -603,7 +603,7 @@
 
                         <div class="space-y-4 pt-1">
                             <div><input id="c-name" required class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-gray-400 shadow-sm" placeholder="Nombre Completo"></div>
-                            <div><input id="c-phone" type="tel" required class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-gray-400 shadow-sm" placeholder="Celular / WhatsApp"></div>
+                            <div><input id="c-phone" type="tel" maxlength="9" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-gray-400 shadow-sm" placeholder="Celular / WhatsApp"></div>
                         </div>
                     </div>
 
