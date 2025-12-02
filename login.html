@@ -937,56 +937,73 @@
             
                 let dni = "";
                 
-                // --- VALIDACIONES POR TIPO ---
+                // ============================================================
+                //              VALIDACIONES POR TIPO DE ENVÍO
+                // ============================================================
+                
                 if (state.selectedCourierType === 'agency') {
+                    // ---------------- CASO AGENCIA ----------------
                     
-                    // 1. Validar DNI primero
+                    // 1. Validar DNI
                     dni = document.getElementById('c-dni').value.trim();
                     if (!/^\d{8,12}$/.test(dni)) {
                         document.getElementById('c-dni').focus();
                         return app.showToast("⚠️ El DNI/CE debe tener entre 8 y 12 números");
                     }
             
-                    // 2. VALIDACIÓN ESTRICTA DE AGENCIA (NUEVO BLOQUE DE SEGURIDAD)
+                    // 2. VALIDACIÓN ESTRICTA DE AGENCIA
                     const agInput = document.getElementById('c-agency');
                     const agValue = agInput.value.trim();
-                    
-                    // Verificamos si la lista de agencias ya cargó
                     const listaAgencias = state.externalData.agencies || [];
                     
                     if (listaAgencias.length > 0) {
-                        // Buscamos si lo que escribió el usuario coincide EXACTAMENTE con alguna agencia de la lista
-                        // El formato que usas en el buscador es: "Agencia - Direccion"
-                        const existe = listaAgencias.some(a => {
-                            const formatoLista = `${a.Agencia} - ${a.Direccion}`;
-                            return formatoLista === agValue;
-                        });
+                        // Buscamos coincidencia exacta "Agencia - Direccion"
+                        const existe = listaAgencias.some(a => `${a.Agencia} - ${a.Direccion}` === agValue);
             
                         if (!existe) {
-                            agInput.value = ""; // Borramos el texto inválido
-                            agInput.focus();    // Llevamos el cursor ahí
-                            // Forzamos al usuario a usar el buscador
-                            app.searchAgency(""); 
-                            return app.showToast("⚠️ Debes SELECCIONAR una agencia válida de la lista");
+                            agInput.value = ""; 
+                            agInput.focus();
+                            app.searchAgency(""); // Reactiva el buscador visualmente
+                            return app.showToast("⚠️ Debes SELECCIONAR una agencia de la lista");
                         }
                     } else {
-                         // Fallback por si no cargó el JSON (raro, pero posible)
                          if (agValue.length < 5) return app.showToast("⚠️ Agencia inválida");
                     }
                     
                 } else {
-                    // --- CASO DOMICILIO ---
-                    if (document.getElementById('c-district').value.trim().length < 3) {
-                         document.getElementById('c-district').focus();
-                         return app.showToast("⚠️ Debes indicar el distrito");
+                    // ---------------- CASO DOMICILIO ----------------
+            
+                    // 1. VALIDACIÓN ESTRICTA DE DISTRITO (NUEVO BLOQUE)
+                    const distInput = document.getElementById('c-district');
+                    const distValue = distInput.value.trim();
+                    const listaDistritos = state.externalData.districts || []; // Array de strings ["Lima", "Miraflores"...]
+            
+                    if (listaDistritos.length > 0) {
+                        // Verificamos si el texto escrito existe EXACTAMENTE en la lista
+                        const existe = listaDistritos.includes(distValue);
+            
+                        if (!existe) {
+                            distInput.value = ""; // Borramos el dato erróneo
+                            distInput.focus();    // Llevamos el cursor ahí
+                            app.searchDistrict(""); // Abrimos las sugerencias
+                            return app.showToast("⚠️ Debes SELECCIONAR un distrito de la lista");
+                        }
+                    } else {
+                         // Fallback si no cargó la lista
+                         if (distValue.length < 3) {
+                             document.getElementById('c-district').focus();
+                             return app.showToast("⚠️ Debes indicar el distrito");
+                         }
                     }
+            
+                    // 2. Validar Dirección
                     if (document.getElementById('c-address').value.trim().length < 5) {
                          document.getElementById('c-address').focus();
                          return app.showToast("⚠️ La dirección es muy corta, sé más específico");
                     }
                 }
             
-                // --- PROCESO DE ENVÍO ---
+                // --- PROCESO DE ENVÍO (WhatsApp + Backend) ---
                 app.toggleLoading(true); 
             
                 let data = { 
