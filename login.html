@@ -885,32 +885,75 @@
             submitOrder: async (e) => { 
                 e.preventDefault(); 
                 app.toggleLoading(true); 
-                const day = document.getElementById('c-date-select').value, name = document.getElementById('c-name').value, phone = document.getElementById('c-phone').value; 
-                let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }, wa = ""; 
+            
+                // 1. Capturamos datos del formulario
+                const day = document.getElementById('c-date-select').value;
+                const name = document.getElementById('c-name').value;
+                const phone = document.getElementById('c-phone').value;
                 
+                let data = { 
+                    clientName: name, 
+                    clientPhone: phone, 
+                    courier: state.selectedCourier, 
+                    shippingDate: day, 
+                    createdAt: Date.now(), 
+                    product: "N/A" 
+                }; 
+                
+                let wa = ""; 
+            
+                // 2. Construimos el mensaje (MODO LIMPIO: Usamos \n para saltos y emojis visuales)
                 if (state.selectedCourierType === 'agency') { 
-                    const dni = document.getElementById('c-dni').value, ag = document.getElementById('c-agency').value; 
-                    data.clientDni = dni; data.clientAgency = ag; 
-                    // Usamos \n para saltos de línea
-                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name} | 📱 ${phone}\n🆔 DNI: ${dni}\n🏢 Agencia: ${ag}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`; 
-                } else { 
-                    const ad = document.getElementById('c-address').value, ds = document.getElementById('c-district').value, rf = document.getElementById('c-ref').value; 
-                    data.clientAddress = ad; data.clientDistrict = ds; data.clientRef = rf; 
-                    // Usamos \n para saltos de línea
-                    wa = `📦 *NUEVO ENVÍO (CASA)*\n\n👤 ${name} | 📱 ${phone}\n📍 ${ds}\n🏠 ${ad}\n🗺️ Ref: ${rf}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`; 
-                }
-                
-                try { 
-                    await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) }); 
-                    // Limpieza del formulario
-                    document.getElementById('client-form').reset();
-                    document.getElementById('dynamic-form-section').classList.add('hidden');
-                    document.getElementById('btn-submit-order').setAttribute('disabled','true');
+                    const dni = document.getElementById('c-dni').value;
+                    const ag = document.getElementById('c-agency').value; 
+                    data.clientDni = dni; 
+                    data.clientAgency = ag; 
                     
-                    // CORRECCIÓN: encodeURIComponent(wa) se asegura que los emojis viajen bien
-                    window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
-                } catch(e){} 
-                app.toggleLoading(false); 
+                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
+                         `👤 ${name} | 📱 ${phone}\n` +
+                         `🆔 DNI: ${dni}\n` +
+                         `🏢 Agencia: ${ag}\n\n` +
+                         `🚚 ${state.selectedCourier}\n` +
+                         `📅 ${day}`; 
+                } else { 
+                    const ad = document.getElementById('c-address').value;
+                    const ds = document.getElementById('c-district').value;
+                    const rf = document.getElementById('c-ref').value; 
+                    data.clientAddress = ad; 
+                    data.clientDistrict = ds; 
+                    data.clientRef = rf; 
+                    
+                    wa = `📦 *NUEVO ENVÍO (CASA)*\n\n` +
+                         `👤 ${name} | 📱 ${phone}\n` +
+                         `📍 ${ds}\n` +
+                         `🏠 ${ad}\n` +
+                         `🗺️ Ref: ${rf}\n\n` +
+                         `🚚 ${state.selectedCourier}\n` +
+                         `📅 ${day}`; 
+                } 
+            
+                // 3. UX PRO: Abrir WhatsApp PRIMERO (Evita el bloqueo de popups y validaciones)
+                // Usamos encodeURIComponent para asegurar que los emojis viajen perfectos
+                const whatsappUrl = `https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`;
+                window.open(whatsappUrl, '_blank');
+            
+                // 4. Limpieza visual inmediata (Feedback instantáneo al usuario)
+                document.getElementById('client-form').reset();
+                document.getElementById('dynamic-form-section').classList.add('hidden');
+                document.getElementById('btn-submit-order').setAttribute('disabled','true');
+                app.toggleLoading(false); // Quitamos el loading visualmente para que el usuario se sienta libre
+            
+                // 5. Guardar en Backend (AppScript) en SEGUNDO PLANO
+                // No usamos 'await' bloqueante aquí para no frenar la experiencia.
+                // Si falla el sheet, al menos el usuario ya envió el WhatsApp.
+                try { 
+                    fetch(state.apiUrl, { 
+                        method: "POST", 
+                        body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
+                    }).catch(err => console.error("Error guardando backup en sheet:", err));
+                } catch(e) {
+                    console.error("Error de conexión:", e);
+                } 
             },
             
             handleLogin: async (e) => { 
