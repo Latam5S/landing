@@ -477,9 +477,8 @@
                     <div class="glass-card p-8 rounded-3xl text-center max-w-md w-full slide-up border border-white/10">
                         <div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-secondary border border-secondary/20 shadow-neon-green"><i data-lucide="share-2" class="w-10 h-10"></i></div>
                         
-                        <h2 class="text-2xl font-bold mb-4 text-white">Enlace Público</h2>
+                        <h2 class="text-2xl font-bold mb-4 text-white">¡Listo para compartir!</h2>
                         <p class="text-slate-400 text-sm mb-8 leading-relaxed">
-                            ¡Listo para compartir! <br>
                             Tu formulario personalizado está activo. Comparte el siguiente enlace con tus clientes.
                         </p>
 
@@ -1381,54 +1380,56 @@
             },
             
             saveConfig: async () => { 
-                            // 1. VALIDACIÓN PREVIA (NUEVO BLOQUE)
-                            // Antes de intentar guardar, verificamos que todo esté correcto
+                            // 1. SANITIZACIÓN (LIMPIEZA DE DATOS)
+                            const nameInput = document.getElementById('inp-store-name');
+
+                            // Lógica de limpieza: trim() quita bordes, replace(/\s+/g, ' ') colapsa espacios internos
+                            let cleanName = nameInput.value.trim().replace(/\s+/g, ' ');
+
+                            // Aplicamos la limpieza al input visual y al estado
+                            nameInput.value = cleanName; 
+                            app.updateConfigInput('merchantName', cleanName);
+
+                            // 2. VALIDACIÓN (Ahora valida sobre el nombre ya limpio)
                             const validation = app.validateConfig();
 
                             if (!validation.isValid) {
-                                // Si falta algo, mostramos el error y detenemos todo
                                 const missing = validation.errors.join(", ");
                                 app.showToast(`⚠️ No se puede guardar. Falta: ${missing}`);
 
-                                // Efecto visual de error en el botón (opcional pero recomendado)
                                 const btn = document.getElementById('btn-save-config');
                                 btn.classList.add('bg-red-500', 'animate-shake');
                                 setTimeout(() => btn.classList.remove('bg-red-500', 'animate-shake'), 500);
-
-                                return; // <--- AQUÍ SE DETIENE LA FUNCIÓN
+                                return; 
                             }
 
-                            // 2. PROCESO DE GUARDADO (LÓGICA EXISTENTE)
+                            // 3. PROCESO DE GUARDADO (Backend)
                             const btn = document.getElementById('btn-save-config');
-                            // Bloqueo de botón para evitar doble clic
                             btn.disabled = true;
                             btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
                             lucide.createIcons();
 
                             app.toggleLoading(true); 
 
-                            // Recopilamos valores (asegurando que se guarden los que ya están en el estado)
-                            state.config.merchantName = document.getElementById('inp-store-name').value; 
+                            // Recopilamos el resto de valores
+                            state.config.merchantName = cleanName; // Aseguramos usar el limpio
                             state.config.whatsapp = document.getElementById('inp-whatsapp').value; 
                             state.config.updateTime = document.getElementById('inp-time').value; 
-                            state.config.updateGap = document.getElementById('inp-gap').value; // Aseguramos guardar el nuevo campo
+                            state.config.updateGap = document.getElementById('inp-gap').value;
 
                             SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config)); 
 
                             try { 
                                 await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveConfig", merchantId: state.user.uid, data: state.config }) }); 
                             } catch(e){
-                                console.error("Error al guardar en nube", e);
+                                console.error("Error backend", e);
                             } 
 
                             setTimeout(() => { 
                                 app.toggleLoading(false); 
-                                app.showToast('Configuración guardada exitosamente'); 
-
-                                // Verificamos el estado visual del candado una vez más por si acaso
+                                app.showToast('Configuración guardada y optimizada'); 
                                 app.checkConfigStatus();
 
-                                // Restaurar botón
                                 btn.disabled = false;
                                 btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
                                 lucide.createIcons();
