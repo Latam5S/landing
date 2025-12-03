@@ -1,5 +1,8 @@
 [
   {
+    "Distrito": "Ancón"
+  },
+  {
     "Distrito": "Ate"
   },
   {
@@ -12,28 +15,28 @@
     "Distrito": "Breña"
   },
   {
-    "Distrito": "Callao "
+    "Distrito": "Callao"
   },
   {
     "Distrito": "Carabayllo"
   },
   {
-    "Distrito": "Carmen De La Legua Reynoso"
+    "Distrito": "Carmen de la Legua Reynoso"
   },
   {
-    "Distrito": "Cercado De Lima"
+    "Distrito": "Chaclacayo"
   },
   {
     "Distrito": "Chorrillos"
+  },
+  {
+    "Distrito": "Cieneguilla"
   },
   {
     "Distrito": "Comas"
   },
   {
     "Distrito": "El Agustino"
-  },
-  {
-    "Distrito": "Huaycan"
   },
   {
     "Distrito": "Independencia"
@@ -48,7 +51,13 @@
     "Distrito": "La Perla"
   },
   {
+    "Distrito": "La Punta"
+  },
+  {
     "Distrito": "La Victoria"
+  },
+  {
+    "Distrito": "Lima"
   },
   {
     "Distrito": "Lince"
@@ -57,10 +66,13 @@
     "Distrito": "Los Olivos"
   },
   {
-    "Distrito": "Lurin"
+    "Distrito": "Lurigancho"
   },
   {
-    "Distrito": "Magdalena Del Mar"
+    "Distrito": "Lurín"
+  },
+  {
+    "Distrito": "Magdalena del Mar"
   },
   {
     "Distrito": "Mi Perú"
@@ -69,16 +81,28 @@
     "Distrito": "Miraflores"
   },
   {
+    "Distrito": "Pachacámac"
+  },
+  {
+    "Distrito": "Pucusana"
+  },
+  {
     "Distrito": "Pueblo Libre"
   },
   {
     "Distrito": "Puente Piedra"
   },
   {
+    "Distrito": "Punta Hermosa"
+  },
+  {
+    "Distrito": "Punta Negra"
+  },
+  {
     "Distrito": "Rímac"
   },
   {
-    "Distrito": "Salamanca Ate"
+    "Distrito": "San Bartolo"
   },
   {
     "Distrito": "San Borja"
@@ -87,16 +111,16 @@
     "Distrito": "San Isidro"
   },
   {
-    "Distrito": "San Juan De Lurigancho"
+    "Distrito": "San Juan de Lurigancho"
   },
   {
-    "Distrito": "San Juan De Miraflores"
+    "Distrito": "San Juan de Miraflores"
   },
   {
     "Distrito": "San Luis"
   },
   {
-    "Distrito": "San Martín De Porres"
+    "Distrito": "San Martín de Porres"
   },
   {
     "Distrito": "San Miguel"
@@ -105,7 +129,13 @@
     "Distrito": "Santa Anita"
   },
   {
-    "Distrito": "Santiago De Surco"
+    "Distrito": "Santa María del Mar"
+  },
+  {
+    "Distrito": "Santa Rosa"
+  },
+  {
+    "Distrito": "Santiago de Surco"
   },
   {
     "Distrito": "Surquillo"
@@ -117,6 +147,6 @@
     "Distrito": "Villa El Salvador"
   },
   {
-    "Distrito": "Villa María Del Triunfo"
+    "Distrito": "Villa María del Triunfo"
   }
 ]
