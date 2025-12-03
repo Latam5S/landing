@@ -741,9 +741,19 @@
             }
         };
 
-        const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Flores": "agency", "Cruz del Sur": "agency", "Rappi": "home", "PedidosYa": "home", "Delivery": "home", "DHL": "home", "FedEx": "home", "Recojo en Tienda": "home" };
+        const COURIER_TYPES = { 
+            "Shalom": "agency", 
+            "Olva Courier": "agency", 
+            "Marvisur": "agency", 
+            "Delivery": "home"
+        };
         const SafeStorage = { memory: {}, setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } };
-        const ALL_COURIERS = ["Shalom", "Olva Courier", "Delivery", "Recojo en Tienda"];
+        const ALL_COURIERS = [
+            "Shalom", 
+            "Olva Courier", 
+            "Marvisur", 
+            "Delivery"
+        ];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
