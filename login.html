@@ -393,7 +393,20 @@
                             <div class="glass-card p-6 rounded-3xl space-y-5">
                                 <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Datos Públicos</h3>
                                 <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Emprendimiento</label><input id="inp-store-name" oninput="app.updateConfigInput('merchantName', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
-                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Emprendimiento</label><input id="inp-whatsapp" type="tel" oninput="app.updateConfigInput('whatsapp', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
+                              <div>
+                                  <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Emprendimiento</label>
+                                  <div class="relative">
+                                      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
+                                      <input id="inp-whatsapp" 
+                                             type="tel" 
+                                             maxlength="9" 
+                                             placeholder="9..." 
+                                             inputmode="numeric"
+                                             oninput="app.formatWhatsapp(this)"
+                                             class="w-full bg-black/30 border border-white/10 rounded-xl py-4 pr-4 pl-12 text-white outline-none focus:border-primary transition font-mono tracking-wider">
+                                  </div>
+                                  <p class="text-[10px] text-slate-500 mt-1 pl-1">Solo números, debe empezar con 9.</p>
+                              </div>
                             </div>
                             
                             <div class="glass-card p-6 rounded-3xl">
@@ -410,11 +423,44 @@
 
                         <!-- Columna Derecha: Logística (Full Height) -->
                         <div class="flex flex-col">
-                            <div class="glass-card p-6 rounded-3xl space-y-5 h-full">
-                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Logística</h3>
-                                <label class="text-xs font-bold text-slate-400 uppercase block">Couriers</label><div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
-                                <label class="text-xs font-bold text-slate-400 uppercase block mt-2">Días Envío</label><div id="container-days" class="flex flex-wrap gap-2"></div>
-                                <div class="flex items-center gap-3 mt-4 bg-black/20 p-3 rounded-xl border border-white/5"><span class="text-sm font-bold text-slate-300">Hora Corte:</span><input type="time" id="inp-time" onchange="app.updateConfigInput('updateTime', this.value)" class="bg-transparent border border-white/10 rounded px-2 py-1 text-sm text-white outline-none focus:border-primary"></div>
+                            <div class="glass-card p-6 rounded-3xl space-y-5 h-full relative">
+                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">
+                                    Logística <span class="text-red-400">*</span>
+                                </h3>
+
+                                <div>
+                                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">Couriers Habilitados <span class="text-red-500">*</span></label>
+                                    <div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
+                                </div>
+
+                                <div>
+                                    <label class="text-xs font-bold text-slate-400 uppercase block mt-2 mb-2">Días de Despacho <span class="text-red-500">*</span></label>
+                                    <div id="container-days" class="flex flex-wrap gap-2"></div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4 mt-2">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-400 uppercase block mb-1">Hora Corte <span class="text-red-500">*</span></label>
+                                        <div class="flex items-center gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
+                                            <i data-lucide="clock" class="w-4 h-4 text-primary"></i>
+                                            <input type="time" id="inp-time" onchange="app.updateConfigInput('updateTime', this.value); app.checkConfigStatus()" class="bg-transparent text-sm text-white outline-none w-full cursor-pointer">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-400 uppercase block mb-1" title="Días de anticipación mínimos para el pedido">Anticipación (Días) <span class="text-red-500">*</span></label>
+                                        <div class="flex items-center gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
+                                            <i data-lucide="calendar-clock" class="w-4 h-4 text-secondary"></i>
+                                            <input type="number" id="inp-gap" min="0" max="30" placeholder="0" 
+                                                   oninput="app.updateConfigInput('updateGap', this.value); app.checkConfigStatus()" 
+                                                   class="bg-transparent text-sm text-white outline-none w-full placeholder-slate-600">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-[10px] text-slate-500 leading-tight mt-2">
+                                    <span class="text-primary">*</span> La "Anticipación" define cuántos días mínimos de margen necesitas para preparar el pedido antes del día de envío.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -758,7 +804,7 @@
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-        const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00" };
+        const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
         const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, isClientView: false, config: { ...initialState }, selectedCourierType: null, externalData: {}, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
 
         // Helper para sanitizar XSS
@@ -769,9 +815,83 @@
 
         window.app = {
 
+            // --- NUEVA FUNCIÓN: Formateo estricto de WhatsApp ---
+            formatWhatsapp: (el) => {
+                // 1. Eliminar cualquier caracter que NO sea número
+                let val = el.value.replace(/\D/g, '');
+
+                // 2. Validar que empiece con 9
+                // Si el primer digito no es 9 y ya hay algo escrito, lo borramos
+                if (val.length > 0 && val.charAt(0) !== '9') {
+                     val = val.substring(1); 
+                }
+
+                // 3. Actualizar el valor del input visualmente
+                el.value = val;
+
+                // 4. Actualizar el estado y chequear validaciones
+                app.updateConfigInput('whatsapp', val);
+
+                // Feedback visual inmediato (Borde rojo si no son 9 dígitos)
+                if (val.length > 0 && val.length < 9) {
+                    el.classList.add('border-red-500/50');
+                    el.classList.remove('border-white/10', 'focus:border-primary');
+                } else {
+                    el.classList.remove('border-red-500/50');
+                    el.classList.add('border-white/10', 'focus:border-primary');
+                }
+            },          
+
+            // 1. Función pura que devuelve si es válido y qué falta
+            validateConfig: () => {
+                    const c = state.config;
+                    const errors = [];
+
+                    if (!c.merchantName || c.merchantName.length < 3) errors.push("Nombre del emprendimiento");
+
+                    // --- ACTUALIZACIÓN AQUÍ: Validación estricta de Regex ---
+                    // ^9 = empieza con 9
+                    // \d{8}$ = seguido de exactamente 8 dígitos más (total 9)
+                    if (!c.whatsapp || !/^9\d{8}$/.test(c.whatsapp)) errors.push("Celular válido (9 dígitos)");
+                    // -------------------------------------------------------
+
+                    if (!c.couriers || c.couriers.length === 0) errors.push("Al menos un Courier");
+                    if (!c.shippingDays || c.shippingDays.length === 0) errors.push("Al menos un día de envío");
+                    if (!c.updateTime) errors.push("Hora de corte");
+                    if (c.updateGap === "" || c.updateGap === null || c.updateGap === undefined) errors.push("Días de anticipación");
+
+                    return {
+                        isValid: errors.length === 0,
+                        errors: errors
+                    };
+                },
+
+            // 2. Función visual que actualiza la UI (candado en pestaña compartir)
+            checkConfigStatus: () => {
+                const validation = app.validateConfig();
+                const navShare = document.getElementById('nav-share');
+                const icon = navShare.querySelector('i'); // El icono de Lucide
+
+                if (validation.isValid) {
+                    // Estado: HABILITADO
+                    navShare.classList.remove('opacity-50', 'cursor-not-allowed');
+                    navShare.classList.add('hover:bg-white/5', 'hover:text-white');
+                    // Cambiamos el icono a share-2 (normal)
+                    if(icon) icon.setAttribute('data-lucide', 'share-2');
+                } else {
+                    // Estado: BLOQUEADO
+                    navShare.classList.add('opacity-50', 'cursor-not-allowed');
+                    navShare.classList.remove('hover:bg-white/5', 'hover:text-white');
+                     // Cambiamos el icono a lock (bloqueado)
+                    if(icon) icon.setAttribute('data-lucide', 'lock');
+                }
+                lucide.createIcons(); // Refrescar iconos
+            },          
+              
             updateConfigInput: (key, value) => {
-                state.config[key] = value;
-            },
+                    state.config[key] = value;
+                    app.checkConfigStatus(); // <--- IMPORTANTE: Revalida visualmente en tiempo real
+                },
 
             toggleLoading: (show) => { const el = document.getElementById('loading-overlay'); show ? (el.classList.remove('hidden'), setTimeout(()=>el.classList.remove('opacity-0'),10)) : (el.classList.add('opacity-0'), setTimeout(()=>el.classList.add('hidden'),300)); },
             
@@ -1261,31 +1381,59 @@
             },
             
             saveConfig: async () => { 
-                const btn = document.getElementById('btn-save-config');
-                // Bloqueo de botón para evitar doble clic
-                btn.disabled = true;
-                btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
-                lucide.createIcons();
+                            // 1. VALIDACIÓN PREVIA (NUEVO BLOQUE)
+                            // Antes de intentar guardar, verificamos que todo esté correcto
+                            const validation = app.validateConfig();
 
-                app.toggleLoading(true); 
-                state.config.merchantName = document.getElementById('inp-store-name').value; 
-                state.config.whatsapp = document.getElementById('inp-whatsapp').value; 
-                state.config.updateTime = document.getElementById('inp-time').value; 
-                
-                SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config)); 
-                try { 
-                    await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveConfig", merchantId: state.user.uid, data: state.config }) }); 
-                } catch(e){} 
-                
-                setTimeout(() => { 
-                    app.toggleLoading(false); 
-                    app.showToast('Configuración guardada'); 
-                    // Restaurar botón
-                    btn.disabled = false;
-                    btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
-                    lucide.createIcons();
-                }, 500); 
-            },
+                            if (!validation.isValid) {
+                                // Si falta algo, mostramos el error y detenemos todo
+                                const missing = validation.errors.join(", ");
+                                app.showToast(`⚠️ No se puede guardar. Falta: ${missing}`);
+
+                                // Efecto visual de error en el botón (opcional pero recomendado)
+                                const btn = document.getElementById('btn-save-config');
+                                btn.classList.add('bg-red-500', 'animate-shake');
+                                setTimeout(() => btn.classList.remove('bg-red-500', 'animate-shake'), 500);
+
+                                return; // <--- AQUÍ SE DETIENE LA FUNCIÓN
+                            }
+
+                            // 2. PROCESO DE GUARDADO (LÓGICA EXISTENTE)
+                            const btn = document.getElementById('btn-save-config');
+                            // Bloqueo de botón para evitar doble clic
+                            btn.disabled = true;
+                            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
+                            lucide.createIcons();
+
+                            app.toggleLoading(true); 
+
+                            // Recopilamos valores (asegurando que se guarden los que ya están en el estado)
+                            state.config.merchantName = document.getElementById('inp-store-name').value; 
+                            state.config.whatsapp = document.getElementById('inp-whatsapp').value; 
+                            state.config.updateTime = document.getElementById('inp-time').value; 
+                            state.config.updateGap = document.getElementById('inp-gap').value; // Aseguramos guardar el nuevo campo
+
+                            SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config)); 
+
+                            try { 
+                                await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveConfig", merchantId: state.user.uid, data: state.config }) }); 
+                            } catch(e){
+                                console.error("Error al guardar en nube", e);
+                            } 
+
+                            setTimeout(() => { 
+                                app.toggleLoading(false); 
+                                app.showToast('Configuración guardada exitosamente'); 
+
+                                // Verificamos el estado visual del candado una vez más por si acaso
+                                app.checkConfigStatus();
+
+                                // Restaurar botón
+                                btn.disabled = false;
+                                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
+                                lucide.createIcons();
+                            }, 500); 
+                        },
             
             changePassword: async () => {
                 const newPass = document.getElementById('inp-new-pass').value.trim();
@@ -1663,10 +1811,74 @@
                 setTimeout(() => { area.innerHTML = ''; }, 1000);
             },
 
-            toggleConfigItem: (k, v) => { if (state.config[k].includes(v)) state.config[k] = state.config[k].filter(i => i !== v); else state.config[k].push(v); app.renderDashboard(); },
-            renderDashboard: () => { document.getElementById('inp-store-name').value = state.config.merchantName || ''; document.getElementById('inp-whatsapp').value = state.config.whatsapp || ''; document.getElementById('inp-time').value = state.config.updateTime || ''; document.getElementById('container-couriers').innerHTML = ALL_COURIERS.map(c => `<div onclick="app.toggleConfigItem('couriers','${c}')" class="cursor-pointer bg-black/30 border border-white/10 rounded p-2 text-xs font-bold flex items-center gap-2 select-none ${state.config.couriers.includes(c)?'border-primary text-primary bg-primary/10':'text-slate-400 hover:bg-white/5'} transition"><div class="w-3 h-3 border rounded flex items-center justify-center ${state.config.couriers.includes(c)?'bg-primary border-primary':'border-slate-500'}">${state.config.couriers.includes(c)?'<i data-lucide="check" class="w-2 h-2 text-white"></i>':''}</div>${c}</div>`).join(''); document.getElementById('container-days').innerHTML = ALL_DAYS.map(d => `<button onclick="app.toggleConfigItem('shippingDays','${d}')" class="px-3 py-1 rounded text-xs font-bold border transition ${state.config.shippingDays.includes(d)?'bg-primary text-white border-primary shadow-neon':'bg-black/30 text-slate-400 border-white/10 hover:bg-white/5'}">${d}</button>`).join(''); lucide.createIcons(); },
+            toggleConfigItem: (k, v) => { 
+                    if (state.config[k].includes(v)) state.config[k] = state.config[k].filter(i => i !== v); 
+                    else state.config[k].push(v); 
+                    app.renderDashboard(); 
+                    app.checkConfigStatus(); // <--- IMPORTANTE: Revalida al tocar botones de courier/dias
+                },
+          
+            renderDashboard: () => { 
+                    document.getElementById('inp-store-name').value = state.config.merchantName || ''; 
+                    document.getElementById('inp-whatsapp').value = state.config.whatsapp || ''; 
+                    document.getElementById('inp-time').value = state.config.updateTime || ''; 
+
+                    // --- NUEVO: Renderizar el valor del gap ---
+                    document.getElementById('inp-gap').value = state.config.updateGap !== undefined ? state.config.updateGap : ''; 
+
+                    // Inputs con oninput para validación en tiempo real
+                    document.getElementById('inp-store-name').oninput = (e) => app.updateConfigInput('merchantName', e.target.value);
+                    document.getElementById('inp-whatsapp').oninput = (e) => app.updateConfigInput('whatsapp', e.target.value);
+
+                    // Renderizado de Botones (Igual que antes)
+                    document.getElementById('container-couriers').innerHTML = ALL_COURIERS.map(c => `<div onclick="app.toggleConfigItem('couriers','${c}')" class="cursor-pointer bg-black/30 border border-white/10 rounded p-2 text-xs font-bold flex items-center gap-2 select-none ${state.config.couriers.includes(c)?'border-primary text-primary bg-primary/10':'text-slate-400 hover:bg-white/5'} transition"><div class="w-3 h-3 border rounded flex items-center justify-center ${state.config.couriers.includes(c)?'bg-primary border-primary':'border-slate-500'}">${state.config.couriers.includes(c)?'<i data-lucide="check" class="w-2 h-2 text-white"></i>':''}</div>${c}</div>`).join(''); 
+                    document.getElementById('container-days').innerHTML = ALL_DAYS.map(d => `<button onclick="app.toggleConfigItem('shippingDays','${d}')" class="px-3 py-1 rounded text-xs font-bold border transition ${state.config.shippingDays.includes(d)?'bg-primary text-white border-primary shadow-neon':'bg-black/30 text-slate-400 border-white/10 hover:bg-white/5'}">${d}</button>`).join(''); 
+
+                    lucide.createIcons();
+
+                    // Validar estado inicial al renderizar
+                    app.checkConfigStatus(); 
+                },
+          
             renderClient: () => { document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; const cl = state.config.couriers || []; const cs = document.getElementById('c-courier-select'); if (cl.length) cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; app.generateDateOptions(); app.loadExternalLists(); lucide.createIcons(); },
-            setTab: (t) => { ['config','share','orders'].forEach(x => { document.getElementById(`tab-${x}`).classList.add('hidden'); document.getElementById(`nav-${x}`).className = "nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"; }); document.getElementById(`tab-${t}`).classList.remove('hidden'); document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon"; if(t==='share') document.getElementById('share-link').innerText=`${window.location.origin}${window.location.pathname}?merchant=${state.user.uid}`; },
+          
+            setTab: (t) => {
+                    // --- BLOQUEO DE SEGURIDAD UX ---
+                    if (t === 'share') {
+                        const validation = app.validateConfig();
+                        if (!validation.isValid) {
+                            // Feedback UX: Listamos lo que falta
+                            const missing = validation.errors.join(", ");
+                            app.showToast(`⚠️ Falta configurar: ${missing}`);
+
+                            // Efecto visual de error (sacudida) en la pestaña config
+                            const configTab = document.getElementById('nav-config');
+                            configTab.classList.add('animate-pulse', 'text-red-400');
+                            setTimeout(() => configTab.classList.remove('animate-pulse', 'text-red-400'), 1000);
+
+                            // Forzamos volver a config
+                            app.setTab('config');
+                            return;
+                        }
+                    }
+                    // -------------------------------
+
+                    ['config','share','orders'].forEach(x => { 
+                        document.getElementById(`tab-${x}`).classList.add('hidden'); 
+                        // Restauramos clases base
+                        document.getElementById(`nav-${x}`).className = "nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"; 
+                    }); 
+
+                    document.getElementById(`tab-${t}`).classList.remove('hidden'); 
+                    // Clase activa
+                    document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon"; 
+
+                    if(t==='share') document.getElementById('share-link').innerText=`${window.location.origin}${window.location.pathname}?merchant=${state.user.uid}`; 
+
+                    // Si entramos a config, chequeamos el estado visualmente
+                    if(t==='config') app.checkConfigStatus();
+                },
+          
             init: () => {
                 const p = new URLSearchParams(window.location.search); const mid = p.get('merchant');
                 document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
