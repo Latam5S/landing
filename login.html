@@ -719,7 +719,14 @@
 
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbzX-2E7B-bjkFPfHH6zj9stF_Swh2pfkYc6wtqIhiLXF-HuVaQz2Ba5xn_7sbuJPCnySw/exec";
         const JSON_DISTRITOS = "lstDistritos.json";
-        const JSON_SHALOM = "lstShalom.json";
+        
+        // --- CONFIGURACIÓN DE URLS DE AGENCIAS ---
+        // Asegúrate de que estas URLs sean las RAW de tu repositorio GitHub
+        const AGENCY_URLS = {
+            "Shalom": "lstShalom.json",
+            "Olva Courier": "lstOlvaCourier.json",
+            "Marvisur": "lstMarvisur.json"
+        };
 
         // CONFIGURACIÓN DE LIMITES DEL PLAN (FEATURE FLAGS)
         const PLAN_FEATURES = {
@@ -896,8 +903,63 @@
                 setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
             },
             // -------------------------------
-
-            loadExternalLists: async () => { try { if(!state.externalData.districts) { const res = await fetch(JSON_DISTRITOS); const data = await res.json(); state.externalData.districts = data.map(d => d.Distrito || d.nombre); } if(!state.externalData.agencies) { const res = await fetch(JSON_SHALOM); state.externalData.agencies = await res.json(); } } catch(e) { console.error(e); } },
+   
+            loadExternalLists: async () => { 
+                try { 
+                    // Solo cargamos distritos al inicio. Las agencias se cargan al elegir courier.
+                    if (!state.externalData.districts) { 
+                        const res = await fetch(JSON_DISTRITOS); 
+                        const data = await res.json(); 
+                        state.externalData.districts = data.map(d => d.Distrito || d.nombre); 
+                    } 
+                } catch(e) { 
+                    console.error(e); 
+                } 
+            },
+            
+            loadAgencies: async (courierName) => {
+                const url = AGENCY_URLS[courierName];
+                
+                // Si el courier seleccionado no tiene lista (ej: Delivery), vaciamos y salimos
+                if (!url) {
+                    state.externalData.agencies = [];
+                    return;
+                }
+            
+                // Feedback visual para el usuario
+                const inputAgency = document.getElementById('c-agency');
+                inputAgency.placeholder = `Cargando sedes de ${courierName}...`;
+                inputAgency.disabled = true; // Bloqueamos mientras carga
+            
+                try {
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error("Error al cargar lista");
+                    
+                    const rawData = await res.json();
+            
+                    // --- ESTANDARIZACIÓN DE DATOS ---
+                    // Convertimos cualquier formato raro a { Agencia, Direccion }
+                    // Esto es clave para que tu validación estricta siga funcionando
+                    state.externalData.agencies = rawData.map(item => ({
+                        Agencia: item.Agencia || item.c_nom_agencia || item.nombre || 'Agencia',
+                        Direccion: item.Direccion || item.c_direccion || item.direccion || ''
+                    }));
+            
+                    // Habilitamos el input
+                    inputAgency.placeholder = `Buscar sede ${courierName}...`;
+                    inputAgency.disabled = false;
+                    
+                    // Limpiamos cualquier selección anterior
+                    app.clearAgency();
+            
+                } catch (e) {
+                    console.error(e);
+                    app.showToast(`Error cargando agencias de ${courierName}`);
+                    inputAgency.placeholder = "Error de carga. Intenta recargar.";
+                    state.externalData.agencies = [];
+                }
+            },
+            
             scrollToEl: (el) => { setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100); },
 
             searchAgency: (q) => { const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } x.classList.remove('hidden'); if(q.length<2) { c.classList.add('hidden'); return; } const lq = q.toLowerCase(); const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && a.Agencia.toLowerCase().includes(lq)) || (a.Direccion && a.Direccion.toLowerCase().includes(lq))).slice(0,50); c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}','${escapeHtml(a.Direccion.replace(/'/g,"\\'").replace(/\n/g," "))}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm mb-1">${escapeHtml(a.Agencia)}</p><p class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; c.classList.remove('hidden'); },
@@ -908,7 +970,52 @@
             clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
 
             generateDateOptions: () => { const s = document.getElementById('c-date-select'); s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; const ad = state.config.shippingDays || []; if (!ad.length) return; const now = new Date(); const [ch, cm] = (state.config.updateTime || "18:00").split(':').map(Number); const cut = new Date(now); cut.setHours(ch, cm, 0, 0); for(let i=0;i<14;i++) { const f = new Date(now); f.setDate(now.getDate()+i); if(i===0 && now>cut) continue; const di = f.getDay(); if(ad.some(n => DAY_INDEX_MAP[n]===di)) { const val = `${DAY_NAMES_FULL[di]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; const lbl = `${DAY_NAMES_FULL[di]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; const o = document.createElement('option'); o.value = val; o.innerText = lbl; s.appendChild(o); } } },
-            onCourierChange: (c) => { const type = COURIER_TYPES[c] || "home"; state.selectedCourierType = type; state.selectedCourier = c; document.getElementById('dynamic-form-section').classList.remove('hidden'); const af = document.getElementById('fields-agency'), hf = document.getElementById('fields-home'); ['c-dni','c-agency','c-address','c-district'].forEach(id => document.getElementById(id).removeAttribute('required')); if(type === 'agency') { af.classList.remove('hidden'); hf.classList.add('hidden'); document.getElementById('c-dni').setAttribute('required','true'); const ag = document.getElementById('c-agency'); ag.setAttribute('required','true'); ag.value=""; app.clearAgency(); app.clearDistrict(); if(c.includes('Shalom')) ag.placeholder="Escribe para buscar sede..."; else ag.placeholder="Nombre de Agencia / Dirección"; } else { af.classList.add('hidden'); hf.classList.remove('hidden'); document.getElementById('c-address').setAttribute('required','true'); document.getElementById('c-district').setAttribute('required','true'); app.clearAgency(); app.clearDistrict(); } app.validateForm(); },
+        
+            onCourierChange: (c) => { 
+                const type = COURIER_TYPES[c] || "home"; 
+                state.selectedCourierType = type; 
+                state.selectedCourier = c; 
+                
+                document.getElementById('dynamic-form-section').classList.remove('hidden'); 
+                
+                const af = document.getElementById('fields-agency');
+                const hf = document.getElementById('fields-home'); 
+                
+                // Reseteamos validaciones visuales anteriores
+                ['c-dni','c-agency','c-address','c-district'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.removeAttribute('required');
+                    el.classList.remove('border-red-500'); // Limpieza visual extra
+                });
+            
+                if (type === 'agency') { 
+                    af.classList.remove('hidden'); 
+                    hf.classList.add('hidden'); 
+                    
+                    document.getElementById('c-dni').setAttribute('required','true'); 
+                    const ag = document.getElementById('c-agency'); 
+                    ag.setAttribute('required','true'); 
+                    ag.value = ""; 
+                    
+                    // --- AQUÍ ESTÁ LA MAGIA ---
+                    // Cargamos la lista específica del courier seleccionado
+                    app.loadAgencies(c);
+                    // --------------------------
+            
+                    app.clearDistrict(); 
+                } else { 
+                    af.classList.add('hidden'); 
+                    hf.classList.remove('hidden'); 
+                    
+                    document.getElementById('c-address').setAttribute('required','true'); 
+                    document.getElementById('c-district').setAttribute('required','true'); 
+                    
+                    app.clearAgency(); 
+                    app.clearDistrict(); 
+                } 
+                app.validateForm(); 
+            },          
+            
             validateForm: () => { const btn = document.getElementById('btn-submit-order'), c = document.getElementById('c-courier-select').value, d = document.getElementById('c-date-select').value; if(c && d) btn.removeAttribute('disabled'); else btn.setAttribute('disabled','true'); },
 
             submitOrder: async (e) => { 
