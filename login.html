@@ -619,66 +619,75 @@
                     <p class="text-[10px] text-slate-400 mt-2 pl-1">Escribe tu número para cargar tus datos.</p>
                 </div>
 
-                <div id="progressive-content" class="space-y-6 hidden opacity-0 transition-all duration-500 transform translate-y-4">
+                <div id="progressive-content" class="space-y-6">
                     
-                    <div id="block-service" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
+                    <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cómo quieres recibir tu pedido?</label>
                         <div class="relative">
-                            <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
+                            <select id="c-courier-select" 
+                                    onchange="app.onCourierChange(this.value)" 
+                                    class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
                                 <option value="" disabled selected>Selecciona una opción...</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
+                                </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
+                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                            </div>
                         </div>
                     </div>
-
-                    <div id="dynamic-form-section" class="hidden space-y-4">
+                
+                    <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
                         <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
                                 <div class="relative group z-30">
                                     <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                    <input id="c-agency" type="text" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
+                                    <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" 
+                                           class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" 
+                                           placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
                                     <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
                                     <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
-                                <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
+                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
+                                <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                                       class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
                             </div>
                         </div>
-
+                
                         <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
                                 <div class="relative group z-30">
                                     <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                    <input id="c-district" type="text" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
+                                    <input id="c-district" type="text" onfocus="app.revealStep('block-personal')"
+                                           class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" 
+                                           placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
                                     <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
                                     <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
+                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
                                 <input id="c-address" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Calle, Av, Número...">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
+                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
                                 <input id="c-ref" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Frente a, color de casa...">
                             </div>
                         </div>
                     </div>
-
-                    <div id="block-personal" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
-                        <div class="relative">
+                
+                    <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
+                         <div class="relative">
                             <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                            <input id="c-name" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
-                        </div>
+                            <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
+                         </div>
                     </div>
-
-                    <div id="block-closing" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                        <div>
+                
+                    <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cuándo lo enviamos?</label>
                             <div class="relative">
                                 <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary outline-none cursor-pointer transition">
@@ -687,7 +696,7 @@
                                 <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-5 h-5"></i></div>
                             </div>
                         </div>
-
+                
                         <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-5 rounded-xl shadow-lg shadow-green-500/20 transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
                             <i data-lucide="message-circle" class="w-6 h-6"></i> Enviar Pedido por WhatsApp
                         </button>
@@ -861,7 +870,17 @@
 
         window.app = {
 
-            // --- LÓGICA DE AUTOCOMPLETADO Y UX CLIENTE ---
+            // Helper para mostrar bloques con animación
+            revealStep: (id) => {
+                const el = document.getElementById(id);
+                if (el && el.classList.contains('hidden')) {
+                    el.classList.remove('hidden');
+                    // Timeout para permitir que el navegador procese el 'display: block' antes de la opacidad
+                    setTimeout(() => {
+                        el.classList.remove('opacity-0', 'translate-y-4');
+                    }, 50);
+                }
+            },
             
             // 1. Gatillador: Se activa al escribir en el campo WhatsApp
             handleClientPhone: (el) => {
@@ -869,30 +888,29 @@
                 let val = el.value.replace(/\D/g, '');
                 if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
                 el.value = val;
-
-                const wrapper = document.getElementById('progressive-content');
+        
                 const badge = document.getElementById('user-found-badge');
-
-                // Si tiene 9 dígitos, mostramos el resto del formulario
+        
                 if (val.length === 9) {
-                    wrapper.classList.remove('hidden');
-                    // Pequeño delay para permitir que el navegador quite el hidden antes de la opacidad
-                    setTimeout(() => {
-                        wrapper.classList.remove('opacity-0', 'translate-y-4');
-                    }, 50);
-
-                    // BUSCAR EN CACHÉ (La Magia)
+                    // BUSCAR EN CACHÉ
                     const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}');
+                    
                     if (cache[val]) {
-                        app.fillFromCache(cache[val]);
+                        // CASO A: CLIENTE ANTIGUO -> MOSTRAR TODO
                         badge.classList.remove('hidden');
-                        app.showToast('¡Datos cargados automáticamente! 🎉');
+                        app.fillFromCache(cache[val]);
+                        app.showToast('¡Hola de nuevo! Tus datos se cargaron ✨');
+                        
+                        // Revelamos todos los bloques en cascada rápida
+                        ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => {
+                            setTimeout(() => app.revealStep(id), idx * 100);
+                        });
+        
                     } else {
+                        // CASO B: CLIENTE NUEVO -> MOSTRAR SOLO EL SIGUIENTE PASO
                         badge.classList.add('hidden');
+                        app.revealStep('block-service');
                     }
-                } else {
-                    // Si borra números, ocultamos de nuevo para mantener limpieza (opcional)
-                    // wrapper.classList.add('opacity-0', 'translate-y-4'); // Descomentar si quieres que se oculte al borrar
                 }
             },
 
@@ -1230,19 +1248,20 @@
                 state.selectedCourierType = type; 
                 state.selectedCourier = c; 
                 
-                document.getElementById('dynamic-form-section').classList.remove('hidden'); 
-                
+                // 1. Mostrar contenedor de destino
+                const dynamicSection = document.getElementById('dynamic-form-section');
+                dynamicSection.classList.remove('hidden'); // Este no tiene animación de opacidad propia, es contenedor
+        
                 const af = document.getElementById('fields-agency');
                 const hf = document.getElementById('fields-home'); 
                 
-                // Reseteamos validaciones visuales anteriores
+                // Reset de validaciones visuales
                 ['c-dni','c-agency','c-address','c-district'].forEach(id => {
-                    const el = document.getElementById(id);
-                    el.removeAttribute('required');
-                    el.classList.remove('border-red-500'); // Limpieza visual extra
+                    document.getElementById(id).removeAttribute('required');
                 });
             
                 if (type === 'agency') { 
+                    // Mostrar Agencia, Ocultar Casa
                     af.classList.remove('hidden'); 
                     hf.classList.add('hidden'); 
                     
@@ -1251,13 +1270,10 @@
                     ag.setAttribute('required','true'); 
                     ag.value = ""; 
                     
-                    // --- AQUÍ ESTÁ LA MAGIA ---
-                    // Cargamos la lista específica del courier seleccionado
                     app.loadAgencies(c);
-                    // --------------------------
-            
                     app.clearDistrict(); 
                 } else { 
+                    // Mostrar Casa, Ocultar Agencia
                     af.classList.add('hidden'); 
                     hf.classList.remove('hidden'); 
                     
@@ -1267,8 +1283,13 @@
                     app.clearAgency(); 
                     app.clearDistrict(); 
                 } 
+                
+                // --- UX: NO revelamos 'block-personal' todavía ---
+                // Se revelará cuando el usuario haga FOCUS en 'c-agency' o 'c-district'
+                // (Esto ya lo configuramos en el HTML con onfocus="app.revealStep('block-personal')")
+                
                 app.validateForm(); 
-            },          
+            },       
             
             validateForm: () => { const btn = document.getElementById('btn-submit-order'), c = document.getElementById('c-courier-select').value, d = document.getElementById('c-date-select').value; if(c && d) btn.removeAttribute('disabled'); else btn.setAttribute('disabled','true'); },
 
@@ -1453,24 +1474,25 @@
             resetClientView: () => {
                 const form = document.getElementById('client-form');
                 const successView = document.getElementById('success-view');
-                const wrapper = document.getElementById('progressive-content');
                 const badge = document.getElementById('user-found-badge');
-
-                // 1. Ocultar pantalla de éxito
+        
                 successView.classList.add('hidden');
-                
-                // 2. Mostrar formulario limpio
                 form.classList.remove('hidden');
-                wrapper.classList.add('hidden', 'opacity-0', 'translate-y-4'); // Ocultamos el acordeón
                 badge.classList.add('hidden');
                 
-                // 3. Resetear inputs
+                // OCULTAR TODOS LOS BLOQUES PROGRESIVOS
+                ['block-service', 'block-personal', 'block-closing'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.classList.add('hidden', 'opacity-0', 'translate-y-4');
+                });
+                document.getElementById('dynamic-form-section').classList.add('hidden');
+        
                 form.reset();
                 document.getElementById('btn-submit-order').setAttribute('disabled', 'true');
                 
-                // 4. Foco al inicio
+                // Foco al inicio
                 document.getElementById('c-phone').focus();
-            },
+            },        
             
             handleLogin: async (e) => { 
                 e.preventDefault(); 
