@@ -558,7 +558,7 @@
                         <p class="text-sm text-slate-400 mb-6 font-medium">
                             La visualización de respuestas no está incluida en su plan actual.
                         </p>
-                        <button onclick="app.activateTrial()" class="bg-gradient-to-r from-primary to-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-neon hover:scale-105 transition flex items-center gap-2">
+                        <button onclick="app.showUpgradeModal()" class="bg-gradient-to-r from-primary to-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-neon hover:scale-105 transition flex items-center gap-2">
                            <i data-lucide="sparkles" class="w-4 h-4"></i> Actualizar para ver <span id="hidden-count">0</span> registros
                         </button>
                         <p class="text-[11px] text-slate-500 mt-6 leading-relaxed max-w-xs mx-auto border-t border-white/5 pt-4">
@@ -1083,14 +1083,19 @@
             },
 
             showUpgradeModal: () => {
-                // Mostrar el modal de actualización (ahora es el bloqueo)
-                // En este diseño, el bloqueo YA es el modal, pero si queremos un popup extra:
-                // const el = document.getElementById('modal-upsell'), card = document.getElementById('modal-upsell-card');
-                // el.classList.remove('hidden');
-                // setTimeout(() => { el.classList.remove('opacity-0'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10);
+                // 1. Identificamos el modal y su tarjeta interna
+                const el = document.getElementById('modal-upsell');
+                const card = document.getElementById('modal-upsell-card');
                 
-                // Como el usuario ya está viendo el bloqueo en la lista, el botón "Actualizar" llama directamente a activateTrial
-                app.activateTrial();
+                // 2. Lo hacemos visible (quitamos hidden)
+                el.classList.remove('hidden');
+                
+                // 3. Animación de entrada (Fade In + Scale Up)
+                setTimeout(() => { 
+                    el.classList.remove('opacity-0'); 
+                    card.classList.remove('scale-95'); 
+                    card.classList.add('scale-100'); 
+                }, 10);
             },
             
             // Nuevo: Control genérico de modales
