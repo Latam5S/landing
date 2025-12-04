@@ -787,8 +787,19 @@
             }
         }
 
+        // Variable de control
+        let isAnimating = true;
+        
+        // Observer para pausar si no es visible
+        const observer = new IntersectionObserver((entries) => {
+            isAnimating = entries[0].isIntersecting;
+            if(isAnimating) animateParticles();
+        });
+        observer.observe(canvas);
+        
         // Animate Loop
         function animateParticles() {
+            if (!isAnimating) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // Update & Draw
