@@ -1355,7 +1355,7 @@
             submitOrder: async (e) => { 
                 e.preventDefault(); 
                 
-                // 1. UI: Bloquear botón y mostrar estado de "Verificando..."
+                // 1. UI: Bloquear botón y mostrar feedback de carga
                 const btn = document.getElementById('btn-submit-order');
                 const originalBtnContent = btn.innerHTML;
                 btn.disabled = true;
@@ -1364,61 +1364,66 @@
             
                 try {
                     // 2. BACKEND: Obtener la configuración MÁS RECIENTE
-                    // Esto asegura que tengamos el WhatsApp, Nombre y Couriers actuales
+                    // Esto protege contra cambios de WhatsApp, Couriers o Hora de Corte en tiempo real
                     const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`);
                     const json = await res.json();
             
                     if (json.data) {
-                        // Actualizamos la configuración local con la fresca
+                        // Actualizamos la memoria local con la configuración fresca del servidor
                         state.config = json.data;
                     }
                 } catch (err) {
                     console.error("No se pudo verificar config, usando local", err);
-                    // Si falla la red, seguimos con la config que ya teníamos en memoria
+                    // Si falla la conexión, continuamos con la configuración que ya tenía cargada
                 }
             
-                // --- AHORA VALIDAMOS CON DATOS FRESCOS ---
+                // --- VALIDACIONES CON DATOS FRESCOS ---
             
-                // 3. Validación de COURIER (¿Sigue existiendo el courier que eligió el cliente?)
+                // A. Validación de COURIER (¿Sigue existiendo el courier que eligió el cliente?)
                 const selectedCourier = state.selectedCourier;
                 const freshCouriers = state.config.couriers || [];
                 
-                // Si el courier seleccionado YA NO está en la lista permitida del emprendedor
+                // Si el courier elegido ya no está en la lista permitida
                 if (!freshCouriers.includes(selectedCourier)) {
                     app.showToast(`⚠️ Lo sentimos, ${selectedCourier} ya no está disponible.`);
                     
-                    // Reseteamos el select para obligar al usuario a elegir uno nuevo
-                    app.renderClient(); // Esto regenera el dropdown con la lista nueva
+                    // Reiniciamos la vista para que se actualice el dropdown de couriers
+                    app.renderClient(); 
                     document.getElementById('c-courier-select').value = ""; 
                     document.getElementById('dynamic-form-section').classList.add('hidden'); // Ocultamos formulario
                     
-                    // Restauramos botón y salimos
+                    // Restauramos botón y cancelamos el envío
                     btn.disabled = false;
                     btn.innerHTML = originalBtnContent;
                     lucide.createIcons();
-                    return; // DETENEMOS EL ENVÍO AQUÍ
+                    return; 
                 }
             
-                // 4. Validación de FECHAS (Tu lógica anterior, pero ahora usa la hora de corte ACTUALIZADA)
-                app.generateDateOptions(); // Regenera calendario con la hora de corte fresca
-                
+                // B. Validación de FECHAS (Hora de corte y Días de anticipación)
                 const dateSelect = document.getElementById('c-date-select');
-                const oldDate = dateSelect.value;
+                const oldDate = dateSelect.value; // Guardamos lo que el usuario eligió visualmente
+                
+                // Regeneramos el calendario usando la hora de corte FRESCA
+                app.generateDateOptions(); 
+                
                 let finalDate = oldDate;
                 let dateChanged = false;
                 
-                // Verificamos si la fecha elegida sigue siendo válida en el nuevo calendario
+                // Verificamos si la fecha antigua existe en las nuevas opciones generadas
                 const options = Array.from(dateSelect.options).map(o => o.value);
+                
                 if (options.includes(oldDate)) {
+                    // Si existe, la volvemos a seleccionar (porque generateDateOptions limpió el select)
                     dateSelect.value = oldDate;
                 } else {
-                    // Si desapareció (por cambio de hora de corte o días de despacho), tomamos la siguiente
+                    // Si desapareció (ej. ya pasó la hora de corte), seleccionamos la siguiente disponible
                     if (dateSelect.options.length > 1) {
+                        // Index 0 es el placeholder, Index 1 es la primera fecha válida
                         dateSelect.selectedIndex = 1; 
                         finalDate = dateSelect.value;
                         dateChanged = true;
                     } else {
-                         // Caso extremo: No hay fechas disponibles
+                         // Caso extremo: No hay ninguna fecha disponible
                          app.showToast("⚠️ La tienda no tiene fechas de envío disponibles ahora.");
                          btn.disabled = false;
                          btn.innerHTML = originalBtnContent;
@@ -1426,21 +1431,21 @@
                     }
                 }
             
-                // --- CAPTURA DE DATOS (Igual que antes) ---
+                // --- CAPTURA Y ENVÍO (Lógica estándar) ---
+                
                 const phone = document.getElementById('c-phone').value.trim();
                 const name = document.getElementById('c-name').value.trim();
                 const day = finalDate;
             
-                // ... (Tus validaciones de campos vacíos siguen aquí: nombre, celular, etc.) ...
+                // Validaciones básicas de campos
                 if (name.length < 3) {
-                    // ... manejo de error ...
                     btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ Nombre inválido");
                 }
-                // ... etc ...
+                if (!/^9\d{8}$/.test(phone)) {
+                    btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ Celular inválido");
+                }
             
-                // --- CONSTRUCCIÓN DEL MENSAJE ---
-                
-                // Preparación de datos (Igual que tu código original)
+                // Preparar objeto de datos
                 let data = { 
                     clientName: name, 
                     clientPhone: phone, 
@@ -1450,42 +1455,72 @@
                     product: "N/A" 
                 }; 
                 
-                // ... (Lógica de Agencia vs Casa para construir variable 'wa') ...
-                // Asegúrate de copiar tu lógica de construcción del mensaje 'wa' aquí
-                // Ejemplo resumido:
+                // Construir mensaje de WhatsApp según el tipo de envío
                 let wa = "";
                 if (state.selectedCourierType === 'agency') {
-                     // ... lógica agencia ...
                      const dni = document.getElementById('c-dni').value.trim();
                      const ag = document.getElementById('c-agency').value;
-                     data.clientDni = dni; data.clientAgency = ag;
-                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*...`; // Tu template
+                     
+                     if (!/^\d{8,12}$/.test(dni)) { btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ DNI inválido"); }
+                     if (ag.length < 3) { btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ Agencia inválida"); }
+            
+                     data.clientDni = dni; 
+                     data.clientAgency = ag;
+                     
+                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
+                          `👤 ${name}\n` +
+                          `📱 ${phone}\n` +
+                          `🆔 DNI: ${dni}\n` +
+                          `🏢 Agencia: ${ag}\n\n` +
+                          `🚚 ${state.selectedCourier}\n` +
+                          `📅 ${day}`;
                 } else {
-                     // ... lógica casa ...
                      const ad = document.getElementById('c-address').value;
                      const ds = document.getElementById('c-district').value;
                      const rf = document.getElementById('c-ref').value;
-                     data.clientAddress = ad; data.clientDistrict = ds; data.clientRef = rf;
-                     wa = `📦 *NUEVO ENVÍO (CASA)*...`; // Tu template
+            
+                     if (ds.length < 3) { btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ Distrito inválido"); }
+                     if (ad.length < 5) { btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ Dirección muy corta"); }
+                     if (rf.length < 3) { btn.disabled = false; btn.innerHTML = originalBtnContent; return app.showToast("⚠️ Referencia obligatoria"); }
+            
+                     data.clientAddress = ad; 
+                     data.clientDistrict = ds; 
+                     data.clientRef = rf;
+                     
+                     wa = `📦 *NUEVO ENVÍO (CASA)*\n\n` +
+                          `👤 ${name}\n` +
+                          `📱 ${phone}\n` +
+                          `📍 ${ds}\n` +
+                          `🏠 ${ad}\n` +
+                          `🗺️ Ref: ${rf}\n\n` +
+                          `🚚 ${state.selectedCourier}\n` +
+                          `📅 ${day}`;
                 }
             
-                // --- ENVÍO FINAL ---
-            
+                // Feedback si la fecha cambió automáticamente
                 if (dateChanged) {
                     app.showToast('⚠️ Fecha actualizada por horario de corte.');
                 }
             
-                // AQUI ESTA LA MAGIA DEL RESTO DE CAMPOS:
-                // Al usar state.config.whatsapp, estamos usando el número FRESCO que trajimos al inicio de la función.
-                // Si el emprendedor cambió su número hace 1 minuto, el mensaje irá al nuevo número.
+                // Guardado en Caché Local (para autocompletar la próxima vez)
+                const cacheData = { name: name, courier: state.selectedCourier, type: state.selectedCourierType };
+                if (state.selectedCourierType === 'agency') {
+                    cacheData.dni = data.clientDni; cacheData.agency = data.clientAgency;
+                } else {
+                    cacheData.district = data.clientDistrict; cacheData.address = data.clientAddress; cacheData.ref = data.clientRef;
+                }
+                app.saveToCache(phone, cacheData);
+            
+                // Abrir WhatsApp con el número FRESCO de la configuración
                 const whatsappUrl = `https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`;
                 
+                // Pequeño delay si hubo cambio de fecha para que el usuario lea el aviso
                 const delay = dateChanged ? 1500 : 0;
                 
                 setTimeout(() => {
                     window.open(whatsappUrl, '_blank');
                     
-                    // Guardar pedido en backend (Igual que antes)
+                    // Enviar datos al Google Sheet (Backend)
                     try { 
                         fetch(state.apiUrl, { 
                             method: "POST", 
@@ -1493,11 +1528,11 @@
                         }).catch(err => console.error(err));
                     } catch(e) {} 
             
-                    // UI Éxito
+                    // Mostrar pantalla de éxito
                     document.getElementById('client-form').classList.add('hidden');
                     document.getElementById('success-view').classList.remove('hidden');
                     
-                    // Restaurar botón (por si vuelve atrás)
+                    // Restaurar botón
                     btn.disabled = false;
                     btn.innerHTML = originalBtnContent;
                 }, delay);
