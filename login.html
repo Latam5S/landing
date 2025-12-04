@@ -2061,8 +2061,25 @@
                     app.checkConfigStatus(); 
                 },
           
-            renderClient: () => { document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; const cl = state.config.couriers || []; const cs = document.getElementById('c-courier-select'); if (cl.length) cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; app.generateDateOptions(); app.loadExternalLists(); lucide.createIcons(); },
-          
+            renderClient: () => { 
+                document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; 
+                document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
+                const cl = state.config.couriers || []; 
+                const cs = document.getElementById('c-courier-select'); 
+                
+                // ... (tu código existente de renderizado) ...
+                
+                if (cl.length) cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); 
+                else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; 
+                
+                app.generateDateOptions(); 
+                app.loadExternalLists(); 
+                lucide.createIcons(); 
+                
+                // ---> AGREGAR ESTA LÍNEA AQUÍ <---
+                app.setupClientAutoRefresh(); 
+            },
+            
             setTab: (t) => {
                     // --- BLOQUEO DE SEGURIDAD UX ---
                     if (t === 'share') {
@@ -2099,7 +2116,36 @@
                     // Si entramos a config, chequeamos el estado visualmente
                     if(t==='config') app.checkConfigStatus();
                 },
-          
+
+
+            // --- AUTO-REFRESH PARA CLIENTES (Sincronización de Configuración) ---
+            setupClientAutoRefresh: () => {
+                // Validación de seguridad: Solo ejecutar si es la vista pública
+                if (!state.isClientView) return;
+
+                let refreshTimer;
+                const LIMIT = 30 * 60 * 1000; // 30 Minutos
+
+                const reloadForm = () => {
+                    // Recarga suave: Guarda la posición del scroll si es posible, o recarga total
+                    // Usamos reload para forzar que se descargue la nueva configuración del Google Sheet
+                    window.location.reload();
+                };
+
+                const resetTimer = () => {
+                    clearTimeout(refreshTimer);
+                    refreshTimer = setTimeout(reloadForm, LIMIT);
+                };
+
+                // Eventos que indican que el cliente sigue ahí (y no debemos recargar todavía)
+                const events = ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+                events.forEach(evt => document.addEventListener(evt, resetTimer, { passive: true }));
+                
+                // Iniciar contador
+                resetTimer();
+                console.log("🔄 Monitor de actualización de configuración iniciado (30 min)");
+            },
+            
             init: () => {
                 const p = new URLSearchParams(window.location.search); const mid = p.get('merchant');
                 document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
