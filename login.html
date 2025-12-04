@@ -1904,11 +1904,22 @@
                 app.openStatusMenu();
             },
 
-            exportExcel: () => {
-                const list = state.visibleOrders; // Usamos los visibles (filtrados)
+            exportExcel: async () => { // Nota el async
+                const list = state.visibleOrders;
                 if (!list.length) return app.showToast('No hay datos para exportar');
-                
-                app.toggleLoading(true); // Mostramos carga porque generar Excel toma unos milisegundos
+            
+                app.toggleLoading(true);
+            
+                // CARGA DINÁMICA: Solo se descarga si el usuario lo pide
+                if (typeof XLSX === 'undefined') {
+                    await new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = "https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js";
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                }
             
                 // 1. Preparamos los datos limpios para Excel
                 const dataToExport = list.map(x => {
