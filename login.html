@@ -1248,8 +1248,60 @@
             selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
             clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
 
-            generateDateOptions: () => { const s = document.getElementById('c-date-select'); s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; const ad = state.config.shippingDays || []; if (!ad.length) return; const now = new Date(); const [ch, cm] = (state.config.updateTime || "18:00").split(':').map(Number); const cut = new Date(now); cut.setHours(ch, cm, 0, 0); for(let i=0;i<14;i++) { const f = new Date(now); f.setDate(now.getDate()+i); if(i===0 && now>cut) continue; const di = f.getDay(); if(ad.some(n => DAY_INDEX_MAP[n]===di)) { const val = `${DAY_NAMES_FULL[di]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; const lbl = `${DAY_NAMES_FULL[di]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; const o = document.createElement('option'); o.value = val; o.innerText = lbl; s.appendChild(o); } } },
-        
+            generateDateOptions: () => { 
+                const s = document.getElementById('c-date-select'); 
+                s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; 
+                
+                const allowedDays = state.config.shippingDays || []; 
+                if (!allowedDays.length) return; 
+
+                // 1. CONFIGURACIÓN DEL HORIZONTE (Lo que preguntaste)
+                // Cambia este 14 por 21 (3 semanas) o 30 (1 mes) según prefieras.
+                const DIAS_A_MOSTRAR = 14; 
+
+                const now = new Date(); 
+                
+                // 2. LÓGICA DE ANTICIPACIÓN (GAP)
+                // Recuperamos la brecha configurada (ej: 2 días)
+                const gap = parseInt(state.config.updateGap || 0);
+                
+                // Hora de corte
+                const [cutHour, cutMinute] = (state.config.updateTime || "18:00").split(':').map(Number); 
+                const cutTime = new Date(now); 
+                cutTime.setHours(cutHour, cutMinute, 0, 0); 
+
+                // Si ya pasó la hora de corte, agregamos 1 día extra de penalización
+                // es decir, "hoy" ya no cuenta, empezamos a contar desde mañana + gap
+                let startOffset = gap;
+                if (now > cutTime) {
+                    startOffset = gap + 1;
+                }
+
+                // 3. GENERAR OPCIONES
+                // El bucle empieza en startOffset (día inicial válido)
+                // Y termina en startOffset + DIAS_A_MOSTRAR (horizonte)
+                for(let i = startOffset; i < (startOffset + DIAS_A_MOSTRAR); i++) { 
+                    const f = new Date(now); 
+                    f.setDate(now.getDate() + i); 
+                    
+                    const dayIndex = f.getDay(); // 0 = Domingo, 1 = Lunes...
+                    
+                    // Verificamos si este día de la semana está permitido en tu configuración
+                    // DAY_INDEX_MAP debe coincidir con tus arrays ["Lun", "Mar"...]
+                    if(allowedDays.some(n => DAY_INDEX_MAP[n] === dayIndex)) { 
+                        // Formato visual: "Lunes 25 Ene"
+                        const lbl = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
+                        // Formato interno (Value): "Lunes 25/01" (Para guardar en BD)
+                        const val = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; 
+                        
+                        const o = document.createElement('option'); 
+                        o.value = val; 
+                        o.innerText = lbl; 
+                        s.appendChild(o); 
+                    } 
+                } 
+            },
+            
             onCourierChange: (c) => { 
                 const type = COURIER_TYPES[c] || "home"; 
                 state.selectedCourierType = type; 
