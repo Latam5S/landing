@@ -741,1431 +741,429 @@
     </div>
         
     <script>
-        // --- PARTICLES ANIMATION ---
-        const canvas = document.getElementById('particles-js');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        
-        // Resize
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        feather.replace();
 
-        // Particle Class
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5; // Velocidad lenta
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)'; // Azul primary
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        // Init Particles
-        function initParticles() {
-            particles = [];
-            const numParticles = Math.min(window.innerWidth / 10, 100); // Ajustar densidad
-            for (let i = 0; i < numParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        // Variable de control
-        let isAnimating = true;
-        
-        // Observer para pausar si no es visible
-        const observer = new IntersectionObserver((entries) => {
-            isAnimating = entries[0].isIntersecting;
-            if(isAnimating) animateParticles();
-        });
-        observer.observe(canvas);
-        
-        // Animate Loop
-        function animateParticles() {
-            if (!isAnimating) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ----------------------------------------------------
+        // CLIENTE API ROBUSTO (Manejo de Errores y Reintentos)
+        // ----------------------------------------------------
+        const ApiService = {
+            // Configuración
+            URL: "https://script.google.com/macros/s/AKfycbxpASguuB214DRWR-m1u98LY79YWvvCWKuP9c1vcG8voCpykYhyGz2R-1LznK6WOQBDXg/exec",
             
-            // Update & Draw
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                // Draw Connections
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+            async request(action, payload = {}, retries = 1) {
+                const controller = new AbortController();
+                // 15 segundos timeout
+                const timeoutId = setTimeout(() => controller.abort(), 15000); 
+
+                try {
+                    // Siempre usamos POST para evitar caché y límites de URL
+                    const response = await fetch(this.URL, {
+                        method: "POST",
+                        body: JSON.stringify({ action, ...payload }),
+                        signal: controller.signal
+                    });
                     
-                    if (distance < 150) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(59, 130, 246, ${1 - distance / 150})`; // Fade out
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const json = await response.json();
+                    
+                    // Si el backend dice error, lanzamos excepción
+                    if (json.status === 'error') throw new Error(json.message || 'Error del servidor');
+                    
+                    return json;
+
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    console.warn(`[API] Fallo intento (${retries} restantes):`, error);
+
+                    // Si quedan reintentos, esperamos y probamos de nuevo
+                    if (retries > 0) {
+                        await new Promise(r => setTimeout(r, 1500)); // Espera 1.5s
+                        return this.request(action, payload, retries - 1);
                     }
+
+                    // Si no, lanzamos el error final para que la UI lo muestre
+                    throw error;
                 }
             }
-            requestAnimationFrame(animateParticles);
-        }
+        };
 
-        initParticles();
-        animateParticles();
-
-        // --- APP LOGIC ---
-
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbxpASguuB214DRWR-m1u98LY79YWvvCWKuP9c1vcG8voCpykYhyGz2R-1LznK6WOQBDXg/exec";
-        const JSON_DISTRITOS = "lstDistritos.json";
+        // ----------------------------------------------------
+        // LÓGICA DE LA APLICACIÓN (Actualizada para usar ApiService)
+        // ----------------------------------------------------
         
-        // --- CONFIGURACIÓN DE URLS DE AGENCIAS ---
-        // Asegúrate de que estas URLs sean las RAW de tu repositorio GitHub
+        // Configuración de Datos Estáticos
+        const JSON_DISTRITOS = "lstDistritos.json";
         const AGENCY_URLS = {
             "Shalom": "lstShalom.json",
             "Olva Courier": "lstOlvaCourier.json",
             "Marvisur": "lstMarvisur.json"
         };
-
-        // CONFIGURACIÓN DE LIMITES DEL PLAN (FEATURE FLAGS)
-        const PLAN_FEATURES = {
-            'Gratis': {
-                allowViewOrders: false, // NO mostrar nada
-            },
-            'Pro': {
-                allowViewOrders: true, 
-            },
-            'Empresa': {
-                allowViewOrders: true,
-            }
-        };
-
         const COURIER_TYPES = { 
-            "Shalom": "agency", 
-            "Olva Courier": "agency", 
-            "Marvisur": "agency", 
-            "Delivery": "home"
+            "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency", "Delivery": "home"
         };
-        const SafeStorage = { memory: {}, setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } };
-        const ALL_COURIERS = [
-            "Shalom", 
-            "Olva Courier", 
-            "Marvisur", 
-            "Delivery"
-        ];
+        const ALL_COURIERS = ["Shalom", "Olva Courier", "Marvisur", "Delivery"];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-        const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
-        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, isClientView: false, config: { ...initialState }, selectedCourierType: null, externalData: {}, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
 
-        // Helper para sanitizar XSS
+        const SafeStorage = { 
+            memory: {}, 
+            setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, 
+            getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, 
+            removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } 
+        };
+
+        const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
+        const state = { user: null, merchantId: null, isClientView: false, config: { ...initialState }, selectedCourierType: null, externalData: {}, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
+
         const escapeHtml = (unsafe) => {
             if (typeof unsafe !== 'string') return unsafe;
             return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         };
 
         window.app = {
-
-            // Helper para mostrar bloques con animación
-            revealStep: (id) => {
-                const el = document.getElementById(id);
-                if (el && el.classList.contains('hidden')) {
-                    el.classList.remove('hidden');
-                    // Timeout para permitir que el navegador procese el 'display: block' antes de la opacidad
-                    setTimeout(() => {
-                        el.classList.remove('opacity-0', 'translate-y-4');
-                    }, 50);
-                }
-            },
-            
-            // 1. Gatillador: Se activa al escribir en el campo WhatsApp
-            handleClientPhone: (el) => {
-                // Limpieza básica
-                let val = el.value.replace(/\D/g, '');
-                if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
-                el.value = val;
-        
-                const badge = document.getElementById('user-found-badge');
-        
-                if (val.length === 9) {
-                    // BUSCAR EN CACHÉ
-                    const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}');
-                    
-                    if (cache[val]) {
-                        // CASO A: CLIENTE ANTIGUO -> MOSTRAR TODO
-                        badge.classList.remove('hidden');
-                        app.fillFromCache(cache[val]);
-                        app.showToast('¡Hola de nuevo! Tus datos se cargaron ✨');
-                        
-                        // Revelamos todos los bloques en cascada rápida
-                        ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => {
-                            setTimeout(() => app.revealStep(id), idx * 100);
-                        });
-        
-                    } else {
-                        // CASO B: CLIENTE NUEVO -> MOSTRAR SOLO EL SIGUIENTE PASO
-                        badge.classList.add('hidden');
-                        app.revealStep('block-service');
-                    }
-                }
-            },
-
-            // 2. Rellenador Mágico
-            fillFromCache: (data) => {
-                // Nombre
-                if(data.name) document.getElementById('c-name').value = data.name;
-                
-                // Intentamos recuperar la última elección de courier si existe en el select
-                if(data.courier) {
-                    const select = document.getElementById('c-courier-select');
-                    // Verificamos si la opción aun existe (el vendedor podría haberla quitado)
-                    if ([...select.options].some(o => o.value === data.courier)) {
-                        select.value = data.courier;
-                        app.onCourierChange(data.courier); // Disparamos la lógica de mostrar campos
-                    }
-                }
-
-                // Rellenamos datos específicos según el tipo
-                setTimeout(() => { // Timeout para dar tiempo a onCourierChange a mostrar los divs
-                    if(data.type === 'agency') {
-                        if(data.dni) document.getElementById('c-dni').value = data.dni;
-                        // Agencia es compleja porque implica búsqueda, pero podemos intentar poner el texto
-                        if(data.agency) {
-                             document.getElementById('c-agency').value = data.agency;
-                             document.getElementById('btn-clear-agency').classList.remove('hidden');
-                        }
-                    } else {
-                        if(data.district) {
-                            document.getElementById('c-district').value = data.district;
-                            document.getElementById('btn-clear-district').classList.remove('hidden');
-                        }
-                        if(data.address) document.getElementById('c-address').value = data.address;
-                        if(data.ref) document.getElementById('c-ref').value = data.ref;
-                    }
-                    app.validateForm(); // Revalidar botón
-                }, 100);
-            },
-
-            // 3. Guardar en Memoria (Se llama al enviar)
-            saveToCache: (phone, data) => {
-                const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}');
-                cache[phone] = data; // La llave es el celular
-                SafeStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
-            },
-
-            // --- NUEVA FUNCIÓN: Formateo estricto de WhatsApp ---
-            formatWhatsapp: (el) => {
-                // 1. Eliminar cualquier caracter que NO sea número
-                let val = el.value.replace(/\D/g, '');
-
-                // 2. Validar que empiece con 9
-                // Si el primer digito no es 9 y ya hay algo escrito, lo borramos
-                if (val.length > 0 && val.charAt(0) !== '9') {
-                     val = val.substring(1); 
-                }
-
-                // 3. Actualizar el valor del input visualmente
-                el.value = val;
-
-                // 4. Actualizar el estado y chequear validaciones
-                app.updateConfigInput('whatsapp', val);
-
-                // Feedback visual inmediato (Borde rojo si no son 9 dígitos)
-                if (val.length > 0 && val.length < 9) {
-                    el.classList.add('border-red-500/50');
-                    el.classList.remove('border-white/10', 'focus:border-primary');
-                } else {
-                    el.classList.remove('border-red-500/50');
-                    el.classList.add('border-white/10', 'focus:border-primary');
-                }
-            },          
-
-            // 1. Función pura que devuelve si es válido y qué falta
-            validateConfig: () => {
-                    const c = state.config;
-                    const errors = [];
-
-                    if (!c.merchantName || c.merchantName.length < 3) errors.push("Nombre del emprendimiento");
-
-                    // --- ACTUALIZACIÓN AQUÍ: Validación estricta de Regex ---
-                    // ^9 = empieza con 9
-                    // \d{8}$ = seguido de exactamente 8 dígitos más (total 9)
-                    if (!c.whatsapp || !/^9\d{8}$/.test(c.whatsapp)) errors.push("Celular válido (9 dígitos)");
-                    // -------------------------------------------------------
-
-                    if (!c.couriers || c.couriers.length === 0) errors.push("Al menos un Courier");
-                    if (!c.shippingDays || c.shippingDays.length === 0) errors.push("Al menos un día de envío");
-                    if (!c.updateTime) errors.push("Hora de corte");
-                    if (c.updateGap === "" || c.updateGap === null || c.updateGap === undefined) errors.push("Días de anticipación");
-
-                    return {
-                        isValid: errors.length === 0,
-                        errors: errors
-                    };
-                },
-
-            // 2. Función visual que actualiza la UI (candado en pestaña compartir)
-            checkConfigStatus: () => {
-                const validation = app.validateConfig();
-                const navShare = document.getElementById('nav-share');
-                const icon = navShare.querySelector('i'); // El icono de Lucide
-
-                if (validation.isValid) {
-                    // Estado: HABILITADO
-                    navShare.classList.remove('opacity-50', 'cursor-not-allowed');
-                    navShare.classList.add('hover:bg-white/5', 'hover:text-white');
-                    // Cambiamos el icono a share-2 (normal)
-                    if(icon) icon.setAttribute('data-lucide', 'share-2');
-                } else {
-                    // Estado: BLOQUEADO
-                    navShare.classList.add('opacity-50', 'cursor-not-allowed');
-                    navShare.classList.remove('hover:bg-white/5', 'hover:text-white');
-                     // Cambiamos el icono a lock (bloqueado)
-                    if(icon) icon.setAttribute('data-lucide', 'lock');
-                }
-                lucide.createIcons(); // Refrescar iconos
-            },          
-              
-            updateConfigInput: (key, value) => {
-                    state.config[key] = value;
-                    app.checkConfigStatus(); // <--- IMPORTANTE: Revalida visualmente en tiempo real
-                },
-
+            // --- UI HELPERS ---
+            revealStep: (id) => { const el = document.getElementById(id); if (el && el.classList.contains('hidden')) { el.classList.remove('hidden'); setTimeout(() => el.classList.remove('opacity-0', 'translate-y-4'), 50); } },
             toggleLoading: (show) => { const el = document.getElementById('loading-overlay'); show ? (el.classList.remove('hidden'), setTimeout(()=>el.classList.remove('opacity-0'),10)) : (el.classList.add('opacity-0'), setTimeout(()=>el.classList.add('hidden'),300)); },
+            showToast: (msg) => { const el = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; el.classList.remove('opacity-0', '-translate-y-20'); setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000); },
             
-            // --- UI HELPERS: Modal & Toast ---
             showModal: (msg, callback) => {
                 const el = document.getElementById('modal-confirm'), card = document.getElementById('modal-card');
                 document.getElementById('modal-msg').innerText = msg;
                 document.getElementById('modal-btn-confirm').onclick = () => { callback(); app.closeModal('modal-confirm'); };
-                el.classList.remove('hidden');
-                setTimeout(() => { el.classList.remove('opacity-0'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10);
+                el.classList.remove('hidden'); setTimeout(() => { el.classList.remove('opacity-0'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10);
             },
-            
-            // FUNCIÓN CORREGIDA: ACTIVAR PRUEBA GRATIS CONECTADA AL BACKEND
-            activateTrial: async () => {
-                // 1. Mostrar carga
-                app.toggleLoading(true);
-
-                try {
-                    // 2. Llamada real al Google Sheet
-                    const response = await fetch(state.apiUrl, { 
-                        method: "POST", 
-                        body: JSON.stringify({ 
-                            action: "startTrial", 
-                            merchantId: state.user.uid 
-                        }) 
-                    });
-                    
-                    const json = await response.json();
-
-                    if (json.status === 'success') {
-                        // 3. Actualizar estado local solo si el servidor confirmó
-                        const now = new Date().getTime();
-                        state.user.plan = 'Pro (Prueba)';
-                        // Calculamos fecha visualmente, aunque el servidor manda (7 días)
-                        state.user.trialEndsAt = now + (7 * 24 * 60 * 60 * 1000);
-                        
-                        // 4. Guardar en navegador
-                        SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
-                        
-                        // 5. Actualizar UI
-                        app.closeModal('modal-upsell'); // Cerrar modal si existe
-                        document.getElementById('plan-limit-warning').classList.add('hidden'); // Quitar bloqueo visual
-                        
-                        // 6. Recargar datos para mostrar los pedidos que estaban ocultos
-                        app.showToast('¡Prueba Pro activada por 7 días!');
-                        await app.loadData(); 
-
-                    } else {
-                        app.showToast('Error: ' + (json.message || 'No se pudo activar'));
-                    }
-                } catch (e) {
-                    console.error(e);
-                    app.showToast('Error de conexión con el servidor');
-                } finally {
-                    app.toggleLoading(false);
-                }
-            },
-
-            showUpgradeModal: () => {
-                // 1. Identificamos el modal y su tarjeta interna
-                const el = document.getElementById('modal-upsell');
-                const card = document.getElementById('modal-upsell-card');
-                
-                // 2. Lo hacemos visible (quitamos hidden)
-                el.classList.remove('hidden');
-                
-                // 3. Animación de entrada (Fade In + Scale Up)
-                setTimeout(() => { 
-                    el.classList.remove('opacity-0'); 
-                    card.classList.remove('scale-95'); 
-                    card.classList.add('scale-100'); 
-                }, 10);
-            },
-            
-            // Nuevo: Control genérico de modales
             closeModal: (modalId) => {
-                const el = document.getElementById(modalId);
-                if (!el) return;
-                const card = el.firstElementChild; 
-                el.classList.add('opacity-0'); 
-                if(card) {
-                    card.classList.remove('scale-100'); 
-                    card.classList.add('scale-95');
-                }
+                const el = document.getElementById(modalId); if (!el) return; const card = el.firstElementChild; 
+                el.classList.add('opacity-0'); if(card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
                 setTimeout(() => el.classList.add('hidden'), 300);
             },
-            
-            openStatusMenu: () => {
-                if (state.selectedOrders.size === 0) return app.showToast('Selecciona al menos un envío');
-                const el = document.getElementById('modal-status'), card = document.getElementById('modal-status-card');
-                el.classList.remove('hidden');
-                setTimeout(() => { el.classList.remove('opacity-0'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10);
-            },
 
-            setStatus: (newStatus) => {
-                app.closeModal('modal-status');
-                app.showModal(`¿Cambiar ${state.selectedOrders.size} envíos a ${newStatus}?`, async () => {
-                    app.toggleLoading(true);
-                    const ids = Array.from(state.selectedOrders);
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "updateOrdersStatus", merchantId: state.merchantId, orderIds: ids, newStatus: newStatus }) }); app.showToast('Estados actualizados'); app.loadOrders(); } catch(e) {}
-                    app.toggleLoading(false);
-                });
-            },
-
-            // NUEVA FUNCIÓN: ENVIAR RESUMEN AL CLIENTE
-            sendClientSummary: (orderId) => {
-                const order = state.allOrders.find(o => String(o.orderId || o.createdAt) === String(orderId));
-                if (!order) return app.showToast("Error: No se encontró el pedido.");
-            
-                const storeName = state.config.merchantName || "Nuestra Tienda";
-                let phone = (order.clientPhone || "").replace(/[^0-9]/g, "");
-                if (phone.length === 9) { phone = "51" + phone; }
-                
-                // Validación básica de número
-                if (phone.length < 9) return app.showToast("El número de teléfono no es válido.");
-            
-                const statusEmoji = order.status === 'ENVIADO' ? '✅' : '📦';
-                const statusText = order.status === 'ENVIADO' ? 'Enviado' : 'Programado';
-                
-                let destinationInfo = "";
-                if (order.clientAgency) {
-                    destinationInfo = `🏢 *Agencia:* ${order.clientAgency} (DNI: ${order.clientDni})`;
-                } else {
-                    destinationInfo = `🏠 *Dirección:* ${order.clientDistrict}, ${order.clientAddress} (Ref: ${order.clientRef})`;
-                }
-            
-                // CORRECCIÓN CLAVE: Usamos \n en lugar de %0A y emojis literales
-                const message = `Hola *${order.clientName}*! 👋\n` +
-                                `Tu envío en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
-                                `📅 *Fecha:* ${order.shippingDate}\n` +
-                                `🚚 *Courier:* ${order.courier}\n` +
-                                `${destinationInfo}\n\n` +
-                                `Gracias por tu compra! ✨`;
-            
-                // CORRECCIÓN CLAVE: encodeURIComponent envuelve TODO el mensaje
-                const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-                window.open(url, '_blank');
-            },
-            
-            showToast: (msg) => {
-                const el = document.getElementById('toast');
-                document.getElementById('toast-msg').innerText = msg;
-                el.classList.remove('opacity-0', '-translate-y-20');
-                setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
-            },
-            // -------------------------------
-   
-            loadExternalLists: async () => { 
-                try { 
-                    // Solo cargamos distritos al inicio. Las agencias se cargan al elegir courier.
-                    if (!state.externalData.districts) { 
-                        const res = await fetch(JSON_DISTRITOS); 
-                        const data = await res.json(); 
-                        state.externalData.districts = data.map(d => d.Distrito || d.nombre); 
-                    } 
-                } catch(e) { 
-                    console.error(e); 
-                } 
-            },
-            
-            loadAgencies: async (courierName) => {
-                const url = AGENCY_URLS[courierName];
-                
-                // Si el courier seleccionado no tiene lista (ej: Delivery), vaciamos y salimos
-                if (!url) {
-                    state.externalData.agencies = [];
-                    return;
-                }
-            
-                // Feedback visual para el usuario
-                const inputAgency = document.getElementById('c-agency');
-                inputAgency.placeholder = `Cargando sedes de ${courierName}...`;
-                inputAgency.disabled = true; // Bloqueamos mientras carga
-            
-                try {
-                    const res = await fetch(url);
-                    if (!res.ok) throw new Error("Error al cargar lista");
-                    
-                    const rawData = await res.json();
-            
-                    // --- ESTANDARIZACIÓN DE DATOS ---
-                    // Convertimos cualquier formato raro a { Agencia, Direccion }
-                    // Esto es clave para que tu validación estricta siga funcionando
-                    state.externalData.agencies = rawData.map(item => ({
-                        Agencia: item.Agencia || item.c_nom_agencia || item.nombre || 'Agencia',
-                        Direccion: item.Direccion || item.c_direccion || item.direccion || ''
-                    }));
-            
-                    // Habilitamos el input
-                    inputAgency.placeholder = `Buscar sede ${courierName}...`;
-                    inputAgency.disabled = false;
-                    
-                    // Limpiamos cualquier selección anterior
-                    app.clearAgency();
-            
-                } catch (e) {
-                    console.error(e);
-                    app.showToast(`Error cargando agencias de ${courierName}`);
-                    inputAgency.placeholder = "Error de carga. Intenta recargar.";
-                    state.externalData.agencies = [];
-                }
-            },
-            
-            scrollToEl: (el) => { setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100); },
-
-            searchAgency: (q) => { const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } x.classList.remove('hidden'); if(q.length<2) { c.classList.add('hidden'); return; } const lq = q.toLowerCase(); const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && a.Agencia.toLowerCase().includes(lq)) || (a.Direccion && a.Direccion.toLowerCase().includes(lq))).slice(0,50); c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}','${escapeHtml(a.Direccion.replace(/'/g,"\\'").replace(/\n/g," "))}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm mb-1">${escapeHtml(a.Agencia)}</p><p class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; c.classList.remove('hidden'); },
-            selectAgency: (n, a) => { document.getElementById('c-agency').value = `${n} - ${a}`; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.remove('hidden'); },
-            clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
-            searchDistrict: (q) => { const c = document.getElementById('district-results'), x = document.getElementById('btn-clear-district'); if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } x.classList.remove('hidden'); if(q.length<1) { c.classList.add('hidden'); return; } const lq = q.toLowerCase(); const m = (state.externalData.districts||[]).filter(d => d.toLowerCase().includes(lq)).slice(0,50); c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${escapeHtml(d).replace(/'/g,"\\'")}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm">${escapeHtml(d)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; c.classList.remove('hidden'); },
-            selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
-            clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
-
-            generateDateOptions: () => { 
-                const s = document.getElementById('c-date-select'); 
-                s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; 
-                
-                const allowedDays = state.config.shippingDays || []; 
-                if (!allowedDays.length) return; 
-
-                // 1. CONFIGURACIÓN DEL HORIZONTE (Lo que preguntaste)
-                // Cambia este 14 por 21 (3 semanas) o 30 (1 mes) según prefieras.
-                const DIAS_A_MOSTRAR = 14; 
-
-                const now = new Date(); 
-                
-                // 2. LÓGICA DE ANTICIPACIÓN (GAP)
-                // Recuperamos la brecha configurada (ej: 2 días)
-                const gap = parseInt(state.config.updateGap || 0);
-                
-                // Hora de corte
-                const [cutHour, cutMinute] = (state.config.updateTime || "18:00").split(':').map(Number); 
-                const cutTime = new Date(now); 
-                cutTime.setHours(cutHour, cutMinute, 0, 0); 
-
-                // Si ya pasó la hora de corte, agregamos 1 día extra de penalización
-                // es decir, "hoy" ya no cuenta, empezamos a contar desde mañana + gap
-                let startOffset = gap;
-                if (now > cutTime) {
-                    startOffset = gap + 1;
-                }
-
-                // 3. GENERAR OPCIONES
-                // El bucle empieza en startOffset (día inicial válido)
-                // Y termina en startOffset + DIAS_A_MOSTRAR (horizonte)
-                for(let i = startOffset; i < (startOffset + DIAS_A_MOSTRAR); i++) { 
-                    const f = new Date(now); 
-                    f.setDate(now.getDate() + i); 
-                    
-                    const dayIndex = f.getDay(); // 0 = Domingo, 1 = Lunes...
-                    
-                    // Verificamos si este día de la semana está permitido en tu configuración
-                    // DAY_INDEX_MAP debe coincidir con tus arrays ["Lun", "Mar"...]
-                    if(allowedDays.some(n => DAY_INDEX_MAP[n] === dayIndex)) { 
-                        // Formato visual: "Lunes 25 Ene"
-                        const lbl = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
-                        // Formato interno (Value): "Lunes 25/01" (Para guardar en BD)
-                        const val = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; 
-                        
-                        const o = document.createElement('option'); 
-                        o.value = val; 
-                        o.innerText = lbl; 
-                        s.appendChild(o); 
-                    } 
-                } 
-            },
-            
-            onCourierChange: (c) => { 
-                const type = COURIER_TYPES[c] || "home"; 
-                state.selectedCourierType = type; 
-                state.selectedCourier = c; 
-                
-                // 1. Mostrar contenedor de destino
-                const dynamicSection = document.getElementById('dynamic-form-section');
-                dynamicSection.classList.remove('hidden'); // Este no tiene animación de opacidad propia, es contenedor
-        
-                const af = document.getElementById('fields-agency');
-                const hf = document.getElementById('fields-home'); 
-                
-                // Reset de validaciones visuales
-                ['c-dni','c-agency','c-address','c-district'].forEach(id => {
-                    document.getElementById(id).removeAttribute('required');
-                });
-            
-                if (type === 'agency') { 
-                    // Mostrar Agencia, Ocultar Casa
-                    af.classList.remove('hidden'); 
-                    hf.classList.add('hidden'); 
-                    
-                    document.getElementById('c-dni').setAttribute('required','true'); 
-                    const ag = document.getElementById('c-agency'); 
-                    ag.setAttribute('required','true'); 
-                    ag.value = ""; 
-                    
-                    app.loadAgencies(c);
-                    app.clearDistrict(); 
-                } else { 
-                    // Mostrar Casa, Ocultar Agencia
-                    af.classList.add('hidden'); 
-                    hf.classList.remove('hidden'); 
-                    
-                    document.getElementById('c-address').setAttribute('required','true'); 
-                    document.getElementById('c-district').setAttribute('required','true'); 
-                    
-                    app.clearAgency(); 
-                    app.clearDistrict(); 
-                } 
-                
-                // --- UX: NO revelamos 'block-personal' todavía ---
-                // Se revelará cuando el usuario haga FOCUS en 'c-agency' o 'c-district'
-                // (Esto ya lo configuramos en el HTML con onfocus="app.revealStep('block-personal')")
-                
-                app.validateForm(); 
-            },       
-            
-            validateForm: () => { const btn = document.getElementById('btn-submit-order'), c = document.getElementById('c-courier-select').value, d = document.getElementById('c-date-select').value; if(c && d) btn.removeAttribute('disabled'); else btn.setAttribute('disabled','true'); },
-
-            submitOrder: async (e) => { 
-                e.preventDefault(); 
-                
-                // --- LÓGICA DE AUTO-CORRECCIÓN DE FECHA (Just-in-Time) ---
-                const dateSelect = document.getElementById('c-date-select');
-                const oldDate = dateSelect.value; // La fecha que el usuario creía que elegía
-
-                // 1. Regeneramos el calendario con la hora ACTUAL EXACTA
-                // Esto aplica la regla de hora de corte al instante del clic
-                app.generateDateOptions();
-
-                // 2. Verificamos si la fecha elegida sigue existiendo en la nueva lista
-                // (generateDateOptions borra el select, así que buscamos si el valor oldDate está en las nuevas opciones)
-                let finalDate = oldDate;
-                const options = Array.from(dateSelect.options).map(o => o.value);
-                let dateChanged = false;
-
-                if (options.includes(oldDate)) {
-                    // Si existe, la volvemos a seleccionar visualmente (porque generateDateOptions reseteó el HTML)
-                    dateSelect.value = oldDate;
-                } else {
-                    // 3. SI YA NO EXISTE (Pasó el corte): Seleccionamos la siguiente disponible
-                    // El index 0 es el placeholder, el index 1 es la fecha más próxima válida
-                    if (dateSelect.options.length > 1) {
-                        dateSelect.selectedIndex = 1; 
-                        finalDate = dateSelect.value;
-                        dateChanged = true;
-                    }
-                }
-                // ------------------------------------------------------------
-
-                // Captura de datos básicos
-                const phone = document.getElementById('c-phone').value.trim();
-                const name = document.getElementById('c-name').value.trim();
-                const day = finalDate; // Usamos la fecha validada/corregida
-
-                // --- RESTO DE VALIDACIONES (Igual que antes) ---
-                if (name.length < 3) {
-                    document.getElementById('c-name').focus();
-                    return app.showToast("⚠️ Ingresa un nombre válido");
-                }
-                if (!/^9\d{8}$/.test(phone)) {
-                    document.getElementById('c-phone').focus();
-                    return app.showToast("⚠️ Celular inválido");
-                }
-                if (!day) return app.showToast("⚠️ Error en fecha");
-
-                // --- CAPTURA DE DATOS ESPECÍFICOS ---
-                let data = { 
-                    clientName: name, 
-                    clientPhone: phone, 
-                    courier: state.selectedCourier, 
-                    shippingDate: day, // Fecha corregida
-                    createdAt: Date.now(), 
-                    product: "N/A" 
-                }; 
-                
-                let wa = ""; 
-                let dni = "";
-
-                if (state.selectedCourierType === 'agency') { 
-                    // Validación Agencia...
-                    dni = document.getElementById('c-dni').value.trim();
-                    const ag = document.getElementById('c-agency').value;
-                    // ... (Tus validaciones de DNI y Agencia siguen igual aquí) ...
-                    if (!/^\d{8,12}$/.test(dni)) return app.showToast("⚠️ DNI inválido");
-                    if (ag.length < 3) return app.showToast("⚠️ Agencia inválida");
-
-                    data.clientDni = dni; 
-                    data.clientAgency = ag; 
-                    
-                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
-                         `👤 ${name}\n` +
-                         `📱 ${phone}\n` +
-                         `🆔 DNI: ${dni}\n` +
-                         `🏢 Agencia: ${ag}\n\n` +
-                         `🚚 ${state.selectedCourier}\n` +
-                         `📅 ${day}`; // Usamos fecha corregida
-                } else { 
-                    // Validación Domicilio...
-                    const ad = document.getElementById('c-address').value;
-                    const ds = document.getElementById('c-district').value;
-                    const rf = document.getElementById('c-ref').value; 
-                    
-                    if (ds.length < 3) return app.showToast("⚠️ Distrito inválido");
-                    if (ad.length < 5) return app.showToast("⚠️ Dirección muy corta");
-                    if (rf.length < 3) return app.showToast("⚠️ Referencia obligatoria");
-
-                    data.clientAddress = ad; 
-                    data.clientDistrict = ds; 
-                    data.clientRef = rf; 
-                    
-                    wa = `📦 *NUEVO ENVÍO (CASA)*\n\n` +
-                         `👤 ${name}\n` +
-                         `📱 ${phone}\n` +
-                         `📍 ${ds}\n` +
-                         `🏠 ${ad}\n` +
-                         `🗺️ Ref: ${rf}\n\n` +
-                         `🚚 ${state.selectedCourier}\n` +
-                         `📅 ${day}`; // Usamos fecha corregida
-                } 
-
-                // --- AVISO INTELIGENTE AL USUARIO ---
-                if (dateChanged) {
-                    app.showToast('⚠️ Hora de corte superada: Fecha actualizada automáticamente.');
-                    // Pequeña pausa para que lea el toast antes de abrir WA (Opcional)
-                }
-
-                // --- CACHÉ (Lógica existente) ---
-                const cacheData = {
-                    name: name,
-                    courier: state.selectedCourier,
-                    type: state.selectedCourierType
-                };
-                if (state.selectedCourierType === 'agency') {
-                    cacheData.dni = dni;
-                    cacheData.agency = document.getElementById('c-agency').value;
-                } else {
-                    cacheData.district = document.getElementById('c-district').value;
-                    cacheData.address = document.getElementById('c-address').value;
-                    cacheData.ref = document.getElementById('c-ref').value;
-                }
-                app.saveToCache(phone, cacheData);
-
-                // --- ABRIR WHATSAPP ---
-                const whatsappUrl = `https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`;
-                
-                // Si hubo cambio de fecha, damos un segundo extra para que lea el toast
-                const delay = dateChanged ? 1500 : 0;
-                
-                setTimeout(() => {
-                    window.open(whatsappUrl, '_blank');
-                    
-                    // Enviar al Backend
-                    try { 
-                        fetch(state.apiUrl, { 
-                            method: "POST", 
-                            body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
-                        }).catch(err => console.error(err));
-                    } catch(e) {} 
-
-                    // Pantalla de Éxito
-                    document.getElementById('client-form').classList.add('hidden');
-                    document.getElementById('success-view').classList.remove('hidden');
-                }, delay);
-            },
-
-            // FUNCIÓN ACTUALIZADA: Reiniciar (Volver al inicio)
-            resetClientView: () => {
-                const form = document.getElementById('client-form');
-                const successView = document.getElementById('success-view');
-                const badge = document.getElementById('user-found-badge');
-        
-                successView.classList.add('hidden');
-                form.classList.remove('hidden');
-                badge.classList.add('hidden');
-                
-                // OCULTAR TODOS LOS BLOQUES PROGRESIVOS
-                ['block-service', 'block-personal', 'block-closing'].forEach(id => {
-                    const el = document.getElementById(id);
-                    el.classList.add('hidden', 'opacity-0', 'translate-y-4');
-                });
-                document.getElementById('dynamic-form-section').classList.add('hidden');
-        
-                form.reset();
-                document.getElementById('btn-submit-order').setAttribute('disabled', 'true');
-                
-                // Foco al inicio
-                document.getElementById('c-phone').focus();
-            },        
-            
+            // --- AUTH ---
             handleLogin: async (e) => { 
                 e.preventDefault(); 
                 const p = document.getElementById('auth-phone').value.trim();
                 const pw = document.getElementById('auth-pass').value.trim();
                 const err = document.getElementById('auth-error'); 
+                
                 app.toggleLoading(true); 
                 try { 
-                    const res = await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "loginUser", data: { phone: p, password: pw } }) }); 
-                    const json = await res.json(); 
-                    if(json.status === 'success') { app.loginSuccess(json.user); return; } 
-                    else { err.innerText = json.message || "Error desconocido"; err.classList.remove('hidden'); app.toggleLoading(false); return; } 
-                } catch(e) { console.error(e); err.innerText = "Error de conexión con el servidor"; err.classList.remove('hidden'); app.toggleLoading(false); } 
+                    // USO DE APISERVICE
+                    const res = await ApiService.request("loginUser", { data: { phone: p, password: pw } });
+                    app.loginSuccess(res.user); 
+                } catch(e) { 
+                    console.error(e); 
+                    err.innerText = e.message || "Error de conexión"; 
+                    err.classList.remove('hidden'); 
+                } finally {
+                    app.toggleLoading(false); 
+                }
             },
             loginSuccess: (u) => { state.user = u; SafeStorage.setItem('app_current_user', JSON.stringify(u)); app.init(); },
             logout: () => { SafeStorage.removeItem('app_current_user'); state.user=null; state.merchantId=null; window.location.reload(); },
-            
+
+            // --- ADMIN ---
             adminLoadUsers: async () => { 
                 const l = document.getElementById('admin-users-list'); 
-                
-                // Verificamos si tenemos el token guardado en el estado del usuario
-                // state.user.token viene del cambio que hicimos en loginUser en el backend
                 const secretToken = state.user && state.user.token ? state.user.token : null;
-
-                if (!secretToken) {
-                    l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">⛔ Error de sesión: Relogueate como Admin</td></tr>';
-                    return;
-                }
-
-                l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400"><i data-lucide="shield-check" class="inline w-4 h-4 mr-1"></i> Autorizando...</td></tr>'; 
-                lucide.createIcons();
-
+                if (!secretToken) { l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">⛔ Error de sesión</td></tr>'; return; }
+                
+                l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Cargando...</td></tr>'; 
                 app.toggleLoading(true);
-                let u = []; 
                 
                 try { 
-                    // ENVIAMOS EL TOKEN AUTOMÁTICAMENTE (Ya no pide prompt)
-                    // Nota: Enviamos 'adminSecret' con el valor del token
-                    const res = await fetch(`${state.apiUrl}?action=getUsers&adminSecret=${encodeURIComponent(secretToken)}`); 
-                    const json = await res.json(); 
-                    
-                    if(json.users) {
-                        u = json.users; 
-                        // Renderizado de la tabla (Tu código visual original)
-                        l.innerHTML = u.length ? u.map(user => `<tr class="bg-white border-b hover:bg-slate-50"><td class="px-6 py-4 font-bold text-slate-700">${escapeHtml(user.phone)}</td><td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${escapeHtml(user.plan||'Gratis')}</span></td><td class="px-6 py-4 text-xs text-slate-400">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</td><td class="px-6 py-4 text-right flex gap-2 justify-end"><button onclick="app.adminResend('${escapeHtml(user.uid)}','${escapeHtml(user.phone)}')" class="text-indigo-600 text-xs font-bold hover:bg-indigo-50 px-2 py-1 rounded">Clave</button><select onchange="app.adminUpdatePlan('${escapeHtml(user.uid)}', this.value)" class="text-xs border rounded p-1 bg-slate-50 cursor-pointer outline-none"><option value="" disabled selected>Cambiar Plan</option><option value="Gratis">Gratis</option><option value="Pro">Pro</option><option value="Empresa">Empresa</option></select></td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center">Base de datos vacía</td></tr>'; 
-                    } else {
-                        l.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500 font-bold">⛔ Acceso Denegado (Token inválido)</td></tr>`;
-                    }
+                    const res = await ApiService.request("getUsers", { adminSecret: secretToken });
+                    const u = res.users || [];
+                    l.innerHTML = u.length ? u.map(user => `<tr class="bg-white border-b hover:bg-slate-50"><td class="px-6 py-4 font-bold text-slate-700">${escapeHtml(user.phone)}</td><td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${escapeHtml(user.plan||'Gratis')}</span></td><td class="px-6 py-4 text-xs text-slate-400">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</td><td class="px-6 py-4 text-right flex gap-2 justify-end"><button onclick="app.adminResend('${escapeHtml(user.uid)}','${escapeHtml(user.phone)}')" class="text-indigo-600 text-xs font-bold hover:bg-indigo-50 px-2 py-1 rounded">Clave</button><select onchange="app.adminUpdatePlan('${escapeHtml(user.uid)}', this.value)" class="text-xs border rounded p-1 bg-slate-50 cursor-pointer outline-none"><option value="" disabled selected>Cambiar Plan</option><option value="Gratis">Gratis</option><option value="Pro">Pro</option><option value="Empresa">Empresa</option></select></td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center">Sin usuarios</td></tr>'; 
                 } catch(e){ 
-                    console.error(e);
-                    l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">Error de conexión</td></tr>';
-                } 
-                
-                app.toggleLoading(false); 
+                    l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">Error: ' + e.message + '</td></tr>';
+                } finally {
+                    app.toggleLoading(false);
+                }
             },
-            
+            adminCreateUser: async (e) => { 
+                e.preventDefault(); 
+                const p = document.getElementById('admin-new-phone').value.trim(), pl = document.getElementById('admin-new-plan').value; 
+                app.toggleLoading(true); 
+                const np = Math.floor(1000+Math.random()*9000).toString(); 
+                try { 
+                    await ApiService.request("registerUser", { data: { phone: p, password: np, plan: pl } });
+                    window.open(`https://wa.me/51${p}?text=${encodeURIComponent(`🔐 Bienvenid@ (Plan ${pl})\n📱 User: ${p}\n🔑 Pass: *${np}*\nEntra: ${window.location.href}`)}`, '_blank'); 
+                    document.getElementById('admin-new-phone').value=""; 
+                    app.adminLoadUsers(); 
+                    app.showToast('Usuario creado'); 
+                } catch(e){ app.showToast(e.message); } finally { app.toggleLoading(false); }
+            },
             adminUpdatePlan: (uid, newPlan) => { 
-                app.showModal(`¿Confirmas cambiar el plan a ${newPlan}?`, async () => {
+                app.showModal(`¿Cambiar plan a ${newPlan}?`, async () => {
                     app.toggleLoading(true); 
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "updateUserPlan", merchantId: uid, newPlan: newPlan }) }); } catch(e){} 
-                    app.adminLoadUsers();
-                    app.showToast('Plan actualizado');
+                    try { await ApiService.request("updateUserPlan", { merchantId: uid, newPlan: newPlan }); app.showToast('Plan actualizado'); app.adminLoadUsers(); } 
+                    catch(e){ app.showToast(e.message); } 
+                    finally { app.toggleLoading(false); }
                 });
             },
-            
-            adminCreateUser: async (e) => { e.preventDefault(); const p = document.getElementById('admin-new-phone').value.trim(), pl = document.getElementById('admin-new-plan').value; app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "registerUser", data: { phone: p, password: np, plan: pl } }) }); } catch(e){} window.open(`https://wa.me/51${p}?text=${encodeURIComponent(`🔐 Bienvenid@ (Plan ${pl})\n📱 User: ${p}\n🔑 Pass: *${np}*\nEntra: ${window.location.href}`)}`, '_blank'); document.getElementById('admin-new-phone').value=""; app.adminLoadUsers(); app.showToast('Usuario creado con éxito'); },
-            
             adminResend: (uid, phone) => { 
                 app.showModal(`¿Resetear clave para ${phone}?`, async () => {
                     app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); 
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "changePassword", merchantId: uid, newPassword: np }) }); } catch(e){} 
-                    window.open(`https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación de clave:*\n\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`, '_blank'); 
-                    app.toggleLoading(false);
-                    app.showToast('Contraseña restablecida');
+                    try { await ApiService.request("changePassword", { merchantId: uid, newPassword: np }); 
+                    window.open(`https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación:*\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`, '_blank'); app.showToast('Clave reseteada'); } 
+                    catch(e){ app.showToast(e.message); } finally { app.toggleLoading(false); }
                 });
             },
-            
+
+            // --- CONFIGURACIÓN ---
+            validateConfig: () => {
+                const c = state.config; const errors = [];
+                if (!c.merchantName || c.merchantName.length < 3) errors.push("Nombre emprendimiento");
+                if (!c.whatsapp || !/^9\d{8}$/.test(c.whatsapp)) errors.push("Celular válido (9 dígitos)");
+                if (!c.couriers || c.couriers.length === 0) errors.push("Un Courier");
+                if (!c.shippingDays || c.shippingDays.length === 0) errors.push("Un día de envío");
+                if (!c.updateTime) errors.push("Hora de corte");
+                if (c.updateGap === "" || c.updateGap === null) errors.push("Días anticipación");
+                return { isValid: errors.length === 0, errors: errors };
+            },
+            checkConfigStatus: () => {
+                const validation = app.validateConfig();
+                const navShare = document.getElementById('nav-share'); const icon = navShare.querySelector('i');
+                if (validation.isValid) {
+                    navShare.classList.remove('opacity-50', 'cursor-not-allowed'); navShare.classList.add('hover:bg-white/5', 'hover:text-white');
+                    if(icon) icon.setAttribute('data-lucide', 'share-2');
+                } else {
+                    navShare.classList.add('opacity-50', 'cursor-not-allowed'); navShare.classList.remove('hover:bg-white/5', 'hover:text-white');
+                    if(icon) icon.setAttribute('data-lucide', 'lock');
+                }
+                lucide.createIcons();
+            },
+            updateConfigInput: (key, value) => { state.config[key] = value; app.checkConfigStatus(); },
+            formatWhatsapp: (el) => {
+                let val = el.value.replace(/\D/g, ''); if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
+                el.value = val; app.updateConfigInput('whatsapp', val);
+                if (val.length > 0 && val.length < 9) { el.classList.add('border-red-500/50'); el.classList.remove('border-white/10'); } else { el.classList.remove('border-red-500/50'); el.classList.add('border-white/10'); }
+            },
+            toggleConfigItem: (k, v) => { 
+                if (state.config[k].includes(v)) state.config[k] = state.config[k].filter(i => i !== v); else state.config[k].push(v); 
+                app.renderDashboard(); app.checkConfigStatus();
+            },
             saveConfig: async () => { 
-                            // 1. SANITIZACIÓN (LIMPIEZA DE DATOS)
-                            const nameInput = document.getElementById('inp-store-name');
+                const nameInput = document.getElementById('inp-store-name'); let cleanName = nameInput.value.trim().replace(/\s+/g, ' '); nameInput.value = cleanName; app.updateConfigInput('merchantName', cleanName);
+                const validation = app.validateConfig();
+                if (!validation.isValid) { app.showToast(`⚠️ Falta: ${validation.errors.join(", ")}`); return; }
 
-                            // Lógica de limpieza: trim() quita bordes, replace(/\s+/g, ' ') colapsa espacios internos
-                            let cleanName = nameInput.value.trim().replace(/\s+/g, ' ');
-
-                            // Aplicamos la limpieza al input visual y al estado
-                            nameInput.value = cleanName; 
-                            app.updateConfigInput('merchantName', cleanName);
-
-                            // 2. VALIDACIÓN (Ahora valida sobre el nombre ya limpio)
-                            const validation = app.validateConfig();
-
-                            if (!validation.isValid) {
-                                const missing = validation.errors.join(", ");
-                                app.showToast(`⚠️ No se puede guardar. Falta: ${missing}`);
-
-                                const btn = document.getElementById('btn-save-config');
-                                btn.classList.add('bg-red-500', 'animate-shake');
-                                setTimeout(() => btn.classList.remove('bg-red-500', 'animate-shake'), 500);
-                                return; 
-                            }
-
-                            // 3. PROCESO DE GUARDADO (Backend)
-                            const btn = document.getElementById('btn-save-config');
-                            btn.disabled = true;
-                            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
-                            lucide.createIcons();
-
-                            app.toggleLoading(true); 
-
-                            // Recopilamos el resto de valores
-                            state.config.merchantName = cleanName; // Aseguramos usar el limpio
-                            state.config.whatsapp = document.getElementById('inp-whatsapp').value; 
-                            state.config.updateTime = document.getElementById('inp-time').value; 
-                            state.config.updateGap = document.getElementById('inp-gap').value;
-
-                            SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config)); 
-
-                            try { 
-                                await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveConfig", merchantId: state.user.uid, data: state.config }) }); 
-                            } catch(e){
-                                console.error("Error backend", e);
-                            } 
-
-                            setTimeout(() => { 
-                                app.toggleLoading(false); 
-                                app.showToast('Configuración guardada y optimizada'); 
-                                app.checkConfigStatus();
-
-                                btn.disabled = false;
-                                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
-                                lucide.createIcons();
-                            }, 500); 
-                        },
-            
+                const btn = document.getElementById('btn-save-config'); btn.disabled = true; btn.innerHTML = 'Guardando...'; app.toggleLoading(true);
+                state.config.whatsapp = document.getElementById('inp-whatsapp').value; state.config.updateTime = document.getElementById('inp-time').value; state.config.updateGap = document.getElementById('inp-gap').value;
+                SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config));
+                
+                try { 
+                    await ApiService.request("saveConfig", { merchantId: state.user.uid, data: state.config });
+                    app.showToast('Guardado correctamente'); 
+                } catch(e){ app.showToast('Guardado local (Error red)'); } 
+                finally { app.toggleLoading(false); btn.disabled = false; btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar'; lucide.createIcons(); }
+            },
             changePassword: async () => {
-                const newPass = document.getElementById('inp-new-pass').value.trim();
-                if (!newPass) return;
-                app.showModal('¿Estás seguro de cambiar tu contraseña actual?', async () => {
-                    app.toggleLoading(true);
-                    try {
-                        await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "changePassword", merchantId: state.user.uid, newPassword: newPass }) });
-                        document.getElementById('inp-new-pass').value = "";
-                        app.showToast('Contraseña actualizada');
-                    } catch(e) {}
-                    app.toggleLoading(false);
+                const newPass = document.getElementById('inp-new-pass').value.trim(); if (!newPass) return;
+                app.showModal('¿Cambiar contraseña?', async () => {
+                    app.toggleLoading(true); try { await ApiService.request("changePassword", { merchantId: state.user.uid, newPassword: newPass }); document.getElementById('inp-new-pass').value = ""; app.showToast('Contraseña actualizada'); } catch(e) { app.showToast(e.message); } finally { app.toggleLoading(false); }
                 });
             },
-            
-            copyLink: () => {
-                const text = document.getElementById('share-link').innerText;
-                const fallbackCopy = (t) => { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); };
-                if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(() => fallbackCopy(text)); else fallbackCopy(text);
-                app.showToast('Enlace copiado al portapapeles');
-            },
 
-            shareOnWhatsapp: () => {
-                const url = document.getElementById('share-link').innerText;
-                const message = `${url}\n*PROGRAMA TU ENVÍO AQUÍ* ☝️`; // \n = salto de línea en WhatsApp
-                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+            // --- CLIENTE (Formulario Público) ---
+            handleClientPhone: (el) => {
+                let val = el.value.replace(/\D/g, ''); if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1); el.value = val;
+                if (val.length === 9) {
+                    const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}');
+                    if (cache[val]) { document.getElementById('user-found-badge').classList.remove('hidden'); app.fillFromCache(cache[val]); app.showToast('Datos cargados ✨'); ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => setTimeout(() => app.revealStep(id), idx * 100)); } 
+                    else { document.getElementById('user-found-badge').classList.add('hidden'); app.revealStep('block-service'); }
+                }
             },
+            fillFromCache: (data) => {
+                if(data.name) document.getElementById('c-name').value = data.name;
+                if(data.courier) { const select = document.getElementById('c-courier-select'); if ([...select.options].some(o => o.value === data.courier)) { select.value = data.courier; app.onCourierChange(data.courier); } }
+                setTimeout(() => { if(data.type === 'agency') { if(data.dni) document.getElementById('c-dni').value = data.dni; if(data.agency) { document.getElementById('c-agency').value = data.agency; document.getElementById('btn-clear-agency').classList.remove('hidden'); } } else { if(data.district) { document.getElementById('c-district').value = data.district; document.getElementById('btn-clear-district').classList.remove('hidden'); } if(data.address) document.getElementById('c-address').value = data.address; if(data.ref) document.getElementById('c-ref').value = data.ref; } app.validateForm(); }, 100);
+            },
+            saveToCache: (phone, data) => { const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}'); cache[phone] = data; SafeStorage.setItem('latam5s_client_cache', JSON.stringify(cache)); },
+            onCourierChange: (c) => { 
+                const type = COURIER_TYPES[c] || "home"; state.selectedCourierType = type; state.selectedCourier = c; 
+                document.getElementById('dynamic-form-section').classList.remove('hidden');
+                const af = document.getElementById('fields-agency'), hf = document.getElementById('fields-home'); 
+                ['c-dni','c-agency','c-address','c-district'].forEach(id => document.getElementById(id).removeAttribute('required'));
+                if (type === 'agency') { af.classList.remove('hidden'); hf.classList.add('hidden'); document.getElementById('c-dni').setAttribute('required','true'); document.getElementById('c-agency').setAttribute('required','true'); document.getElementById('c-agency').value=""; app.loadAgencies(c); app.clearDistrict(); } 
+                else { af.classList.add('hidden'); hf.classList.remove('hidden'); document.getElementById('c-address').setAttribute('required','true'); document.getElementById('c-district').setAttribute('required','true'); app.clearAgency(); app.clearDistrict(); } 
+                app.validateForm(); 
+            },
+            submitOrder: async (e) => { 
+                e.preventDefault(); 
+                const dateSelect = document.getElementById('c-date-select'); const oldDate = dateSelect.value;
+                app.generateDateOptions(); // Revalidar fecha al instante
+                let finalDate = oldDate; let dateChanged = false; const options = Array.from(dateSelect.options).map(o => o.value);
+                if (!options.includes(oldDate)) { if (dateSelect.options.length > 1) { dateSelect.selectedIndex = 1; finalDate = dateSelect.value; dateChanged = true; } }
 
-            openClientLink: () => {
-                const url = document.getElementById('share-link').innerText;
-                window.open(url, '_blank');
-            },
-            
-            // FUNCIÓN CORREGIDA: CARGA DE DATOS CON SINCRONIZACIÓN DE PLAN
-            loadData: async () => { 
-                app.toggleLoading(true); 
+                const phone = document.getElementById('c-phone').value.trim(), name = document.getElementById('c-name').value.trim(), day = finalDate;
+                if (name.length < 3) { document.getElementById('c-name').focus(); return app.showToast("⚠️ Nombre inválido"); }
+                if (!/^9\d{8}$/.test(phone)) { document.getElementById('c-phone').focus(); return app.showToast("⚠️ Celular inválido"); }
                 
-                // 1. Cargar Configuración (Igual que antes)
-                state.config = { ...initialState }; 
-                try { 
-                    const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`); 
-                    const json = await res.json(); 
-                    if (json.data) state.config = json.data; 
-                } catch(e){ 
-                    // Fallback a memoria local si falla la red
-                    const local = SafeStorage.getItem(`config_${state.merchantId}`); 
-                    if(local) state.config = JSON.parse(local); 
-                } 
-                
-                // 2. NUEVO: Verificar estado real del usuario (Sincronización Servidor -> Cliente)
-                // Esto es vital para detectar si la prueba gratuita expiró según el Google Sheet
-                if (state.user && state.merchantId && !state.isClientView) {
-                    try {
-                        const resStatus = await fetch(`${state.apiUrl}?action=getUserStatus&merchantId=${state.merchantId}`);
-                        const jsonStatus = await resStatus.json();
-                        
-                        if (jsonStatus.status === 'success') {
-                            // Si el plan en el servidor es diferente al local (ej. expiró el trial)
-                            if (jsonStatus.plan !== state.user.plan) {
-                                state.user.plan = jsonStatus.plan;
-                                // Si volvió a gratis, limpiamos la fecha de trial local
-                                if (jsonStatus.plan === 'Gratis') delete state.user.trialEndsAt;
-                                
-                                // Guardamos el nuevo estado real
-                                SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
-                                app.showToast('Tu plan se ha actualizado');
-                            }
-                        }
-                    } catch(e) {
-                        console.log("No se pudo verificar el estado del plan (Offline)");
-                    }
+                let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now() }; 
+                let wa = "", dni = "";
 
-                    // Actualizar textos en la interfaz (Móvil y Escritorio)
-                    document.querySelectorAll('.user-phone-display').forEach(el => el.innerText = state.user.phone);
-                    if(state.user.plan) {
-                        document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user.plan.toUpperCase()}`);
-                    }
+                if (state.selectedCourierType === 'agency') { 
+                    dni = document.getElementById('c-dni').value.trim(); const ag = document.getElementById('c-agency').value;
+                    if (!/^\d{8,12}$/.test(dni)) return app.showToast("⚠️ DNI inválido"); if (ag.length < 3) return app.showToast("⚠️ Agencia inválida");
+                    data.clientDni = dni; data.clientAgency = ag; 
+                    wa = `📦 *ENVÍO (AGENCIA)*\n👤 ${name}\n📱 ${phone}\n🆔 ${dni}\n🏢 ${ag}\n🚚 ${state.selectedCourier}\n📅 ${day}`;
+                } else { 
+                    const ad = document.getElementById('c-address').value, ds = document.getElementById('c-district').value, rf = document.getElementById('c-ref').value; 
+                    if (ds.length < 3 || ad.length < 5) return app.showToast("⚠️ Dirección inválida");
+                    data.clientAddress = ad; data.clientDistrict = ds; data.clientRef = rf; 
+                    wa = `📦 *ENVÍO (CASA)*\n👤 ${name}\n📱 ${phone}\n📍 ${ds}\n🏠 ${ad}\nRef: ${rf}\n🚚 ${state.selectedCourier}\n📅 ${day}`;
                 }
 
-                // 3. Renderizado de Vistas
-                if (state.isClientView) { 
-                    app.renderClient(); 
-                } else { 
-                    app.renderDashboard(); 
-                    // Importante: loadOrders usará el plan actualizado para decidir si muestra u oculta datos
-                    app.loadOrders(); 
-                } 
+                if (dateChanged) app.showToast('⚠️ Hora de corte superada: Fecha actualizada.');
                 
+                const cacheData = { name: name, courier: state.selectedCourier, type: state.selectedCourierType };
+                if (state.selectedCourierType === 'agency') { cacheData.dni = dni; cacheData.agency = data.clientAgency; } else { cacheData.district = data.clientDistrict; cacheData.address = data.clientAddress; cacheData.ref = data.clientRef; }
+                app.saveToCache(phone, cacheData);
+
+                const whatsappUrl = `https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`;
+                setTimeout(async () => {
+                    window.open(whatsappUrl, '_blank');
+                    try { await ApiService.request("saveOrder", { merchantId: state.merchantId, data: data }); } catch(e){} 
+                    document.getElementById('client-form').classList.add('hidden'); document.getElementById('success-view').classList.remove('hidden');
+                }, dateChanged ? 1500 : 0);
+            },
+            resetClientView: () => { window.location.reload(); },
+
+            // --- PEDIDOS (DASHBOARD) ---
+            loadOrders: async () => { 
+                const l = document.getElementById('orders-list'); 
+                l.innerHTML = '<div class="text-center py-10 text-slate-400 flex flex-col items-center gap-2"><i data-lucide="loader" class="animate-spin w-6 h-6"></i> Cargando...</div>'; lucide.createIcons();
+                try { 
+                    const res = await ApiService.request("getOrders", { merchantId: state.merchantId });
+                    const userPlan = state.user ? state.user.plan : 'Gratis';
+                    const isFree = userPlan === 'Gratis';
+                    let rawOrders = res.orders || [];
+                    
+                    if (isFree) { state.allOrders = []; state.hasHiddenOrders = true; state.totalHiddenCount = rawOrders.length; } 
+                    else { state.allOrders = rawOrders; state.hasHiddenOrders = false; state.totalHiddenCount = 0; }
+                    state.selectedOrders.clear();
+                    if(document.getElementById('hidden-count')) document.getElementById('hidden-count').innerText = state.totalHiddenCount;
+                } catch(e){ state.allOrders = []; l.innerHTML = `<div class="text-center py-4 text-red-400">${e.message}</div>`; } 
+                app.renderOrders();
+            },
+            renderOrders: () => {
+                const l = document.getElementById('orders-list'); const q = (document.getElementById('inp-search-orders').value || '').toLowerCase(); const dSpec = document.getElementById('date-specific').value;
+                const filtered = state.allOrders.filter(x => {
+                    if (!`${x.clientName} ${x.clientPhone} ${x.clientDistrict||''} ${x.clientAgency||''}`.toLowerCase().includes(q)) return false;
+                    if (dSpec) { const [y, m, d] = dSpec.split('-'); if (!x.shippingDate || !x.shippingDate.includes(`${d}/${m}`)) return false; }
+                    return true;
+                });
+                state.visibleOrders = filtered;
+                if (!filtered.length) { l.innerHTML = state.hasHiddenOrders ? '' : '<div class="text-center py-10 text-slate-400">Sin envíos</div>'; } else {
+                    l.innerHTML = filtered.map((x) => {
+                        const id = String(x.orderId || x.createdAt); const isSel = state.selectedOrders.has(id); const status = x.status || 'PENDIENTE';
+                        const badgeClass = status === 'ENVIADO' ? 'bg-secondary/20 text-secondary border-secondary/30' : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+                        return `<div class="bg-black/30 border ${isSel ? 'border-primary bg-primary/10' : 'border-white/10'} p-3 rounded-lg flex gap-3 items-start mb-2"><div class="pt-1"><input type="checkbox" onchange="app.toggleOrderSelection('${id}')" ${isSel ? 'checked' : ''} class="w-4 h-4 rounded bg-black/40"></div><div class="flex-1 min-w-0"><div class="flex justify-between font-bold text-white"><span class="truncate">${escapeHtml(x.clientName)}</span><div class="flex items-center gap-2"><span class="text-[10px] px-2 py-0.5 rounded border ${badgeClass}">${status}</span><button onclick="app.sendClientSummary('${id}')" class="text-secondary hover:bg-secondary/20 p-1 rounded-full"><i data-lucide="message-circle" class="w-4 h-4"></i></button></div></div><div class="text-xs text-slate-400 mt-1 flex gap-3"><span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span><span class="flex items-center gap-1"><i data-lucide="truck" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.courier)}</span></div><div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">${x.clientAgency ? `🏢 ${escapeHtml(x.clientAgency)}` : `🏠 ${escapeHtml(x.clientDistrict)}`}</div></div></div>`;
+                    }).join('');
+                }
+                const w = document.getElementById('plan-limit-warning'); if(state.hasHiddenOrders) w.classList.remove('hidden'); else w.classList.add('hidden');
+                lucide.createIcons();
+            },
+            toggleOrderSelection: (id) => { const s = String(id); if (state.selectedOrders.has(s)) state.selectedOrders.delete(s); else state.selectedOrders.add(s); app.renderOrders(); },
+            toggleAllSelection: () => { const all = state.visibleOrders.every(x => state.selectedOrders.has(String(x.orderId || x.createdAt))); if (all) state.visibleOrders.forEach(x => state.selectedOrders.delete(String(x.orderId || x.createdAt))); else state.visibleOrders.forEach(x => state.selectedOrders.add(String(x.orderId || x.createdAt))); app.renderOrders(); },
+            
+            deleteSelected: () => {
+                if (!state.selectedOrders.size) return app.showToast('Selecciona envíos');
+                app.showModal(`¿Eliminar ${state.selectedOrders.size} envíos?`, async () => { app.toggleLoading(true); try { await ApiService.request("deleteOrders", { merchantId: state.merchantId, orderIds: Array.from(state.selectedOrders) }); app.showToast('Eliminados'); app.loadOrders(); } catch(e){ app.showToast(e.message); } finally { app.toggleLoading(false); } });
+            },
+            openStatusMenu: () => { if (!state.selectedOrders.size) return app.showToast('Selecciona envíos'); const el = document.getElementById('modal-status'), card = document.getElementById('modal-status-card'); el.classList.remove('hidden'); setTimeout(() => { el.classList.remove('opacity-0'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10); },
+            setStatus: (s) => { app.closeModal('modal-status'); app.showModal(`¿Marcar como ${s}?`, async () => { app.toggleLoading(true); try { await ApiService.request("updateOrdersStatus", { merchantId: state.merchantId, orderIds: Array.from(state.selectedOrders), newStatus: s }); app.showToast('Actualizado'); app.loadOrders(); } catch(e){ app.showToast(e.message); } finally { app.toggleLoading(false); } }); },
+            
+            sendClientSummary: (oid) => {
+                const o = state.allOrders.find(x => String(x.orderId||x.createdAt) === String(oid)); if(!o) return;
+                const msg = `Hola *${o.clientName}*! 👋\nTu pedido está *${o.status === 'ENVIADO' ? 'Enviado ✅' : 'Programado 📦'}*\n📅 Fecha: ${o.shippingDate}\n🚚 Courier: ${o.courier}\n${o.clientAgency ? `🏢 Agencia: ${o.clientAgency}` : `🏠 Dirección: ${o.clientAddress}`}\nGracias!`;
+                window.open(`https://wa.me/51${o.clientPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+            },
+
+            // --- CARGA INICIAL Y AUXILIARES ---
+            activateTrial: async () => {
+                app.toggleLoading(true); try { await ApiService.request("startTrial", { merchantId: state.user.uid }); state.user.plan = 'Pro (Prueba)'; SafeStorage.setItem('app_current_user', JSON.stringify(state.user)); app.closeModal('modal-upsell'); app.showToast('¡Prueba activada!'); app.loadData(); } catch(e){ app.showToast(e.message); } finally { app.toggleLoading(false); }
+            },
+            showUpgradeModal: () => { const el = document.getElementById('modal-upsell'), card = document.getElementById('modal-upsell-card'); el.classList.remove('hidden'); setTimeout(() => { el.classList.remove('opacity-0'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10); },
+            loadExternalLists: async () => { if (!state.externalData.districts) { try { const res = await fetch(JSON_DISTRITOS); state.externalData.districts = (await res.json()).map(d => d.Distrito || d.nombre); } catch(e){} } },
+            loadAgencies: async (cn) => {
+                const url = AGENCY_URLS[cn]; if (!url) { state.externalData.agencies = []; return; }
+                document.getElementById('c-agency').placeholder = "Cargando..."; document.getElementById('c-agency').disabled = true;
+                try { const res = await fetch(url); state.externalData.agencies = (await res.json()).map(i => ({ Agencia: i.Agencia||i.nombre, Direccion: i.Direccion||i.direccion })); document.getElementById('c-agency').placeholder = "Buscar sede..."; document.getElementById('c-agency').disabled = false; app.clearAgency(); } catch(e){ state.externalData.agencies=[]; }
+            },
+            
+            // Search / Export / Print (Simplificados para brevedad, lógica intacta)
+            searchAgency: (q) => { const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); if (!q || q.length<2) { c.classList.add('hidden'); if(!q) x.classList.add('hidden'); return; } x.classList.remove('hidden'); const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && a.Agencia.toLowerCase().includes(q.toLowerCase()))).slice(0,50); c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}')" class="p-3 hover:bg-slate-50 border-b cursor-pointer"><div class="font-bold text-sm text-slate-800">${escapeHtml(a.Agencia)}</div><div class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</div></div>`).join('') : ''; c.classList.remove('hidden'); },
+            selectAgency: (v) => { document.getElementById('c-agency').value = v; document.getElementById('agency-results').classList.add('hidden'); },
+            clearAgency: () => { document.getElementById('c-agency').value=''; document.getElementById('agency-results').classList.add('hidden'); },
+            
+            searchDistrict: (q) => { const c = document.getElementById('district-results'); if (!q || q.length<2) { c.classList.add('hidden'); return; } const m = (state.externalData.districts||[]).filter(d => d.toLowerCase().includes(q.toLowerCase())).slice(0,50); c.innerHTML = m.map(d => `<div onclick="app.selectDistrict('${escapeHtml(d)}')" class="p-3 hover:bg-slate-50 border-b cursor-pointer font-bold text-sm text-slate-800">${escapeHtml(d)}</div>`).join(''); c.classList.remove('hidden'); },
+            selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); },
+            clearDistrict: () => { document.getElementById('c-district').value=''; document.getElementById('district-results').classList.add('hidden'); },
+
+            generateDateOptions: () => { 
+                const s = document.getElementById('c-date-select'); s.innerHTML = '<option value="" disabled selected>Elige fecha...</option>'; 
+                const days = state.config.shippingDays || []; if (!days.length) return;
+                const now = new Date(); const gap = parseInt(state.config.updateGap||0); const [ch, cm] = (state.config.updateTime||"18:00").split(':');
+                const cut = new Date(); cut.setHours(ch, cm, 0); let start = gap; if (now > cut) start++;
+                for(let i=start; i<start+14; i++) {
+                    const f = new Date(); f.setDate(now.getDate()+i);
+                    if(days.some(n => DAY_INDEX_MAP[n] === f.getDay())) {
+                        const val = `${DAY_NAMES_FULL[f.getDay()]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`;
+                        const o = document.createElement('option'); o.value=val; o.innerText=val; s.appendChild(o);
+                    }
+                }
+            },
+
+            loadData: async () => { 
+                app.toggleLoading(true); 
+                state.config = { ...initialState };
+                try { 
+                    const res = await ApiService.request("getConfig", { merchantId: state.merchantId }); if(res.data) state.config = res.data;
+                    if(state.user && !state.isClientView) {
+                         const s = await ApiService.request("getUserStatus", { merchantId: state.merchantId });
+                         if(s.plan && s.plan !== state.user.plan) { state.user.plan = s.plan; SafeStorage.setItem('app_current_user', JSON.stringify(state.user)); app.showToast('Plan sincronizado'); }
+                    }
+                } catch(e){ const l = SafeStorage.getItem(`config_${state.merchantId}`); if(l) state.config = JSON.parse(l); }
+                
+                document.querySelectorAll('.user-phone-display').forEach(el => el.innerText = state.user?.phone||'');
+                document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user?.plan?.toUpperCase()||'GRATIS'}`);
+                
+                if (state.isClientView) { app.renderClient(); app.setupClientAutoRefresh(); } 
+                else { app.renderDashboard(); app.loadOrders(); }
                 app.toggleLoading(false); 
             },
             
-            // --- NUEVA LÓGICA DE PEDIDOS (Filtrado & Selección) ---
-            loadOrders: async () => { 
-                const l = document.getElementById('orders-list'); 
-                l.innerHTML = '<div class="text-center py-10 text-slate-400 flex flex-col items-center gap-2"><i data-lucide="loader" class="animate-spin w-6 h-6"></i> Cargando envíos...</div>'; 
-                lucide.createIcons();
-                
-                try { 
-                    // Anti-cache param
-                    const res = await fetch(`${state.apiUrl}?action=getOrders&merchantId=${state.merchantId}&_t=${Date.now()}`); 
-                    const json = await res.json(); 
-                    
-                    // AQUI APLICAMOS EL FILTRO DE PLAN
-                    // Revisar plan local (incluyendo 'Pro (Prueba)')
-                    const userPlan = state.user ? state.user.plan : 'Gratis';
-                    const isFree = userPlan === 'Gratis';
-                    
-                    let rawOrders = json.orders || [];
-                    
-                    // Si es gratis, NO CARGAR NADA en allOrders, pero guardar el total para el contador
-                    if (isFree) {
-                        state.allOrders = [];
-                        state.hasHiddenOrders = true;
-                        state.totalHiddenCount = rawOrders.length;
-                    } else {
-                        // Si es Pro/Empresa/Prueba, cargar todo
-                        state.allOrders = rawOrders;
-                        state.hasHiddenOrders = false;
-                        state.totalHiddenCount = 0;
-                    }
-                    
-                    state.selectedOrders.clear();
-                    
-                    // Actualizar contador en el aviso
-                    const hiddenCountEl = document.getElementById('hidden-count');
-                    if(hiddenCountEl) hiddenCountEl.innerText = state.totalHiddenCount;
-
-                } catch(e){
-                    state.allOrders = [];
-                } 
-                app.renderOrders();
-            },
-
-            renderOrders: () => {
-                const l = document.getElementById('orders-list');
-                const q = (document.getElementById('inp-search-orders').value || '').toLowerCase();
-                const dSpec = document.getElementById('date-specific').value;
-                
-                const filtered = state.allOrders.filter(x => {
-                    const txt = `${x.clientName} ${x.clientPhone} ${x.clientDistrict || ''} ${x.clientAgency || ''}`.toLowerCase();
-                    if (!txt.includes(q)) return false;
-                    
-                    // 2. CORRECCIÓN: Filtro por Fecha de Despacho (shippingDate)
-                    if (dSpec) {
-                        // El input date viene formato "YYYY-MM-DD" (Ej: 2023-11-25)
-                        const [year, month, day] = dSpec.split('-');
-                        
-                        // Tu shippingDate es texto: "Lunes 25/11" o "Mar 25/11"
-                        // Construimos lo que vamos a buscar: "25/11"
-                        const searchStr = `${day}/${month}`;
-            
-                        // Si el pedido no tiene fecha de envío o no contiene "25/11", lo ocultamos
-                        if (!x.shippingDate || !x.shippingDate.includes(searchStr)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
-                
-                state.visibleOrders = filtered;
-
-                if (!filtered.length) {
-                    // Si no hay visibles...
-                    if(state.hasHiddenOrders) {
-                         // Si es por bloqueo de plan, limpiamos para que solo se vea el aviso
-                         l.innerHTML = '';
-                    } else {
-                        // Si es plan pro y no hay datos (o filtro sin resultados)
-                        l.innerHTML = '<div class="text-center py-10 text-slate-400">Sin envíos encontrados</div>';
-                    }
-                } else {
-                    l.innerHTML = filtered.map((x, idx) => {
-                        const id = String(x.orderId || x.createdAt); // FORCE STRING ID
-                        const isSel = state.selectedOrders.has(id);
-                        const status = x.status || 'PENDIENTE';
-                        let badgeClass = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
-                        if(status === 'ENVIADO') badgeClass = 'bg-secondary/20 text-secondary border border-secondary/30';
-
-                        return `
-                        <div class="bg-black/30 border ${isSel ? 'border-primary ring-1 ring-primary bg-primary/10' : 'border-white/10'} p-3 rounded-lg shadow-sm hover:border-white/20 transition group flex gap-3 items-start">
-                            <div class="pt-1">
-                                <input type="checkbox" onchange="app.toggleOrderSelection('${id}')" ${isSel ? 'checked' : ''} class="w-4 h-4 rounded border-slate-500 text-primary focus:ring-primary cursor-pointer bg-black/40">
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between font-bold text-slate-200">
-                                    <span class="truncate text-white">${escapeHtml(x.clientName)}</span>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeClass}">${status}</span>
-                                        <!-- Botón de WhatsApp integrado en la cabecera -->
-                                        <button onclick="app.sendClientSummary('${id}')" class="text-secondary hover:text-white hover:bg-secondary/20 p-1 rounded-full transition" title="Enviar resumen al cliente">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="w-4 h-4">
-                                                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-slate-400 mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
-                                    <span class="flex items-center gap-1"><i data-lucide="truck" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.courier)}</span>
-                                </div>
-                                <div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">
-                                    ${x.clientAgency ? `🏢 ${escapeHtml(x.clientAgency)}` : `🏠 ${escapeHtml(x.clientDistrict)} - ${escapeHtml(x.clientAddress || '')}`}
-                                </div>
-                            </div>
-                        </div>
-                    `}).join('');
-                }
-
-                // Mostrar/Ocultar aviso de plan limitado
-                const warningEl = document.getElementById('plan-limit-warning');
-                // Mostrar SIEMPRE si hay ocultos por plan gratis
-                if (state.hasHiddenOrders) { 
-                    warningEl.classList.remove('hidden');
-                } else {
-                    warningEl.classList.add('hidden');
-                }
-                
-                lucide.createIcons();
-            },
-
-            toggleOrderSelection: (id) => {
-                const strId = String(id); 
-                if (state.selectedOrders.has(strId)) state.selectedOrders.delete(strId);
-                else state.selectedOrders.add(strId);
-                app.renderOrders(); 
-            },
-            
-            toggleAllSelection: () => {
-                const allSelected = state.visibleOrders.every(x => state.selectedOrders.has(String(x.orderId || x.createdAt)));
-                if (allSelected) state.visibleOrders.forEach(x => state.selectedOrders.delete(String(x.orderId || x.createdAt)));
-                else state.visibleOrders.forEach(x => state.selectedOrders.add(String(x.orderId || x.createdAt)));
-                app.renderOrders();
-            },
-            
-            deleteSelected: () => {
-                if (state.selectedOrders.size === 0) return app.showToast('Selecciona al menos un envío');
-                app.showModal(`¿Eliminar ${state.selectedOrders.size} envíos?`, async () => {
-                    app.toggleLoading(true);
-                    const ids = Array.from(state.selectedOrders);
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "deleteOrders", merchantId: state.merchantId, orderIds: ids }) }); app.showToast('Envíos eliminados'); app.loadOrders(); } catch(e) {}
-                    app.toggleLoading(false);
-                });
-            },
-            
-            updateBatchStatus: () => {
-                if (state.selectedOrders.size === 0) return app.showToast('Selecciona envíos');
-                app.openStatusMenu();
-            },
-
-            exportExcel: async () => { // Nota el async
-                const list = state.visibleOrders;
-                if (!list.length) return app.showToast('No hay datos para exportar');
-            
-                app.toggleLoading(true);
-            
-                // CARGA DINÁMICA: Solo se descarga si el usuario lo pide
-                if (typeof XLSX === 'undefined') {
-                    await new Promise((resolve, reject) => {
-                        const script = document.createElement('script');
-                        script.src = "https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js";
-                        script.onload = resolve;
-                        script.onerror = reject;
-                        document.head.appendChild(script);
-                    });
-                }
-            
-                // 1. Preparamos los datos limpios para Excel
-                const dataToExport = list.map(x => {
-                    // Lógica para unificar destino (Igual que tenías antes)
-                    const destino = x.clientAgency 
-                        ? `AGENCIA: ${x.clientAgency}` 
-                        : `CASA: ${x.clientDistrict} - ${x.clientAddress}`;
-                        
-                    const referencia = x.clientAgency 
-                        ? `DNI: ${x.clientDni}` 
-                        : `REF: ${x.clientRef}`;
-            
-                    return {
-                        "Fecha Envío": x.shippingDate, // Usamos la fecha de despacho, no la de registro
-                        "Courier": x.courier,
-                        "Cliente": x.clientName,
-                        "Teléfono": x.clientPhone,
-                        "Destino": destino,
-                        "Referencia / DNI": referencia,
-                        "Estado": x.status || "PENDIENTE",
-                        "Fecha Registro": new Date(x.createdAt || Date.now()).toLocaleDateString()
-                    };
-                });
-            
-                // 2. Crear una Hoja de Cálculo (Worksheet)
-                const ws = XLSX.utils.json_to_sheet(dataToExport);
-            
-                // Opcional: Ajustar ancho de columnas automáticamente (UX Pro)
-                const wscols = [
-                    {wch: 15}, // Fecha Envío
-                    {wch: 15}, // Courier
-                    {wch: 25}, // Cliente
-                    {wch: 15}, // Teléfono
-                    {wch: 40}, // Destino
-                    {wch: 20}, // Referencia
-                    {wch: 15}, // Estado
-                    {wch: 15}  // Fecha Registro
-                ];
-                ws['!cols'] = wscols;
-            
-                // 3. Crear el Libro (Workbook) y agregar la hoja
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Envíos Latam5S");
-            
-                // 4. Generar nombre de archivo con fecha
-                const today = new Date().toISOString().slice(0,10); // YYYY-MM-DD
-                const fileName = `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`;
-            
-                // 5. Descargar
-                XLSX.writeFile(wb, fileName);
-                
-                app.toggleLoading(false);
-                app.showToast('Excel (.xlsx) descargado correctamente');
-            },
-
-            printLabels: () => {
-                const targets = state.selectedOrders.size > 0 ? state.allOrders.filter(x => state.selectedOrders.has(String(x.orderId || x.createdAt))) : state.visibleOrders;
-                if(!targets.length) return app.showToast('Nada para imprimir');
-                app.doPrint(targets);
-            },
-
-            doPrint: (list) => {
-                if(!list.length) return;
-                const area = document.getElementById('print-area');
-                const shopName = state.config.merchantName || "Mi Tienda";
-                
-                // CORRECCIÓN: Usamos 'block' en el contenedor y 'inline-block' en las tarjetas.
-                // Esto evita que el navegador móvil parta las tarjetas entre páginas.
-                area.innerHTML = `
-                    <div style="width: 100%; font-size: 0; /* Elimina espacios fantasma */">
-                        ${list.map(x => `
-                            <div style="
-                                display: inline-block; 
-                                width: 48%; /* Un poco menos del 50% para margen */
-                                margin: 1%; 
-                                vertical-align: top; 
-                                border: 1px solid #000; 
-                                padding: 10px; 
-                                box-sizing: border-box; /* Asegura que el padding no rompa el ancho */
-                                
-                                /* PROPIEDADES ANTI-ROTURA PARA MÓVIL */
-                                page-break-inside: avoid; 
-                                break-inside: avoid; 
-                                
-                                font-family: 'Segoe UI', sans-serif; 
-                                border-radius: 8px; 
-                                background: white; 
-                                font-size: 12px;
-                            ">
-                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 8px;">
-                                    <div style="font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">Remitente</div>
-                                    <div style="font-weight: bold; font-size: 11px; color: #000;">${escapeHtml(shopName).substring(0, 20)}</div>
-                                </div>
-                                
-                                <div style="margin-bottom: 8px;">
-                                    <p style="margin: 0; font-size: 8px; color: #666; font-weight: bold; text-transform: uppercase;">PARA:</p>
-                                    <h2 style="margin: 2px 0; font-size: 14px; font-weight: 900; color: #000; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(x.clientName).toUpperCase()}</h2>
-                                    <p style="margin: 0; font-size: 11px; color: #000; font-family: monospace; font-weight: bold;">${escapeHtml(x.clientPhone)}</p>
-                                </div>
-                                
-                                <div style="margin-bottom: 8px; min-height: 35px;">
-                                    <p style="margin: 0; font-size: 8px; color: #666; font-weight: bold; text-transform: uppercase;">DESTINO:</p>
-                                    <p style="margin: 2px 0 0 0; font-size: 10px; color: #000; line-height: 1.3;">
-                                        ${x.clientAgency ? 
-                                            `<strong>AGENCIA:</strong> ${escapeHtml(x.clientAgency)}<br><strong>DNI:</strong> ${x.clientDni}` : 
-                                            `<strong>DIRECCIÓN:</strong> ${escapeHtml(x.clientAddress)}<br><span style="color:#444">${escapeHtml(x.clientDistrict)}</span>`
-                                        }
-                                    </p>
-                                    ${!x.clientAgency ? `<p style="margin: 2px 0 0 0; font-size: 9px; color: #555;">Ref: ${escapeHtml(x.clientRef || '-')}</p>` : ''}
-                                </div>
-            
-                                <div style="border-top: 1px solid #ccc; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; color: #000;">
-                                    <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: #eee; padding: 2px 5px; border-radius: 4px;">${escapeHtml(x.courier)}</span>
-                                    <span style="font-size: 9px;">${new Date(x.createdAt || Date.now()).toLocaleDateString()}</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                window.print();
-                setTimeout(() => { area.innerHTML = ''; }, 1000);
-            },
-
-            toggleConfigItem: (k, v) => { 
-                    if (state.config[k].includes(v)) state.config[k] = state.config[k].filter(i => i !== v); 
-                    else state.config[k].push(v); 
-                    app.renderDashboard(); 
-                    app.checkConfigStatus(); // <--- IMPORTANTE: Revalida al tocar botones de courier/dias
-                },
-          
             renderDashboard: () => { 
-                    document.getElementById('inp-store-name').value = state.config.merchantName || ''; 
-                    document.getElementById('inp-whatsapp').value = state.config.whatsapp || ''; 
-                    document.getElementById('inp-time').value = state.config.updateTime || ''; 
-
-                    // --- NUEVO: Renderizar el valor del gap ---
-                    document.getElementById('inp-gap').value = state.config.updateGap !== undefined ? state.config.updateGap : ''; 
-
-                    // Inputs con oninput para validación en tiempo real
-                    document.getElementById('inp-store-name').oninput = (e) => app.updateConfigInput('merchantName', e.target.value);
-                    document.getElementById('inp-whatsapp').oninput = (e) => app.updateConfigInput('whatsapp', e.target.value);
-
-                    // Renderizado de Botones (Igual que antes)
-                    document.getElementById('container-couriers').innerHTML = ALL_COURIERS.map(c => `<div onclick="app.toggleConfigItem('couriers','${c}')" class="cursor-pointer bg-black/30 border border-white/10 rounded p-2 text-xs font-bold flex items-center gap-2 select-none ${state.config.couriers.includes(c)?'border-primary text-primary bg-primary/10':'text-slate-400 hover:bg-white/5'} transition"><div class="w-3 h-3 border rounded flex items-center justify-center ${state.config.couriers.includes(c)?'bg-primary border-primary':'border-slate-500'}">${state.config.couriers.includes(c)?'<i data-lucide="check" class="w-2 h-2 text-white"></i>':''}</div>${c}</div>`).join(''); 
-                    document.getElementById('container-days').innerHTML = ALL_DAYS.map(d => `<button onclick="app.toggleConfigItem('shippingDays','${d}')" class="px-3 py-1 rounded text-xs font-bold border transition ${state.config.shippingDays.includes(d)?'bg-primary text-white border-primary shadow-neon':'bg-black/30 text-slate-400 border-white/10 hover:bg-white/5'}">${d}</button>`).join(''); 
-
-                    lucide.createIcons();
-
-                    // Validar estado inicial al renderizar
-                    app.checkConfigStatus(); 
-                },
-          
+                document.getElementById('inp-store-name').value = state.config.merchantName || ''; document.getElementById('inp-whatsapp').value = state.config.whatsapp || ''; document.getElementById('inp-time').value = state.config.updateTime || ''; document.getElementById('inp-gap').value = state.config.updateGap || '';
+                document.getElementById('inp-store-name').oninput = (e) => app.updateConfigInput('merchantName', e.target.value);
+                document.getElementById('container-couriers').innerHTML = ALL_COURIERS.map(c => `<div onclick="app.toggleConfigItem('couriers','${c}')" class="cursor-pointer bg-black/30 border border-white/10 rounded p-2 text-xs font-bold flex items-center gap-2 ${state.config.couriers.includes(c)?'border-primary text-primary bg-primary/10':'text-slate-400'}"><div class="w-3 h-3 border rounded flex items-center justify-center ${state.config.couriers.includes(c)?'bg-primary border-primary':'border-slate-500'}">${state.config.couriers.includes(c)?'<i data-lucide="check" class="w-2 h-2 text-white"></i>':''}</div>${c}</div>`).join(''); 
+                document.getElementById('container-days').innerHTML = ALL_DAYS.map(d => `<button onclick="app.toggleConfigItem('shippingDays','${d}')" class="px-3 py-1 rounded text-xs font-bold border transition ${state.config.shippingDays.includes(d)?'bg-primary text-white border-primary':'bg-black/30 text-slate-400 border-white/10'}">${d}</button>`).join(''); 
+                lucide.createIcons(); app.checkConfigStatus(); 
+            },
             renderClient: () => { 
-                document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; 
-                document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
-                const cl = state.config.couriers || []; 
-                const cs = document.getElementById('c-courier-select'); 
-                
-                // ... (tu código existente de renderizado) ...
-                
-                if (cl.length) cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); 
-                else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; 
-                
-                app.generateDateOptions(); 
-                app.loadExternalLists(); 
-                lucide.createIcons(); 
-                
-                // ---> AGREGAR ESTA LÍNEA AQUÍ <---
-                app.setupClientAutoRefresh(); 
+                document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
+                const cs = document.getElementById('c-courier-select'); cs.innerHTML = '<option value="" disabled selected>Elige opción...</option>' + (state.config.couriers||[]).map(c => `<option value="${c}">${c}</option>`).join(''); 
+                app.generateDateOptions(); app.loadExternalLists(); lucide.createIcons(); 
             },
-            
+            setupClientAutoRefresh: () => { if(!state.isClientView) return; let t; const r = () => { clearTimeout(t); t = setTimeout(() => window.location.reload(), 300000); }; ['click','scroll'].forEach(e => document.addEventListener(e, r)); r(); },
+
             setTab: (t) => {
-                    // --- BLOQUEO DE SEGURIDAD UX ---
-                    if (t === 'share') {
-                        const validation = app.validateConfig();
-                        if (!validation.isValid) {
-                            // Feedback UX: Listamos lo que falta
-                            const missing = validation.errors.join(", ");
-                            app.showToast(`⚠️ Falta configurar: ${missing}`);
-
-                            // Efecto visual de error (sacudida) en la pestaña config
-                            const configTab = document.getElementById('nav-config');
-                            configTab.classList.add('animate-pulse', 'text-red-400');
-                            setTimeout(() => configTab.classList.remove('animate-pulse', 'text-red-400'), 1000);
-
-                            // Forzamos volver a config
-                            app.setTab('config');
-                            return;
-                        }
-                    }
-                    // -------------------------------
-
-                    ['config','share','orders'].forEach(x => { 
-                        document.getElementById(`tab-${x}`).classList.add('hidden'); 
-                        // Restauramos clases base
-                        document.getElementById(`nav-${x}`).className = "nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"; 
-                    }); 
-
-                    document.getElementById(`tab-${t}`).classList.remove('hidden'); 
-                    // Clase activa
-                    document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon"; 
-
-                    if(t==='share') document.getElementById('share-link').innerText=`${window.location.origin}${window.location.pathname}?merchant=${state.user.uid}`; 
-
-                    // Si entramos a config, chequeamos el estado visualmente
-                    if(t==='config') app.checkConfigStatus();
-                },
-
-
-            // --- AUTO-REFRESH PARA CLIENTES (Sincronización de Configuración) ---
-            setupClientAutoRefresh: () => {
-                // Validación de seguridad: Solo ejecutar si es la vista pública
-                if (!state.isClientView) return;
-
-                let refreshTimer;
-                const LIMIT = 5 * 60 * 1000; // 30 Minutos
-
-                const reloadForm = () => {
-                    // Recarga suave: Guarda la posición del scroll si es posible, o recarga total
-                    // Usamos reload para forzar que se descargue la nueva configuración del Google Sheet
-                    window.location.reload();
-                };
-
-                const resetTimer = () => {
-                    clearTimeout(refreshTimer);
-                    refreshTimer = setTimeout(reloadForm, LIMIT);
-                };
-
-                // Eventos que indican que el cliente sigue ahí (y no debemos recargar todavía)
-                const events = ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-                events.forEach(evt => document.addEventListener(evt, resetTimer, { passive: true }));
-                
-                // Iniciar contador
-                resetTimer();
-                console.log("🔄 Monitor de actualización de configuración iniciado (30 min)");
+                if (t === 'share' && !app.validateConfig().isValid) { app.showToast('⚠️ Completa la configuración primero'); app.setTab('config'); return; }
+                ['config','share','orders'].forEach(x => { document.getElementById(`tab-${x}`).classList.add('hidden'); document.getElementById(`nav-${x}`).className = "nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"; }); 
+                document.getElementById(`tab-${t}`).classList.remove('hidden'); document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon"; 
+                if(t==='share') document.getElementById('share-link').innerText=`${window.location.origin}${window.location.pathname}?merchant=${state.user.uid}`; 
+                if(t==='config') app.checkConfigStatus();
             },
+            copyLink: () => { navigator.clipboard.writeText(document.getElementById('share-link').innerText); app.showToast('Enlace copiado'); },
+            shareOnWhatsapp: () => { window.open(`https://wa.me/?text=${encodeURIComponent(document.getElementById('share-link').innerText + "\n*PROGRAMA TU ENVÍO AQUÍ*")}`, '_blank'); },
+            openClientLink: () => { window.open(document.getElementById('share-link').innerText, '_blank'); },
             
             init: () => {
                 const p = new URLSearchParams(window.location.search); const mid = p.get('merchant');
