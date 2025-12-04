@@ -596,7 +596,7 @@
                 </div>
 
                 <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6 pb-20">
-                    
+
                     <div id="block-identity" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-30">
                         <label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
                             <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i> Tu WhatsApp
@@ -704,6 +704,20 @@
                         </div>
                     </div>
                 </form>  
+
+                <div id="success-view" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center p-6 animate-fade-in">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-6 shadow-sm">
+                        <i data-lucide="check" class="w-12 h-12"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">¡Abriendo WhatsApp!</h2>
+                    <p class="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+                        Tu pedido ha sido generado correctamente. Continúa la conversación en el chat para finalizar.
+                    </p>
+                    
+                    <button onclick="app.resetClientView()" class="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Crear otro pedido
+                    </button>
+                </div>
                 
                 <div class="mt-8 pt-6 border-t border-gray-100 pb-2">
                     <a href="index" target="_blank" class="group block bg-slate-50 hover:bg-blue-50/50 border border-gray-200 hover:border-blue-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
@@ -1442,6 +1456,31 @@
                         body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
                     }).catch(err => console.error("Error backup:", err));
                 } catch(e) {} 
+                document.getElementById('client-form').classList.add('hidden');
+                document.getElementById('success-view').classList.remove('hidden');
+            },
+
+            // FUNCIÓN ACTUALIZADA: Reiniciar (Volver al inicio)
+            resetClientView: () => {
+                const form = document.getElementById('client-form');
+                const successView = document.getElementById('success-view');
+                const wrapper = document.getElementById('progressive-content');
+                const badge = document.getElementById('user-found-badge');
+
+                // 1. Ocultar pantalla de éxito
+                successView.classList.add('hidden');
+                
+                // 2. Mostrar formulario limpio
+                form.classList.remove('hidden');
+                wrapper.classList.add('hidden', 'opacity-0', 'translate-y-4'); // Ocultamos el acordeón
+                badge.classList.add('hidden');
+                
+                // 3. Resetear inputs
+                form.reset();
+                document.getElementById('btn-submit-order').setAttribute('disabled', 'true');
+                
+                // 4. Foco al inicio
+                document.getElementById('c-phone').focus();
             },
             
             handleLogin: async (e) => { 
