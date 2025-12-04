@@ -575,170 +575,160 @@
     </div>
 
     <!-- VISTA CLIENTE (White Theme) -->
-<div id="view-client" class="flex-1 h-full hidden overflow-y-auto no-print bg-white text-slate-800 z-10">
-    
-    <div class="w-full max-w-2xl mx-auto min-h-screen bg-white flex flex-col relative">
+    <div id="view-client" class="flex-1 h-full hidden overflow-y-auto no-print bg-white text-slate-800 z-10">
         
-        <div class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-md flex items-center gap-4">
-            <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary shadow-neon border border-primary/20 flex-shrink-0">
-                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-                <h1 id="client-title" class="font-bold text-lg leading-tight truncate">Cargando...</h1>
-                <p class="text-xs text-slate-400">Datos de Envío</p>
-            </div>
-        </div>
-
-        <div class="flex-1 p-5 md:p-8 space-y-8">
+        <div class="w-full max-w-2xl mx-auto min-h-screen bg-white flex flex-col relative">
             
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
-                <p class="text-xs text-yellow-800 font-medium">
-                    📅 Pedidos para hoy cierran a las <strong id="client-time" class="text-yellow-900">--:--</strong>.
-                </p>
-            </div>
-
-            <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6 pb-20">
-                <div id="block-identity" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-30">
-                    <label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                        <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i> Tu WhatsApp
-                    </label>
-                    <div class="relative">
-                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
-                        <input id="c-phone" 
-                            type="tel" 
-                            maxlength="9" 
-                            inputmode="numeric" 
-                            placeholder="9..." 
-                            oninput="app.handleClientPhone(this)"
-                            required 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 pr-4 pl-12 text-slate-800 font-bold text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-inner">
-                        <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                            <i data-lucide="sparkles" class="w-3 h-3"></i> Hola
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-slate-400 mt-2 pl-1">Escribe tu número para cargar tus datos.</p>
+            <div class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-md flex items-center gap-4">
+                <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary shadow-neon border border-primary/20 flex-shrink-0">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
                 </div>
-
-                <div id="progressive-content" class="space-y-6">
-                    
-                    <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cómo quieres recibir tu pedido?</label>
+                <div class="flex-1 min-w-0">
+                    <h1 id="client-title" class="font-bold text-lg leading-tight truncate">Cargando...</h1>
+                    <p class="text-xs text-slate-400">Datos de Envío</p>
+                </div>
+            </div>
+                
+            <div class="flex-1 p-5 md:p-8 flex flex-col gap-8">
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg flex-shrink-0">
+                    <p class="text-xs text-yellow-800 font-medium">
+                        📅 Pedidos para hoy cierran a las <strong id="client-time" class="text-yellow-900">--:--</strong>.
+                    </p>
+                </div>
+            
+                <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6 pb-4 flex-shrink-0">
+                    <div id="block-identity" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-30">
+                         <label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i> Tu WhatsApp
+                        </label>
                         <div class="relative">
-                            <select id="c-courier-select" 
-                                    onchange="app.onCourierChange(this.value)" 
-                                    class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
-                                <option value="" disabled selected>Selecciona una opción...</option>
-                                </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
-                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
+                            <input id="c-phone" 
+                                type="tel" 
+                                maxlength="9" 
+                                inputmode="numeric" 
+                                placeholder="9..." 
+                                oninput="app.handleClientPhone(this)"
+                                required 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 pr-4 pl-12 text-slate-800 font-bold text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-inner">
+                            <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                                <i data-lucide="sparkles" class="w-3 h-3"></i> Hola
                             </div>
                         </div>
+                        <p class="text-[10px] text-slate-400 mt-2 pl-1">Escribe tu número para cargar tus datos.</p>
                     </div>
-                
-                    <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
-                        <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
-                                <div class="relative group z-30">
-                                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                    <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" 
-                                           class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" 
-                                           placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
-                                    <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                    <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
-                                </div>
-                            </div>
-                            <div>
-                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
-                                <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
-                                       class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
-                            </div>
-                        </div>
-                
-                        <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
-                                <div class="relative group z-30">
-                                    <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                    <input id="c-district" type="text" onfocus="app.revealStep('block-personal')"
-                                           class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" 
-                                           placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
-                                    <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                    <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
-                                </div>
-                            </div>
-                            <div>
-                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
-                                <input id="c-address" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Calle, Av, Número...">
-                            </div>
-                            <div>
-                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
-                                <input id="c-ref" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Frente a, color de casa...">
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
-                         <div class="relative">
-                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                            <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
-                         </div>
-                    </div>
-                
-                    <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cuándo lo enviamos?</label>
-                            <div class="relative">
-                                <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary outline-none cursor-pointer transition">
-                                    <option value="" disabled selected>Elige fecha...</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                            </div>
-                        </div>
-                
-                        <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-5 rounded-xl shadow-lg shadow-green-500/20 transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
-                            <i data-lucide="message-circle" class="w-6 h-6"></i> Enviar Pedido por WhatsApp
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <div id="success-view" class="hidden flex flex-col items-center justify-center min-h-[50vh] text-center p-6 animate-fade-in">
-                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-6 shadow-sm">
-                    <i data-lucide="check" class="w-12 h-12"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">¡Abriendo WhatsApp!</h2>
-                <p class="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-                    Tu pedido ha sido generado correctamente. Continúa la conversación en el chat para finalizar.
-                </p>
-                <button onclick="app.resetClientView()" class="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
-                    <i data-lucide="plus" class="w-4 h-4"></i> Crear otro pedido
-                </button>
-            </div>
             
-            <div class="mt-8 pt-6 border-t border-slate-100 pb-2">
-                <a href="index" target="_blank" class="group block bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
-                    <div class="flex items-center justify-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
-                        <div class="text-left">
-                            <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
-                            <p class="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight">
-                                ¿Vendes por WhatsApp? <br>
-                                <span class="text-primary underline decoration-blue-200 underline-offset-2">Crea tu formulario gratis aquí</span>
-                            </p>
+                    <div id="progressive-content" class="space-y-6">
+                        
+                        <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cómo quieres recibir tu pedido?</label>
+                            <div class="relative">
+                                <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
+                                    <option value="" disabled selected>Selecciona una opción...</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
+                            </div>
                         </div>
-                        <div class="text-gray-300 group-hover:text-primary transition-colors">
-                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            
+                        <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
+                            <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
+                                    <div class="relative group z-30">
+                                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
+                                        <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
+                                        <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
+                                        <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
+                                    <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
+                                </div>
+                            </div>
+                            <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
+                                    <div class="relative group z-30">
+                                        <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
+                                        <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
+                                        <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
+                                        <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
+                                    <input id="c-address" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Calle, Av, Número...">
+                                </div>
+                                <div>
+                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
+                                    <input id="c-ref" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Frente a, color de casa...">
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
+                             <div class="relative">
+                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                                <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
+                             </div>
+                        </div>
+            
+                        <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                             <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cuándo lo enviamos?</label>
+                                <div class="relative">
+                                    <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary outline-none cursor-pointer transition">
+                                        <option value="" disabled selected>Elige fecha...</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-5 h-5"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-5 rounded-xl shadow-lg shadow-green-500/20 transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
+                                <i data-lucide="message-circle" class="w-6 h-6"></i> Enviar Pedido por WhatsApp
+                            </button>
                         </div>
                     </div>
-                </a>
+                </form>
+            
+                <div id="success-view" class="hidden flex flex-col items-center justify-center min-h-[50vh] text-center p-6 animate-fade-in flex-grow">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-6 shadow-sm">
+                        <i data-lucide="check" class="w-12 h-12"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">¡Abriendo WhatsApp!</h2>
+                    <p class="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+                        Tu pedido ha sido generado correctamente. Continúa la conversación en el chat para finalizar.
+                    </p>
+                    <button onclick="app.resetClientView()" class="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Crear otro pedido
+                    </button>
+                </div>
+                
+                <div class="mt-auto pt-6 border-t border-slate-100 pb-2">
+                    <a href="index" target="_blank" class="group block bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center justify-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
+                            <div class="text-left">
+                                <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
+                                <p class="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight">
+                                    ¿Vendes por WhatsApp? <br>
+                                    <span class="text-primary underline decoration-blue-200 underline-offset-2">Crea tu formulario gratis aquí</span>
+                                </p>
+                            </div>
+                            
+                            <div class="text-gray-300 group-hover:text-primary transition-colors">
+                                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
             </div>
-
         </div>
     </div>
-</div>
-    
+        
     <script>
         // --- PARTICLES ANIMATION ---
         const canvas = document.getElementById('particles-js');
