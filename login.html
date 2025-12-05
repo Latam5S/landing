@@ -1456,20 +1456,74 @@
                 document.getElementById('c-phone').focus();
             },        
             
-            handleLogin: async (e) => { 
+            // 1. Modificar handleLogin para manejar la nueva estructura de respuesta
+            app.handleLogin = async (e) => { 
                 e.preventDefault(); 
                 const p = document.getElementById('auth-phone').value.trim();
                 const pw = document.getElementById('auth-pass').value.trim();
                 const err = document.getElementById('auth-error'); 
-                app.toggleLoading(true); 
+                
+                // UX: Feedback inmediato en el botón
+                const btn = e.target.querySelector('button');
+                const originalBtnContent = btn.innerHTML;
+                btn.innerHTML = '<div class="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>';
+                btn.disabled = true;
+            
                 try { 
-                    const res = await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "loginUser", data: { phone: p, password: pw } }) }); 
+                    const res = await fetch(state.apiUrl, { 
+                        method: "POST", 
+                        body: JSON.stringify({ action: "loginUser", data: { phone: p, password: pw } }) 
+                    }); 
                     const json = await res.json(); 
-                    if(json.status === 'success') { app.loginSuccess(json.user); return; } 
-                    else { err.innerText = json.message || "Error desconocido"; err.classList.remove('hidden'); app.toggleLoading(false); return; } 
-                } catch(e) { console.error(e); err.innerText = "Error de conexión con el servidor"; err.classList.remove('hidden'); app.toggleLoading(false); } 
-            },
-            loginSuccess: (u) => { state.user = u; SafeStorage.setItem('app_current_user', JSON.stringify(u)); app.init(); },
+                    
+                    if(json.status === 'success') { 
+                        // UX: Éxito visual antes de cambiar pantalla
+                        btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> ¡Listo!';
+                        btn.classList.add('bg-green-500');
+                        
+                        // Pasamos el PAYLOAD completo (User + Config)
+                        if (json.payload) {
+                            app.loginSuccess(json.payload.user, json.payload.config); 
+                        } else {
+                            // Fallback para admin o versión anterior
+                            app.loginSuccess(json.user, null);
+                        }
+                        return; 
+                    } else { 
+                        err.innerText = json.message || "Error desconocido"; 
+                        err.classList.remove('hidden'); 
+                        
+                        // Restaurar botón
+                        btn.innerHTML = originalBtnContent;
+                        btn.disabled = false;
+                    } 
+                } catch(e) { 
+                    console.error(e); 
+                    err.innerText = "Error de conexión"; 
+                    err.classList.remove('hidden'); 
+                    btn.innerHTML = originalBtnContent;
+                    btn.disabled = false;
+                } 
+            };
+            
+            // 2. Modificar loginSuccess para guardar todo y evitar llamadas extra
+            app.loginSuccess = (u, config) => { 
+                state.user = u; 
+                state.merchantId = u.uid;
+                
+                // Guardamos Usuario
+                SafeStorage.setItem('app_current_user', JSON.stringify(u)); 
+                
+                // Si vino la configuración del servidor, la guardamos y la usamos YA
+                if (config) {
+                    state.config = config;
+                    SafeStorage.setItem(`config_${u.uid}`, JSON.stringify(config));
+                }
+            
+                // Inicializamos la UI inmediatamente
+                app.init(); 
+            };
+        
             logout: () => { SafeStorage.removeItem('app_current_user'); state.user=null; state.merchantId=null; window.location.reload(); },
             
             adminLoadUsers: async () => { 
@@ -1621,63 +1675,55 @@
                 window.open(url, '_blank');
             },
             
-            // FUNCIÓN CORREGIDA: CARGA DE DATOS CON SINCRONIZACIÓN DE PLAN
-            loadData: async () => { 
+            // MODIFICAR app.loadData en login.html
+            
+            app.loadData = async () => { 
                 app.toggleLoading(true); 
                 
-                // 1. Cargar Configuración (Igual que antes)
-                state.config = { ...initialState }; 
-                try { 
-                    const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`); 
-                    const json = await res.json(); 
-                    if (json.data) state.config = json.data; 
-                } catch(e){ 
-                    // Fallback a memoria local si falla la red
-                    const local = SafeStorage.getItem(`config_${state.merchantId}`); 
-                    if(local) state.config = JSON.parse(local); 
-                } 
+                // ESTRATEGIA: Cache-First (Velocidad Inmediata)
+                // 1. Intentamos cargar desde memoria o LocalStorage primero
+                const localConfig = SafeStorage.getItem(`config_${state.merchantId}`);
                 
-                // 2. NUEVO: Verificar estado real del usuario (Sincronización Servidor -> Cliente)
-                // Esto es vital para detectar si la prueba gratuita expiró según el Google Sheet
-                if (state.user && state.merchantId && !state.isClientView) {
-                    try {
-                        const resStatus = await fetch(`${state.apiUrl}?action=getUserStatus&merchantId=${state.merchantId}`);
-                        const jsonStatus = await resStatus.json();
-                        
-                        if (jsonStatus.status === 'success') {
-                            // Si el plan en el servidor es diferente al local (ej. expiró el trial)
-                            if (jsonStatus.plan !== state.user.plan) {
-                                state.user.plan = jsonStatus.plan;
-                                // Si volvió a gratis, limpiamos la fecha de trial local
-                                if (jsonStatus.plan === 'Gratis') delete state.user.trialEndsAt;
-                                
-                                // Guardamos el nuevo estado real
-                                SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
-                                app.showToast('Tu plan se ha actualizado');
-                            }
-                        }
-                    } catch(e) {
-                        console.log("No se pudo verificar el estado del plan (Offline)");
-                    }
-
-                    // Actualizar textos en la interfaz (Móvil y Escritorio)
-                    document.querySelectorAll('.user-phone-display').forEach(el => el.innerText = state.user.phone);
-                    if(state.user.plan) {
-                        document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user.plan.toUpperCase()}`);
-                    }
+                if (state.config.merchantName) {
+                    // Ya tenemos config en memoria (vino del login), no hacemos nada
+                } else if(localConfig) {
+                    state.config = JSON.parse(localConfig); 
                 }
-
-                // 3. Renderizado de Vistas
-                if (state.isClientView) { 
-                    app.renderClient(); 
-                } else { 
+            
+                // Renderizamos INMEDIATAMENTE con lo que tengamos (aunque sea viejo)
+                // Esto hace que la UI se sienta instantánea
+                if (!state.isClientView) { 
                     app.renderDashboard(); 
-                    // Importante: loadOrders usará el plan actualizado para decidir si muestra u oculta datos
+                } else {
+                    app.renderClient();
+                }
+            
+                // 2. Segundo plano: Si NO tenemos datos o queremos refrescar silenciosamente
+                // Solo pedimos a internet si realmente no tenemos nada crítico
+                if (!state.config.merchantName || state.isClientView) {
+                    try { 
+                        // Si es vista cliente, siempre validamos. Si es dashboard, confiamos en el login.
+                        const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`); 
+                        const json = await res.json(); 
+                        if (json.data) {
+                            state.config = json.data;
+                            SafeStorage.setItem(`config_${state.merchantId}`, JSON.stringify(state.config));
+                            // Re-renderizar si hubo cambios
+                            if (!state.isClientView) app.renderDashboard(); 
+                            else app.renderClient();
+                        } 
+                    } catch(e){ 
+                        console.warn("Usando versión offline/caché"); 
+                    } 
+                }
+                
+                // 3. Cargar Pedidos (Esto sí puede tardar un poco más, no bloquea la UI principal)
+                if (!state.isClientView) {
                     app.loadOrders(); 
-                } 
+                }
                 
                 app.toggleLoading(false); 
-            },
+            };
             
             // --- NUEVA LÓGICA DE PEDIDOS (Filtrado & Selección) ---
             loadOrders: async () => { 
