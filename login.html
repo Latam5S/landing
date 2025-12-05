@@ -741,14 +741,101 @@
     </div>
         
     <script>
-        // feather.replace();
+        // --- PARTICLES ANIMATION ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        // Resize
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5; // Velocidad lenta
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)'; // Azul primary
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Init Particles
+        function initParticles() {
+            particles = [];
+            const numParticles = Math.min(window.innerWidth / 10, 100); // Ajustar densidad
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        // Variable de control
+        let isAnimating = true;
+        
+        // Observer para pausar si no es visible
+        const observer = new IntersectionObserver((entries) => {
+            isAnimating = entries[0].isIntersecting;
+            if(isAnimating) animateParticles();
+        });
+        observer.observe(canvas);
+        
+        // Animate Loop
+        function animateParticles() {
+            if (!isAnimating) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update & Draw
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // Draw Connections
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${1 - distance / 150})`; // Fade out
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // --- APP LOGIC ---
 
         // ----------------------------------------------------
         // CLIENTE API ROBUSTO (Manejo de Errores y Reintentos)
         // ----------------------------------------------------
         const ApiService = {
             // Configuración
-            URL: "https://script.google.com/macros/s/AKfycby0K7KPmM4v2mPnQBueE9dBBGfp37JAT9I6uqtqj_lChn9Vg1fMeK_P52FPgvxn_pvWsg/exec",
+            URL: "https://script.google.com/macros/s/AKfycbxpASguuB214DRWR-m1u98LY79YWvvCWKuP9c1vcG8voCpykYhyGz2R-1LznK6WOQBDXg/exec",
             
             async request(action, payload = {}, retries = 1) {
                 const controller = new AbortController();
