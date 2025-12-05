@@ -1610,7 +1610,7 @@
                 const folder = path.substring(0, path.lastIndexOf('/') + 1);
                 
                 // 2. Construye la URL apuntando a form.html
-                return `${window.location.origin}${folder}form.html?merchant=${state.user.uid}`;
+                return `${window.location.origin}${folder}form?merchant=${state.user.uid}`;
             },
 
             // --- FUNCIONES MODIFICADAS ---
