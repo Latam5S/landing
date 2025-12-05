@@ -1597,7 +1597,7 @@
                 });
             },
             
-            adminCreateUser: async (e) => { e.preventDefault(); const p = document.getElementById('admin-new-phone').value.trim(), pl = document.getElementById('admin-new-plan').value; app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "registerUser", data: { phone: p, password: np, plan: pl } }) }); } catch(e){} window.open(`https://wa.me/51${p}?text=${encodeURIComponent(`🔐 Bienvenid@ (Plan ${pl})\n📱 User: ${p}\n🔑 Pass: *${np}*\nEntra: ${window.location.href}`)}`, '_blank'); document.getElementById('admin-new-phone').value=""; app.adminLoadUsers(); app.showToast('Usuario creado con éxito'); },
+            adminCreateUser: async (e) => { e.preventDefault(); const p = document.getElementById('admin-new-phone').value.trim(), pl = document.getElementById('admin-new-plan').value; app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "registerUser", data: { phone: p, password: np, plan: pl } }) }); } catch(e){} window.open(`https://wa.me/51${p}?text=${encodeURIComponent(`🔐 Bienvenid@ (Plan ${pl})\n\n📱 User: ${p}\n🔑 Pass: *${np}*\n\nEntra: ${window.location.href}`)}`, '_blank'); document.getElementById('admin-new-phone').value=""; app.adminLoadUsers(); app.showToast('Usuario creado con éxito'); },
             
             adminResend: (uid, phone) => { 
                 app.showModal(`¿Resetear clave para ${phone}?`, async () => {
