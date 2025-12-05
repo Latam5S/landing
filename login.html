@@ -1603,21 +1603,33 @@
                 });
             },
             
+            // --- NUEVO HELPER: Genera la URL correcta dinámicamente ---
+            getShareUrl: () => {
+                // 1. Detecta la carpeta actual (ej: /landing/ o /)
+                const path = window.location.pathname;
+                const folder = path.substring(0, path.lastIndexOf('/') + 1);
+                
+                // 2. Construye la URL apuntando a form.html
+                return `${window.location.origin}${folder}form.html?merchant=${state.user.uid}`;
+            },
+
+            // --- FUNCIONES MODIFICADAS ---
+            
             copyLink: () => {
-                const text = document.getElementById('share-link').innerText;
+                const text = app.getShareUrl(); // <--- Usamos el helper
                 const fallbackCopy = (t) => { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); };
                 if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(() => fallbackCopy(text)); else fallbackCopy(text);
                 app.showToast('Enlace copiado al portapapeles');
             },
 
             shareOnWhatsapp: () => {
-                const url = document.getElementById('share-link').innerText;
-                const message = `${url}\n*PROGRAMA TU ENVÍO AQUÍ* ☝️`; // \n = salto de línea en WhatsApp
+                const url = app.getShareUrl(); // <--- Usamos el helper
+                const message = `${url}\n*PROGRAMA TU ENVÍO AQUÍ* ☝️`; 
                 window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
             },
 
             openClientLink: () => {
-                const url = document.getElementById('share-link').innerText;
+                const url = app.getShareUrl(); // <--- Usamos el helper
                 window.open(url, '_blank');
             },
             
