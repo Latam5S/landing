@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Completar Envío</title>
+    
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Mantenemos compatibilidad
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',     
+                        primary_glow: '#60A5FA',
+                        secondary: '#10B981',   
+                        dark_bg: '#020617',     
+                        card_bg: '#0f172a',    
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(59, 130, 246, 0.15)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: "Quicksand", sans-serif; background-color: #ffffff; color: #1e293b; }
+        
+        /* Scrollbar oculta pero funcional (UX Móvil) */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Estilos específicos para inputs y transiciones */
+        input, select { -webkit-appearance: none; }
+        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+    </style>
+</head>
+<body class="h-[100dvh] overflow-hidden flex flex-col relative selection:bg-primary selection:text-white">
+
+    <div id="loading-overlay" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
+        <div class="relative">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-primary"></div>
+        </div>
+        <p id="loading-text" class="text-slate-400 font-bold mt-4 text-xs uppercase tracking-widest animate-pulse">Cargando Tienda...</p>
+    </div>
+
+    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0 border border-slate-700">
+        <i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i>
+        <span id="toast-msg" class="font-bold text-sm">Acción completada</span>
+    </div>
+
+    <div id="view-client" class="flex-1 h-full overflow-y-auto bg-white text-slate-800 z-10 relative">
+        
+        <div class="w-full max-w-2xl mx-auto min-h-[100dvh] bg-white flex flex-col relative">
+            
+            <div class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-md flex items-center gap-4">
+                <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary shadow-neon border border-primary/20 flex-shrink-0">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h1 id="client-title" class="font-bold text-lg leading-tight truncate">Cargando...</h1>
+                    <p class="text-xs text-slate-400">Datos de Envío</p>
+                </div>
+            </div>
+                
+            <div class="flex-1 p-5 md:p-8 flex flex-col gap-4">
+                
+                <div class="rounded-xl bg-orange-50 border border-orange-100 p-4 flex items-start gap-3 shadow-sm relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-16 h-16 bg-orange-100 rounded-full opacity-50 pointer-events-none"></div>
+                    <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm border border-orange-100 flex-shrink-0">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex-1 z-10">
+                        <h3 class="text-xs font-bold text-orange-800 uppercase tracking-wide mb-0.5">Programación de Envíos</h3>
+                        <p class="text-sm text-orange-900 leading-tight">
+                            Asegura tu envío registrando tu datos antes de las <strong id="client-time" class="bg-orange-200 px-1.5 py-0.5 rounded text-orange-950">--:--</strong>.
+                        </p>
+                    </div>
+                </div>
+            
+                <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6 pb-4 flex-shrink-0">
+                    
+                    <div id="block-identity" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-30">
+                         <label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i> Tu WhatsApp
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
+                            <input id="c-phone" 
+                                type="tel" 
+                                maxlength="9" 
+                                inputmode="numeric" 
+                                placeholder="9..." 
+                                oninput="app.handleClientPhone(this)"
+                                required 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 pr-4 pl-12 text-slate-800 font-bold text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-inner">
+                            <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                                <i data-lucide="sparkles" class="w-3 h-3"></i> Hola
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-2 pl-1">Escribe tu número para cargar tus datos.</p>
+                    </div>
+            
+                    <div id="progressive-content" class="space-y-6">
+                        
+                        <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cómo quieres recibir tu pedido?</label>
+                            <div class="relative">
+                                <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
+                                    <option value="" disabled selected>Selecciona una opción...</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
+                            </div>
+                        </div>
+            
+                        <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
+                            <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
+                                    <div class="relative group z-30">
+                                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
+                                        <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
+                                        <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
+                                        <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
+                                    <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
+                                </div>
+                            </div>
+                            <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
+                                    <div class="relative group z-30">
+                                        <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
+                                        <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
+                                        <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
+                                        <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
+                                    <input id="c-address" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Calle, Av, Número...">
+                                </div>
+                                <div>
+                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
+                                    <input id="c-ref" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Frente a, color de casa...">
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
+                             <div class="relative">
+                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                                <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
+                             </div>
+                        </div>
+            
+                        <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                             <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cuándo lo enviamos?</label>
+                                <div class="relative">
+                                    <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary outline-none cursor-pointer transition">
+                                        <option value="" disabled selected>Elige fecha...</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-5 h-5"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-5 rounded-xl shadow-lg shadow-green-500/20 transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i> Enviar Datos por WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            
+                <div id="success-view" class="hidden flex flex-col items-center justify-center min-h-[50vh] text-center p-6 animate-fade-in flex-grow">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-6 shadow-sm">
+                        <i data-lucide="check" class="w-12 h-12"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">¡Abriendo WhatsApp!</h2>
+                    <p class="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+                        Tu envío ha sido generado correctamente. Continúa la conversación en el chat para finalizar.
+                    </p>
+                    <button onclick="window.location.reload()" class="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Crear otro envío
+                    </button>
+                </div>
+                                
+                <div class="mt-auto pt-6 border-t border-slate-100 pb-2 md:pb-2">
+                        <a href="index.html" target="_blank" class="group block bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="flex items-center justify-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
+                                <div class="text-left">
+                                    <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
+                                    <p class="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight">
+                                        ¿Vendes por WhatsApp? <br>
+                                        <span class="text-primary underline decoration-blue-200 underline-offset-2">Crea tu formulario gratis aquí</span>
+                                    </p>
+                                </div>
+                                
+                                <div class="text-gray-300 group-hover:text-primary transition-colors">
+                                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                        </a>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <div id="error-view" class="hidden h-screen flex flex-col items-center justify-center bg-white p-8 text-center">
+        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4">
+            <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+        </div>
+        <h1 class="text-xl font-bold text-slate-800 mb-2">Enlace incompleto</h1>
+        <p class="text-slate-500 text-sm">Falta el identificador de la tienda en la URL.</p>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN ORIGINAL DEL APP SCRIPT 
+        const API_URL = "https://script.google.com/macros/s/AKfycbztUhGy6UFQ-Qs1FWLFpDesKwRB5v86hZpqncJpfRmY0vTMMjzeK39zYg5haJQPFvkC3w/exec";
+        
+        // URLs de recursos estáticos (GitHub)
+        const URLS = {
+            districts: "lstDistritos.json",
+            agency: {
+                "Shalom": "lstShalom.json",
+                "Olva Courier": "lstOlvaCourier.json",
+                "Marvisur": "lstMarvisur.json"
+            }
+        };
+
+        const COURIER_TYPES = { 
+            "Shalom": "agency", 
+            "Olva Courier": "agency", 
+            "Marvisur": "agency", 
+            "Delivery": "home"
+        };
+        
+        const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
+
+        // Helper seguro para HTML
+        const escapeHtml = (unsafe) => {
+            if (typeof unsafe !== 'string') return unsafe;
+            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        };
+
+        // Estado del cliente
+        const state = {
+            merchantId: null,
+            config: {},
+            selectedCourierType: null,
+            selectedCourier: null,
+            externalData: { districts: null, agencies: [] }
+        };
+
+        const app = {
+            init: async () => {
+                // 1. Obtener Merchant ID de la URL
+                const p = new URLSearchParams(window.location.search);
+                state.merchantId = p.get('merchant');
+
+                if (!state.merchantId) {
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                    document.getElementById('view-client').classList.add('hidden');
+                    document.getElementById('error-view').classList.remove('hidden');
+                    lucide.createIcons();
+                    return;
+                }
+
+                // 2. Cargar Configuración del Emprendedor
+                try {
+                    const res = await fetch(`${API_URL}?action=getConfig&merchantId=${state.merchantId}`);
+                    const json = await res.json();
+                    
+                    if(json.data) {
+                        state.config = json.data;
+                        app.renderClient();
+                    } else {
+                        alert("No se encontró la configuración de la tienda.");
+                    }
+                } catch(e) {
+                    console.error("Error cargando config", e);
+                } finally {
+                    document.getElementById('loading-overlay').classList.add('hidden'); // Ocultar loader
+                }
+            },
+
+            renderClient: () => {
+                // Llenar datos de cabecera 
+                document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; 
+                document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
+                
+                const cl = state.config.couriers || []; 
+                const cs = document.getElementById('c-courier-select'); 
+                
+                if (cl.length) cs.innerHTML = '<option value="" disabled selected>Selecciona una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); 
+                else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; 
+                
+                app.generateDateOptions(); 
+                app.loadExternalLists(); 
+                lucide.createIcons();
+                
+                // Enfocar en celular
+                document.getElementById('c-phone').focus();
+            },
+
+            // --- LÓGICA DE AUTOCOMPLETADO (FILL FROM CACHE) ---
+            handleClientPhone: (el) => {
+                let val = el.value.replace(/\D/g, '');
+                if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
+                el.value = val;
+        
+                const badge = document.getElementById('user-found-badge');
+        
+                if (val.length === 9) {
+                    const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
+                    if (cache[val]) {
+                        badge.classList.remove('hidden');
+                        app.fillFromCache(cache[val]); // <-- AQUÍ SE LLENA TODO
+                        app.showToast('¡Hola de nuevo! Tus datos se cargaron ✨');
+                        
+                        // Efecto cascada visual
+                        ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => {
+                            setTimeout(() => app.revealStep(id), idx * 100);
+                        });
+                    } else {
+                        badge.classList.add('hidden');
+                        app.revealStep('block-service');
+                    }
+                }
+            },
+
+            fillFromCache: (data) => {
+                // 1. Nombre
+                if(data.name) document.getElementById('c-name').value = data.name;
+                
+                // 2. Courier y Despliegue de campos
+                if(data.courier) {
+                    const select = document.getElementById('c-courier-select');
+                    // Verificar que el courier siga disponible en la tienda
+                    if ([...select.options].some(o => o.value === data.courier)) {
+                        select.value = data.courier;
+                        app.onCourierChange(data.courier); // <-- Esto revela los campos internos
+                    }
+                }
+
+                // 3. Llenado de campos internos (Con pequeño delay para asegurar que el DOM reaccionó)
+                setTimeout(() => {
+                    if(data.type === 'agency') {
+                        if(data.dni) document.getElementById('c-dni').value = data.dni;
+                        if(data.agency) {
+                             document.getElementById('c-agency').value = data.agency;
+                             document.getElementById('btn-clear-agency').classList.remove('hidden');
+                        }
+                    } else {
+                        if(data.district) {
+                            document.getElementById('c-district').value = data.district;
+                            document.getElementById('btn-clear-district').classList.remove('hidden');
+                        }
+                        if(data.address) document.getElementById('c-address').value = data.address;
+                        if(data.ref) document.getElementById('c-ref').value = data.ref;
+                    }
+                    app.validateForm();
+                }, 100);
+            },
+
+            // --- LÓGICA DE INTERACCIÓN ---
+            revealStep: (id) => {
+                const el = document.getElementById(id);
+                if (el && el.classList.contains('hidden')) {
+                    el.classList.remove('hidden');
+                    setTimeout(() => { el.classList.remove('opacity-0', 'translate-y-4'); }, 50);
+                }
+            },
+
+            onCourierChange: (c) => { 
+                const type = COURIER_TYPES[c] || "home"; 
+                state.selectedCourierType = type; 
+                state.selectedCourier = c; 
+                
+                const dynamicSection = document.getElementById('dynamic-form-section');
+                dynamicSection.classList.remove('hidden'); 
+        
+                const af = document.getElementById('fields-agency');
+                const hf = document.getElementById('fields-home'); 
+                
+                // Reset visual inputs
+                ['c-dni','c-agency','c-address','c-district'].forEach(id => {
+                    document.getElementById(id).removeAttribute('required');
+                });
+            
+                if (type === 'agency') { 
+                    af.classList.remove('hidden'); 
+                    hf.classList.add('hidden'); 
+                    document.getElementById('c-dni').setAttribute('required','true'); 
+                    const ag = document.getElementById('c-agency'); 
+                    ag.setAttribute('required','true'); 
+                    ag.value = ""; // Limpiar visualmente para obligar búsqueda fresca o rellenado posterior
+                    app.loadAgencies(c);
+                    app.clearDistrict(); 
+                } else { 
+                    af.classList.add('hidden'); 
+                    hf.classList.remove('hidden'); 
+                    document.getElementById('c-address').setAttribute('required','true'); 
+                    document.getElementById('c-district').setAttribute('required','true'); 
+                    app.clearAgency(); 
+                    app.clearDistrict(); 
+                } 
+                app.validateForm(); 
+            },
+
+            // --- LÓGICA DE LISTAS EXTERNAS ---
+            loadExternalLists: async () => { 
+                try { 
+                    if (!state.externalData.districts) { 
+                        const res = await fetch(URLS.districts); 
+                        const data = await res.json(); 
+                        state.externalData.districts = data.map(d => d.Distrito || d.nombre); 
+                    } 
+                } catch(e) {} 
+            },
+            
+            loadAgencies: async (courierName) => {
+                const url = URLS.agency[courierName];
+                if (!url) { state.externalData.agencies = []; return; }
+                
+                const inputAgency = document.getElementById('c-agency');
+                inputAgency.placeholder = `Cargando sedes de ${courierName}...`;
+                inputAgency.disabled = true;
+            
+                try {
+                    const res = await fetch(url);
+                    const rawData = await res.json();
+                    state.externalData.agencies = rawData.map(item => ({
+                        Agencia: item.Agencia || item.c_nom_agencia || item.nombre || 'Agencia',
+                        Direccion: item.Direccion || item.c_direccion || item.direccion || ''
+                    }));
+                    inputAgency.placeholder = `Buscar sede ${courierName}...`;
+                    inputAgency.disabled = false;
+                } catch (e) {
+                    inputAgency.placeholder = "Error de carga.";
+                }
+            },
+
+            // --- BÚSQUEDAS ---
+            searchAgency: (q) => { 
+                const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); 
+                if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
+                x.classList.remove('hidden'); 
+                if(q.length<2) { c.classList.add('hidden'); return; } 
+                const lq = q.toLowerCase(); 
+                const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && a.Agencia.toLowerCase().includes(lq)) || (a.Direccion && a.Direccion.toLowerCase().includes(lq))).slice(0,50); 
+                c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}','${escapeHtml(a.Direccion.replace(/'/g,"\\'").replace(/\n/g," "))}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm mb-1">${escapeHtml(a.Agencia)}</p><p class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; 
+                c.classList.remove('hidden'); 
+            },
+            selectAgency: (n, a) => { document.getElementById('c-agency').value = `${n} - ${a}`; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.remove('hidden'); },
+            clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
+
+            searchDistrict: (q) => { 
+                const c = document.getElementById('district-results'), x = document.getElementById('btn-clear-district'); 
+                if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
+                x.classList.remove('hidden'); 
+                if(q.length<1) { c.classList.add('hidden'); return; } 
+                const lq = q.toLowerCase(); 
+                const m = (state.externalData.districts||[]).filter(d => d.toLowerCase().includes(lq)).slice(0,50); 
+                c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${escapeHtml(d).replace(/'/g,"\\'")}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm">${escapeHtml(d)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; 
+                c.classList.remove('hidden'); 
+            },
+            selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
+            clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
+
+            // --- FECHAS DINÁMICAS ---
+            generateDateOptions: () => { 
+                const s = document.getElementById('c-date-select'); 
+                s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; 
+                
+                const allowedDays = state.config.shippingDays || []; 
+                if (!allowedDays.length) return; 
+
+                const now = new Date(); 
+                const gap = parseInt(state.config.updateGap || 0);
+                const [cutHour, cutMinute] = (state.config.updateTime || "18:00").split(':').map(Number); 
+                
+                const cutTime = new Date(now); 
+                cutTime.setHours(cutHour, cutMinute, 0, 0); 
+
+                let startOffset = gap;
+                if (now > cutTime) startOffset = gap + 1;
+
+                for(let i = startOffset; i < (startOffset + 14); i++) { 
+                    const f = new Date(now); 
+                    f.setDate(now.getDate() + i); 
+                    const dayIndex = f.getDay(); 
+                    
+                    if(allowedDays.some(n => DAY_INDEX_MAP[n] === dayIndex)) { 
+                        const lbl = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
+                        const val = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; 
+                        const o = document.createElement('option'); 
+                        o.value = val; o.innerText = lbl; 
+                        s.appendChild(o); 
+                    } 
+                } 
+            },
+
+            validateForm: () => { 
+                const btn = document.getElementById('btn-submit-order');
+                const c = document.getElementById('c-courier-select').value; 
+                const d = document.getElementById('c-date-select').value; 
+                if(c && d) btn.removeAttribute('disabled'); 
+                else btn.setAttribute('disabled','true'); 
+            },
+
+            // --- ENVÍO FINAL ---
+            submitOrder: async (e) => { 
+                e.preventDefault(); 
+                
+                // Regenerar fechas para validar hora corte 'Just-in-Time'
+                app.generateDateOptions();
+                const dateSelect = document.getElementById('c-date-select');
+                if (!dateSelect.value) dateSelect.selectedIndex = 1; // Auto-fix si caducó
+
+                const phone = document.getElementById('c-phone').value.trim();
+                const name = document.getElementById('c-name').value.trim();
+                const day = dateSelect.value;
+
+                if (name.length < 3) return app.showToast("⚠️ Ingresa un nombre válido");
+                if (!/^9\d{8}$/.test(phone)) return app.showToast("⚠️ Celular inválido");
+
+                // Construcción de Datos
+                let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
+                let wa = ""; 
+                
+                // Guardar en Caché Local
+                const cacheData = { name: name, courier: state.selectedCourier, type: state.selectedCourierType };
+
+                if (state.selectedCourierType === 'agency') { 
+                    data.clientDni = document.getElementById('c-dni').value.trim(); 
+                    data.clientAgency = document.getElementById('c-agency').value; 
+                    cacheData.dni = data.clientDni;
+                    cacheData.agency = data.clientAgency;
+                    
+                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name}\n📱 ${phone}\n🆔 DNI: ${data.clientDni}\n🏢 Agencia: ${data.clientAgency}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
+                } else { 
+                    data.clientAddress = document.getElementById('c-address').value; 
+                    data.clientDistrict = document.getElementById('c-district').value; 
+                    data.clientRef = document.getElementById('c-ref').value; 
+                    cacheData.district = data.clientDistrict;
+                    cacheData.address = data.clientAddress;
+                    cacheData.ref = data.clientRef;
+
+                    wa = `📦 *NUEVO ENVÍO (DELIVERY)*\n\n👤 ${name}\n📱 ${phone}\n📍 ${data.clientDistrict}\n🏠 ${data.clientAddress}\n🗺️ Ref: ${data.clientRef}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
+                }
+
+                // Guardar caché persistente
+                const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
+                cache[phone] = cacheData;
+                localStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
+
+                // Abrir WhatsApp
+                setTimeout(() => {
+                    window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
+                    
+                    // Backup al Backend (Silent)
+                    try { 
+                        fetch(API_URL, { 
+                            method: "POST", 
+                            body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
+                        });
+                    } catch(e) {} 
+
+                    // Pantalla éxito
+                    document.getElementById('client-form').classList.add('hidden');
+                    document.getElementById('success-view').classList.remove('hidden');
+                }, 500);
+            },
+
+            showToast: (msg) => {
+                const el = document.getElementById('toast');
+                document.getElementById('toast-msg').innerText = msg;
+                el.classList.remove('opacity-0', '-translate-y-20');
+                setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
