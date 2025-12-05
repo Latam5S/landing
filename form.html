@@ -289,11 +289,17 @@
                 const p = new URLSearchParams(window.location.search);
                 state.merchantId = p.get('merchant');
 
-                if (!state.merchantId) {
+                // Helper para mostrar LA MISMA pantalla de error unificada
+                const showInvalidLinkError = () => {
                     document.getElementById('loading-overlay').classList.add('hidden');
                     document.getElementById('view-client').classList.add('hidden');
                     document.getElementById('error-view').classList.remove('hidden');
                     lucide.createIcons();
+                };
+
+                // CASO 1: No hay ID en la URL
+                if (!state.merchantId) {
+                    showInvalidLinkError();
                     return;
                 }
 
@@ -302,16 +308,21 @@
                     const res = await fetch(`${API_URL}?action=getConfig&merchantId=${state.merchantId}`);
                     const json = await res.json();
                     
-                    if(json.data) {
+                    // CASO 2: El ID existe en URL pero no en Base de Datos (o está incompleto)
+                    // Verificamos si json.data existe y tiene contenido válido
+                    if(json.data && json.data.merchantName) {
                         state.config = json.data;
                         app.renderClient();
+                        document.getElementById('loading-overlay').classList.add('hidden'); // Todo OK, ocultamos loader
                     } else {
-                        alert("No se encontró la configuración de la tienda.");
+                        // ID inválido / no encontrado -> Mismo error visual
+                        showInvalidLinkError();
                     }
+
                 } catch(e) {
                     console.error("Error cargando config", e);
-                } finally {
-                    document.getElementById('loading-overlay').classList.add('hidden'); // Ocultar loader
+                    // Si falla la conexión crítica, también podrías mostrar el error de enlace o uno de conexión
+                    showInvalidLinkError();
                 }
             },
 
