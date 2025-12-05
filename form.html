@@ -544,14 +544,32 @@
             submitOrder: async (e) => { 
                 e.preventDefault(); 
                 
-                // Regenerar fechas para validar hora corte 'Just-in-Time'
-                app.generateDateOptions();
                 const dateSelect = document.getElementById('c-date-select');
-                if (!dateSelect.value) dateSelect.selectedIndex = 1; // Auto-fix si caducó
+                const userChoice = dateSelect.value; // 1. GUARDAMOS lo que eligió el usuario
+
+                // 2. Regeneramos la lista (por si pasó la hora de corte mientras llenaba)
+                app.generateDateOptions();
+
+                // 3. RESTAURAMOS la selección del usuario
+                // Verificamos si la opción que eligió todavía existe en la nueva lista
+                let isValidChoice = false;
+                for(let i=0; i<dateSelect.options.length; i++){
+                    if(dateSelect.options[i].value === userChoice){
+                        dateSelect.selectedIndex = i;
+                        isValidChoice = true;
+                        break;
+                    }
+                }
+
+                // 4. Solo si la fecha elegida YA NO ES VÁLIDA (ej: era "Hoy" y pasó la hora), la cambiamos
+                if (!isValidChoice && dateSelect.options.length > 1) {
+                    dateSelect.selectedIndex = 1; // Auto-fix a la siguiente fecha
+                    app.showToast("⚠️ Hora de corte superada: Fecha actualizada.");
+                }
 
                 const phone = document.getElementById('c-phone').value.trim();
                 const name = document.getElementById('c-name').value.trim();
-                const day = dateSelect.value;
+                const day = dateSelect.value; // Usamos el valor final validado
 
                 if (name.length < 3) return app.showToast("⚠️ Ingresa un nombre válido");
                 if (!/^9\d{8}$/.test(phone)) return app.showToast("⚠️ Celular inválido");
