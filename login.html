@@ -2067,7 +2067,10 @@
                     // Clase activa
                     document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon"; 
 
-                    if(t==='share') document.getElementById('share-link').innerText=`${window.location.origin}${window.location.pathname}?merchant=${state.user.uid}`; 
+                    if(t === 'share') {
+                        // Actualizamos visualmente el texto usando la misma lógica
+                        document.getElementById('share-link').innerText = app.getShareUrl();
+                    }
 
                     // Si entramos a config, chequeamos el estado visualmente
                     if(t==='config') app.checkConfigStatus();
