@@ -666,20 +666,13 @@
         el.classList.remove('hidden');
         
         // Pequeño delay para permitir que el navegador procese el cambio de display antes de la opacidad
-        setTimeout(() => { 
-                app.toggleLoading(false); 
-                                
-                // Mensaje un poco más guiado
-                app.showToast('Guardado. ¡Listo para compartir!'); 
-                app.checkConfigStatus();
-
-                btn.disabled = false;
-                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
-                lucide.createIcons();
-
-                // --- CAMBIO AQUÍ: REDIRECCIÓN AUTOMÁTICA ---
-                app.setTab('share'); 
-        }, 500);
+        setTimeout(() => {
+            el.classList.remove('opacity-0');
+            if(el.firstElementChild) {
+                el.firstElementChild.classList.remove('scale-95');
+                el.firstElementChild.classList.add('scale-100');
+            }
+        }, 10);
         
         if(window.lucide) lucide.createIcons();
     },
@@ -745,7 +738,7 @@
             <h3 class="text-2xl font-bold text-white mb-2 text-center">Plan Pro</h3>
             <p class="text-slate-300 text-sm mb-6 leading-relaxed text-center">Desbloquea el historial ilimitado.</p>
             <button onclick="app.activateTrial()" class="w-full py-4 rounded-xl font-bold bg-gradient-to-r from-primary to-indigo-600 text-white hover:scale-[1.02] transition shadow-neon flex items-center justify-center gap-2">
-                <i data-lucide="sparkles" class="w-4 h-4"></i> Gratis por 7 días
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Actualizar Plan
             </button>
         `);
     },
