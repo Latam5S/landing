@@ -247,20 +247,12 @@
         // CONFIGURACIÓN ORIGINAL DEL APP SCRIPT 
         const API_URL = "https://script.google.com/macros/s/AKfycbyJlJR9Yb-ZjG0bXQYAEFv1J3ZofaWy59vIERIiLipt03XCSxTEMGI8VHtY3QZ60-NuKw/exec";
         
+        // URLs de recursos estáticos (GitHub)
         const URLS = {
-            // Lista maestra por defecto (para cuando no hay específica)
-            defaultDistricts: "lstDistritos.json", 
-            
-            // LISTAS ESPECÍFICAS DE COBERTURA (Delivery)
-            coverage: {
-                "Dinsides": "lstDinsides.json", // Crea este archivo
-                "Delivery": "lstDistritos.json" // Crea este archivo
-            },
-
-            // LISTAS DE AGENCIAS
+            districts: "lstDistritos.json",
             agency: {
                 "Shalom": "lstShalom.json",
-                "Olva Agencias": "lstOlvaCourier.json",
+                "Olva Courier": "lstOlvaCourier.json",
                 "Marvisur": "lstMarvisur.json"
             }
         };
@@ -269,7 +261,6 @@
             "Shalom": "agency", 
             "Olva Courier": "agency", 
             "Marvisur": "agency",
-            "Dinsides": "home",
             "Delivery": "home"
         };
         
@@ -455,44 +446,19 @@
                     document.getElementById('c-district').setAttribute('required','true'); 
                     app.clearAgency(); 
                     app.clearDistrict(); 
-                    app.loadExternalLists(c);
                 } 
                 app.validateForm(); 
             },
 
-            loadExternalLists: async (courierName) => { 
-                // 1. Decidir qué URL usar
-                // Si existe una específica en 'coverage', úsala. Si no, usa la general 'districts'.
-                let url = URLS.districts; 
-                if (courierName && URLS.coverage && URLS.coverage[courierName]) {
-                    url = URLS.coverage[courierName];
-                }
-
-                // 2. Feedback visual (Bloquear input mientras carga)
-                const input = document.getElementById('c-district');
-                if(input) {
-                    input.placeholder = "Cargando distritos...";
-                    input.disabled = true;
-                    input.value = ""; // Limpiar selección anterior para evitar errores
-                }
-                
-                // 3. Limpiar memoria para forzar la nueva lista
-                state.externalData.districts = []; 
-
+            // --- LÓGICA DE LISTAS EXTERNAS ---
+            loadExternalLists: async () => { 
                 try { 
-                    const res = await fetch(url); 
-                    const data = await res.json(); 
-                    // Mapeo flexible (soporta objetos con .Distrito, .nombre o strings directos)
-                    state.externalData.districts = data.map(d => d.Distrito || d.nombre || d); 
-                } catch(e) { 
-                    console.error("Error cargando distritos", e);
-                } finally {
-                    // 4. Desbloquear input
-                    if(input) {
-                        input.placeholder = "Buscar Distrito...";
-                        input.disabled = false;
-                    }
-                }
+                    if (!state.externalData.districts) { 
+                        const res = await fetch(URLS.districts); 
+                        const data = await res.json(); 
+                        state.externalData.districts = data.map(d => d.Distrito || d.nombre); 
+                    } 
+                } catch(e) {} 
             },
             
             loadAgencies: async (courierName) => {
