@@ -249,7 +249,12 @@
         
         // URLs de recursos estáticos (GitHub)
         const URLS = {
-            districts: "lstDistritos.json",
+            districts: "lstDistritos.json", // La general
+                
+            coverage: {
+                "Dinsides": "lstDinsides.json"
+            },
+            
             agency: {
                 "Shalom": "lstShalom.json",
                 "Olva Courier": "lstOlvaCourier.json",
@@ -261,6 +266,7 @@
             "Shalom": "agency", 
             "Olva Courier": "agency", 
             "Marvisur": "agency",
+            "Dinsides": "home",
             "Delivery": "home"
         };
         
@@ -334,8 +340,45 @@
                 const cl = state.config.couriers || []; 
                 const cs = document.getElementById('c-courier-select'); 
                 
-                if (cl.length) cs.innerHTML = '<option value="" disabled selected>Selecciona una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); 
-                else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; 
+                cs.innerHTML = '<option value="" disabled selected>Selecciona una opción...</option>';
+                
+                // --- LÓGICA DE PRIORIDAD (TU CAMBIO) ---
+                // 1. Definimos quién será el courier "real" para domicilios
+                let homeCourierDefinitivo = null;
+
+                // Si la lista de couriers del emprendedor CONTIENE "Dinsides"...
+                if (cl.includes("Dinsides")) {
+                    homeCourierDefinitivo = "Dinsides"; // Prioridad absoluta
+                } else {
+                    // Si no tiene Dinsides, buscamos el primero que sea tipo 'home' (ej: Delivery)
+                    homeCourierDefinitivo = cl.find(c => (COURIER_TYPES[c] || "home") === "home");
+                }
+                
+                // Guardamos esta decisión en el estado global
+                state.primaryHomeCourier = homeCourierDefinitivo;
+                // ----------------------------------------
+
+                let homeOptionAdded = false;
+
+                cl.forEach(c => {
+                    const type = COURIER_TYPES[c] || "home";
+                    
+                    if (type === 'agency') {
+                        // Agencias se muestran normal
+                        const opt = document.createElement('option');
+                        opt.value = c; opt.innerText = c;
+                        cs.appendChild(opt);
+                    } else {
+                        // Deliveries se agrupan bajo un solo nombre
+                        if (!homeOptionAdded) {
+                            const opt = document.createElement('option');
+                            opt.value = "GENERIC_HOME"; 
+                            opt.innerText = "Envío a Domicilio"; 
+                            cs.appendChild(opt);
+                            homeOptionAdded = true;
+                        }
+                    }
+                });
                 
                 app.generateDateOptions(); 
                 app.loadExternalLists(); 
@@ -450,15 +493,39 @@
                 app.validateForm(); 
             },
 
-            // --- LÓGICA DE LISTAS EXTERNAS ---
-            loadExternalLists: async () => { 
+            loadExternalLists: async (courierName) => { 
+                // 1. Decidir qué URL usar
+                // Si existe una específica en 'coverage', úsala. Si no, usa la general 'districts'.
+                let url = URLS.districts; 
+                if (courierName && URLS.coverage && URLS.coverage[courierName]) {
+                    url = URLS.coverage[courierName];
+                }
+
+                // 2. Feedback visual (Bloquear input mientras carga)
+                const input = document.getElementById('c-district');
+                if(input) {
+                    input.placeholder = "Actualizando cobertura...";
+                    input.disabled = true;
+                    input.value = ""; // Limpiar selección anterior para evitar errores
+                }
+                
+                // 3. Limpiar memoria para forzar la nueva lista
+                state.externalData.districts = []; 
+
                 try { 
-                    if (!state.externalData.districts) { 
-                        const res = await fetch(URLS.districts); 
-                        const data = await res.json(); 
-                        state.externalData.districts = data.map(d => d.Distrito || d.nombre); 
-                    } 
-                } catch(e) {} 
+                    const res = await fetch(url); 
+                    const data = await res.json(); 
+                    // Mapeo flexible (soporta objetos con .Distrito, .nombre o strings directos)
+                    state.externalData.districts = data.map(d => d.Distrito || d.nombre || d); 
+                } catch(e) { 
+                    console.error("Error cargando distritos", e);
+                } finally {
+                    // 4. Desbloquear input
+                    if(input) {
+                        input.placeholder = "Buscar Distrito...";
+                        input.disabled = false;
+                    }
+                }
             },
             
             loadAgencies: async (courierName) => {
