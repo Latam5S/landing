@@ -666,13 +666,20 @@
         el.classList.remove('hidden');
         
         // Pequeño delay para permitir que el navegador procese el cambio de display antes de la opacidad
-        setTimeout(() => {
-            el.classList.remove('opacity-0');
-            if(el.firstElementChild) {
-                el.firstElementChild.classList.remove('scale-95');
-                el.firstElementChild.classList.add('scale-100');
-            }
-        }, 10);
+        setTimeout(() => { 
+                app.toggleLoading(false); 
+                                
+                // Mensaje un poco más guiado
+                app.showToast('Guardado. ¡Listo para compartir!'); 
+                app.checkConfigStatus();
+
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
+                lucide.createIcons();
+
+                // --- CAMBIO AQUÍ: REDIRECCIÓN AUTOMÁTICA ---
+                app.setTab('share'); 
+        }, 500);
         
         if(window.lucide) lucide.createIcons();
     },
