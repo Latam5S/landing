@@ -533,7 +533,7 @@
         
     <script>
 
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbyJlJR9Yb-ZjG0bXQYAEFv1J3ZofaWy59vIERIiLipt03XCSxTEMGI8VHtY3QZ60-NuKw/exec";
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwy6GejNoEKAemSpfT1dmjYSXeecE3iIKIvQKpDdVwxTeu0AV5UEVLzfde24fWYsje7CA/exec";
 
         // CONFIGURACIÓN DE LIMITES DEL PLAN (FEATURE FLAGS)
         const PLAN_FEATURES = {
@@ -746,50 +746,33 @@
             
             // FUNCIÓN CORREGIDA: ACTIVAR PRUEBA GRATIS CONECTADA AL BACKEND
             activateTrial: async () => {
-                // 1. Mostrar carga
                 app.toggleLoading(true);
-
                 try {
-                    // 2. Llamada real al Google Sheet
-                    const response = await fetch(state.apiUrl, { 
+                    const res = await fetch(state.apiUrl, { 
                         method: "POST", 
-                        body: JSON.stringify({ 
-                            action: "startTrial", 
-                            merchantId: state.user.uid 
-                        }) 
+                        body: JSON.stringify({ action: "startTrial", merchantId: state.user.uid }) 
                     });
+                    const json = await res.json();
                     
-                    const json = await response.json();
-
-                    if (json.status === 'success') {
-                        // 3. Actualizar estado local solo si el servidor confirmó
-                        const now = new Date().getTime();
-                        state.user.plan = 'Pro (Prueba)';
-                        // Calculamos fecha visualmente, aunque el servidor manda (7 días)
-                        state.user.trialEndsAt = now + (7 * 24 * 60 * 60 * 1000);
-                        
-                        // 4. Guardar en navegador
-                        SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
-                        
-                        // 5. Actualizar UI
-                        app.closeModal('modal-upsell'); // Cerrar modal si existe
-                        document.getElementById('plan-limit-warning').classList.add('hidden'); // Quitar bloqueo visual
-                        
-                        // 6. Recargar datos para mostrar los pedidos que estaban ocultos
-                        app.showToast('¡Prueba Pro activada por 7 días!');
-                        await app.loadData(); 
-
+                    if(json.status === 'success') { 
+                        // ÉXITO
+                        state.user.plan = 'Pro (Prueba)'; 
+                        SafeStorage.setItem('app_current_user', JSON.stringify(state.user)); 
+                        app.closeModal(); 
+                        app.loadData(); 
+                        app.showToast('¡Prueba Activada! Disfruta 7 días Pro 🎉'); 
                     } else {
-                        app.showToast('Error: ' + (json.message || 'No se pudo activar'));
+                        // ERROR (Ya la usó)
+                        app.closeModal();
+                        // Mostramos el mensaje exacto que viene del backend
+                        app.showModal(json.message || 'No se pudo activar la prueba', () => app.closeModal());
                     }
-                } catch (e) {
-                    console.error(e);
-                    app.showToast('Error de conexión con el servidor');
-                } finally {
-                    app.toggleLoading(false);
-                }
+                } catch(e){
+                    app.showToast('Error de conexión');
+                } 
+                app.toggleLoading(false);
             },
-
+            
             setStatus: (newStatus) => {
                 app.closeModal('modal-status');
                 app.showModal(`¿Cambiar ${state.selectedOrders.size} envíos a ${newStatus}?`, async () => {
