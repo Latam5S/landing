@@ -530,188 +530,10 @@
             </div>
         </main>
     </div>
-
-    <!-- VISTA CLIENTE (White Theme) -->
-    <div id="view-client" class="flex-1 h-full hidden overflow-y-auto no-print bg-white text-slate-800 z-10">
-        
-        <div class="w-full max-w-2xl mx-auto min-h-[100dvh] bg-white flex flex-col relative">
-            
-            <div class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-md flex items-center gap-4">
-                <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary shadow-neon border border-primary/20 flex-shrink-0">
-                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h1 id="client-title" class="font-bold text-lg leading-tight truncate">Cargando...</h1>
-                    <p class="text-xs text-slate-400">Datos de Envío</p>
-                </div>
-            </div>
-                
-            <div class="flex-1 p-5 md:p-8 flex flex-col gap-4">
-                
-                <div class="rounded-xl bg-orange-50 border border-orange-100 p-4 flex items-start gap-3 shadow-sm relative overflow-hidden">
-                    
-                    <div class="absolute -right-4 -top-4 w-16 h-16 bg-orange-100 rounded-full opacity-50 pointer-events-none"></div>
-                
-                    <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm border border-orange-100 flex-shrink-0">
-                        <i data-lucide="clock" class="w-5 h-5"></i>
-                    </div>
-                
-                    <div class="flex-1 z-10">
-                        <h3 class="text-xs font-bold text-orange-800 uppercase tracking-wide mb-0.5">Programación de Envíos</h3>
-                        <p class="text-sm text-orange-900 leading-tight">
-                            Asegura tu envío registrando tu datos antes de las <strong id="client-time" class="bg-orange-200 px-1.5 py-0.5 rounded text-orange-950">--:--</strong>.
-                        </p>
-                    </div>
-                </div>
-            
-                <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6 pb-4 flex-shrink-0">
-                    <div id="block-identity" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-30">
-                         <label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i> Tu WhatsApp
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
-                            <input id="c-phone" 
-                                type="tel" 
-                                maxlength="9" 
-                                inputmode="numeric" 
-                                placeholder="9..." 
-                                oninput="app.handleClientPhone(this)"
-                                required 
-                                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 pr-4 pl-12 text-slate-800 font-bold text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-inner">
-                            <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                                <i data-lucide="sparkles" class="w-3 h-3"></i> Hola
-                            </div>
-                        </div>
-                        <p class="text-[10px] text-slate-400 mt-2 pl-1">Escribe tu número para cargar tus datos.</p>
-                    </div>
-            
-                    <div id="progressive-content" class="space-y-6">
-                        
-                        <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cómo quieres recibir tu pedido?</label>
-                            <div class="relative">
-                                <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
-                                    <option value="" disabled selected>Selecciona una opción...</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
-                            </div>
-                        </div>
-            
-                        <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
-                            <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
-                                    <div class="relative group z-30">
-                                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                        <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
-                                        <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                        <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
-                                    <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
-                                </div>
-                            </div>
-                            <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
-                                    <div class="relative group z-30">
-                                        <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                        <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
-                                        <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                        <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
-                                    <input id="c-address" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Calle, Av, Número...">
-                                </div>
-                                <div>
-                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
-                                    <input id="c-ref" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Frente a, color de casa...">
-                                </div>
-                            </div>
-                        </div>
-            
-                        <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
-                             <div class="relative">
-                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                                <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
-                             </div>
-                        </div>
-            
-                        <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                             <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cuándo lo enviamos?</label>
-                                <div class="relative">
-                                    <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary outline-none cursor-pointer transition">
-                                        <option value="" disabled selected>Elige fecha...</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                                </div>
-                            </div>
-                            <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-5 rounded-xl shadow-lg shadow-green-500/20 transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                                </svg>Enviar Datos por WhatsApp
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            
-                <div id="success-view" class="hidden flex flex-col items-center justify-center min-h-[50vh] text-center p-6 animate-fade-in flex-grow">
-                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-6 shadow-sm">
-                        <i data-lucide="check" class="w-12 h-12"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">¡Abriendo WhatsApp!</h2>
-                    <p class="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-                        Tu envío ha sido generado correctamente. Continúa la conversación en el chat para finalizar.
-                    </p>
-                    <button onclick="app.resetClientView()" class="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Crear otro envío
-                    </button>
-                </div>
-                                
-                <div class="mt-auto pt-6 border-t border-slate-100 pb-2 md:pb-2">
-                        <a href="index" target="_blank" class="group block bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
-                            <div class="flex items-center justify-center gap-4">
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
-                                <div class="text-left">
-                                    <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
-                                    <p class="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight">
-                                        ¿Vendes por WhatsApp? <br>
-                                        <span class="text-primary underline decoration-blue-200 underline-offset-2">Crea tu formulario gratis aquí</span>
-                                    </p>
-                                </div>
-                                
-                                <div class="text-gray-300 group-hover:text-primary transition-colors">
-                                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-            
-            </div>
-        </div>
-    </div>
         
     <script>
 
-        // --- APP LOGIC ---
-
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbyJlJR9Yb-ZjG0bXQYAEFv1J3ZofaWy59vIERIiLipt03XCSxTEMGI8VHtY3QZ60-NuKw/exec";
-        const JSON_DISTRITOS = "lstDistritos.json";
-        
-        // --- CONFIGURACIÓN DE URLS DE AGENCIAS ---
-        // Asegúrate de que estas URLs sean las RAW de tu repositorio GitHub
-        const AGENCY_URLS = {
-            "Shalom": "lstShalom.json",
-            "Olva Courier": "lstOlvaCourier.json",
-            "Marvisur": "lstMarvisur.json"
-        };
 
         // CONFIGURACIÓN DE LIMITES DEL PLAN (FEATURE FLAGS)
         const PLAN_FEATURES = {
@@ -726,13 +548,6 @@
             }
         };
 
-        const COURIER_TYPES = { 
-            "Shalom": "agency", 
-            "Olva Courier": "agency", 
-            "Marvisur": "agency",
-            "Dinsides": "home",
-            "Delivery": "home"
-        };
         const SafeStorage = { memory: {}, setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } };
         const ALL_COURIERS = [
             "Shalom", 
@@ -746,7 +561,7 @@
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
-        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, isClientView: false, config: { ...initialState }, selectedCourierType: null, externalData: {}, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
+        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, config: { ...initialState }, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
 
         // Helper para sanitizar XSS
         const escapeHtml = (unsafe) => {
@@ -754,94 +569,7 @@
             return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         };
 
-        window.app = {
-
-            // Helper para mostrar bloques con animación
-            revealStep: (id) => {
-                const el = document.getElementById(id);
-                if (el && el.classList.contains('hidden')) {
-                    el.classList.remove('hidden');
-                    // Timeout para permitir que el navegador procese el 'display: block' antes de la opacidad
-                    setTimeout(() => {
-                        el.classList.remove('opacity-0', 'translate-y-4');
-                    }, 50);
-                }
-            },
-            
-            // 1. Gatillador: Se activa al escribir en el campo WhatsApp
-            handleClientPhone: (el) => {
-                // Limpieza básica
-                let val = el.value.replace(/\D/g, '');
-                if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
-                el.value = val;
-        
-                const badge = document.getElementById('user-found-badge');
-        
-                if (val.length === 9) {
-                    // BUSCAR EN CACHÉ
-                    const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}');
-                    
-                    if (cache[val]) {
-                        // CASO A: CLIENTE ANTIGUO -> MOSTRAR TODO
-                        badge.classList.remove('hidden');
-                        app.fillFromCache(cache[val]);
-                        app.showToast('¡Hola de nuevo! Tus datos se cargaron ✨');
-                        
-                        // Revelamos todos los bloques en cascada rápida
-                        ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => {
-                            setTimeout(() => app.revealStep(id), idx * 100);
-                        });
-        
-                    } else {
-                        // CASO B: CLIENTE NUEVO -> MOSTRAR SOLO EL SIGUIENTE PASO
-                        badge.classList.add('hidden');
-                        app.revealStep('block-service');
-                    }
-                }
-            },
-
-            // 2. Rellenador Mágico
-            fillFromCache: (data) => {
-                // Nombre
-                if(data.name) document.getElementById('c-name').value = data.name;
-                
-                // Intentamos recuperar la última elección de courier si existe en el select
-                if(data.courier) {
-                    const select = document.getElementById('c-courier-select');
-                    // Verificamos si la opción aun existe (el vendedor podría haberla quitado)
-                    if ([...select.options].some(o => o.value === data.courier)) {
-                        select.value = data.courier;
-                        app.onCourierChange(data.courier); // Disparamos la lógica de mostrar campos
-                    }
-                }
-
-                // Rellenamos datos específicos según el tipo
-                setTimeout(() => { // Timeout para dar tiempo a onCourierChange a mostrar los divs
-                    if(data.type === 'agency') {
-                        if(data.dni) document.getElementById('c-dni').value = data.dni;
-                        // Agencia es compleja porque implica búsqueda, pero podemos intentar poner el texto
-                        if(data.agency) {
-                             document.getElementById('c-agency').value = data.agency;
-                             document.getElementById('btn-clear-agency').classList.remove('hidden');
-                        }
-                    } else {
-                        if(data.district) {
-                            document.getElementById('c-district').value = data.district;
-                            document.getElementById('btn-clear-district').classList.remove('hidden');
-                        }
-                        if(data.address) document.getElementById('c-address').value = data.address;
-                        if(data.ref) document.getElementById('c-ref').value = data.ref;
-                    }
-                    app.validateForm(); // Revalidar botón
-                }, 100);
-            },
-
-            // 3. Guardar en Memoria (Se llama al enviar)
-            saveToCache: (phone, data) => {
-                const cache = JSON.parse(SafeStorage.getItem('latam5s_client_cache') || '{}');
-                cache[phone] = data; // La llave es el celular
-                SafeStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
-            },
+        window.app = { 
 
             // --- NUEVA FUNCIÓN: Formateo estricto de WhatsApp ---
             formatWhatsapp: (el) => {
@@ -1116,348 +844,9 @@
                 el.classList.remove('opacity-0', '-translate-y-20');
                 setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
             },
-            // -------------------------------
    
-            loadExternalLists: async () => { 
-                try { 
-                    // Solo cargamos distritos al inicio. Las agencias se cargan al elegir courier.
-                    if (!state.externalData.districts) { 
-                        const res = await fetch(JSON_DISTRITOS); 
-                        const data = await res.json(); 
-                        state.externalData.districts = data.map(d => d.Distrito || d.nombre); 
-                    } 
-                } catch(e) { 
-                    console.error(e); 
-                } 
-            },
-            
-            loadAgencies: async (courierName) => {
-                const url = AGENCY_URLS[courierName];
-                
-                // Si el courier seleccionado no tiene lista (ej: Delivery), vaciamos y salimos
-                if (!url) {
-                    state.externalData.agencies = [];
-                    return;
-                }
-            
-                // Feedback visual para el usuario
-                const inputAgency = document.getElementById('c-agency');
-                inputAgency.placeholder = `Cargando sedes de ${courierName}...`;
-                inputAgency.disabled = true; // Bloqueamos mientras carga
-            
-                try {
-                    const res = await fetch(url);
-                    if (!res.ok) throw new Error("Error al cargar lista");
-                    
-                    const rawData = await res.json();
-            
-                    // --- ESTANDARIZACIÓN DE DATOS ---
-                    // Convertimos cualquier formato raro a { Agencia, Direccion }
-                    // Esto es clave para que tu validación estricta siga funcionando
-                    state.externalData.agencies = rawData.map(item => ({
-                        Agencia: item.Agencia || item.c_nom_agencia || item.nombre || 'Agencia',
-                        Direccion: item.Direccion || item.c_direccion || item.direccion || ''
-                    }));
-            
-                    // Habilitamos el input
-                    inputAgency.placeholder = `Buscar sede ${courierName}...`;
-                    inputAgency.disabled = false;
-                    
-                    // Limpiamos cualquier selección anterior
-                    app.clearAgency();
-            
-                } catch (e) {
-                    console.error(e);
-                    app.showToast(`Error cargando agencias de ${courierName}`);
-                    inputAgency.placeholder = "Error de carga. Intenta recargar.";
-                    state.externalData.agencies = [];
-                }
-            },
-            
             scrollToEl: (el) => { setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100); },
 
-            searchAgency: (q) => { const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } x.classList.remove('hidden'); if(q.length<2) { c.classList.add('hidden'); return; } const lq = q.toLowerCase(); const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && a.Agencia.toLowerCase().includes(lq)) || (a.Direccion && a.Direccion.toLowerCase().includes(lq))).slice(0,50); c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}','${escapeHtml(a.Direccion.replace(/'/g,"\\'").replace(/\n/g," "))}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm mb-1">${escapeHtml(a.Agencia)}</p><p class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; c.classList.remove('hidden'); },
-            selectAgency: (n, a) => { document.getElementById('c-agency').value = `${n} - ${a}`; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.remove('hidden'); },
-            clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
-            searchDistrict: (q) => { const c = document.getElementById('district-results'), x = document.getElementById('btn-clear-district'); if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } x.classList.remove('hidden'); if(q.length<1) { c.classList.add('hidden'); return; } const lq = q.toLowerCase(); const m = (state.externalData.districts||[]).filter(d => d.toLowerCase().includes(lq)).slice(0,50); c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${escapeHtml(d).replace(/'/g,"\\'")}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm">${escapeHtml(d)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; c.classList.remove('hidden'); },
-            selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
-            clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
-
-            generateDateOptions: () => { 
-                const s = document.getElementById('c-date-select'); 
-                s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; 
-                
-                const allowedDays = state.config.shippingDays || []; 
-                if (!allowedDays.length) return; 
-
-                // 1. CONFIGURACIÓN DEL HORIZONTE (Lo que preguntaste)
-                // Cambia este 14 por 21 (3 semanas) o 30 (1 mes) según prefieras.
-                const DIAS_A_MOSTRAR = 14; 
-
-                const now = new Date(); 
-                
-                // 2. LÓGICA DE ANTICIPACIÓN (GAP)
-                // Recuperamos la brecha configurada (ej: 2 días)
-                const gap = parseInt(state.config.updateGap || 0);
-                
-                // Hora de corte
-                const [cutHour, cutMinute] = (state.config.updateTime || "18:00").split(':').map(Number); 
-                const cutTime = new Date(now); 
-                cutTime.setHours(cutHour, cutMinute, 0, 0); 
-
-                // Si ya pasó la hora de corte, agregamos 1 día extra de penalización
-                // es decir, "hoy" ya no cuenta, empezamos a contar desde mañana + gap
-                let startOffset = gap;
-                if (now > cutTime) {
-                    startOffset = gap + 1;
-                }
-
-                // 3. GENERAR OPCIONES
-                // El bucle empieza en startOffset (día inicial válido)
-                // Y termina en startOffset + DIAS_A_MOSTRAR (horizonte)
-                for(let i = startOffset; i < (startOffset + DIAS_A_MOSTRAR); i++) { 
-                    const f = new Date(now); 
-                    f.setDate(now.getDate() + i); 
-                    
-                    const dayIndex = f.getDay(); // 0 = Domingo, 1 = Lunes...
-                    
-                    // Verificamos si este día de la semana está permitido en tu configuración
-                    // DAY_INDEX_MAP debe coincidir con tus arrays ["Lun", "Mar"...]
-                    if(allowedDays.some(n => DAY_INDEX_MAP[n] === dayIndex)) { 
-                        // Formato visual: "Lunes 25 Ene"
-                        const lbl = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
-                        // Formato interno (Value): "Lunes 25/01" (Para guardar en BD)
-                        const val = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; 
-                        
-                        const o = document.createElement('option'); 
-                        o.value = val; 
-                        o.innerText = lbl; 
-                        s.appendChild(o); 
-                    } 
-                } 
-            },
-            
-            onCourierChange: (c) => { 
-                const type = COURIER_TYPES[c] || "home"; 
-                state.selectedCourierType = type; 
-                state.selectedCourier = c; 
-                
-                // 1. Mostrar contenedor de destino
-                const dynamicSection = document.getElementById('dynamic-form-section');
-                dynamicSection.classList.remove('hidden'); // Este no tiene animación de opacidad propia, es contenedor
-        
-                const af = document.getElementById('fields-agency');
-                const hf = document.getElementById('fields-home'); 
-                
-                // Reset de validaciones visuales
-                ['c-dni','c-agency','c-address','c-district'].forEach(id => {
-                    document.getElementById(id).removeAttribute('required');
-                });
-            
-                if (type === 'agency') { 
-                    // Mostrar Agencia, Ocultar Casa
-                    af.classList.remove('hidden'); 
-                    hf.classList.add('hidden'); 
-                    
-                    document.getElementById('c-dni').setAttribute('required','true'); 
-                    const ag = document.getElementById('c-agency'); 
-                    ag.setAttribute('required','true'); 
-                    ag.value = ""; 
-                    
-                    app.loadAgencies(c);
-                    app.clearDistrict(); 
-                } else { 
-                    // Mostrar Casa, Ocultar Agencia
-                    af.classList.add('hidden'); 
-                    hf.classList.remove('hidden'); 
-                    
-                    document.getElementById('c-address').setAttribute('required','true'); 
-                    document.getElementById('c-district').setAttribute('required','true'); 
-                    
-                    app.clearAgency(); 
-                    app.clearDistrict(); 
-                } 
-                
-                // --- UX: NO revelamos 'block-personal' todavía ---
-                // Se revelará cuando el usuario haga FOCUS en 'c-agency' o 'c-district'
-                // (Esto ya lo configuramos en el HTML con onfocus="app.revealStep('block-personal')")
-                
-                app.validateForm(); 
-            },       
-            
-            validateForm: () => { const btn = document.getElementById('btn-submit-order'), c = document.getElementById('c-courier-select').value, d = document.getElementById('c-date-select').value; if(c && d) btn.removeAttribute('disabled'); else btn.setAttribute('disabled','true'); },
-
-            submitOrder: async (e) => { 
-                e.preventDefault(); 
-                
-                // --- LÓGICA DE AUTO-CORRECCIÓN DE FECHA (Just-in-Time) ---
-                const dateSelect = document.getElementById('c-date-select');
-                const oldDate = dateSelect.value; // La fecha que el usuario creía que elegía
-
-                // 1. Regeneramos el calendario con la hora ACTUAL EXACTA
-                // Esto aplica la regla de hora de corte al instante del clic
-                app.generateDateOptions();
-
-                // 2. Verificamos si la fecha elegida sigue existiendo en la nueva lista
-                // (generateDateOptions borra el select, así que buscamos si el valor oldDate está en las nuevas opciones)
-                let finalDate = oldDate;
-                const options = Array.from(dateSelect.options).map(o => o.value);
-                let dateChanged = false;
-
-                if (options.includes(oldDate)) {
-                    // Si existe, la volvemos a seleccionar visualmente (porque generateDateOptions reseteó el HTML)
-                    dateSelect.value = oldDate;
-                } else {
-                    // 3. SI YA NO EXISTE (Pasó el corte): Seleccionamos la siguiente disponible
-                    // El index 0 es el placeholder, el index 1 es la fecha más próxima válida
-                    if (dateSelect.options.length > 1) {
-                        dateSelect.selectedIndex = 1; 
-                        finalDate = dateSelect.value;
-                        dateChanged = true;
-                    }
-                }
-                // ------------------------------------------------------------
-
-                // Captura de datos básicos
-                const phone = document.getElementById('c-phone').value.trim();
-                const name = document.getElementById('c-name').value.trim();
-                const day = finalDate; // Usamos la fecha validada/corregida
-
-                // --- RESTO DE VALIDACIONES (Igual que antes) ---
-                if (name.length < 3) {
-                    document.getElementById('c-name').focus();
-                    return app.showToast("⚠️ Ingresa un nombre válido");
-                }
-                if (!/^9\d{8}$/.test(phone)) {
-                    document.getElementById('c-phone').focus();
-                    return app.showToast("⚠️ Celular inválido");
-                }
-                if (!day) return app.showToast("⚠️ Error en fecha");
-
-                // --- CAPTURA DE DATOS ESPECÍFICOS ---
-                let data = { 
-                    clientName: name, 
-                    clientPhone: phone, 
-                    courier: state.selectedCourier, 
-                    shippingDate: day, // Fecha corregida
-                    createdAt: Date.now(), 
-                    product: "N/A" 
-                }; 
-                
-                let wa = ""; 
-                let dni = "";
-
-                if (state.selectedCourierType === 'agency') { 
-                    // Validación Agencia...
-                    dni = document.getElementById('c-dni').value.trim();
-                    const ag = document.getElementById('c-agency').value;
-                    // ... (Tus validaciones de DNI y Agencia siguen igual aquí) ...
-                    if (!/^\d{8,12}$/.test(dni)) return app.showToast("⚠️ DNI inválido");
-                    if (ag.length < 3) return app.showToast("⚠️ Agencia inválida");
-
-                    data.clientDni = dni; 
-                    data.clientAgency = ag; 
-                    
-                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n` +
-                         `👤 ${name}\n` +
-                         `📱 ${phone}\n` +
-                         `🆔 DNI: ${dni}\n` +
-                         `🏢 Agencia: ${ag}\n\n` +
-                         `🚚 ${state.selectedCourier}\n` +
-                         `📅 ${day}`; // Usamos fecha corregida
-                } else { 
-                    // Validación Domicilio...
-                    const ad = document.getElementById('c-address').value;
-                    const ds = document.getElementById('c-district').value;
-                    const rf = document.getElementById('c-ref').value; 
-                    
-                    if (ds.length < 3) return app.showToast("⚠️ Distrito inválido");
-                    if (ad.length < 5) return app.showToast("⚠️ Dirección muy corta");
-                    if (rf.length < 3) return app.showToast("⚠️ Referencia obligatoria");
-
-                    data.clientAddress = ad; 
-                    data.clientDistrict = ds; 
-                    data.clientRef = rf; 
-                    
-                    wa = `📦 *NUEVO ENVÍO (DELIVERY)*\n\n` +
-                         `👤 ${name}\n` +
-                         `📱 ${phone}\n` +
-                         `📍 ${ds}\n` +
-                         `🏠 ${ad}\n` +
-                         `🗺️ Ref: ${rf}\n\n` +
-                         `🚚 ${state.selectedCourier}\n` +
-                         `📅 ${day}`; // Usamos fecha corregida
-                } 
-
-                // --- AVISO INTELIGENTE AL USUARIO ---
-                if (dateChanged) {
-                    app.showToast('⚠️ Hora de corte superada: Fecha actualizada automáticamente.');
-                    // Pequeña pausa para que lea el toast antes de abrir WA (Opcional)
-                }
-
-                // --- CACHÉ (Lógica existente) ---
-                const cacheData = {
-                    name: name,
-                    courier: state.selectedCourier,
-                    type: state.selectedCourierType
-                };
-                if (state.selectedCourierType === 'agency') {
-                    cacheData.dni = dni;
-                    cacheData.agency = document.getElementById('c-agency').value;
-                } else {
-                    cacheData.district = document.getElementById('c-district').value;
-                    cacheData.address = document.getElementById('c-address').value;
-                    cacheData.ref = document.getElementById('c-ref').value;
-                }
-                app.saveToCache(phone, cacheData);
-
-                // --- ABRIR WHATSAPP ---
-                const whatsappUrl = `https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`;
-                
-                // Si hubo cambio de fecha, damos un segundo extra para que lea el toast
-                const delay = dateChanged ? 1500 : 0;
-                
-                setTimeout(() => {
-                    window.open(whatsappUrl, '_blank');
-                    
-                    // Enviar al Backend
-                    try { 
-                        fetch(state.apiUrl, { 
-                            method: "POST", 
-                            body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
-                        }).catch(err => console.error(err));
-                    } catch(e) {} 
-
-                    // Pantalla de Éxito
-                    document.getElementById('client-form').classList.add('hidden');
-                    document.getElementById('success-view').classList.remove('hidden');
-                }, delay);
-            },
-
-            // FUNCIÓN ACTUALIZADA: Reiniciar (Volver al inicio)
-            resetClientView: () => {
-                const form = document.getElementById('client-form');
-                const successView = document.getElementById('success-view');
-                const badge = document.getElementById('user-found-badge');
-        
-                successView.classList.add('hidden');
-                form.classList.remove('hidden');
-                badge.classList.add('hidden');
-                
-                // OCULTAR TODOS LOS BLOQUES PROGRESIVOS
-                ['block-service', 'block-personal', 'block-closing'].forEach(id => {
-                    const el = document.getElementById(id);
-                    el.classList.add('hidden', 'opacity-0', 'translate-y-4');
-                });
-                document.getElementById('dynamic-form-section').classList.add('hidden');
-        
-                form.reset();
-                document.getElementById('btn-submit-order').setAttribute('disabled', 'true');
-                
-                // Foco al inicio
-                document.getElementById('c-phone').focus();
-            },        
-            
             handleLogin: async (e) => { 
                 e.preventDefault(); 
                 const p = document.getElementById('auth-phone').value.trim();
@@ -2018,25 +1407,6 @@
                     // Validar estado inicial al renderizar
                     app.checkConfigStatus(); 
                 },
-          
-            renderClient: () => { 
-                document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; 
-                document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
-                const cl = state.config.couriers || []; 
-                const cs = document.getElementById('c-courier-select'); 
-                
-                // ... (tu código existente de renderizado) ...
-                
-                if (cl.length) cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>' + cl.map(c => `<option value="${c}">${c}</option>`).join(''); 
-                else cs.innerHTML = '<option value="" disabled selected>Sin couriers</option>'; 
-                
-                app.generateDateOptions(); 
-                app.loadExternalLists(); 
-                lucide.createIcons(); 
-                
-                // ---> AGREGAR ESTA LÍNEA AQUÍ <---
-                app.setupClientAutoRefresh(); 
-            },
             
             setTab: (t) => {
                     // --- BLOQUEO DE SEGURIDAD UX ---
@@ -2077,41 +1447,31 @@
                     // Si entramos a config, chequeamos el estado visualmente
                     if(t==='config') app.checkConfigStatus();
                 },
-
-
-            // --- AUTO-REFRESH PARA CLIENTES (Sincronización de Configuración) ---
-            setupClientAutoRefresh: () => {
-                // Validación de seguridad: Solo ejecutar si es la vista pública
-                if (!state.isClientView) return;
-
-                let refreshTimer;
-                const LIMIT = 30 * 60 * 1000; // 30 Minutos
-
-                const reloadForm = () => {
-                    // Recarga suave: Guarda la posición del scroll si es posible, o recarga total
-                    // Usamos reload para forzar que se descargue la nueva configuración del Google Sheet
-                    window.location.reload();
-                };
-
-                const resetTimer = () => {
-                    clearTimeout(refreshTimer);
-                    refreshTimer = setTimeout(reloadForm, LIMIT);
-                };
-
-                // Eventos que indican que el cliente sigue ahí (y no debemos recargar todavía)
-                const events = ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-                events.forEach(evt => document.addEventListener(evt, resetTimer, { passive: true }));
-                
-                // Iniciar contador
-                resetTimer();
-                console.log("🔄 Monitor de actualización de configuración iniciado (30 min)");
-            },
-            
+   
             init: () => {
-                const p = new URLSearchParams(window.location.search); const mid = p.get('merchant');
+                // Ya no buscamos merchant en URL
+                const u = JSON.parse(SafeStorage.getItem('app_current_user'));
+                
+                // Ocultamos todas las vistas por defecto
                 document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
-                if (mid) { state.isClientView=true; state.merchantId=mid; document.getElementById('view-client').classList.remove('hidden'); app.loadData(); }
-                else { const u = JSON.parse(SafeStorage.getItem('app_current_user')); if(u) { state.user=u; if(u.isAdmin) { document.getElementById('view-admin').classList.remove('hidden'); app.adminLoadUsers(); } else { state.merchantId=u.uid; document.getElementById('view-dashboard').classList.remove('hidden'); app.setTab('config'); app.loadData(); } } else { document.getElementById('view-auth').classList.remove('hidden'); } }
+
+                if(u) {
+                    state.user = u;
+                    if(u.isAdmin) {
+                        // Si es Admin Maestro
+                        document.getElementById('view-admin').classList.remove('hidden');
+                        app.adminLoadUsers();
+                    } else {
+                        // Si es Emprendedor
+                        state.merchantId = u.uid;
+                        document.getElementById('view-dashboard').classList.remove('hidden');
+                        app.setTab('config');
+                        app.loadData();
+                    }
+                } else {
+                    // Si no hay usuario, mostrar Login
+                    document.getElementById('view-auth').classList.remove('hidden');
+                }
                 lucide.createIcons();
             }
         };
