@@ -421,15 +421,28 @@
                 // 2. Courier y Despliegue de campos
                 if(data.courier) {
                     const select = document.getElementById('c-courier-select');
-                    // Verificar que el courier siga disponible en la tienda
-                    if ([...select.options].some(o => o.value === data.courier)) {
-                        select.value = data.courier;
-                        app.onCourierChange(data.courier); // <-- Esto revela los campos internos
+                    const type = COURIER_TYPES[data.courier] || "home";
+                    
+                    if (type === 'agency') {
+                        // Si es Agencia, buscamos el nombre exacto en el select
+                        if ([...select.options].some(o => o.value === data.courier)) {
+                            select.value = data.courier;
+                            app.onCourierChange(data.courier); 
+                        }
+                    } else {
+                        // Si es Delivery (Home), seleccionamos la opción Genérica
+                        // Esto funciona aunque el caché diga "Dinsides" y el select diga "GENERIC_HOME"
+                        select.value = "GENERIC_HOME";
+                        app.onCourierChange("GENERIC_HOME");
                     }
                 }
 
-                // 3. Llenado de campos internos (Con pequeño delay para asegurar que el DOM reaccionó)
+                // 3. Llenado de campos internos
                 setTimeout(() => {
+                    // --- FORZAR FECHA VACÍA SIEMPRE ---
+                    document.getElementById('c-date-select').value = ""; 
+                    // ----------------------------------
+
                     if(data.type === 'agency') {
                         if(data.dni) document.getElementById('c-dni').value = data.dni;
                         if(data.agency) {
@@ -457,10 +470,19 @@
                 }
             },
 
-            onCourierChange: (c) => { 
-                const type = COURIER_TYPES[c] || "home"; 
+            onCourierChange: (val) => { 
+                // 1. TRADUCCIÓN DE MÁSCARA
+                // Si el valor es el genérico, usamos el real que calculamos en renderClient (ej: "Dinsides")
+                let realCourier = val;
+                if (val === "GENERIC_HOME") {
+                    realCourier = state.primaryHomeCourier;
+                }
+
+                // 2. Guardar el nombre REAL para el backend y para cargar listas
+                state.selectedCourier = realCourier;
+
+                const type = COURIER_TYPES[realCourier] || "home"; 
                 state.selectedCourierType = type; 
-                state.selectedCourier = c; 
                 
                 const dynamicSection = document.getElementById('dynamic-form-section');
                 dynamicSection.classList.remove('hidden'); 
@@ -479,8 +501,8 @@
                     document.getElementById('c-dni').setAttribute('required','true'); 
                     const ag = document.getElementById('c-agency'); 
                     ag.setAttribute('required','true'); 
-                    ag.value = ""; // Limpiar visualmente para obligar búsqueda fresca o rellenado posterior
-                    app.loadAgencies(c);
+                    ag.value = ""; 
+                    app.loadAgencies(realCourier); // <--- Usamos realCourier
                     app.clearDistrict(); 
                 } else { 
                     af.classList.add('hidden'); 
@@ -488,7 +510,10 @@
                     document.getElementById('c-address').setAttribute('required','true'); 
                     document.getElementById('c-district').setAttribute('required','true'); 
                     app.clearAgency(); 
-                    app.clearDistrict(); 
+                    app.clearDistrict();
+                    
+                    // Cargar lista específica (ej: Dinsides.json)
+                    app.loadExternalLists(realCourier); // <--- Usamos realCourier
                 } 
                 app.validateForm(); 
             },
