@@ -1108,7 +1108,8 @@
                 const dSpec = document.getElementById('date-specific').value;
                 
                 const filtered = state.allOrders.filter(x => {
-                    const txt = `${x.clientName} ${x.clientPhone} ${x.clientDistrict || ''} ${x.clientAgency || ''}`.toLowerCase();
+                    // Búsqueda en TODOS los campos relevantes
+                    const txt = `${x.clientName} ${x.clientPhone} ${x.clientDni || ''} ${x.clientDistrict || ''} ${x.clientAgency || ''} ${x.clientAddress || ''} ${x.clientRef || ''} ${x.courier} ${x.status || ''}`.toLowerCase();
                     if (!txt.includes(q)) return false;
                     
                     // 2. CORRECCIÓN: Filtro por Fecha de Despacho (shippingDate)
