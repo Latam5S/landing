@@ -557,9 +557,6 @@
             "Delivery"
         ];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
-        const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
-        const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-        const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
         const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, config: { ...initialState }, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
 
@@ -1024,60 +1021,41 @@
                 window.open(url, '_blank');
             },
             
-            // FUNCIÓN CORREGIDA: CARGA DE DATOS CON SINCRONIZACIÓN DE PLAN
             loadData: async () => { 
                 app.toggleLoading(true); 
                 
-                // 1. Cargar Configuración (Igual que antes)
+                // 1. Cargar Configuración
                 state.config = { ...initialState }; 
                 try { 
                     const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`); 
                     const json = await res.json(); 
                     if (json.data) state.config = json.data; 
                 } catch(e){ 
-                    // Fallback a memoria local si falla la red
                     const local = SafeStorage.getItem(`config_${state.merchantId}`); 
                     if(local) state.config = JSON.parse(local); 
                 } 
                 
-                // 2. NUEVO: Verificar estado real del usuario (Sincronización Servidor -> Cliente)
-                // Esto es vital para detectar si la prueba gratuita expiró según el Google Sheet
-                if (state.user && state.merchantId && !state.isClientView) {
+                // 2. Verificar estado del plan
+                if (state.user && state.merchantId) {
                     try {
                         const resStatus = await fetch(`${state.apiUrl}?action=getUserStatus&merchantId=${state.merchantId}`);
                         const jsonStatus = await resStatus.json();
                         
-                        if (jsonStatus.status === 'success') {
-                            // Si el plan en el servidor es diferente al local (ej. expiró el trial)
-                            if (jsonStatus.plan !== state.user.plan) {
-                                state.user.plan = jsonStatus.plan;
-                                // Si volvió a gratis, limpiamos la fecha de trial local
-                                if (jsonStatus.plan === 'Gratis') delete state.user.trialEndsAt;
-                                
-                                // Guardamos el nuevo estado real
-                                SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
-                                app.showToast('Tu plan se ha actualizado');
-                            }
+                        if (jsonStatus.status === 'success' && jsonStatus.plan !== state.user.plan) {
+                            state.user.plan = jsonStatus.plan;
+                            if (jsonStatus.plan === 'Gratis') delete state.user.trialEndsAt;
+                            SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
+                            app.showToast('Tu plan se ha actualizado');
                         }
-                    } catch(e) {
-                        console.log("No se pudo verificar el estado del plan (Offline)");
-                    }
+                    } catch(e) { console.log("Offline check"); }
 
-                    // Actualizar textos en la interfaz (Móvil y Escritorio)
                     document.querySelectorAll('.user-phone-display').forEach(el => el.innerText = state.user.phone);
-                    if(state.user.plan) {
-                        document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user.plan.toUpperCase()}`);
-                    }
+                    if(state.user.plan) document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user.plan.toUpperCase()}`);
                 }
 
-                // 3. Renderizado de Vistas
-                if (state.isClientView) { 
-                    app.renderClient(); 
-                } else { 
-                    app.renderDashboard(); 
-                    // Importante: loadOrders usará el plan actualizado para decidir si muestra u oculta datos
-                    app.loadOrders(); 
-                } 
+                // 3. Renderizado (Directo al dashboard, ya no hay cliente)
+                app.renderDashboard(); 
+                app.loadOrders(); 
                 
                 app.toggleLoading(false); 
             },
