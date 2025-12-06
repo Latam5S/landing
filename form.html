@@ -333,6 +333,9 @@
             },
 
             renderClient: () => {
+
+                document.title = `Envío - ${state.config.merchantName}`;
+                
                 // Llenar datos de cabecera 
                 document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; 
                 document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
