@@ -744,7 +744,7 @@
     },
 
             
-            // FUNCIÓN CORREGIDA: ACTIVAR PRUEBA GRATIS CONECTADA AL BACKEND
+            // FUNCIÓN CORREGIDA: ACTIVACIÓN INMEDIATA
             activateTrial: async () => {
                 app.toggleLoading(true);
                 try {
@@ -755,16 +755,26 @@
                     const json = await res.json();
                     
                     if(json.status === 'success') { 
-                        // ÉXITO
+                        // 1. Actualizar Estado Local Inmediatamente (Sin preguntar al servidor)
                         state.user.plan = 'Pro (Prueba)'; 
                         SafeStorage.setItem('app_current_user', JSON.stringify(state.user)); 
+                        
+                        // 2. Actualizar Visualmente el Badge del Plan (Sidebar)
+                        document.querySelectorAll('.user-plan-display').forEach(el => 
+                            el.innerText = `PLAN ${state.user.plan.toUpperCase()}`
+                        );
+
+                        // 3. Cerrar Modal
                         app.closeModal(); 
-                        app.loadData(); 
+                        
+                        // 4. Recargar los Pedidos (Ahora que el estado es PRO, se mostrarán)
+                        // IMPORTANTE: No llamamos a loadData(), solo a loadOrders()
+                        await app.loadOrders(); 
+                        
                         app.showToast('¡Prueba Activada! Disfruta 7 días Pro 🎉'); 
                     } else {
                         // ERROR (Ya la usó)
                         app.closeModal();
-                        // Mostramos el mensaje exacto que viene del backend
                         app.showModal(json.message || 'No se pudo activar la prueba', () => app.closeModal());
                     }
                 } catch(e){
