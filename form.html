@@ -157,7 +157,7 @@
                         <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
                             <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca y selecciona la Agencia</label>
                                     <div class="relative group z-30">
                                         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
                                         <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateAgencyOnBlur(this)" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
@@ -172,7 +172,7 @@
                             </div>
                             <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca y selecciona el Distrito</label>
                                     <div class="relative group z-30">
                                         <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
                                         <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateDistrictOnBlur(this)" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
