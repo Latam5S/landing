@@ -160,7 +160,7 @@
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca tu Agencia</label>
                                     <div class="relative group z-30">
                                         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                        <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
+                                        <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateAgencyOnBlur(this)" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
                                         <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
                                         <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
                                     </div>
@@ -480,7 +480,29 @@
                     app.validateForm();
                 }, 100);
             },
-
+            
+            validateAgencyOnBlur: (el) => {
+                // Pequeño delay para permitir que el click en el dropdown ocurra primero
+                setTimeout(() => {
+                    const val = el.value.trim();
+                    if (!val) return; // Si está vacío no molestamos
+            
+                    const loadedAgencies = state.externalData.agencies || [];
+                    const isValid = loadedAgencies.some(item => {
+                        return `${item.Agencia} - ${item.Direccion}` === val;
+                    });
+            
+                    if (!isValid) {
+                        // UX: Si no es válido, borramos el campo para obligar a seleccionar
+                        // Opcional: Podrías dejar el texto pero ponerlo en rojo. 
+                        // Yo recomiendo borrarlo para evitar que piensen que está bien.
+                        el.value = "";
+                        app.showToast("⚠️ Selecciona una opción del listado");
+                        document.getElementById('agency-results').classList.add('hidden');
+                    }
+                }, 200); // 200ms de delay es suficiente
+            },
+            
             // --- LÓGICA DE INTERACCIÓN ---
             revealStep: (id) => {
                 const el = document.getElementById(id);
@@ -696,6 +718,30 @@
 
                 if (name.length < 3) return app.showToast("⚠️ Ingresa un nombre válido");
                 if (!/^9\d{8}$/.test(phone)) return app.showToast("⚠️ Celular inválido");
+
+                // --- NUEVA VALIDACIÓN ESTRICTA DE AGENCIA ---
+                if (state.selectedCourierType === 'agency') {
+                    const inputAgency = document.getElementById('c-agency');
+                    const currentValue = inputAgency.value.trim();
+                    
+                    // 1. Verificamos si hay agencias cargadas
+                    const loadedAgencies = state.externalData.agencies || [];
+                    
+                    // 2. Buscamos coincidencia exacta
+                    // Reconstruimos el string "Nombre - Dirección" tal como lo hace la función selectAgency
+                    const isValid = loadedAgencies.some(item => {
+                        const comparisonString = `${item.Agencia} - ${item.Direccion}`;
+                        return comparisonString === currentValue;
+                    });
+            
+                    if (!isValid) {
+                        // UX: Enfocar el input, agitarlo (animación visual) y mostrar error
+                        inputAgency.focus();
+                        inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                        setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                        return app.showToast("⚠️ Debes seleccionar una agencia válida de la lista");
+                    }
+                }
 
                 // Construcción de Datos
                 let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
