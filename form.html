@@ -175,7 +175,7 @@
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Distrito</label>
                                     <div class="relative group z-30">
                                         <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                        <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
+                                        <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateDistrictOnBlur(this)" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
                                         <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
                                         <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
                                     </div>
@@ -480,7 +480,24 @@
                     app.validateForm();
                 }, 100);
             },
+
+            validateDistrictOnBlur: (el) => {
+                // Delay de 200ms para permitir que el click en la lista ocurra primero
+                setTimeout(() => {
+                    const val = el.value.trim();
+                    if (!val) return; // Si está vacío, no hacemos nada
             
+                    const validDistricts = state.externalData.districts || [];
+                    
+                    // Si lo que escribió NO está en la lista...
+                    if (!validDistricts.includes(val)) {
+                        el.value = ""; // Borramos el dato inválido
+                        app.showToast("⚠️ Por favor, elige un distrito de la lista");
+                        document.getElementById('district-results').classList.add('hidden');
+                    }
+                }, 200);
+            },
+
             validateAgencyOnBlur: (el) => {
                 // Pequeño delay para permitir que el click en el dropdown ocurra primero
                 setTimeout(() => {
@@ -729,19 +746,30 @@
                     
                     // 2. Buscamos coincidencia exacta
                     // Reconstruimos el string "Nombre - Dirección" tal como lo hace la función selectAgency
-                    const isValid = loadedAgencies.some(item => {
-                        const comparisonString = `${item.Agencia} - ${item.Direccion}`;
-                        return comparisonString === currentValue;
-                    });
-            
-                    if (!isValid) {
-                        // UX: Enfocar el input, agitarlo (animación visual) y mostrar error
-                        inputAgency.focus();
-                        inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
-                        setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
-                        return app.showToast("⚠️ Debes seleccionar una agencia válida de la lista");
-                    }
-                }
+                    const isValid = loadedAgencies.some(item => `${item.Agencia} - ${item.Direccion}` === inputAgency.value.trim());
+                            
+                            if (!isValid) {
+                                inputAgency.focus();
+                                inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                                setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                                return app.showToast("⚠️ Selecciona una agencia de la lista");
+                            }
+                    
+                        } else {
+                            // === NUEVA VALIDACIÓN PARA DISTRITOS (Domicilio) ===
+                            const inputDist = document.getElementById('c-district');
+                            const currentDist = inputDist.value.trim();
+                            const validDistricts = state.externalData.districts || []; // Tu lista plana de strings
+                    
+                            // Verificamos si el texto escrito existe EXACTAMENTE en la lista cargada
+                            if (!validDistricts.includes(currentDist)) {
+                                // UX: Feedback de error visual
+                                inputDist.focus();
+                                inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                                setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                                return app.showToast("⚠️ Debes seleccionar un distrito válido de la lista");
+                            }
+                        }
 
                 // Construcción de Datos
                 let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
