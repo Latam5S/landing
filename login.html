@@ -1218,7 +1218,7 @@
             
                 app.toggleLoading(true);
             
-                // Carga dinámica de la librería SheetJS
+                // Carga dinámica de librería Excel
                 if (typeof XLSX === 'undefined') {
                     await new Promise((resolve, reject) => {
                         const script = document.createElement('script');
@@ -1229,87 +1229,86 @@
                     });
                 }
             
-                // Obtener año actual (ej: "25") para completar la fecha
+                // Año actual para formatear fecha
                 const currentYear = new Date().getFullYear().toString().slice(-2);
             
-                // 1. Mapeo de datos con la estructura solicitada
                 const dataToExport = list.map(x => {
                     
-                    // --- A. LIMPIEZA DE FECHA (dd/mm/aa) ---
+                    // 1. FORMATEO DE FECHA (dd/mm/aa)
                     let fechaClean = x.shippingDate || "";
-                    // Buscamos patrones como "25/11" dentro del texto "Lunes 25/11"
                     const dateMatch = fechaClean.match(/(\d{2})\/(\d{2})/);
                     if (dateMatch) {
                         fechaClean = `${dateMatch[1]}/${dateMatch[2]}/${currentYear}`;
                     }
-            
-                    // --- B. VARIABLES PARA LAS COLUMNAS ---
-                    let colAgenciaDistrito = ""; // Columna compartida: Nombre Agencia o Distrito
-                    let colDireccionRef = "";    // Columna compartida: Dirección Agencia o Dirección Casa + Ref
-                    let colDni = "";             // Columna Exclusiva: DNI
-            
+
+                    // 2. LOGICA DE COLUMNAS
+                    let colAgenciaDistrito = "";
+                    let colDireccionRef = "";
+                    let colDni = "";
+
                     if (x.clientAgency) {
-                        // === CASO AGENCIA (Provincia) ===
-                        // x.clientAgency viene como: "Shalom Arequipa - Av Ejercito 123"
-                        const parts = x.clientAgency.split(' - ');
+                        // === CASO AGENCIA ===
+                        // INTENTO 1: Separar por el NUEVO separador seguro " | "
+                        let parts = x.clientAgency.split(' | ');
                         
-                        colAgenciaDistrito = parts[0] || x.clientAgency; // Ej: "Shalom Arequipa"
-                        colDireccionRef = parts[1] || "";                // Ej: "Av Ejercito 123"
-                        colDni = x.clientDni || "";                      // DNI en su propia columna
-                        
+                        // Fallback para datos antiguos: Si no hay "|", no intentamos adivinar con "-" 
+                        // para evitar romper nombres como "Chiriaco - Imaza". 
+                        // Ponemos todo en la primera columna por seguridad.
+                        if (parts.length < 2) {
+                            parts = [x.clientAgency, ""]; 
+                        }
+
+                        colAgenciaDistrito = parts[0] || x.clientAgency; 
+                        colDireccionRef = parts[1] || ""; 
+                        colDni = x.clientDni || ""; // DNI en columna aparte
+
                     } else {
-                        // === CASO DOMICILIO (Delivery / Dinsides) ===
-                        colAgenciaDistrito = x.clientDistrict || "";     // Ej: "Miraflores"
-                        
-                        // Concatenamos Dirección y Referencia limpias
+                        // === CASO DOMICILIO ===
+                        colAgenciaDistrito = x.clientDistrict || "";
+                        // Unificamos Dirección + Referencia en la misma columna
                         const dir = x.clientAddress || "";
                         const ref = x.clientRef ? ` (Ref: ${x.clientRef})` : "";
-                        colDireccionRef = (dir + ref).trim();            // Ej: "Calle Lima 123 (Ref: Casa verde)"
-                        
-                        colDni = ""; // En delivery a domicilio el formulario no pide DNI obligatorio
+                        colDireccionRef = (dir + ref).trim();
+                        colDni = ""; // Vacío
                     }
             
+                    // Estructura Final de Columnas
                     return {
                         "Fecha Envío": fechaClean,
                         "Courier": x.courier,
                         "Cliente": x.clientName,
                         "Teléfono": x.clientPhone,
-                        "Agencia / Distrito": colAgenciaDistrito,      // Columna Unificada 1
-                        "Dirección / Ref": colDireccionRef,            // Columna Unificada 2
-                        "DNI": colDni,                                 // Columna Independiente
+                        "Agencia / Distrito": colAgenciaDistrito,
+                        "Dirección / Ref": colDireccionRef,
+                        "DNI": colDni,
                         "Estado": x.status || "PENDIENTE",
                         "Fecha Registro": new Date(x.createdAt || Date.now()).toLocaleDateString()
                     };
                 });
             
-                // 2. Crear Hoja de Cálculo
+                // Generación del archivo
                 const ws = XLSX.utils.json_to_sheet(dataToExport);
-            
-                // Ajustar anchos de columna para mejor lectura
-                const wscols = [
-                    {wch: 12}, // Fecha Envío
+                
+                // Anchos de columna optimizados
+                ws['!cols'] = [
+                    {wch: 10}, // Fecha
                     {wch: 15}, // Courier
                     {wch: 25}, // Cliente
-                    {wch: 15}, // Teléfono
-                    {wch: 30}, // Agencia / Distrito
-                    {wch: 45}, // Dirección / Ref
+                    {wch: 12}, // Telefono
+                    {wch: 35}, // Agencia/Distrito (Ancho para nombres largos)
+                    {wch: 45}, // Direccion
                     {wch: 12}, // DNI
-                    {wch: 15}, // Estado
-                    {wch: 15}  // Fecha Registro
+                    {wch: 12}, // Estado
+                    {wch: 12}  // Fecha Reg
                 ];
-                ws['!cols'] = wscols;
             
-                // 3. Crear Libro y Guardar
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Envíos Latam5S");
-            
                 const today = new Date().toISOString().slice(0,10);
-                const fileName = `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`;
-            
-                XLSX.writeFile(wb, fileName);
+                XLSX.writeFile(wb, `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`);
                 
                 app.toggleLoading(false);
-                app.showToast('Excel descargado correctamente 📊');
+                app.showToast('Excel descargado correctamente');
             },
 
             printLabels: () => {
