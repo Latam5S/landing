@@ -2,23 +2,19 @@
 <html lang="es">
 <head>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Agenda tu envío</title>
-
     <meta name="description" content="Agenda tu envío de manera simple, rápida y segura.">
-    
-    <meta property="og:title" content="Agenda tu envío">
-    <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/form/main/Spin.png">
-    
     <meta name="robots" content="noindex">
     <meta name="theme-color" content="#fffaf6">
+
+    <meta property="og:title" content="Agenda tu envío">
+    <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/form/main/Spin.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -27,11 +23,11 @@
             theme: {
                 extend: {
                     colors: {
-                        brand_bg: '#fffaf6',       /* Fondo Crema v2 */
-                        brand_card: '#ffffff',     /* Fondo Blanco Tarjeta v2 */
-                        brand_accent: '#D96B4F',   /* Terracota Principal v2 */
-                        brand_accent_alt: '#FF8B6A', /* Terracota Claro v2 */
-                        brand_text: '#2b2b2b',     /* Texto Oscuro v2 */
+                        brand_bg: '#fffaf6',       
+                        brand_card: '#ffffff',     
+                        brand_accent: '#D96B4F',   
+                        brand_accent_alt: '#FF8B6A', 
+                        brand_text: '#2b2b2b',     
                         danger: '#d93025',
                     },
                     fontFamily: {
@@ -57,17 +53,15 @@
         body { font-family: "Quicksand", sans-serif; background-color: #fffaf6; color: #2b2b2b; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Eliminar estilos por defecto de inputs */
         input, select { -webkit-appearance: none; appearance: none; }
-        /* Transiciones suaves */
         .input-transition { transition: all 0.2s ease-in-out; }
     </style>
 </head>
 <body class="min-h-[100dvh] flex flex-col items-center justify-center p-4 selection:bg-brand_accent selection:text-white">
 
     <div id="loading-overlay" class="fixed inset-0 bg-brand_bg/95 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
-        <img src="https://raw.githubusercontent.com/complicidad/form/main/Spin.png" alt="Cargando..." class="w-[120px] h-auto animate-pulse mb-4">
-        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-brand_accent"></div>
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-brand_accent"></div>
+        <p class="mt-4 text-brand_accent font-bold text-xs uppercase tracking-widest animate-pulse">Cargando...</p>
     </div>
 
     <div id="toast" class="fixed top-5 right-5 z-[100] bg-brand_text text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0 border border-gray-700 max-w-sm">
@@ -77,16 +71,16 @@
         <span id="toast-msg" class="font-bold text-sm leading-tight">Notificación</span>
     </div>
 
-    <main class="w-full max-w-xl bg-white p-6 md:p-10 rounded-2xl shadow-soft relative animate-fade-in my-auto">
+    <main class="w-full max-w-xl bg-white p-6 md:p-10 rounded-2xl shadow-soft relative animate-fade-in my-auto flex flex-col">
         
-        <div class="text-center mb-8">
-            <img src="https://raw.githubusercontent.com/complicidad/form/main/Spin.png" alt="Logo" class="h-auto max-w-[180px] mx-auto">
+        <div class="text-center mb-6">
+            <img src="https://raw.githubusercontent.com/complicidad/form/main/Spin.png" alt="Logo" class="h-auto max-w-[150px] mx-auto">
             <h1 id="client-title" class="hidden text-xl font-bold mt-4 text-brand_text">Cargando...</h1> 
         </div>
 
-        <div id="view-client" class="relative">
+        <div id="view-client" class="relative flex-1">
             
-            <div class="mb-8 p-4 bg-orange-50 border border-orange-100 rounded-xl flex gap-3 items-start">
+            <div class="mb-6 p-4 bg-orange-50 border border-orange-100 rounded-xl flex gap-3 items-start">
                 <i data-lucide="clock" class="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0"></i>
                 <div class="text-sm text-orange-800">
                     <span class="font-bold block mb-1">Hora de corte: <span id="client-time">--:--</span></span>
@@ -97,20 +91,11 @@
             <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6">
                 
                 <div id="block-identity" class="relative z-30">
-                     <label class="block text-sm font-bold text-brand_text mb-2 ml-1">
-                        WhatsApp con el que compraste <span class="text-danger">*</span>
-                    </label>
+                     <label class="block text-sm font-bold text-brand_text mb-2 ml-1">WhatsApp con el que compraste <span class="text-danger">*</span></label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">+51</span>
-                        <input id="c-phone" 
-                            type="tel" 
-                            maxlength="9" 
-                            inputmode="numeric" 
-                            placeholder="9XXXXXXXX" 
-                            oninput="app.handleClientPhone(this)"
-                            required 
+                        <input id="c-phone" type="tel" maxlength="9" inputmode="numeric" placeholder="9XXXXXXXX" oninput="app.handleClientPhone(this)" required 
                             class="w-full bg-white border border-gray-300 rounded-xl py-3.5 pr-4 pl-14 text-brand_text text-lg outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-300">
-                        
                         <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-700 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1 animate-fade-in">
                             <i data-lucide="sparkles" class="w-3 h-3"></i> ¡Te conocemos!
                         </div>
@@ -130,7 +115,6 @@
                     </div>
         
                     <div id="dynamic-form-section" class="hidden space-y-5 transition-all duration-500">
-                        
                         <div id="fields-agency" class="hidden space-y-5 animate-fade-in">
                             <div>
                                 <label class="block text-sm font-bold text-brand_text mb-2 ml-1">Busca tu Agencia <span class="text-danger">*</span></label>
@@ -138,7 +122,6 @@
                                     <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
                                     <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateAgencyOnBlur(this)" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl pl-12 pr-10 py-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
                                     <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1 hover:text-danger"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                    
                                     <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 divide-y divide-gray-100"></div>
                                 </div>
                             </div>
@@ -155,7 +138,6 @@
                                     <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
                                     <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateDistrictOnBlur(this)" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl pl-12 pr-10 py-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
                                     <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1 hover:text-danger"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                    
                                     <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 divide-y divide-gray-100"></div>
                                 </div>
                             </div>
@@ -189,72 +171,54 @@
                         <button type="submit" id="btn-submit-order" class="w-full bg-brand_accent text-white font-bold py-4 rounded-xl shadow-lg hover:bg-brand_accent_alt transition-all duration-200 transform active:scale-95 flex justify-center items-center gap-2 text-lg">
                             Confirmar y agendar envío
                         </button>
-                        
-                        <p class="text-center text-xs text-gray-400">
-                            Usaremos tus datos solo para procesar y entregar tu pedido.
-                        </p>
                     </div>
                 </div>
             </form>
         
             <div id="success-view" class="hidden flex flex-col items-center justify-center py-10 text-center animate-fade-in">
-                <div class="mb-6">
-                    <svg class="w-20 h-20 text-brand_accent mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                </div>
-                
+                <div class="mb-6"><svg class="w-20 h-20 text-brand_accent mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></div>
                 <h2 class="text-2xl font-bold text-brand_text mb-2">¡Datos registrados!</h2>
-                <p class="text-gray-500 mb-8 max-w-xs mx-auto">
-                    Tu envío se generó correctamente. Se abrirá WhatsApp para finalizar.
-                </p>
+                <p class="text-gray-500 mb-8 max-w-xs mx-auto">Tu envío se generó correctamente. Se abrirá WhatsApp para finalizar.</p>
+                <button onclick="window.location.reload()" class="mt-4 text-brand_accent hover:text-brand_accent_alt font-bold underline text-sm">Crear otro envío</button>
+            </div>
 
-                <p class="font-bold text-brand_text mb-4">Mientras esperas, ¡síguenos!</p>
-                <div class="flex justify-center gap-4">
-                     <a href="#" class="opacity-80 hover:opacity-100 transition"><img src="https://raw.githubusercontent.com/complicidad/form/main/whatsapp.png" width="32"></a>
-                     <a href="#" class="opacity-80 hover:opacity-100 transition"><img src="https://raw.githubusercontent.com/complicidad/form/main/tik-tok.png" width="32"></a>
-                     <a href="#" class="opacity-80 hover:opacity-100 transition"><img src="https://raw.githubusercontent.com/complicidad/form/main/instagram.png" width="32"></a>
-                </div>
-
-                <button onclick="window.location.reload()" class="mt-10 text-brand_accent hover:text-brand_accent_alt font-bold underline text-sm">
-                    Crear otro envío
-                </button>
+            <div class="mt-12 pt-6 border-t border-gray-100 pb-2">
+                <a href="index" target="_blank" class="group block bg-brand_bg hover:bg-orange-50 border border-orange-100 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand_accent flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
+                        <div class="text-left">
+                            <p class="text-[10px] uppercase font-bold text-brand_accent_alt tracking-wider mb-0.5">Powered by Latam5S</p>
+                            <p class="text-sm font-bold text-brand_text group-hover:text-brand_accent transition-colors leading-tight">
+                                ¿Vendes por WhatsApp? <br>
+                                <span class="underline decoration-brand_accent/30 underline-offset-2">Crea tu formulario gratis aquí</span>
+                            </p>
+                        </div>
+                        <div class="text-gray-300 group-hover:text-brand_accent transition-colors">
+                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </a>
             </div>
         
         </div>
     </main>
 
-    <footer class="mt-8 text-center text-gray-400 text-xs">
-        <p>Powered by <a href="#" class="font-bold text-brand_accent hover:underline">Latam5S</a></p>
-    </footer>
-
     <div id="error-view" class="hidden fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-8 text-center">
-        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4">
-            <i data-lucide="alert-triangle" class="w-8 h-8"></i>
-        </div>
+        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4"><i data-lucide="alert-triangle" class="w-8 h-8"></i></div>
         <h1 class="text-xl font-bold text-gray-800 mb-2">Enlace no válido</h1>
         <p class="text-gray-500 text-sm">No hemos podido identificar la tienda. Verifica el enlace.</p>
     </div>
 
     <script>
-        // --- CONFIGURACIÓN TÉCNICA (NO TOCAR) ---
         const API_URL = "https://script.google.com/macros/s/AKfycbyJlJR9Yb-ZjG0bXQYAEFv1J3ZofaWy59vIERIiLipt03XCSxTEMGI8VHtY3QZ60-NuKw/exec";
         
         const URLS = {
             districts: "lstDistritos.json",
             coverage: { "Dinsides": "lstDinsides.json" },
-            agency: {
-                "Shalom": "lstShalom.json",
-                "Olva Courier": "lstOlvaCourier.json",
-                "Marvisur": "lstMarvisur.json"
-            }
+            agency: { "Shalom": "lstShalom.json", "Olva Courier": "lstOlvaCourier.json", "Marvisur": "lstMarvisur.json" }
         };
 
-        const COURIER_TYPES = { 
-            "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency",
-            "Dinsides": "home", "Delivery": "home"
-        };
-        
+        const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency", "Dinsides": "home", "Delivery": "home" };
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
@@ -263,44 +227,31 @@
             init: async () => {
                 const p = new URLSearchParams(window.location.search);
                 state.merchantId = p.get('merchant');
-                
-                // Mostrar error si no hay ID
                 if (!state.merchantId) return app.showError();
-
                 try {
                     const res = await fetch(`${API_URL}?action=getConfig&merchantId=${state.merchantId}`);
                     const json = await res.json();
-                    
                     if(json.data && json.data.merchantName) {
                         state.config = json.data;
                         app.renderClient();
                         document.getElementById('loading-overlay').classList.add('hidden');
-                    } else {
-                        app.showError();
-                    }
-                } catch(e) {
-                    app.showError();
-                }
+                    } else { app.showError(); }
+                } catch(e) { app.showError(); }
             },
             
             showError: () => {
                 document.getElementById('loading-overlay').classList.add('hidden');
-                document.getElementById('view-client').parentElement.classList.add('hidden'); // Ocultar main card
+                document.getElementById('view-client').parentElement.classList.add('hidden');
                 document.getElementById('error-view').classList.remove('hidden');
                 lucide.createIcons();
             },
 
-            // HELPER PARA NORMALIZAR TEXTO (Tildes)
-            normalizeText: (text) => {
-                return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            },
+            normalizeText: (text) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(),
 
             renderClient: () => {
                 document.title = `Envío - ${state.config.merchantName}`;
-                // Título en el Header
                 document.getElementById('client-title').innerText = state.config.merchantName || "Agenda tu envío";
                 document.getElementById('client-title').classList.remove('hidden');
-
                 document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
                 
                 const cl = state.config.couriers || []; 
@@ -308,11 +259,8 @@
                 cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>';
                 
                 let homeCourierDefinitivo = null;
-                if (cl.includes("Dinsides")) {
-                    homeCourierDefinitivo = "Dinsides";
-                } else {
-                    homeCourierDefinitivo = cl.find(c => (COURIER_TYPES[c] || "home") === "home");
-                }
+                if (cl.includes("Dinsides")) homeCourierDefinitivo = "Dinsides";
+                else homeCourierDefinitivo = cl.find(c => (COURIER_TYPES[c] || "home") === "home");
                 state.primaryHomeCourier = homeCourierDefinitivo;
 
                 let homeOptionAdded = false;
@@ -320,22 +268,20 @@
                     const type = COURIER_TYPES[c] || "home";
                     if (type === 'agency') {
                         const opt = document.createElement('option');
-                        opt.value = c; opt.innerText = "Retiro en agencia " + c; // UX wording v2
+                        opt.value = c; opt.innerText = "Retiro en agencia " + c; 
                         cs.appendChild(opt);
                     } else {
                         if (!homeOptionAdded) {
                             const opt = document.createElement('option');
                             opt.value = "GENERIC_HOME"; 
-                            opt.innerText = "Envío a domicilio / trabajo"; // UX wording v2
+                            opt.innerText = "Envío a domicilio / trabajo"; 
                             cs.appendChild(opt);
                             homeOptionAdded = true;
                         }
                     }
                 });
                 
-                app.generateDateOptions(); 
-                app.loadExternalLists(); 
-                lucide.createIcons();
+                app.generateDateOptions(); app.loadExternalLists(); lucide.createIcons();
                 document.getElementById('c-phone').focus();
             },
 
@@ -343,19 +289,14 @@
                 let val = el.value.replace(/\D/g, '');
                 if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
                 el.value = val;
-        
                 const badge = document.getElementById('user-found-badge');
-        
                 if (val.length === 9) {
                     const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
                     if (cache[val]) {
                         badge.classList.remove('hidden');
                         app.fillFromCache(cache[val]); 
                         app.showToast('¡Hola de nuevo! Cargamos tus datos ✨');
-                        
-                        ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => {
-                            setTimeout(() => app.revealStep(id), idx * 100);
-                        });
+                        ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => setTimeout(() => app.revealStep(id), idx * 100));
                     } else {
                         badge.classList.add('hidden');
                         app.revealStep('block-service');
@@ -365,36 +306,23 @@
 
             fillFromCache: (data) => {
                 if(data.name) document.getElementById('c-name').value = data.name;
-                
                 if(data.courier) {
                     const select = document.getElementById('c-courier-select');
                     const type = COURIER_TYPES[data.courier] || "home";
-                    
                     if (type === 'agency') {
-                        if ([...select.options].some(o => o.value === data.courier)) {
-                            select.value = data.courier;
-                            app.onCourierChange(data.courier); 
-                        }
-                    } else {
-                        select.value = "GENERIC_HOME";
-                        app.onCourierChange("GENERIC_HOME");
-                    }
+                        if ([...select.options].some(o => o.value === data.courier)) { select.value = data.courier; app.onCourierChange(data.courier); }
+                    } else { select.value = "GENERIC_HOME"; app.onCourierChange("GENERIC_HOME"); }
                 }
-
                 setTimeout(() => {
                     document.getElementById('c-date-select').value = ""; 
                     if(data.type === 'agency') {
                         if(data.dni) document.getElementById('c-dni').value = data.dni;
                         if(data.agency) {
-                             // Reconstrucción del formato PIPE
-                             document.getElementById('c-agency').value = data.agency;
+                             document.getElementById('c-agency').value = data.agency; // Ya incluye PIPE si viene de nuevo cache
                              document.getElementById('btn-clear-agency').classList.remove('hidden');
                         }
                     } else {
-                        if(data.district) {
-                            document.getElementById('c-district').value = data.district;
-                            document.getElementById('btn-clear-district').classList.remove('hidden');
-                        }
+                        if(data.district) { document.getElementById('c-district').value = data.district; document.getElementById('btn-clear-district').classList.remove('hidden'); }
                         if(data.address) document.getElementById('c-address').value = data.address;
                         if(data.ref) document.getElementById('c-ref').value = data.ref;
                     }
@@ -405,94 +333,50 @@
                 const el = document.getElementById(id);
                 if (el && el.classList.contains('hidden')) {
                     el.classList.remove('hidden');
-                    setTimeout(() => { el.classList.remove('opacity-0', 'translate-y-4'); }, 50);
-                    
-                    // UX: Auto-scroll suave si es necesario
-                    if(id === 'block-service' || id === 'block-closing') {
-                         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
+                    setTimeout(() => el.classList.remove('opacity-0', 'translate-y-4'), 50);
+                    if(id === 'block-service' || id === 'block-closing') el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             },
 
             onCourierChange: (val) => { 
-                let realCourier = val;
-                if (val === "GENERIC_HOME") realCourier = state.primaryHomeCourier;
-                
+                let realCourier = val === "GENERIC_HOME" ? state.primaryHomeCourier : val;
                 state.selectedCourier = realCourier;
-                const type = COURIER_TYPES[realCourier] || "home"; 
-                state.selectedCourierType = type; 
-                
+                state.selectedCourierType = COURIER_TYPES[realCourier] || "home"; 
                 document.getElementById('dynamic-form-section').classList.remove('hidden'); 
-        
-                const af = document.getElementById('fields-agency');
-                const hf = document.getElementById('fields-home'); 
-                
-                ['c-dni','c-agency','c-address','c-district'].forEach(id => {
-                    document.getElementById(id).removeAttribute('required');
-                });
-            
-                if (type === 'agency') { 
-                    af.classList.remove('hidden'); 
-                    hf.classList.add('hidden'); 
+                const af = document.getElementById('fields-agency'), hf = document.getElementById('fields-home'); 
+                ['c-dni','c-agency','c-address','c-district'].forEach(id => document.getElementById(id).removeAttribute('required'));
+                if (state.selectedCourierType === 'agency') { 
+                    af.classList.remove('hidden'); hf.classList.add('hidden'); 
                     document.getElementById('c-dni').setAttribute('required','true'); 
-                    const ag = document.getElementById('c-agency'); 
-                    ag.setAttribute('required','true'); 
-                    ag.value = ""; 
-                    app.loadAgencies(realCourier); 
-                    app.clearDistrict(); 
+                    document.getElementById('c-agency').setAttribute('required','true'); document.getElementById('c-agency').value = ""; 
+                    app.loadAgencies(realCourier); app.clearDistrict(); 
                 } else { 
-                    af.classList.add('hidden'); 
-                    hf.classList.remove('hidden'); 
-                    document.getElementById('c-address').setAttribute('required','true'); 
-                    document.getElementById('c-district').setAttribute('required','true'); 
-                    app.clearAgency(); 
-                    app.clearDistrict();
-                    app.loadExternalLists(realCourier);
+                    af.classList.add('hidden'); hf.classList.remove('hidden'); 
+                    document.getElementById('c-address').setAttribute('required','true'); document.getElementById('c-district').setAttribute('required','true'); 
+                    app.clearAgency(); app.clearDistrict(); app.loadExternalLists(realCourier);
                 } 
             },
 
             loadExternalLists: async (courierName) => { 
-                let url = URLS.districts; 
-                if (courierName && URLS.coverage && URLS.coverage[courierName]) {
-                    url = URLS.coverage[courierName];
-                }
+                let url = (courierName && URLS.coverage && URLS.coverage[courierName]) ? URLS.coverage[courierName] : URLS.districts;
                 const input = document.getElementById('c-district');
-                if(input) {
-                    input.placeholder = "Cargando distritos...";
-                    input.disabled = true;
-                    input.value = "";
-                }
+                if(input) { input.placeholder = "Cargando distritos..."; input.disabled = true; input.value = ""; }
                 state.externalData.districts = []; 
-
                 try { 
-                    const res = await fetch(url); 
-                    const data = await res.json(); 
-                    // Mapeo flexible para distritos
+                    const res = await fetch(url); const data = await res.json(); 
                     state.externalData.districts = data.map(d => d.Distrito || d.nombre || d); 
-                } catch(e) { console.error(e); } finally {
-                    if(input) {
-                        input.placeholder = "Buscar Distrito...";
-                        input.disabled = false;
-                    }
-                }
+                } catch(e) { console.error(e); } finally { if(input) { input.placeholder = "Buscar Distrito..."; input.disabled = false; } }
             },
             
             loadAgencies: async (courierName) => {
                 const url = URLS.agency[courierName];
                 if (!url) { state.externalData.agencies = []; return; }
                 const input = document.getElementById('c-agency');
-                input.placeholder = `Cargando sedes ${courierName}...`;
-                input.disabled = true;
-            
+                input.placeholder = `Cargando sedes ${courierName}...`; input.disabled = true;
                 try {
-                    const res = await fetch(url);
-                    const rawData = await res.json();
-                    state.externalData.agencies = rawData.map(item => ({
-                        Agencia: item.Agencia || item.c_nom_agencia || 'Agencia',
-                        Direccion: item.Direccion || item.c_direccion || ''
-                    }));
-                    input.placeholder = `Buscar sede ${courierName}...`;
-                    input.disabled = false;
+                    const res = await fetch(url); const rawData = await res.json();
+                    state.externalData.agencies = rawData.map(item => ({ Agencia: item.Agencia || item.c_nom_agencia || 'Agencia', Direccion: item.Direccion || item.c_direccion || '' }));
+                    input.placeholder = `Buscar sede ${courierName}...`; input.disabled = false;
                 } catch (e) { input.placeholder = "Error cargando agencias"; }
             },
 
@@ -501,25 +385,16 @@
                 if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
                 x.classList.remove('hidden'); 
                 if(q.length<2) { c.classList.add('hidden'); return; } 
-                
-                // UX: Auto-scroll
-                if (c.classList.contains('hidden')) {
-                    c.classList.remove('hidden');
-                    setTimeout(() => document.getElementById('c-agency').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-                }
-
+                if (c.classList.contains('hidden')) { c.classList.remove('hidden'); setTimeout(() => document.getElementById('c-agency').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); }
                 const cleanQ = app.normalizeText(q);
                 const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && app.normalizeText(a.Agencia).includes(cleanQ)) || (a.Direccion && app.normalizeText(a.Direccion).includes(cleanQ))).slice(0,50); 
-                
                 c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${a.Agencia.replace(/'/g,"\\'")}','${a.Direccion.replace(/'/g,"\\'").replace(/\n/g," ")}')" class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0"><p class="font-bold text-brand_text text-sm mb-0.5">${a.Agencia}</p><p class="text-xs text-gray-500">${a.Direccion}</p></div>`).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
             },
             
-            // SELECCIÓN CON PIPE ( | )
             selectAgency: (n, a) => { 
-                document.getElementById('c-agency').value = `${n} | ${a}`; 
+                document.getElementById('c-agency').value = `${n} | ${a}`; // SEPARADOR PIPE CORRECTO
                 document.getElementById('agency-results').classList.add('hidden'); 
                 document.getElementById('btn-clear-agency').classList.remove('hidden'); 
-                // UX: Validar visualmente
                 document.getElementById('c-agency').classList.remove('border-red-500', 'bg-red-50');
             },
             
@@ -531,11 +406,7 @@
                     if (!val) return;
                     const loadedAgencies = state.externalData.agencies || [];
                     const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === val);
-                    if (!isValid) {
-                        el.value = "";
-                        app.showToast("⚠️ Selecciona una opción del listado");
-                        document.getElementById('agency-results').classList.add('hidden');
-                    }
+                    if (!isValid) { el.value = ""; app.showToast("⚠️ Selecciona una opción del listado"); document.getElementById('agency-results').classList.add('hidden'); }
                 }, 200);
             },
 
@@ -544,12 +415,7 @@
                 if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
                 x.classList.remove('hidden'); 
                 if(q.length<1) { c.classList.add('hidden'); return; } 
-                
-                 if (c.classList.contains('hidden')) {
-                    c.classList.remove('hidden');
-                    setTimeout(() => document.getElementById('c-district').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-                }
-
+                if (c.classList.contains('hidden')) { c.classList.remove('hidden'); setTimeout(() => document.getElementById('c-district').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); }
                 const cleanQ = app.normalizeText(q);
                 const m = (state.externalData.districts||[]).filter(d => app.normalizeText(d).includes(cleanQ)).slice(0,50); 
                 c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${d.replace(/'/g,"\\'")}')" class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0"><p class="font-bold text-brand_text text-sm">${d}</p></div>`).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
@@ -562,152 +428,83 @@
                     const val = el.value.trim();
                     if (!val) return;
                     const validDistricts = state.externalData.districts || [];
-                    if (!validDistricts.includes(val)) {
-                        el.value = ""; 
-                        app.showToast("⚠️ Elige un distrito de la lista");
-                        document.getElementById('district-results').classList.add('hidden');
-                    }
+                    if (!validDistricts.includes(val)) { el.value = ""; app.showToast("⚠️ Elige un distrito de la lista"); document.getElementById('district-results').classList.add('hidden'); }
                 }, 200);
             },
 
             generateDateOptions: () => { 
                 const s = document.getElementById('c-date-select'); 
                 s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; 
-                const allowedDays = state.config.shippingDays || []; 
-                if (!allowedDays.length) return; 
-
-                const now = new Date(); 
-                const gap = parseInt(state.config.updateGap || 0);
+                const allowedDays = state.config.shippingDays || []; if (!allowedDays.length) return; 
+                const now = new Date(); const gap = parseInt(state.config.updateGap || 0);
                 const [cutHour, cutMinute] = (state.config.updateTime || "18:00").split(':').map(Number); 
-                
-                const cutTime = new Date(now); 
-                cutTime.setHours(cutHour, cutMinute, 0, 0); 
-
-                let startOffset = gap;
-                if (now > cutTime) startOffset = gap + 1;
-
+                const cutTime = new Date(now); cutTime.setHours(cutHour, cutMinute, 0, 0); 
+                let startOffset = gap; if (now > cutTime) startOffset = gap + 1;
                 for(let i = startOffset; i < (startOffset + 14); i++) { 
-                    const f = new Date(now); 
-                    f.setDate(now.getDate() + i); 
-                    const dayIndex = f.getDay(); 
-                    
+                    const f = new Date(now); f.setDate(now.getDate() + i); const dayIndex = f.getDay(); 
                     if(allowedDays.some(n => DAY_INDEX_MAP[n] === dayIndex)) { 
-                        // Smart Labels
-                        let prefix = "";
-                        if (i === 0) prefix = "¡HOY! - ";
-                        else if (i === 1) prefix = "Mañana - ";
-
+                        let prefix = ""; if (i === 0) prefix = "¡HOY! - "; else if (i === 1) prefix = "Mañana - ";
                         const lbl = `${prefix}${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
                         const val = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; 
-                        const o = document.createElement('option'); 
-                        o.value = val; o.innerText = lbl; 
-                        s.appendChild(o); 
+                        const o = document.createElement('option'); o.value = val; o.innerText = lbl; s.appendChild(o); 
                     } 
                 } 
             },
 
             submitOrder: async (e) => { 
                 e.preventDefault(); 
-                
-                // 1. VALIDACIONES
-                if (!state.selectedCourier) {
-                    app.showToast("⚠️ Selecciona un tipo de envío");
-                    app.revealStep('block-service');
-                    document.getElementById('c-courier-select').focus();
-                    return;
-                }
-
+                if (!state.selectedCourier) { app.showToast("⚠️ Selecciona un tipo de envío"); app.revealStep('block-service'); document.getElementById('c-courier-select').focus(); return; }
                 const dateSelect = document.getElementById('c-date-select');
-                if (!dateSelect.value) {
-                    app.showToast("📅 Selecciona la fecha de envío");
-                    app.revealStep('block-closing');
-                    dateSelect.focus();
-                    return;
-                }
-
+                if (!dateSelect.value) { app.showToast("📅 Selecciona la fecha de envío"); app.revealStep('block-closing'); dateSelect.focus(); return; }
                 const phone = document.getElementById('c-phone').value.trim();
                 const name = document.getElementById('c-name').value.trim();
                 const day = dateSelect.value; 
-
                 if (name.length < 3) return app.showToast("⚠️ Ingresa un nombre válido");
                 if (!/^9\d{8}$/.test(phone)) return app.showToast("⚠️ Celular inválido");
 
-                // Validación Estricta
                 if (state.selectedCourierType === 'agency') {
                     const inputAgency = document.getElementById('c-agency');
                     const loadedAgencies = state.externalData.agencies || [];
                     const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === inputAgency.value.trim());
-                    if (!isValid) {
-                        inputAgency.focus();
-                        inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
-                        setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
-                        return app.showToast("⚠️ Selecciona una agencia de la lista");
-                    }
+                    if (!isValid) { inputAgency.focus(); inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona una agencia de la lista"); }
                 } else {
                     const inputDist = document.getElementById('c-district');
                     const validDistricts = state.externalData.districts || [];
-                    if (!validDistricts.includes(inputDist.value.trim())) {
-                        inputDist.focus();
-                        inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
-                        setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
-                        return app.showToast("⚠️ Selecciona un distrito de la lista");
-                    }
+                    if (!validDistricts.includes(inputDist.value.trim())) { inputDist.focus(); inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona un distrito de la lista"); }
                 }
 
-                // 2. CONSTRUCCIÓN DE DATOS
-                let data = { 
-                    clientName: name, clientPhone: phone, courier: state.selectedCourier, 
-                    shippingDate: day, createdAt: Date.now(), product: "N/A" 
-                }; 
-                
+                let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
                 const cacheData = { name: name, courier: state.selectedCourier, type: state.selectedCourierType };
                 let wa = ""; 
 
                 if (state.selectedCourierType === 'agency') { 
                     data.clientDni = document.getElementById('c-dni').value.trim(); 
                     data.clientAgency = document.getElementById('c-agency').value.trim(); 
-                    cacheData.dni = data.clientDni;
-                    cacheData.agency = data.clientAgency;
-                    
+                    cacheData.dni = data.clientDni; cacheData.agency = data.clientAgency;
                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name}\n📱 ${phone}\n🆔 DNI: ${data.clientDni}\n🏢 Agencia: ${data.clientAgency.replace(' | ', '\n📍 ')}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
                 } else { 
                     data.clientAddress = document.getElementById('c-address').value.trim(); 
                     data.clientDistrict = document.getElementById('c-district').value.trim(); 
                     data.clientRef = document.getElementById('c-ref').value.trim(); 
-                    cacheData.district = data.clientDistrict;
-                    cacheData.address = data.clientAddress;
-                    cacheData.ref = data.clientRef;
-
+                    cacheData.district = data.clientDistrict; cacheData.address = data.clientAddress; cacheData.ref = data.clientRef;
                     wa = `📦 *NUEVO ENVÍO (DELIVERY)*\n\n👤 ${name}\n📱 ${phone}\n📍 ${data.clientDistrict}\n🏠 ${data.clientAddress}\n🗺️ Ref: ${data.clientRef}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
                 }
 
-                const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
-                cache[phone] = cacheData;
-                localStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
+                const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}'); cache[phone] = cacheData; localStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
 
-                // 3. ENVIAR
                 setTimeout(() => {
                     window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
-                    
-                    try { 
-                        fetch(API_URL, { 
-                            method: "POST", 
-                            body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) 
-                        });
-                    } catch(e) {} 
-
+                    try { fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) }); } catch(e) {} 
                     document.getElementById('client-form').classList.add('hidden');
-                    document.getElementById('view-client').classList.add('hidden'); // Ocultar form container
-                    document.getElementById('client-title').classList.add('hidden'); // Ocultar titulo
+                    document.getElementById('view-client').classList.add('hidden'); 
+                    document.getElementById('client-title').classList.add('hidden'); 
                     document.getElementById('success-view').classList.remove('hidden');
                 }, 500);
             },
 
             showToast: (msg) => {
-                const el = document.getElementById('toast');
-                document.getElementById('toast-msg').innerText = msg;
-                el.classList.remove('opacity-0', '-translate-y-20');
-                setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
+                const el = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
+                el.classList.remove('opacity-0', '-translate-y-20'); setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
             }
         };
 
