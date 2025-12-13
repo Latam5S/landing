@@ -506,7 +506,7 @@
             
                     const loadedAgencies = state.externalData.agencies || [];
                     const isValid = loadedAgencies.some(item => {
-                        return `${item.Agencia} - ${item.Direccion}` === val;
+                        return `${item.Agencia} | ${item.Direccion}` === val;
                     });
             
                     if (!isValid) {
@@ -645,7 +645,7 @@
                 c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}','${escapeHtml(a.Direccion.replace(/'/g,"\\'").replace(/\n/g," "))}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm mb-1">${escapeHtml(a.Agencia)}</p><p class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; 
                 c.classList.remove('hidden'); 
             },
-            selectAgency: (n, a) => { document.getElementById('c-agency').value = `${n} - ${a}`; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.remove('hidden'); },
+            selectAgency: (n, a) => { document.getElementById('c-agency').value = `${n} | ${a}`; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.remove('hidden'); },
             clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
 
             searchDistrict: (q) => { 
@@ -746,7 +746,7 @@
                     
                     // 2. Buscamos coincidencia exacta
                     // Reconstruimos el string "Nombre - Dirección" tal como lo hace la función selectAgency
-                    const isValid = loadedAgencies.some(item => `${item.Agencia} - ${item.Direccion}` === inputAgency.value.trim());
+                    const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === inputAgency.value.trim());
                             
                             if (!isValid) {
                                 inputAgency.focus();
