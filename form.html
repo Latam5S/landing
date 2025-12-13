@@ -481,6 +481,11 @@
                 }, 100);
             },
 
+            // Helper para quitar tildes: "Ancón" -> "ancon"
+            normalizeText: (text) => {
+                return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            },
+
             validateDistrictOnBlur: (el) => {
                 // Delay de 200ms para permitir que el click en la lista ocurra primero
                 setTimeout(() => {
@@ -649,14 +654,32 @@
             clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
 
             searchDistrict: (q) => { 
-                const c = document.getElementById('district-results'), x = document.getElementById('btn-clear-district'); 
+                const c = document.getElementById('district-results'); 
+                const x = document.getElementById('btn-clear-district'); 
+                
                 if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
                 x.classList.remove('hidden'); 
-                if(q.length<1) { c.classList.add('hidden'); return; } 
-                const lq = q.toLowerCase(); 
-                const m = (state.externalData.districts||[]).filter(d => d.toLowerCase().includes(lq)).slice(0,50); 
+                
+                if(q.length < 1) { c.classList.add('hidden'); return; } 
+            
+                // USO DEL HELPER DE NORMALIZACIÓN
+                const cleanQ = app.normalizeText(q); 
+                
+                const m = (state.externalData.districts || []).filter(d => {
+                    // Normalizamos el dato de la lista también
+                    return app.normalizeText(d).includes(cleanQ);
+                }).slice(0, 50);
                 c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${escapeHtml(d).replace(/'/g,"\\'")}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm">${escapeHtml(d)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; 
-                c.classList.remove('hidden'); 
+                if (c.classList.contains('hidden')) {
+                    c.classList.remove('hidden');
+                    // Pequeño delay para que el navegador renderice la lista
+                    setTimeout(() => {
+                        const inputElement = document.getElementById('c-agency'); // O c-district
+                        inputElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                } else {
+                    c.classList.remove('hidden');
+                }
             },
             selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
             clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
