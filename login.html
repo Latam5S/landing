@@ -1211,14 +1211,14 @@
                 if (state.selectedOrders.size === 0) return app.showToast('Selecciona envíos');
                 app.openStatusMenu();
             },
-
-            exportExcel: async () => { // Nota el async
+            
+            exportExcel: async () => { 
                 const list = state.visibleOrders;
                 if (!list.length) return app.showToast('No hay datos para exportar');
             
                 app.toggleLoading(true);
             
-                // CARGA DINÁMICA: Solo se descarga si el usuario lo pide
+                // Carga dinámica de librería Excel
                 if (typeof XLSX === 'undefined') {
                     await new Promise((resolve, reject) => {
                         const script = document.createElement('script');
@@ -1229,58 +1229,86 @@
                     });
                 }
             
-                // 1. Preparamos los datos limpios para Excel
-                const dataToExport = list.map(x => {
-                    // Lógica para unificar destino (Igual que tenías antes)
-                    const destino = x.clientAgency 
-                        ? `AGENCIA: ${x.clientAgency}` 
-                        : `CASA: ${x.clientDistrict} - ${x.clientAddress}`;
-                        
-                    const referencia = x.clientAgency 
-                        ? `DNI: ${x.clientDni}` 
-                        : `REF: ${x.clientRef}`;
+                // Año actual para formatear fecha
+                const currentYear = new Date().getFullYear().toString().slice(-2);
             
+                const dataToExport = list.map(x => {
+                    
+                    // 1. FORMATEO DE FECHA (dd/mm/aa)
+                    let fechaClean = x.shippingDate || "";
+                    const dateMatch = fechaClean.match(/(\d{2})\/(\d{2})/);
+                    if (dateMatch) {
+                        fechaClean = `${dateMatch[1]}/${dateMatch[2]}/${currentYear}`;
+                    }
+
+                    // 2. LOGICA DE COLUMNAS
+                    let colAgenciaDistrito = "";
+                    let colDireccionRef = "";
+                    let colDni = "";
+
+                    if (x.clientAgency) {
+                        // === CASO AGENCIA ===
+                        // INTENTO 1: Separar por el NUEVO separador seguro " | "
+                        let parts = x.clientAgency.split(' | ');
+                        
+                        // Fallback para datos antiguos: Si no hay "|", no intentamos adivinar con "-" 
+                        // para evitar romper nombres como "Chiriaco - Imaza". 
+                        // Ponemos todo en la primera columna por seguridad.
+                        if (parts.length < 2) {
+                            parts = [x.clientAgency, ""]; 
+                        }
+
+                        colAgenciaDistrito = parts[0] || x.clientAgency; 
+                        colDireccionRef = parts[1] || ""; 
+                        colDni = x.clientDni || ""; // DNI en columna aparte
+
+                    } else {
+                        // === CASO DOMICILIO ===
+                        colAgenciaDistrito = x.clientDistrict || "";
+                        // Unificamos Dirección + Referencia en la misma columna
+                        const dir = x.clientAddress || "";
+                        const ref = x.clientRef ? ` (Ref: ${x.clientRef})` : "";
+                        colDireccionRef = (dir + ref).trim();
+                        colDni = ""; // Vacío
+                    }
+            
+                    // Estructura Final de Columnas
                     return {
-                        "Fecha Envío": x.shippingDate, // Usamos la fecha de despacho, no la de registro
+                        "Fecha Envío": fechaClean,
                         "Courier": x.courier,
                         "Cliente": x.clientName,
                         "Teléfono": x.clientPhone,
-                        "Destino": destino,
-                        "Referencia / DNI": referencia,
+                        "Agencia / Distrito": colAgenciaDistrito,
+                        "Dirección / Ref": colDireccionRef,
+                        "DNI": colDni,
                         "Estado": x.status || "PENDIENTE",
                         "Fecha Registro": new Date(x.createdAt || Date.now()).toLocaleDateString()
                     };
                 });
             
-                // 2. Crear una Hoja de Cálculo (Worksheet)
+                // Generación del archivo
                 const ws = XLSX.utils.json_to_sheet(dataToExport);
-            
-                // Opcional: Ajustar ancho de columnas automáticamente (UX Pro)
-                const wscols = [
-                    {wch: 15}, // Fecha Envío
+                
+                // Anchos de columna optimizados
+                ws['!cols'] = [
+                    {wch: 10}, // Fecha
                     {wch: 15}, // Courier
                     {wch: 25}, // Cliente
-                    {wch: 15}, // Teléfono
-                    {wch: 40}, // Destino
-                    {wch: 20}, // Referencia
-                    {wch: 15}, // Estado
-                    {wch: 15}  // Fecha Registro
+                    {wch: 12}, // Telefono
+                    {wch: 35}, // Agencia/Distrito (Ancho para nombres largos)
+                    {wch: 45}, // Direccion
+                    {wch: 12}, // DNI
+                    {wch: 12}, // Estado
+                    {wch: 12}  // Fecha Reg
                 ];
-                ws['!cols'] = wscols;
             
-                // 3. Crear el Libro (Workbook) y agregar la hoja
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Envíos Latam5S");
-            
-                // 4. Generar nombre de archivo con fecha
-                const today = new Date().toISOString().slice(0,10); // YYYY-MM-DD
-                const fileName = `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`;
-            
-                // 5. Descargar
-                XLSX.writeFile(wb, fileName);
+                const today = new Date().toISOString().slice(0,10);
+                XLSX.writeFile(wb, `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`);
                 
                 app.toggleLoading(false);
-                app.showToast('Excel (.xlsx) descargado correctamente');
+                app.showToast('Excel descargado correctamente');
             },
 
             printLabels: () => {
