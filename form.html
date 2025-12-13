@@ -26,8 +26,10 @@
                     colors: {
                         brand_accent: '#D96B4F',   
                         brand_accent_alt: '#FF8B6A', 
+                        brand_text: '#2b2b2b',     
                         danger: '#d93025',
-                        // Eliminamos variables conflictivas, usaremos valores directos o nativos
+                        whatsapp: '#25D366',       
+                        whatsapp_hover: '#20bd5a',
                     },
                     fontFamily: {
                         sans: ['Quicksand', 'sans-serif'],
@@ -52,7 +54,6 @@
         input, select { -webkit-appearance: none; appearance: none; }
         .input-transition { transition: all 0.2s ease-in-out; }
         
-        /* Gradiente Latam5S Original */
         .logo-text-gradient {
             background: linear-gradient(to right, #3B82F6, #60A5FA, #2DD4BF, #10B981); 
             -webkit-background-clip: text;
@@ -182,10 +183,21 @@
             </form>
         
             <div id="success-view" class="hidden flex flex-col items-center justify-center py-10 text-center animate-fade-in flex-1">
-                <div class="mb-6"><svg class="w-20 h-20 text-brand_accent mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Datos registrados!</h2>
-                <p class="text-gray-500 mb-8 max-w-xs mx-auto">Tu envío se generó correctamente. Se abrirá WhatsApp para finalizar.</p>
-                <button onclick="window.location.reload()" class="mt-4 text-brand_accent hover:text-brand_accent_alt font-bold underline text-sm">Crear otro envío</button>
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-[#25D366] mb-6 shadow-sm">
+                    <i data-lucide="check" class="w-12 h-12"></i>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Abriendo WhatsApp!</h2>
+                
+                <p class="text-gray-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+                    Tu envío ha sido generado correctamente. <br>
+                    <span class="font-medium text-gray-700">Continúa la conversación en el chat para finalizar.</span>
+                </p>
+
+                <button onclick="window.location.reload()" class="group px-6 py-3 bg-white border border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 hover:text-brand_accent transition-all duration-200 shadow-sm flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> 
+                    Crear otro envío
+                </button>
             </div>
 
             <div class="mt-12 pt-6 border-t border-gray-100 pb-2">
@@ -195,7 +207,7 @@
                         
                         <div class="text-left">
                             <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
-                            <p class="text-sm font-bold text-gray-800 leading-tight">
+                            <p class="text-sm font-bold text-brand_text leading-tight">
                                 ¿Vendes por WhatsApp? <br>
                                 <span class="logo-text-gradient font-bold underline underline-offset-2">Crea tu formulario gratis</span>
                             </p>
