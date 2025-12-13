@@ -5,58 +5,48 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Programa tu envío</title>
+    <title>Agenda tu envío</title>
 
-    <meta name="description" content="Completa tus datos de entrega en segundos y programa tu envío. 100% Seguro y Fácil.">
+    <meta name="description" content="Agenda tu envío de manera simple, rápida y segura.">
     
-    <meta property="og:title" content="Programa tu envío">
-    <meta property="og:description" content="Completa tus datos de entrega en segundos y programa tu envío. 100% Seguro y Fácil.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand3.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://www.latam5s.com/">
-    <meta property="og:type" content="website">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Programa tu envío">
-    <meta name="twitter:description" content="Completa tus datos de entrega en segundos y programa tu envío. 100% Seguro y Fácil.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand3.png"/>
-
-    <link rel="canonical" href="https://www.latam5s.com/" />
+    <meta property="og:title" content="Agenda tu envío">
+    <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/form/main/Spin.png">
     
     <meta name="robots" content="noindex">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#fffaf6">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
   
     <script>
         tailwind.config = {
-            darkMode: 'class', // Mantenemos compatibilidad
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3B82F6',     
-                        primary_glow: '#60A5FA',
-                        secondary: '#10B981',   
-                        dark_bg: '#020617',     
-                        card_bg: '#0f172a',    
+                        brand_bg: '#fffaf6',       /* Fondo Crema v2 */
+                        brand_card: '#ffffff',     /* Fondo Blanco Tarjeta v2 */
+                        brand_accent: '#D96B4F',   /* Terracota Principal v2 */
+                        brand_accent_alt: '#FF8B6A', /* Terracota Claro v2 */
+                        brand_text: '#2b2b2b',     /* Texto Oscuro v2 */
+                        danger: '#d93025',
                     },
                     fontFamily: {
                         sans: ['Quicksand', 'sans-serif'],
                     },
                     boxShadow: {
-                        'neon': '0 0 20px rgba(59, 130, 246, 0.15)',
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
                     },
                     keyframes: {
-                        fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } }
+                        shake: { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } },
+                        fadeIn: { from: { opacity: 0, transform: 'translateY(10px)' }, to: { opacity: 1, transform: 'translateY(0)' } }
                     }
                 }
             }
@@ -64,214 +54,195 @@
     </script>
 
     <style>
-        body { font-family: "Quicksand", sans-serif; background-color: #ffffff; color: #1e293b; }
-        
-        /* Scrollbar oculta pero funcional (UX Móvil) */
+        body { font-family: "Quicksand", sans-serif; background-color: #fffaf6; color: #2b2b2b; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Estilos específicos para inputs y transiciones */
-        input, select { -webkit-appearance: none; }
-        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+        /* Eliminar estilos por defecto de inputs */
+        input, select { -webkit-appearance: none; appearance: none; }
+        /* Transiciones suaves */
+        .input-transition { transition: all 0.2s ease-in-out; }
     </style>
 </head>
-<body class="h-[100dvh] overflow-hidden flex flex-col relative selection:bg-primary selection:text-white">
+<body class="min-h-[100dvh] flex flex-col items-center justify-center p-4 selection:bg-brand_accent selection:text-white">
 
-    <div id="loading-overlay" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
-        <div class="relative">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-primary"></div>
+    <div id="loading-overlay" class="fixed inset-0 bg-brand_bg/95 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
+        <img src="https://raw.githubusercontent.com/complicidad/form/main/Spin.png" alt="Cargando..." class="w-[120px] h-auto animate-pulse mb-4">
+        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-brand_accent"></div>
+    </div>
+
+    <div id="toast" class="fixed top-5 right-5 z-[100] bg-brand_text text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0 border border-gray-700 max-w-sm">
+        <div class="bg-brand_accent/20 p-2 rounded-full text-brand_accent">
+            <i data-lucide="info" class="w-5 h-5"></i>
         </div>
-        <p id="loading-text" class="text-slate-400 font-bold mt-4 text-xs uppercase tracking-widest animate-pulse">Cargando Tienda...</p>
+        <span id="toast-msg" class="font-bold text-sm leading-tight">Notificación</span>
     </div>
 
-    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0 border border-slate-700">
-        <i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i>
-        <span id="toast-msg" class="font-bold text-sm">Acción completada</span>
-    </div>
-
-    <div id="view-client" class="flex-1 h-full overflow-y-auto bg-white text-slate-800 z-10 relative">
+    <main class="w-full max-w-xl bg-white p-6 md:p-10 rounded-2xl shadow-soft relative animate-fade-in my-auto">
         
-        <div class="w-full max-w-2xl mx-auto min-h-[100dvh] bg-white flex flex-col relative">
+        <div class="text-center mb-8">
+            <img src="https://raw.githubusercontent.com/complicidad/form/main/Spin.png" alt="Logo" class="h-auto max-w-[180px] mx-auto">
+            <h1 id="client-title" class="hidden text-xl font-bold mt-4 text-brand_text">Cargando...</h1> 
+        </div>
+
+        <div id="view-client" class="relative">
             
-            <div class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-md flex items-center gap-4">
-                <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary shadow-neon border border-primary/20 flex-shrink-0">
-                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h1 id="client-title" class="font-bold text-lg leading-tight truncate">Cargando...</h1>
-                    <p class="text-xs text-slate-400">Datos de Envío</p>
+            <div class="mb-8 p-4 bg-orange-50 border border-orange-100 rounded-xl flex gap-3 items-start">
+                <i data-lucide="clock" class="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0"></i>
+                <div class="text-sm text-orange-800">
+                    <span class="font-bold block mb-1">Hora de corte: <span id="client-time">--:--</span></span>
+                    Registra tu pedido antes de esta hora para procesarlo hoy.
                 </div>
             </div>
+        
+            <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6">
                 
-            <div class="flex-1 p-5 md:p-8 flex flex-col gap-4">
-                
-                <div class="rounded-xl bg-orange-50 border border-orange-100 p-4 flex items-start gap-3 shadow-sm relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 w-16 h-16 bg-orange-100 rounded-full opacity-50 pointer-events-none"></div>
-                    <div class="bg-white p-2 rounded-full text-orange-500 shadow-sm border border-orange-100 flex-shrink-0">
-                        <i data-lucide="clock" class="w-5 h-5"></i>
+                <div id="block-identity" class="relative z-30">
+                     <label class="block text-sm font-bold text-brand_text mb-2 ml-1">
+                        WhatsApp con el que compraste <span class="text-danger">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">+51</span>
+                        <input id="c-phone" 
+                            type="tel" 
+                            maxlength="9" 
+                            inputmode="numeric" 
+                            placeholder="9XXXXXXXX" 
+                            oninput="app.handleClientPhone(this)"
+                            required 
+                            class="w-full bg-white border border-gray-300 rounded-xl py-3.5 pr-4 pl-14 text-brand_text text-lg outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-300">
+                        
+                        <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-700 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1 animate-fade-in">
+                            <i data-lucide="sparkles" class="w-3 h-3"></i> ¡Te conocemos!
+                        </div>
                     </div>
-                    <div class="flex-1 z-10">
-                        <h3 class="text-xs font-bold text-orange-800 uppercase tracking-wide mb-0.5">Programación de Envíos</h3>
-                        <p class="text-sm text-orange-900 leading-tight">
-                            Asegura tu envío registrando tu datos antes de las <strong id="client-time" class="bg-orange-200 px-1.5 py-0.5 rounded text-orange-950">--:--</strong>.
+                </div>
+        
+                <div id="progressive-content" class="space-y-6">
+                    
+                    <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4">
+                        <label class="block text-sm font-bold text-brand_text mb-2 ml-1">Selecciona el tipo de servicio <span class="text-danger">*</span></label>
+                        <div class="relative">
+                            <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-white border border-gray-300 rounded-xl py-3.5 pl-4 pr-10 text-brand_text outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 cursor-pointer input-transition">
+                                <option value="" disabled selected>Elige una opción...</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400"><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
+                        </div>
+                    </div>
+        
+                    <div id="dynamic-form-section" class="hidden space-y-5 transition-all duration-500">
+                        
+                        <div id="fields-agency" class="hidden space-y-5 animate-fade-in">
+                            <div>
+                                <label class="block text-sm font-bold text-brand_text mb-2 ml-1">Busca tu Agencia <span class="text-danger">*</span></label>
+                                <div class="relative group z-30">
+                                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
+                                    <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateAgencyOnBlur(this)" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl pl-12 pr-10 py-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
+                                    <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1 hover:text-danger"><i data-lucide="x" class="h-5 w-5"></i></button>
+                                    
+                                    <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 divide-y divide-gray-100"></div>
+                                </div>
+                            </div>
+                            <div>
+                                 <label class="block text-sm font-bold text-brand_text mb-2 ml-1">DNI para recoger <span class="text-danger">*</span></label>
+                                <input id="c-dni" type="tel" maxlength="15" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl p-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Número de DNI / CE">
+                            </div>
+                        </div>
+
+                        <div id="fields-home" class="hidden space-y-5 animate-fade-in">
+                            <div>
+                                <label class="block text-sm font-bold text-brand_text mb-2 ml-1">Distrito <span class="text-danger">*</span></label>
+                                <div class="relative group z-30">
+                                    <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"></i>
+                                    <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateDistrictOnBlur(this)" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl pl-12 pr-10 py-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
+                                    <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1 hover:text-danger"><i data-lucide="x" class="h-5 w-5"></i></button>
+                                    
+                                    <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 divide-y divide-gray-100"></div>
+                                </div>
+                            </div>
+                            <div>
+                                 <label class="block text-sm font-bold text-brand_text mb-2 ml-1">Dirección Exacta <span class="text-danger">*</span></label>
+                                <input id="c-address" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl p-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Calle, Av, Número...">
+                            </div>
+                            <div>
+                                 <label class="block text-sm font-bold text-brand_text mb-2 ml-1">Referencia <span class="text-danger">*</span></label>
+                                <input id="c-ref" class="w-full bg-white border border-gray-300 text-brand_text rounded-xl p-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition placeholder-gray-400" placeholder="Color de casa, frente a...">
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4">
+                         <label class="block text-sm font-bold text-brand_text mb-2 ml-1">¿A nombre de quién? <span class="text-danger">*</span></label>
+                         <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-white border border-gray-300 text-brand_text rounded-xl p-3.5 outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 input-transition capitalize placeholder-gray-400" placeholder="Nombre Completo">
+                    </div>
+        
+                    <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 space-y-6">
+                         <div>
+                            <label class="block text-sm font-bold text-brand_text mb-2 ml-1">¿Cuándo lo enviamos? <span class="text-danger">*</span></label>
+                            <div class="relative">
+                                <select id="c-date-select" class="w-full appearance-none bg-white border border-gray-300 rounded-xl py-3.5 pl-4 pr-10 text-brand_text outline-none focus:border-brand_accent focus:ring-4 focus:ring-brand_accent/10 cursor-pointer input-transition">
+                                    <option value="" disabled selected>Elige fecha...</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400"><i data-lucide="calendar" class="w-5 h-5"></i></div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="btn-submit-order" class="w-full bg-brand_accent text-white font-bold py-4 rounded-xl shadow-lg hover:bg-brand_accent_alt transition-all duration-200 transform active:scale-95 flex justify-center items-center gap-2 text-lg">
+                            Confirmar y agendar envío
+                        </button>
+                        
+                        <p class="text-center text-xs text-gray-400">
+                            Usaremos tus datos solo para procesar y entregar tu pedido.
                         </p>
                     </div>
                 </div>
-            
-                <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-6 pb-4 flex-shrink-0">
-                    
-                    <div id="block-identity" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-30">
-                         <label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i> Tu WhatsApp
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
-                            <input id="c-phone" 
-                                type="tel" 
-                                maxlength="9" 
-                                inputmode="numeric" 
-                                placeholder="9..." 
-                                oninput="app.handleClientPhone(this)"
-                                required 
-                                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 pr-4 pl-12 text-slate-800 font-bold text-lg outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-inner">
-                            <div id="user-found-badge" class="hidden absolute right-3 top-1/2 -translate-y-1/2 bg-green-100 text-green-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                                <i data-lucide="sparkles" class="w-3 h-3"></i> Hola
-                            </div>
-                        </div>
-                        <p class="text-[10px] text-slate-400 mt-2 pl-1">Escribe tu número para cargar tus datos.</p>
-                    </div>
-            
-                    <div id="progressive-content" class="space-y-6">
-                        
-                        <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 relative z-20">
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cómo quieres recibir tu pedido?</label>
-                            <div class="relative">
-                                <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer transition">
-                                    <option value="" disabled selected>Selecciona una opción...</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
-                            </div>
-                        </div>
-            
-                        <div id="dynamic-form-section" class="hidden space-y-4 transition-all duration-500">
-                            <div id="fields-agency" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca y selecciona la Agencia</label>
-                                    <div class="relative group z-30">
-                                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                        <input id="c-agency" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateAgencyOnBlur(this)" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Ej: Shalom Arequipa..." autocomplete="off" oninput="app.searchAgency(this.value)">
-                                        <button type="button" id="btn-clear-agency" onclick="app.clearAgency()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                        <div id="agency-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">DNI para recoger</label>
-                                    <input id="c-dni" type="tel" maxlength="12" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Número de DNI">
-                                </div>
-                            </div>
-                            <div id="fields-home" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Busca y selecciona el Distrito</label>
-                                    <div class="relative group z-30">
-                                        <i data-lucide="map-pin" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"></i>
-                                        <input id="c-district" type="text" onfocus="app.revealStep('block-personal')" onblur="app.validateDistrictOnBlur(this)" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-10 py-4 outline-none focus:border-primary transition placeholder-slate-400 font-medium" placeholder="Buscar Distrito..." autocomplete="off" oninput="app.searchDistrict(this.value)">
-                                        <button type="button" id="btn-clear-district" onclick="app.clearDistrict()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 hover:text-red-500"><i data-lucide="x" class="h-5 w-5"></i></button>
-                                        <div id="district-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-64 overflow-y-auto z-50 divide-y divide-slate-100"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Dirección Exacta</label>
-                                    <input id="c-address" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Calle, Av, Número...">
-                                </div>
-                                <div>
-                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Referencia</label>
-                                    <input id="c-ref" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-4 outline-none focus:border-primary transition font-medium placeholder-slate-400" placeholder="Frente a, color de casa...">
-                                </div>
-                            </div>
-                        </div>
-            
-                        <div id="block-personal" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿A nombre de quién?</label>
-                             <div class="relative">
-                                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                                <input id="c-name" oninput="app.revealStep('block-closing')" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-12 pr-4 py-4 outline-none focus:border-primary transition font-bold capitalize placeholder-slate-400" placeholder="Nombre Completo">
-                             </div>
-                        </div>
-            
-                        <div id="block-closing" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                             <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">¿Cuándo lo enviamos?</label>
-                                <div class="relative">
-                                    <select id="c-date-select" onchange="app.validateForm()" class="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-4 pl-4 pr-10 text-slate-800 font-bold focus:border-primary outline-none cursor-pointer transition">
-                                        <option value="" disabled selected>Elige fecha...</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                                </div>
-                            </div>
-                            <button type="submit" id="btn-submit-order" disabled class="w-full bg-secondary text-white font-bold py-5 rounded-xl shadow-lg shadow-green-500/20 transition active:scale-95 flex justify-center items-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-600">
-                                <i data-lucide="message-circle" class="w-5 h-5"></i> Enviar Datos por WhatsApp
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            
-                <div id="success-view" class="hidden flex flex-col items-center justify-center min-h-[50vh] text-center p-6 animate-fade-in flex-grow">
-                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-6 shadow-sm">
-                        <i data-lucide="check" class="w-12 h-12"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">¡Abriendo WhatsApp!</h2>
-                    <p class="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-                        Tu envío ha sido generado correctamente. Continúa la conversación en el chat para finalizar.
-                    </p>
-                    <button onclick="window.location.reload()" class="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Crear otro envío
-                    </button>
+            </form>
+        
+            <div id="success-view" class="hidden flex flex-col items-center justify-center py-10 text-center animate-fade-in">
+                <div class="mb-6">
+                    <svg class="w-20 h-20 text-brand_accent mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
                 </div>
-                                
-                <div class="mt-auto pt-6 border-t border-slate-100 pb-2 md:pb-2">
-                        <a href="index" target="_blank" class="group block bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
-                            <div class="flex items-center justify-center gap-4">
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
-                                <div class="text-left">
-                                    <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
-                                    <p class="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight">
-                                        ¿Vendes por WhatsApp? <br>
-                                        <span class="text-primary underline decoration-blue-200 underline-offset-2">Crea tu formulario gratis aquí</span>
-                                    </p>
-                                </div>
-                                
-                                <div class="text-gray-300 group-hover:text-primary transition-colors">
-                                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-                        </a>
-                </div>
-            
-            </div>
-        </div>
-    </div>
+                
+                <h2 class="text-2xl font-bold text-brand_text mb-2">¡Datos registrados!</h2>
+                <p class="text-gray-500 mb-8 max-w-xs mx-auto">
+                    Tu envío se generó correctamente. Se abrirá WhatsApp para finalizar.
+                </p>
 
-    <div id="error-view" class="hidden h-screen flex flex-col items-center justify-center bg-white p-8 text-center">
+                <p class="font-bold text-brand_text mb-4">Mientras esperas, ¡síguenos!</p>
+                <div class="flex justify-center gap-4">
+                     <a href="#" class="opacity-80 hover:opacity-100 transition"><img src="https://raw.githubusercontent.com/complicidad/form/main/whatsapp.png" width="32"></a>
+                     <a href="#" class="opacity-80 hover:opacity-100 transition"><img src="https://raw.githubusercontent.com/complicidad/form/main/tik-tok.png" width="32"></a>
+                     <a href="#" class="opacity-80 hover:opacity-100 transition"><img src="https://raw.githubusercontent.com/complicidad/form/main/instagram.png" width="32"></a>
+                </div>
+
+                <button onclick="window.location.reload()" class="mt-10 text-brand_accent hover:text-brand_accent_alt font-bold underline text-sm">
+                    Crear otro envío
+                </button>
+            </div>
+        
+        </div>
+    </main>
+
+    <footer class="mt-8 text-center text-gray-400 text-xs">
+        <p>Powered by <a href="#" class="font-bold text-brand_accent hover:underline">Latam5S</a></p>
+    </footer>
+
+    <div id="error-view" class="hidden fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-8 text-center">
         <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4">
             <i data-lucide="alert-triangle" class="w-8 h-8"></i>
         </div>
-        <h1 class="text-xl font-bold text-slate-800 mb-2">Enlace no válido</h1>
-        <p class="text-slate-500 text-sm">No hemos podido identificar la tienda. Asegúrate de usar el enlace completo compartido por el vendedor.</p>
+        <h1 class="text-xl font-bold text-gray-800 mb-2">Enlace no válido</h1>
+        <p class="text-gray-500 text-sm">No hemos podido identificar la tienda. Verifica el enlace.</p>
     </div>
 
     <script>
-        // CONFIGURACIÓN ORIGINAL DEL APP SCRIPT 
+        // --- CONFIGURACIÓN TÉCNICA (NO TOCAR) ---
         const API_URL = "https://script.google.com/macros/s/AKfycbyJlJR9Yb-ZjG0bXQYAEFv1J3ZofaWy59vIERIiLipt03XCSxTEMGI8VHtY3QZ60-NuKw/exec";
         
-        // URLs de recursos estáticos (GitHub)
         const URLS = {
-            districts: "lstDistritos.json", // La general
-                
-            coverage: {
-                "Dinsides": "lstDinsides.json"
-            },
-            
+            districts: "lstDistritos.json",
+            coverage: { "Dinsides": "lstDinsides.json" },
             agency: {
                 "Shalom": "lstShalom.json",
                 "Olva Courier": "lstOlvaCourier.json",
@@ -280,120 +251,82 @@
         };
 
         const COURIER_TYPES = { 
-            "Shalom": "agency", 
-            "Olva Courier": "agency", 
-            "Marvisur": "agency",
-            "Dinsides": "home",
-            "Delivery": "home"
+            "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency",
+            "Dinsides": "home", "Delivery": "home"
         };
         
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
 
-        // Helper seguro para HTML
-        const escapeHtml = (unsafe) => {
-            if (typeof unsafe !== 'string') return unsafe;
-            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        };
-
-        // Estado del cliente
-        const state = {
-            merchantId: null,
-            config: {},
-            selectedCourierType: null,
-            selectedCourier: null,
-            externalData: { districts: null, agencies: [] }
-        };
-
         const app = {
             init: async () => {
-                // 1. Obtener Merchant ID de la URL
                 const p = new URLSearchParams(window.location.search);
                 state.merchantId = p.get('merchant');
+                
+                // Mostrar error si no hay ID
+                if (!state.merchantId) return app.showError();
 
-                // Helper para mostrar LA MISMA pantalla de error unificada
-                const showInvalidLinkError = () => {
-                    document.getElementById('loading-overlay').classList.add('hidden');
-                    document.getElementById('view-client').classList.add('hidden');
-                    document.getElementById('error-view').classList.remove('hidden');
-                    lucide.createIcons();
-                };
-
-                // CASO 1: No hay ID en la URL
-                if (!state.merchantId) {
-                    showInvalidLinkError();
-                    return;
-                }
-
-                // 2. Cargar Configuración del Emprendedor
                 try {
                     const res = await fetch(`${API_URL}?action=getConfig&merchantId=${state.merchantId}`);
                     const json = await res.json();
                     
-                    // CASO 2: El ID existe en URL pero no en Base de Datos (o está incompleto)
-                    // Verificamos si json.data existe y tiene contenido válido
                     if(json.data && json.data.merchantName) {
                         state.config = json.data;
                         app.renderClient();
-                        document.getElementById('loading-overlay').classList.add('hidden'); // Todo OK, ocultamos loader
+                        document.getElementById('loading-overlay').classList.add('hidden');
                     } else {
-                        // ID inválido / no encontrado -> Mismo error visual
-                        showInvalidLinkError();
+                        app.showError();
                     }
-
                 } catch(e) {
-                    console.error("Error cargando config", e);
-                    // Si falla la conexión crítica, también podrías mostrar el error de enlace o uno de conexión
-                    showInvalidLinkError();
+                    app.showError();
                 }
+            },
+            
+            showError: () => {
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('view-client').parentElement.classList.add('hidden'); // Ocultar main card
+                document.getElementById('error-view').classList.remove('hidden');
+                lucide.createIcons();
+            },
+
+            // HELPER PARA NORMALIZAR TEXTO (Tildes)
+            normalizeText: (text) => {
+                return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
             },
 
             renderClient: () => {
-
                 document.title = `Envío - ${state.config.merchantName}`;
-                
-                // Llenar datos de cabecera 
-                document.getElementById('client-title').innerText = state.config.merchantName || "Tienda"; 
+                // Título en el Header
+                document.getElementById('client-title').innerText = state.config.merchantName || "Agenda tu envío";
+                document.getElementById('client-title').classList.remove('hidden');
+
                 document.getElementById('client-time').innerText = state.config.updateTime || "--:--"; 
                 
                 const cl = state.config.couriers || []; 
                 const cs = document.getElementById('c-courier-select'); 
+                cs.innerHTML = '<option value="" disabled selected>Elige una opción...</option>';
                 
-                cs.innerHTML = '<option value="" disabled selected>Selecciona una opción...</option>';
-                
-                // --- LÓGICA DE PRIORIDAD (TU CAMBIO) ---
-                // 1. Definimos quién será el courier "real" para domicilios
                 let homeCourierDefinitivo = null;
-
-                // Si la lista de couriers del emprendedor CONTIENE "Dinsides"...
                 if (cl.includes("Dinsides")) {
-                    homeCourierDefinitivo = "Dinsides"; // Prioridad absoluta
+                    homeCourierDefinitivo = "Dinsides";
                 } else {
-                    // Si no tiene Dinsides, buscamos el primero que sea tipo 'home' (ej: Delivery)
                     homeCourierDefinitivo = cl.find(c => (COURIER_TYPES[c] || "home") === "home");
                 }
-                
-                // Guardamos esta decisión en el estado global
                 state.primaryHomeCourier = homeCourierDefinitivo;
-                // ----------------------------------------
 
                 let homeOptionAdded = false;
-
                 cl.forEach(c => {
                     const type = COURIER_TYPES[c] || "home";
-                    
                     if (type === 'agency') {
-                        // Agencias se muestran normal
                         const opt = document.createElement('option');
-                        opt.value = c; opt.innerText = c;
+                        opt.value = c; opt.innerText = "Retiro en agencia " + c; // UX wording v2
                         cs.appendChild(opt);
                     } else {
-                        // Deliveries se agrupan bajo un solo nombre
                         if (!homeOptionAdded) {
                             const opt = document.createElement('option');
                             opt.value = "GENERIC_HOME"; 
-                            opt.innerText = "Envío a Domicilio"; 
+                            opt.innerText = "Envío a domicilio / trabajo"; // UX wording v2
                             cs.appendChild(opt);
                             homeOptionAdded = true;
                         }
@@ -403,12 +336,9 @@
                 app.generateDateOptions(); 
                 app.loadExternalLists(); 
                 lucide.createIcons();
-                
-                // Enfocar en celular
                 document.getElementById('c-phone').focus();
             },
 
-            // --- LÓGICA DE AUTOCOMPLETADO (FILL FROM CACHE) ---
             handleClientPhone: (el) => {
                 let val = el.value.replace(/\D/g, '');
                 if (val.length > 0 && val.charAt(0) !== '9') val = val.substring(1);
@@ -420,10 +350,9 @@
                     const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
                     if (cache[val]) {
                         badge.classList.remove('hidden');
-                        app.fillFromCache(cache[val]); // <-- AQUÍ SE LLENA TODO
-                        app.showToast('¡Hola de nuevo! Tus datos se cargaron ✨');
+                        app.fillFromCache(cache[val]); 
+                        app.showToast('¡Hola de nuevo! Cargamos tus datos ✨');
                         
-                        // Efecto cascada visual
                         ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => {
                             setTimeout(() => app.revealStep(id), idx * 100);
                         });
@@ -435,37 +364,29 @@
             },
 
             fillFromCache: (data) => {
-                // 1. Nombre
                 if(data.name) document.getElementById('c-name').value = data.name;
                 
-                // 2. Courier y Despliegue de campos
                 if(data.courier) {
                     const select = document.getElementById('c-courier-select');
                     const type = COURIER_TYPES[data.courier] || "home";
                     
                     if (type === 'agency') {
-                        // Si es Agencia, buscamos el nombre exacto en el select
                         if ([...select.options].some(o => o.value === data.courier)) {
                             select.value = data.courier;
                             app.onCourierChange(data.courier); 
                         }
                     } else {
-                        // Si es Delivery (Home), seleccionamos la opción Genérica
-                        // Esto funciona aunque el caché diga "Dinsides" y el select diga "GENERIC_HOME"
                         select.value = "GENERIC_HOME";
                         app.onCourierChange("GENERIC_HOME");
                     }
                 }
 
-                // 3. Llenado de campos internos
                 setTimeout(() => {
-                    // --- FORZAR FECHA VACÍA SIEMPRE ---
                     document.getElementById('c-date-select').value = ""; 
-                    // ----------------------------------
-
                     if(data.type === 'agency') {
                         if(data.dni) document.getElementById('c-dni').value = data.dni;
                         if(data.agency) {
+                             // Reconstrucción del formato PIPE
                              document.getElementById('c-agency').value = data.agency;
                              document.getElementById('btn-clear-agency').classList.remove('hidden');
                         }
@@ -477,84 +398,35 @@
                         if(data.address) document.getElementById('c-address').value = data.address;
                         if(data.ref) document.getElementById('c-ref').value = data.ref;
                     }
-                    app.validateForm();
                 }, 100);
             },
 
-            // Helper para quitar tildes: "Ancón" -> "ancon"
-            normalizeText: (text) => {
-                return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            },
-
-            validateDistrictOnBlur: (el) => {
-                // Delay de 200ms para permitir que el click en la lista ocurra primero
-                setTimeout(() => {
-                    const val = el.value.trim();
-                    if (!val) return; // Si está vacío, no hacemos nada
-            
-                    const validDistricts = state.externalData.districts || [];
-                    
-                    // Si lo que escribió NO está en la lista...
-                    if (!validDistricts.includes(val)) {
-                        el.value = ""; // Borramos el dato inválido
-                        app.showToast("⚠️ Por favor, elige un distrito de la lista");
-                        document.getElementById('district-results').classList.add('hidden');
-                    }
-                }, 200);
-            },
-
-            validateAgencyOnBlur: (el) => {
-                // Pequeño delay para permitir que el click en el dropdown ocurra primero
-                setTimeout(() => {
-                    const val = el.value.trim();
-                    if (!val) return; // Si está vacío no molestamos
-            
-                    const loadedAgencies = state.externalData.agencies || [];
-                    const isValid = loadedAgencies.some(item => {
-                        return `${item.Agencia} | ${item.Direccion}` === val;
-                    });
-            
-                    if (!isValid) {
-                        // UX: Si no es válido, borramos el campo para obligar a seleccionar
-                        // Opcional: Podrías dejar el texto pero ponerlo en rojo. 
-                        // Yo recomiendo borrarlo para evitar que piensen que está bien.
-                        el.value = "";
-                        app.showToast("⚠️ Selecciona una opción del listado");
-                        document.getElementById('agency-results').classList.add('hidden');
-                    }
-                }, 200); // 200ms de delay es suficiente
-            },
-            
-            // --- LÓGICA DE INTERACCIÓN ---
             revealStep: (id) => {
                 const el = document.getElementById(id);
                 if (el && el.classList.contains('hidden')) {
                     el.classList.remove('hidden');
                     setTimeout(() => { el.classList.remove('opacity-0', 'translate-y-4'); }, 50);
+                    
+                    // UX: Auto-scroll suave si es necesario
+                    if(id === 'block-service' || id === 'block-closing') {
+                         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
                 }
             },
 
             onCourierChange: (val) => { 
-                // 1. TRADUCCIÓN DE MÁSCARA
-                // Si el valor es el genérico, usamos el real que calculamos en renderClient (ej: "Dinsides")
                 let realCourier = val;
-                if (val === "GENERIC_HOME") {
-                    realCourier = state.primaryHomeCourier;
-                }
-
-                // 2. Guardar el nombre REAL para el backend y para cargar listas
+                if (val === "GENERIC_HOME") realCourier = state.primaryHomeCourier;
+                
                 state.selectedCourier = realCourier;
-
                 const type = COURIER_TYPES[realCourier] || "home"; 
                 state.selectedCourierType = type; 
                 
-                const dynamicSection = document.getElementById('dynamic-form-section');
-                dynamicSection.classList.remove('hidden'); 
+                document.getElementById('dynamic-form-section').classList.remove('hidden'); 
         
                 const af = document.getElementById('fields-agency');
                 const hf = document.getElementById('fields-home'); 
                 
-                // Reset visual inputs
                 ['c-dni','c-agency','c-address','c-district'].forEach(id => {
                     document.getElementById(id).removeAttribute('required');
                 });
@@ -566,7 +438,7 @@
                     const ag = document.getElementById('c-agency'); 
                     ag.setAttribute('required','true'); 
                     ag.value = ""; 
-                    app.loadAgencies(realCourier); // <--- Usamos realCourier
+                    app.loadAgencies(realCourier); 
                     app.clearDistrict(); 
                 } else { 
                     af.classList.add('hidden'); 
@@ -575,41 +447,29 @@
                     document.getElementById('c-district').setAttribute('required','true'); 
                     app.clearAgency(); 
                     app.clearDistrict();
-                    
-                    // Cargar lista específica (ej: Dinsides.json)
-                    app.loadExternalLists(realCourier); // <--- Usamos realCourier
+                    app.loadExternalLists(realCourier);
                 } 
-                app.validateForm(); 
             },
 
             loadExternalLists: async (courierName) => { 
-                // 1. Decidir qué URL usar
-                // Si existe una específica en 'coverage', úsala. Si no, usa la general 'districts'.
                 let url = URLS.districts; 
                 if (courierName && URLS.coverage && URLS.coverage[courierName]) {
                     url = URLS.coverage[courierName];
                 }
-
-                // 2. Feedback visual (Bloquear input mientras carga)
                 const input = document.getElementById('c-district');
                 if(input) {
-                    input.placeholder = "Actualizando cobertura...";
+                    input.placeholder = "Cargando distritos...";
                     input.disabled = true;
-                    input.value = ""; // Limpiar selección anterior para evitar errores
+                    input.value = "";
                 }
-                
-                // 3. Limpiar memoria para forzar la nueva lista
                 state.externalData.districts = []; 
 
                 try { 
                     const res = await fetch(url); 
                     const data = await res.json(); 
-                    // Mapeo flexible (soporta objetos con .Distrito, .nombre o strings directos)
+                    // Mapeo flexible para distritos
                     state.externalData.districts = data.map(d => d.Distrito || d.nombre || d); 
-                } catch(e) { 
-                    console.error("Error cargando distritos", e);
-                } finally {
-                    // 4. Desbloquear input
+                } catch(e) { console.error(e); } finally {
                     if(input) {
                         input.placeholder = "Buscar Distrito...";
                         input.disabled = false;
@@ -620,75 +480,99 @@
             loadAgencies: async (courierName) => {
                 const url = URLS.agency[courierName];
                 if (!url) { state.externalData.agencies = []; return; }
-                
-                const inputAgency = document.getElementById('c-agency');
-                inputAgency.placeholder = `Cargando sedes de ${courierName}...`;
-                inputAgency.disabled = true;
+                const input = document.getElementById('c-agency');
+                input.placeholder = `Cargando sedes ${courierName}...`;
+                input.disabled = true;
             
                 try {
                     const res = await fetch(url);
                     const rawData = await res.json();
                     state.externalData.agencies = rawData.map(item => ({
-                        Agencia: item.Agencia || item.c_nom_agencia || item.nombre || 'Agencia',
-                        Direccion: item.Direccion || item.c_direccion || item.direccion || ''
+                        Agencia: item.Agencia || item.c_nom_agencia || 'Agencia',
+                        Direccion: item.Direccion || item.c_direccion || ''
                     }));
-                    inputAgency.placeholder = `Buscar sede ${courierName}...`;
-                    inputAgency.disabled = false;
-                } catch (e) {
-                    inputAgency.placeholder = "Error de carga.";
-                }
+                    input.placeholder = `Buscar sede ${courierName}...`;
+                    input.disabled = false;
+                } catch (e) { input.placeholder = "Error cargando agencias"; }
             },
 
-            // --- BÚSQUEDAS ---
             searchAgency: (q) => { 
                 const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); 
                 if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
                 x.classList.remove('hidden'); 
                 if(q.length<2) { c.classList.add('hidden'); return; } 
-                const lq = q.toLowerCase(); 
-                const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && a.Agencia.toLowerCase().includes(lq)) || (a.Direccion && a.Direccion.toLowerCase().includes(lq))).slice(0,50); 
-                c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${escapeHtml(a.Agencia.replace(/'/g,"\\'"))}','${escapeHtml(a.Direccion.replace(/'/g,"\\'").replace(/\n/g," "))}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm mb-1">${escapeHtml(a.Agencia)}</p><p class="text-xs text-slate-500">${escapeHtml(a.Direccion)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; 
-                c.classList.remove('hidden'); 
-            },
-            selectAgency: (n, a) => { document.getElementById('c-agency').value = `${n} | ${a}`; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.remove('hidden'); },
-            clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
-
-            searchDistrict: (q) => { 
-                const c = document.getElementById('district-results'); 
-                const x = document.getElementById('btn-clear-district'); 
                 
-                if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
-                x.classList.remove('hidden'); 
-                
-                if(q.length < 1) { c.classList.add('hidden'); return; } 
-            
-                // USO DEL HELPER DE NORMALIZACIÓN
-                const cleanQ = app.normalizeText(q); 
-                
-                const m = (state.externalData.districts || []).filter(d => {
-                    // Normalizamos el dato de la lista también
-                    return app.normalizeText(d).includes(cleanQ);
-                }).slice(0, 50);
-                c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${escapeHtml(d).replace(/'/g,"\\'")}')" class="p-4 cursor-pointer hover:bg-slate-50 transition border-b border-slate-50 last:border-0"><p class="font-bold text-slate-800 text-sm">${escapeHtml(d)}</p></div>`).join('') : '<div class="p-4 text-slate-400 text-sm text-center">Sin resultados</div>'; 
+                // UX: Auto-scroll
                 if (c.classList.contains('hidden')) {
                     c.classList.remove('hidden');
-                    // Pequeño delay para que el navegador renderice la lista
-                    setTimeout(() => {
-                        const inputElement = document.getElementById('c-agency'); // O c-district
-                        inputElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                } else {
-                    c.classList.remove('hidden');
+                    setTimeout(() => document.getElementById('c-agency').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
                 }
+
+                const cleanQ = app.normalizeText(q);
+                const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && app.normalizeText(a.Agencia).includes(cleanQ)) || (a.Direccion && app.normalizeText(a.Direccion).includes(cleanQ))).slice(0,50); 
+                
+                c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${a.Agencia.replace(/'/g,"\\'")}','${a.Direccion.replace(/'/g,"\\'").replace(/\n/g," ")}')" class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0"><p class="font-bold text-brand_text text-sm mb-0.5">${a.Agencia}</p><p class="text-xs text-gray-500">${a.Direccion}</p></div>`).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
+            },
+            
+            // SELECCIÓN CON PIPE ( | )
+            selectAgency: (n, a) => { 
+                document.getElementById('c-agency').value = `${n} | ${a}`; 
+                document.getElementById('agency-results').classList.add('hidden'); 
+                document.getElementById('btn-clear-agency').classList.remove('hidden'); 
+                // UX: Validar visualmente
+                document.getElementById('c-agency').classList.remove('border-red-500', 'bg-red-50');
+            },
+            
+            clearAgency: () => { const i = document.getElementById('c-agency'); i.value=''; document.getElementById('agency-results').classList.add('hidden'); document.getElementById('btn-clear-agency').classList.add('hidden'); i.focus(); },
+
+            validateAgencyOnBlur: (el) => {
+                setTimeout(() => {
+                    const val = el.value.trim();
+                    if (!val) return;
+                    const loadedAgencies = state.externalData.agencies || [];
+                    const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === val);
+                    if (!isValid) {
+                        el.value = "";
+                        app.showToast("⚠️ Selecciona una opción del listado");
+                        document.getElementById('agency-results').classList.add('hidden');
+                    }
+                }, 200);
+            },
+
+            searchDistrict: (q) => { 
+                const c = document.getElementById('district-results'), x = document.getElementById('btn-clear-district'); 
+                if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
+                x.classList.remove('hidden'); 
+                if(q.length<1) { c.classList.add('hidden'); return; } 
+                
+                 if (c.classList.contains('hidden')) {
+                    c.classList.remove('hidden');
+                    setTimeout(() => document.getElementById('c-district').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+
+                const cleanQ = app.normalizeText(q);
+                const m = (state.externalData.districts||[]).filter(d => app.normalizeText(d).includes(cleanQ)).slice(0,50); 
+                c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${d.replace(/'/g,"\\'")}')" class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0"><p class="font-bold text-brand_text text-sm">${d}</p></div>`).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
             },
             selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
             clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
 
-            // --- FECHAS DINÁMICAS ---
+            validateDistrictOnBlur: (el) => {
+                setTimeout(() => {
+                    const val = el.value.trim();
+                    if (!val) return;
+                    const validDistricts = state.externalData.districts || [];
+                    if (!validDistricts.includes(val)) {
+                        el.value = ""; 
+                        app.showToast("⚠️ Elige un distrito de la lista");
+                        document.getElementById('district-results').classList.add('hidden');
+                    }
+                }, 200);
+            },
+
             generateDateOptions: () => { 
                 const s = document.getElementById('c-date-select'); 
                 s.innerHTML = '<option value="" disabled selected>Elige una fecha...</option>'; 
-                
                 const allowedDays = state.config.shippingDays || []; 
                 if (!allowedDays.length) return; 
 
@@ -708,7 +592,12 @@
                     const dayIndex = f.getDay(); 
                     
                     if(allowedDays.some(n => DAY_INDEX_MAP[n] === dayIndex)) { 
-                        const lbl = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
+                        // Smart Labels
+                        let prefix = "";
+                        if (i === 0) prefix = "¡HOY! - ";
+                        else if (i === 1) prefix = "Mañana - ";
+
+                        const lbl = `${prefix}${DAY_NAMES_FULL[dayIndex]} ${f.getDate()} ${MONTH_NAMES[f.getMonth()]}`; 
                         const val = `${DAY_NAMES_FULL[dayIndex]} ${f.getDate().toString().padStart(2,'0')}/${(f.getMonth()+1).toString().padStart(2,'0')}`; 
                         const o = document.createElement('option'); 
                         o.value = val; o.innerText = lbl; 
@@ -717,101 +606,74 @@
                 } 
             },
 
-            validateForm: () => { 
-                const btn = document.getElementById('btn-submit-order');
-                const c = document.getElementById('c-courier-select').value; 
-                const d = document.getElementById('c-date-select').value; 
-                if(c && d) btn.removeAttribute('disabled'); 
-                else btn.setAttribute('disabled','true'); 
-            },
-
-            // --- ENVÍO FINAL ---
             submitOrder: async (e) => { 
                 e.preventDefault(); 
                 
-                const dateSelect = document.getElementById('c-date-select');
-                const userChoice = dateSelect.value; // 1. GUARDAMOS lo que eligió el usuario
-
-                // 2. Regeneramos la lista (por si pasó la hora de corte mientras llenaba)
-                app.generateDateOptions();
-
-                // 3. RESTAURAMOS la selección del usuario
-                // Verificamos si la opción que eligió todavía existe en la nueva lista
-                let isValidChoice = false;
-                for(let i=0; i<dateSelect.options.length; i++){
-                    if(dateSelect.options[i].value === userChoice){
-                        dateSelect.selectedIndex = i;
-                        isValidChoice = true;
-                        break;
-                    }
+                // 1. VALIDACIONES
+                if (!state.selectedCourier) {
+                    app.showToast("⚠️ Selecciona un tipo de envío");
+                    app.revealStep('block-service');
+                    document.getElementById('c-courier-select').focus();
+                    return;
                 }
 
-                // 4. Solo si la fecha elegida YA NO ES VÁLIDA (ej: era "Hoy" y pasó la hora), la cambiamos
-                if (!isValidChoice && dateSelect.options.length > 1) {
-                    dateSelect.selectedIndex = 1; // Auto-fix a la siguiente fecha
-                    app.showToast("⚠️ Hora de corte superada: Fecha actualizada.");
+                const dateSelect = document.getElementById('c-date-select');
+                if (!dateSelect.value) {
+                    app.showToast("📅 Selecciona la fecha de envío");
+                    app.revealStep('block-closing');
+                    dateSelect.focus();
+                    return;
                 }
 
                 const phone = document.getElementById('c-phone').value.trim();
                 const name = document.getElementById('c-name').value.trim();
-                const day = dateSelect.value; // Usamos el valor final validado
+                const day = dateSelect.value; 
 
                 if (name.length < 3) return app.showToast("⚠️ Ingresa un nombre válido");
                 if (!/^9\d{8}$/.test(phone)) return app.showToast("⚠️ Celular inválido");
 
-                // --- NUEVA VALIDACIÓN ESTRICTA DE AGENCIA ---
+                // Validación Estricta
                 if (state.selectedCourierType === 'agency') {
                     const inputAgency = document.getElementById('c-agency');
-                    const currentValue = inputAgency.value.trim();
-                    
-                    // 1. Verificamos si hay agencias cargadas
                     const loadedAgencies = state.externalData.agencies || [];
-                    
-                    // 2. Buscamos coincidencia exacta
-                    // Reconstruimos el string "Nombre - Dirección" tal como lo hace la función selectAgency
                     const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === inputAgency.value.trim());
-                            
-                            if (!isValid) {
-                                inputAgency.focus();
-                                inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
-                                setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
-                                return app.showToast("⚠️ Selecciona una agencia de la lista");
-                            }
-                    
-                        } else {
-                            // === NUEVA VALIDACIÓN PARA DISTRITOS (Domicilio) ===
-                            const inputDist = document.getElementById('c-district');
-                            const currentDist = inputDist.value.trim();
-                            const validDistricts = state.externalData.districts || []; // Tu lista plana de strings
-                    
-                            // Verificamos si el texto escrito existe EXACTAMENTE en la lista cargada
-                            if (!validDistricts.includes(currentDist)) {
-                                // UX: Feedback de error visual
-                                inputDist.focus();
-                                inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
-                                setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
-                                return app.showToast("⚠️ Debes seleccionar un distrito válido de la lista");
-                            }
-                        }
+                    if (!isValid) {
+                        inputAgency.focus();
+                        inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                        setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                        return app.showToast("⚠️ Selecciona una agencia de la lista");
+                    }
+                } else {
+                    const inputDist = document.getElementById('c-district');
+                    const validDistricts = state.externalData.districts || [];
+                    if (!validDistricts.includes(inputDist.value.trim())) {
+                        inputDist.focus();
+                        inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                        setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                        return app.showToast("⚠️ Selecciona un distrito de la lista");
+                    }
+                }
 
-                // Construcción de Datos
-                let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
-                let wa = ""; 
+                // 2. CONSTRUCCIÓN DE DATOS
+                let data = { 
+                    clientName: name, clientPhone: phone, courier: state.selectedCourier, 
+                    shippingDate: day, createdAt: Date.now(), product: "N/A" 
+                }; 
                 
-                // Guardar en Caché Local
                 const cacheData = { name: name, courier: state.selectedCourier, type: state.selectedCourierType };
+                let wa = ""; 
 
                 if (state.selectedCourierType === 'agency') { 
                     data.clientDni = document.getElementById('c-dni').value.trim(); 
-                    data.clientAgency = document.getElementById('c-agency').value; 
+                    data.clientAgency = document.getElementById('c-agency').value.trim(); 
                     cacheData.dni = data.clientDni;
                     cacheData.agency = data.clientAgency;
                     
-                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name}\n📱 ${phone}\n🆔 DNI: ${data.clientDni}\n🏢 Agencia: ${data.clientAgency}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
+                    wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name}\n📱 ${phone}\n🆔 DNI: ${data.clientDni}\n🏢 Agencia: ${data.clientAgency.replace(' | ', '\n📍 ')}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
                 } else { 
-                    data.clientAddress = document.getElementById('c-address').value; 
-                    data.clientDistrict = document.getElementById('c-district').value; 
-                    data.clientRef = document.getElementById('c-ref').value; 
+                    data.clientAddress = document.getElementById('c-address').value.trim(); 
+                    data.clientDistrict = document.getElementById('c-district').value.trim(); 
+                    data.clientRef = document.getElementById('c-ref').value.trim(); 
                     cacheData.district = data.clientDistrict;
                     cacheData.address = data.clientAddress;
                     cacheData.ref = data.clientRef;
@@ -819,16 +681,14 @@
                     wa = `📦 *NUEVO ENVÍO (DELIVERY)*\n\n👤 ${name}\n📱 ${phone}\n📍 ${data.clientDistrict}\n🏠 ${data.clientAddress}\n🗺️ Ref: ${data.clientRef}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
                 }
 
-                // Guardar caché persistente
                 const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
                 cache[phone] = cacheData;
                 localStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
 
-                // Abrir WhatsApp
+                // 3. ENVIAR
                 setTimeout(() => {
                     window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
                     
-                    // Backup al Backend (Silent)
                     try { 
                         fetch(API_URL, { 
                             method: "POST", 
@@ -836,8 +696,9 @@
                         });
                     } catch(e) {} 
 
-                    // Pantalla éxito
                     document.getElementById('client-form').classList.add('hidden');
+                    document.getElementById('view-client').classList.add('hidden'); // Ocultar form container
+                    document.getElementById('client-title').classList.add('hidden'); // Ocultar titulo
                     document.getElementById('success-view').classList.remove('hidden');
                 }, 500);
             },
@@ -850,6 +711,7 @@
             }
         };
 
+        const state = { merchantId: null, config: {}, selectedCourierType: null, selectedCourier: null, externalData: { districts: null, agencies: [] } };
         app.init();
     </script>
 </body>
