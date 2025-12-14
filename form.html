@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Agenda tu envío</title>
-    <meta name="description" content="Agenda tu envío de manera simple, rápida y segura.">
+    <meta name="description" content="Completa tus datos de entrega en segundos y programa tu envío. 100% Seguro y Fácil.">
     <meta name="robots" content="noindex">
     <meta name="theme-color" content="#ffffff">
 
-    <meta property="og:title" content="Agenda tu envío">
-    <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand2.png">
+    <meta property="og:title" content="Programa tu envío">
+    <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand3.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,14 +89,14 @@
                 <i data-lucide="clock" class="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0"></i>
                 <div class="text-sm text-orange-800">
                     <span class="font-bold block mb-1">Hora de corte: <span id="client-time">--:--</span></span>
-                    Registra tu pedido antes de esta hora para procesarlo hoy.
+                    Asegura tu envío registrando tus datos antes de la hora de corte.
                 </div>
             </div>
         
             <form id="client-form" onsubmit="app.submitOrder(event)" class="space-y-8 flex-1">
                 
                 <div id="block-identity" class="relative z-30">
-                     <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">WhatsApp con el que compraste <span class="text-danger">*</span></label>
+                     <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Tu WhatsApp <span class="text-danger">*</span></label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">+51</span>
                         <input id="c-phone" type="tel" maxlength="9" inputmode="numeric" placeholder="9XXXXXXXX" oninput="app.handleClientPhone(this)" required 
@@ -110,7 +110,7 @@
                 <div id="progressive-content" class="space-y-8">
                     
                     <div id="block-service" class="hidden opacity-0 transition-all duration-500 transform translate-y-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Selecciona el tipo de servicio <span class="text-danger">*</span></label>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">¿Cómo quieres recibir tu pedido? <span class="text-danger">*</span></label>
                         <div class="relative">
                             <select id="c-courier-select" onchange="app.onCourierChange(this.value)" class="w-full appearance-none bg-gray-50 border border-gray-200 rounded-xl py-4 pl-4 pr-10 text-gray-800 outline-none focus:border-brand_accent focus:bg-white focus:ring-4 focus:ring-brand_accent/10 cursor-pointer input-transition font-medium shadow-sm">
                                 <option value="" disabled selected>Elige una opción...</option>
@@ -175,30 +175,12 @@
                         
                         <button type="submit" id="btn-submit-order" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-200 transform active:scale-95 flex justify-center items-center gap-3 text-lg">
                             <i class="fab fa-whatsapp text-2xl"></i>
-                            Confirmar y agendar envío
+                            Enviar Datos por WhatsApp
                         </button>
                     </div>
                 </div>
             </form>
         
-            <div id="success-view" class="hidden flex flex-col items-center justify-center py-10 text-center animate-fade-in flex-1">
-                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-[#25D366] mb-6 shadow-sm">
-                    <i data-lucide="check" class="w-12 h-12"></i>
-                </div>
-                
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Abriendo WhatsApp!</h2>
-                
-                <p class="text-gray-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-                    Tu envío ha sido generado correctamente. <br>
-                    <span class="font-medium text-gray-700">Continúa la conversación en el chat para finalizar.</span>
-                </p>
-
-                <button onclick="window.location.reload()" class="group px-6 py-3 bg-white border border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 hover:text-brand_accent transition-all duration-200 shadow-sm flex items-center gap-2">
-                    <i data-lucide="plus" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> 
-                    Crear otro envío
-                </button>
-            </div>
-
             <div class="mt-12 pt-6 border-t border-gray-100 pb-2">
                 <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20vi%20su%20formulario%20de%20env%C3%ADos%20y%20me%20gustar%C3%ADa%20tener%20uno%20para%20mi%20negocio." 
                    target="_blank" 
@@ -222,6 +204,48 @@
             </div>
         
         </div>
+
+            <div id="success-view" class="hidden flex flex-col items-center justify-center py-10 text-center animate-fade-in flex-1">
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-[#25D366] mb-6 shadow-sm">
+                    <i data-lucide="check" class="w-12 h-12"></i>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Abriendo WhatsApp!</h2>
+                
+                <p class="text-gray-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+                    Tu envío ha sido generado correctamente. <br>
+                    <span class="font-medium text-gray-700">Continúa la conversación en el chat para finalizar.</span>
+                </p>
+
+                <button onclick="window.location.reload()" class="group px-6 py-3 bg-white border border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 hover:text-brand_accent transition-all duration-200 shadow-sm flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4 group-hover:scale-110 transition-transform"></i> 
+                    Crear otro envío
+                </button>
+
+                <div class="mt-12 pt-6 border-t border-gray-100 pb-2">
+                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20vi%20su%20formulario%20de%20env%C3%ADos%20y%20me%20gustar%C3%ADa%20tener%20uno%20para%20mi%20negocio." 
+                       target="_blank" 
+                       class="group block bg-gray-50 hover:bg-white border border-gray-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center justify-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#10B981] flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">5S</div>
+                            
+                            <div class="text-left">
+                                <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by Latam5S</p>
+                                <p class="text-sm font-bold text-brand_text leading-tight">
+                                    ¿Vendes por WhatsApp? <br>
+                                    <span class="logo-text-gradient font-bold underline underline-offset-2">Pide tu formulario aquí</span>
+                                </p>
+                            </div>
+                            
+                            <div class="text-gray-300 group-hover:text-[#25D366] transition-colors">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
+
     </main>
 
     <div id="error-view" class="hidden fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-8 text-center">
@@ -365,15 +389,18 @@
                 state.selectedCourierType = COURIER_TYPES[realCourier] || "home"; 
                 document.getElementById('dynamic-form-section').classList.remove('hidden'); 
                 const af = document.getElementById('fields-agency'), hf = document.getElementById('fields-home'); 
-                ['c-dni','c-agency','c-address','c-district'].forEach(id => document.getElementById(id).removeAttribute('required'));
+                ['c-dni','c-agency','c-address','c-district','c-ref'].forEach(id => document.getElementById(id).removeAttribute('required'));
                 if (state.selectedCourierType === 'agency') { 
                     af.classList.remove('hidden'); hf.classList.add('hidden'); 
                     document.getElementById('c-dni').setAttribute('required','true'); 
-                    document.getElementById('c-agency').setAttribute('required','true'); document.getElementById('c-agency').value = ""; 
+                    document.getElementById('c-agency').setAttribute('required','true'); 
+                    document.getElementById('c-agency').value = ""; 
                     app.loadAgencies(realCourier); app.clearDistrict(); 
                 } else { 
                     af.classList.add('hidden'); hf.classList.remove('hidden'); 
-                    document.getElementById('c-address').setAttribute('required','true'); document.getElementById('c-district').setAttribute('required','true'); 
+                    document.getElementById('c-address').setAttribute('required','true'); 
+                    document.getElementById('c-district').setAttribute('required','true'); 
+                    document.getElementById('c-ref').setAttribute('required','true');
                     app.clearAgency(); app.clearDistrict(); app.loadExternalLists(realCourier);
                 } 
             },
@@ -492,6 +519,13 @@
                     const inputDist = document.getElementById('c-district');
                     const validDistricts = state.externalData.districts || [];
                     if (!validDistricts.includes(inputDist.value.trim())) { inputDist.focus(); inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona un distrito de la lista"); }
+                    const inputRef = document.getElementById('c-ref');
+                    if (inputRef.value.trim().length < 3) { // Mínimo 3 letras
+                        inputRef.focus();
+                        inputRef.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                        setTimeout(() => inputRef.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                        return app.showToast("⚠️ Ingresa una referencia (color de casa, piso, etc)");
+                    }
                 }
 
                 let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
