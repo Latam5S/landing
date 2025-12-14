@@ -365,15 +365,18 @@
                 state.selectedCourierType = COURIER_TYPES[realCourier] || "home"; 
                 document.getElementById('dynamic-form-section').classList.remove('hidden'); 
                 const af = document.getElementById('fields-agency'), hf = document.getElementById('fields-home'); 
-                ['c-dni','c-agency','c-address','c-district'].forEach(id => document.getElementById(id).removeAttribute('required'));
+                ['c-dni','c-agency','c-address','c-district','c-ref'].forEach(id => document.getElementById(id).removeAttribute('required'));
                 if (state.selectedCourierType === 'agency') { 
                     af.classList.remove('hidden'); hf.classList.add('hidden'); 
                     document.getElementById('c-dni').setAttribute('required','true'); 
-                    document.getElementById('c-agency').setAttribute('required','true'); document.getElementById('c-agency').value = ""; 
+                    document.getElementById('c-agency').setAttribute('required','true'); 
+                    document.getElementById('c-agency').value = ""; 
                     app.loadAgencies(realCourier); app.clearDistrict(); 
                 } else { 
                     af.classList.add('hidden'); hf.classList.remove('hidden'); 
-                    document.getElementById('c-address').setAttribute('required','true'); document.getElementById('c-district').setAttribute('required','true'); 
+                    document.getElementById('c-address').setAttribute('required','true'); 
+                    document.getElementById('c-district').setAttribute('required','true'); 
+                    document.getElementById('c-ref').setAttribute('required','true');
                     app.clearAgency(); app.clearDistrict(); app.loadExternalLists(realCourier);
                 } 
             },
@@ -492,6 +495,13 @@
                     const inputDist = document.getElementById('c-district');
                     const validDistricts = state.externalData.districts || [];
                     if (!validDistricts.includes(inputDist.value.trim())) { inputDist.focus(); inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona un distrito de la lista"); }
+                    const inputRef = document.getElementById('c-ref');
+                    if (inputRef.value.trim().length < 3) { // Mínimo 3 letras
+                        inputRef.focus();
+                        inputRef.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                        setTimeout(() => inputRef.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                        return app.showToast("⚠️ Ingresa una referencia (color de casa, piso, etc)");
+                    }
                 }
 
                 let data = { clientName: name, clientPhone: phone, courier: state.selectedCourier, shippingDate: day, createdAt: Date.now(), product: "N/A" }; 
