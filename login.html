@@ -1370,7 +1370,7 @@
             
                                 <div style="border-top: 1px solid #ccc; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; color: #000;">
                                     <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: #eee; padding: 2px 5px; border-radius: 4px;">${escapeHtml(x.courier)}</span>
-                                    <span style="font-size: 9px;">${new Date(x.createdAt || Date.now()).toLocaleDateString()}</span>
+                                    <span style="font-size: 9px; font-weight: bold;">${escapeHtml(x.shippingDate || 'PENDIENTE')}</span>
                                 </div>
                             </div>
                         `).join('')}
