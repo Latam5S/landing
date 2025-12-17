@@ -1112,12 +1112,22 @@
                     const shalomList = list.filter(x => x.courier.match(/shalom/i));
                     
                     dataToExport = shalomList.map(x => {
-                        // Lógica: Si hay "|", es agencia. Si no, tomamos el distrito como destino.
                         let destino = "";
+                        let rawName = "";
+
+                        // A. Extraer nombre de la agencia (antes del PIPE)
                         if(x.clientAgency && x.clientAgency.includes('|')) {
-                            destino = x.clientAgency.split('|')[0].trim().toUpperCase(); 
+                            rawName = x.clientAgency.split('|')[0].trim(); 
                         } else {
-                            destino = (x.clientDistrict || "").toUpperCase(); 
+                            rawName = x.clientAgency || x.clientDistrict || "";
+                        }
+
+                        // B. LÓGICA DE "ÚLTIMO DATO" (Agencia final)
+                        if (rawName.includes('/')) {
+                            const parts = rawName.split('/');
+                            destino = parts[parts.length - 1].trim().toUpperCase();
+                        } else {
+                            destino = rawName.toUpperCase();
                         }
 
                         return {
@@ -1192,12 +1202,18 @@
                     const dinsidesList = list.filter(x => x.courier.match(/dinsides/i));
                     
                     dataToExport = dinsidesList.map(x => {
+                        // LIMPIEZA DE DISTRITO: "Lince (S/.10)" -> "Lince"
+                        let distLimpio = x.clientDistrict || "";
+                        if(distLimpio.includes('(')) {
+                            distLimpio = distLimpio.split('(')[0].trim();
+                        }
+
                         return {
                             "CARGA": "CARGA REGULAR",
                             "TIPO DE VENTA (SELECCIONE SOLO DEL LISTADO)": "CONTRAENTREGA",
                             "NOMBRE DEL DESTINATARIO": x.clientName,
                             "TELEFONO DESTINATARIO 9 DIGITOS": x.clientPhone,
-                            "DISTRITO (SELECCIONE SOLO DEL LISTADO)": x.clientDistrict || "",
+                            "DISTRITO (SELECCIONE SOLO DEL LISTADO)": distLimpio, // <--- Dato Limpio
                             "DIRECCION DE ENTREGA": x.clientAddress || "",
                             "COORDENADAS DE LA DIRECCIÓN": "",
                             "FECHA DE ENTREGA (DIA/MES/AÑO)": x.shippingDate ? x.shippingDate.split(' ')[1] : "",
@@ -1207,7 +1223,6 @@
                             "OBSERVACION": x.clientRef || ""
                         };
                     });
-                    // CAMBIO IMPORTANTE: Extensión .xlsx
                     fileName = `CargaMasiva_Dinsides_${new Date().toISOString().slice(0,10)}.xlsx`; 
                     sheetName = "PEDIDOS";
                 }
@@ -1223,10 +1238,8 @@
                         let colAgenciaDistrito = "", colDireccionRef = "", colDni = "";
                         
                         if (x.clientAgency) {
-                            // Separar por PIPE " | "
                             let parts = x.clientAgency.split(' | ');
                             if (parts.length < 2) parts = [x.clientAgency, ""];
-                            
                             colAgenciaDistrito = parts[0] || x.clientAgency;
                             colDireccionRef = parts[1] || "";
                             colDni = x.clientDni || "";
@@ -1262,7 +1275,6 @@
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, sheetName);
                 
-                // FORZAMOS LA DESCARGA EN XLSX PARA TODOS
                 XLSX.writeFile(wb, fileName); 
 
                 app.toggleLoading(false);
