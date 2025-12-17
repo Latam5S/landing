@@ -530,7 +530,42 @@
             </div>
         </main>
     </div>
-        
+
+    <div id="modal-export" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="bg-slate-900 border border-white/10 rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="bg-white/5 p-4 border-b border-white/5 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="file-spreadsheet" class="text-green-500"></i> Exportar Pedidos
+                </h3>
+                <button onclick="document.getElementById('modal-export').classList.add('hidden')" class="text-slate-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <p class="text-sm text-slate-400 mb-4">Hemos detectado los siguientes couriers en tu lista filtrada. ¿Qué formato deseas descargar?</p>
+                
+                <div id="export-options" class="space-y-3">
+                    </div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
+                    <button onclick="app.downloadFormat('general')" class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-white/5 hover:bg-slate-700 transition group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 group-hover:bg-slate-600">
+                                <i data-lucide="table" class="w-4 h-4"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-white">Reporte General</p>
+                                <p class="text-xs text-slate-500">Para tu control interno (Todo unificado)</p>
+                            </div>
+                        </div>
+                        <i data-lucide="download" class="w-4 h-4 text-slate-500 group-hover:text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwy6GejNoEKAemSpfT1dmjYSXeecE3iIKIvQKpDdVwxTeu0AV5UEVLzfde24fWYsje7CA/exec";
@@ -1052,6 +1087,188 @@
                 
                 app.toggleLoading(false); 
             },
+
+
+            downloadFormat: async (type) => {
+                app.toggleLoading(true);
+                document.getElementById('modal-export').classList.add('hidden'); // Cerrar modal
+
+                // Cargar SheetJS si no existe
+                if (typeof XLSX === 'undefined') {
+                    await new Promise(r => {
+                        const s = document.createElement('script');
+                        s.src = "https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js";
+                        s.onload = r; document.head.appendChild(s);
+                    });
+                }
+
+                const list = state.visibleOrders;
+                let dataToExport = [];
+                let fileName = "";
+                let sheetName = "";
+
+                // --- 1. SHALOM (.xlsx) ---
+                if (type === 'shalom') {
+                    const shalomList = list.filter(x => x.courier.match(/shalom/i));
+                    
+                    dataToExport = shalomList.map(x => {
+                        // Lógica: Si hay "|", es agencia. Si no, tomamos el distrito como destino.
+                        let destino = "";
+                        if(x.clientAgency && x.clientAgency.includes('|')) {
+                            destino = x.clientAgency.split('|')[0].trim().toUpperCase(); 
+                        } else {
+                            destino = (x.clientDistrict || "").toUpperCase(); 
+                        }
+
+                        return {
+                            "DESTINATARIO (DOC)": x.clientDni || "",
+                            "TELF. DESTINATARIO": x.clientPhone || "",
+                            "CONTACTO (DOC)": "", 
+                            "TELF. CONTACTO": "", 
+                            "NRO GRR": "", 
+                            "ORIGEN": "LIMA", 
+                            "DESTINO": destino, 
+                            "MERCADERIA": "PAQUETE",
+                            "ALTO": "10", "ANCHO": "10", "LARGO": "10", "PESO": "1", "CANTIDAD": "1"
+                        };
+                    });
+                    fileName = `CargaMasiva_Shalom_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    sheetName = "Hoja1";
+                } 
+                
+                // --- 2. OLVA COURIER (.xlsx) ---
+                else if (type === 'olva') {
+                    const olvaList = list.filter(x => x.courier.match(/olva/i));
+                    
+                    dataToExport = olvaList.map((x, idx) => {
+                        const nameParts = (x.clientName || "").split(" ");
+                        let nombres = nameParts[0];
+                        let apPaterno = nameParts.length > 1 ? nameParts[1] : ".";
+                        let apMaterno = nameParts.length > 2 ? nameParts.slice(2).join(" ") : ".";
+
+                        const isAgency = !!x.clientAgency;
+                        let direccion = "", tienda = "", distrito = "", provincia = "LIMA", dpto = "LIMA";
+                        
+                        if(isAgency && x.clientAgency.includes('|')) {
+                            tienda = x.clientAgency.split('|')[0].trim();
+                        } else {
+                            direccion = `${x.clientAddress} ${x.clientRef ? '('+x.clientRef+')' : ''}`.trim();
+                            distrito = x.clientDistrict || "";
+                        }
+
+                        return {
+                            "Nro envío": idx + 1,
+                            "Tipo de entrega": isAgency ? "Recojo en Tienda" : "Entrega a domicilio",
+                            "Departamento": dpto,
+                            "Provincia": provincia,
+                            "Distrito": distrito,
+                            "Dirección": direccion,
+                            "Tienda": tienda,
+                            "Referencia": x.clientRef || "",
+                            "Tipo Empaque": "Paquete",
+                            "Tipo Artículo": "VARIOS",
+                            "Descripción de Artículo": "MERCADERIA",
+                            "Valor del Envío (S/.)": "0",
+                            "Peso (kg)": "1",
+                            "Largo (cm)": "10", "Ancho (cm)": "10", "Alto (cm)": "10",
+                            "¿Retorno de Cargo?": "NO",
+                            "# Folios": "0",
+                            "Tipo Documento": "DNI",
+                            "Nro DNI/RUC/CE": x.clientDni || "00000000",
+                            "Celular": x.clientPhone,
+                            "Razón Social": "",
+                            "Contacto": "",
+                            "Nombres": nombres,
+                            "Apellido Paterno": apPaterno,
+                            "Apellido Materno": apMaterno
+                        };
+                    });
+                    fileName = `CargaMasiva_Olva_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    sheetName = "InputData";
+                }
+
+                // --- 3. DINSIDES (.xlsx) ---
+                else if (type === 'dinsides') {
+                    const dinsidesList = list.filter(x => x.courier.match(/dinsides/i));
+                    
+                    dataToExport = dinsidesList.map(x => {
+                        return {
+                            "CARGA": "CARGA REGULAR",
+                            "TIPO DE VENTA (SELECCIONE SOLO DEL LISTADO)": "CONTRAENTREGA",
+                            "NOMBRE DEL DESTINATARIO": x.clientName,
+                            "TELEFONO DESTINATARIO 9 DIGITOS": x.clientPhone,
+                            "DISTRITO (SELECCIONE SOLO DEL LISTADO)": x.clientDistrict || "",
+                            "DIRECCION DE ENTREGA": x.clientAddress || "",
+                            "COORDENADAS DE LA DIRECCIÓN": "",
+                            "FECHA DE ENTREGA (DIA/MES/AÑO)": x.shippingDate ? x.shippingDate.split(' ')[1] : "",
+                            "DETALLE DEL PRODUCTO": "PAQUETE",
+                            "MONTO A COBRAR (decimales se separan con punto . )": "0.00",
+                            "FORMA DE PAGO": "EFECTIVO",
+                            "OBSERVACION": x.clientRef || ""
+                        };
+                    });
+                    // CAMBIO IMPORTANTE: Extensión .xlsx
+                    fileName = `CargaMasiva_Dinsides_${new Date().toISOString().slice(0,10)}.xlsx`; 
+                    sheetName = "PEDIDOS";
+                }
+
+                // --- 4. REPORTE GENERAL (.xlsx) ---
+                else {
+                    const currentYear = new Date().getFullYear().toString().slice(-2);
+                    dataToExport = list.map(x => {
+                        let fechaClean = x.shippingDate || "";
+                        const dateMatch = fechaClean.match(/(\d{2})\/(\d{2})/);
+                        if (dateMatch) fechaClean = `${dateMatch[1]}/${dateMatch[2]}/${currentYear}`;
+
+                        let colAgenciaDistrito = "", colDireccionRef = "", colDni = "";
+                        
+                        if (x.clientAgency) {
+                            // Separar por PIPE " | "
+                            let parts = x.clientAgency.split(' | ');
+                            if (parts.length < 2) parts = [x.clientAgency, ""];
+                            
+                            colAgenciaDistrito = parts[0] || x.clientAgency;
+                            colDireccionRef = parts[1] || "";
+                            colDni = x.clientDni || "";
+                        } else {
+                            colAgenciaDistrito = x.clientDistrict || "";
+                            const dir = x.clientAddress || "";
+                            const ref = x.clientRef ? ` (Ref: ${x.clientRef})` : "";
+                            colDireccionRef = (dir + ref).trim();
+                        }
+
+                        return {
+                            "Fecha Envío": fechaClean,
+                            "Courier": x.courier,
+                            "Cliente": x.clientName,
+                            "Teléfono": x.clientPhone,
+                            "Agencia / Distrito": colAgenciaDistrito,
+                            "Dirección / Ref": colDireccionRef,
+                            "DNI": colDni,
+                            "Estado": x.status || "PENDIENTE"
+                        };
+                    });
+                    fileName = `ReporteGeneral_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    sheetName = "Reporte";
+                }
+
+                // --- GENERACIÓN DEL ARCHIVO ---
+                if(dataToExport.length === 0) {
+                    app.toggleLoading(false);
+                    return app.showToast("⚠️ No hay envíos de este courier en la lista actual");
+                }
+
+                const ws = XLSX.utils.json_to_sheet(dataToExport);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+                
+                // FORZAMOS LA DESCARGA EN XLSX PARA TODOS
+                XLSX.writeFile(wb, fileName); 
+
+                app.toggleLoading(false);
+                app.showToast(`Descarga exitosa: ${fileName}`);
+            },
+
             
             // --- NUEVA LÓGICA DE PEDIDOS (Filtrado & Selección) ---
             loadOrders: async () => { 
@@ -1213,103 +1430,49 @@
                 app.openStatusMenu();
             },
             
-            exportExcel: async () => { 
+            exportExcel: () => { 
                 const list = state.visibleOrders;
                 if (!list.length) return app.showToast('No hay datos para exportar');
-            
-                app.toggleLoading(true);
-            
-                // Carga dinámica de librería Excel
-                if (typeof XLSX === 'undefined') {
-                    await new Promise((resolve, reject) => {
-                        const script = document.createElement('script');
-                        script.src = "https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js";
-                        script.onload = resolve;
-                        script.onerror = reject;
-                        document.head.appendChild(script);
-                    });
-                }
-            
-                // Año actual para formatear fecha
-                const currentYear = new Date().getFullYear().toString().slice(-2);
-            
-                const dataToExport = list.map(x => {
-                    
-                    // 1. FORMATEO DE FECHA (dd/mm/aa)
-                    let fechaClean = x.shippingDate || "";
-                    const dateMatch = fechaClean.match(/(\d{2})\/(\d{2})/);
-                    if (dateMatch) {
-                        fechaClean = `${dateMatch[1]}/${dateMatch[2]}/${currentYear}`;
-                    }
 
-                    // 2. LOGICA DE COLUMNAS
-                    let colAgenciaDistrito = "";
-                    let colDireccionRef = "";
-                    let colDni = "";
-
-                    if (x.clientAgency) {
-                        // === CASO AGENCIA ===
-                        // INTENTO 1: Separar por el NUEVO separador seguro " | "
-                        let parts = x.clientAgency.split(' | ');
-                        
-                        // Fallback para datos antiguos: Si no hay "|", no intentamos adivinar con "-" 
-                        // para evitar romper nombres como "Chiriaco - Imaza". 
-                        // Ponemos todo en la primera columna por seguridad.
-                        if (parts.length < 2) {
-                            parts = [x.clientAgency, ""]; 
-                        }
-
-                        colAgenciaDistrito = parts[0] || x.clientAgency; 
-                        colDireccionRef = parts[1] || ""; 
-                        colDni = x.clientDni || ""; // DNI en columna aparte
-
-                    } else {
-                        // === CASO DOMICILIO ===
-                        colAgenciaDistrito = x.clientDistrict || "";
-                        // Unificamos Dirección + Referencia en la misma columna
-                        const dir = x.clientAddress || "";
-                        const ref = x.clientRef ? ` (Ref: ${x.clientRef})` : "";
-                        colDireccionRef = (dir + ref).trim();
-                        colDni = ""; // Vacío
-                    }
-            
-                    // Estructura Final de Columnas
-                    return {
-                        "Fecha Envío": fechaClean,
-                        "Courier": x.courier,
-                        "Cliente": x.clientName,
-                        "Teléfono": x.clientPhone,
-                        "Agencia / Distrito": colAgenciaDistrito,
-                        "Dirección / Ref": colDireccionRef,
-                        "DNI": colDni,
-                        "Estado": x.status || "PENDIENTE",
-                        "Fecha Registro": new Date(x.createdAt || Date.now()).toLocaleDateString()
-                    };
+                // 1. Analizar qué couriers hay en la lista visible
+                const counts = { 'Shalom': 0, 'Olva Courier': 0, 'Dinsides': 0 };
+                
+                list.forEach(o => {
+                    // Normalizamos nombres para evitar errores de mayúsculas/minúsculas
+                    if (o.courier.match(/shalom/i)) counts['Shalom']++;
+                    else if (o.courier.match(/olva/i)) counts['Olva Courier']++;
+                    else if (o.courier.match(/dinsides/i)) counts['Dinsides']++;
                 });
-            
-                // Generación del archivo
-                const ws = XLSX.utils.json_to_sheet(dataToExport);
-                
-                // Anchos de columna optimizados
-                ws['!cols'] = [
-                    {wch: 10}, // Fecha
-                    {wch: 15}, // Courier
-                    {wch: 25}, // Cliente
-                    {wch: 12}, // Telefono
-                    {wch: 35}, // Agencia/Distrito (Ancho para nombres largos)
-                    {wch: 45}, // Direccion
-                    {wch: 12}, // DNI
-                    {wch: 12}, // Estado
-                    {wch: 12}  // Fecha Reg
-                ];
-            
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Envíos Latam5S");
-                const today = new Date().toISOString().slice(0,10);
-                XLSX.writeFile(wb, `Envios_${state.config.merchantName || 'Tienda'}_${today}.xlsx`);
-                
-                app.toggleLoading(false);
-                app.showToast('Excel descargado correctamente');
+
+                // 2. Generar botones dinámicos
+                const container = document.getElementById('export-options');
+                container.innerHTML = ''; // Limpiar anterior
+
+                // Helper para crear botones bonito
+                const createBtn = (name, count, colorClass, iconClass, type) => {
+                    if (count === 0) return '';
+                    return `
+                    <button onclick="app.downloadFormat('${type}')" class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-white/5 hover:bg-slate-700 transition group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full ${colorClass} bg-opacity-20 flex items-center justify-center border border-white/10">
+                                <span class="font-bold text-xs">${iconClass}</span>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-white">Formato ${name}</p>
+                                <p class="text-xs text-slate-500">${count} envíos listos para carga masiva</p>
+                            </div>
+                        </div>
+                        <i data-lucide="download" class="w-4 h-4 text-slate-500 group-hover:text-white"></i>
+                    </button>`;
+                };
+
+                container.innerHTML += createBtn('Shalom', counts['Shalom'], 'bg-blue-500 text-blue-400', 'SH', 'shalom');
+                container.innerHTML += createBtn('Olva', counts['Olva Courier'], 'bg-orange-500 text-orange-400', 'OL', 'olva');
+                container.innerHTML += createBtn('Dinsides', counts['Dinsides'], 'bg-purple-500 text-purple-400', 'DS', 'dinsides');
+
+                // 3. Mostrar Modal
+                document.getElementById('modal-export').classList.remove('hidden');
+                lucide.createIcons();
             },
 
             printLabels: () => {
