@@ -467,9 +467,9 @@
                     <div class="flex gap-2">
                         <div class="relative flex-grow">
                             <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"></i>
-                            <input id="inp-search-orders" oninput="app.renderOrders()" class="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/10 rounded-xl text-sm text-white focus:border-primary outline-none placeholder-slate-500" placeholder="Buscar cliente, DNI, ref...">
+                            <input id="inp-search-orders" oninput="app.onFilterChange()" class="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/10 rounded-xl text-sm text-white focus:border-primary outline-none placeholder-slate-500" placeholder="Buscar cliente, DNI, ref...">
                         </div>
-                        <input type="date" id="date-specific" onchange="app.renderOrders()" class="bg-black/30 border border-white/10 rounded-xl px-2 py-2 text-sm w-32 text-white focus:border-primary outline-none flex-shrink-0">
+                        <input type="date" id="date-specific" onchange="app.onFilterChange()" class="bg-black/30 border border-white/10 rounded-xl px-2 py-2 text-sm w-32 text-white focus:border-primary outline-none flex-shrink-0">
                     </div>
                     
                     <!-- Línea 2: Herramientas -->
@@ -1088,7 +1088,25 @@
                 app.toggleLoading(false); 
             },
 
+            
+            // Función para limpiar selección al filtrar
+            onFilterChange: () => {
+                // 1. Borrar la memoria de seleccionados
+                state.selectedOrders.clear();
+                
+                // 2. Ocultar la barra de herramientas de selección (si estuviera visible)
+                // Buscamos la barra de acciones (donde están los botones de borrar/imprimir masivo)
+                const toolbar = document.getElementById('selection-actions'); // Asegúrate que tu ID coincida, o usa la lógica genérica abajo
+                if(toolbar) toolbar.classList.add('hidden');
+                
+                // 3. Actualizar el contador de seleccionados a 0
+                const countEl = document.getElementById('selected-count');
+                if(countEl) countEl.innerText = "0";
 
+                // 4. Renderizar la lista de nuevo
+                app.renderOrders();
+            },
+            
             downloadFormat: async (type) => {
                 app.toggleLoading(true);
                 document.getElementById('modal-export').classList.add('hidden'); // Cerrar modal
@@ -1435,10 +1453,24 @@
             },
             
             toggleAllSelection: () => {
-                const allSelected = state.visibleOrders.every(x => state.selectedOrders.has(String(x.orderId || x.createdAt)));
-                if (allSelected) state.visibleOrders.forEach(x => state.selectedOrders.delete(String(x.orderId || x.createdAt)));
-                else state.visibleOrders.forEach(x => state.selectedOrders.add(String(x.orderId || x.createdAt)));
+                // Usamos SOLO los pedidos visibles (filtrados)
+                const list = state.visibleOrders;
+                
+                // Si no hay nada en pantalla, no hacemos nada
+                if (list.length === 0) return;
+
+                const allSelected = list.every(x => state.selectedOrders.has(String(x.orderId || x.createdAt)));
+
+                if (allSelected) {
+                    // Si todos los visibles están marcados, los DESMARCAMOS
+                    list.forEach(x => state.selectedOrders.delete(String(x.orderId || x.createdAt)));
+                } else {
+                    // Si falta alguno, los MARCAMOS todos los visibles
+                    list.forEach(x => state.selectedOrders.add(String(x.orderId || x.createdAt)));
+                }
+                
                 app.renderOrders();
+                app.updateSelectionUI();
             },
             
             deleteSelected: () => {
