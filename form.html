@@ -427,16 +427,45 @@
                     input.placeholder = `Buscar sede ${courierName}...`; input.disabled = false;
                 } catch (e) { input.placeholder = "Error cargando agencias"; }
             },
-
+            
             searchAgency: (q) => { 
-                const c = document.getElementById('agency-results'), x = document.getElementById('btn-clear-agency'); 
+                const c = document.getElementById('agency-results');
+                const x = document.getElementById('btn-clear-agency'); 
+                
                 if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
                 x.classList.remove('hidden'); 
-                if(q.length<2) { c.classList.add('hidden'); return; } 
-                if (c.classList.contains('hidden')) { c.classList.remove('hidden'); setTimeout(() => document.getElementById('c-agency').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); }
+                
+                if(q.length < 2) { c.classList.add('hidden'); return; } 
+                
+                if (c.classList.contains('hidden')) {
+                    c.classList.remove('hidden');
+                    setTimeout(() => document.getElementById('c-agency').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+
                 const cleanQ = app.normalizeText(q);
-                const m = (state.externalData.agencies||[]).filter(a => (a.Agencia && app.normalizeText(a.Agencia).includes(cleanQ)) || (a.Direccion && app.normalizeText(a.Direccion).includes(cleanQ))).slice(0,50); 
-                c.innerHTML = m.length ? m.map(a => `<div onclick="app.selectAgency('${a.Agencia.replace(/'/g,"\\'")}','${a.Direccion.replace(/'/g,"\\'").replace(/\n/g," ")}')" class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0"><p class="font-bold text-brand_text text-sm mb-0.5">${a.Agencia}</p><p class="text-xs text-gray-500">${a.Direccion}</p></div>`).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
+                const terms = cleanQ.split(" ").filter(t => t.length > 0);
+
+                const m = (state.externalData.agencies || []).filter(a => {
+                    const fullText = app.normalizeText(`${a.Agencia} ${a.Direccion}`);
+                    return terms.every(term => fullText.includes(term));
+                }).slice(0, 100); 
+                
+                if (m.length) {
+                    c.innerHTML = m.map(a => `
+                        <div onmousedown="app.selectAgency('${a.Agencia.replace(/'/g,"\\'")}','${a.Direccion.replace(/'/g,"\\'").replace(/\n/g," ")}')" 
+                             class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0">
+                            <p class="font-bold text-brand_text text-sm mb-0.5">${a.Agencia}</p>
+                            <p class="text-xs text-gray-500">${a.Direccion}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    c.innerHTML = `
+                        <div class="p-4 text-center">
+                            <p class="text-gray-400 text-sm font-bold">No encontramos esa agencia 😕</p>
+                            <p class="text-xs text-gray-400 mt-1">Intenta buscar solo por el distrito o una palabra clave.</p>
+                        </div>
+                    `;
+                }
             },
             
             selectAgency: (n, a) => { 
@@ -459,15 +488,31 @@
             },
 
             searchDistrict: (q) => { 
-                const c = document.getElementById('district-results'), x = document.getElementById('btn-clear-district'); 
+                const c = document.getElementById('district-results');
+                const x = document.getElementById('btn-clear-district'); 
+                
                 if (!q) { c.classList.add('hidden'); x.classList.add('hidden'); return; } 
                 x.classList.remove('hidden'); 
+                
                 if(q.length<1) { c.classList.add('hidden'); return; } 
-                if (c.classList.contains('hidden')) { c.classList.remove('hidden'); setTimeout(() => document.getElementById('c-district').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); }
+                
+                if (c.classList.contains('hidden')) { 
+                    c.classList.remove('hidden'); 
+                    setTimeout(() => document.getElementById('c-district').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); 
+                }
+                
                 const cleanQ = app.normalizeText(q);
                 const m = (state.externalData.districts||[]).filter(d => app.normalizeText(d).includes(cleanQ)).slice(0,50); 
-                c.innerHTML = m.length ? m.map(d => `<div onclick="app.selectDistrict('${d.replace(/'/g,"\\'")}')" class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0"><p class="font-bold text-brand_text text-sm">${d}</p></div>`).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
+                
+                // CAMBIO AQUÍ: Usamos onmousedown en lugar de onclick
+                c.innerHTML = m.length ? m.map(d => `
+                    <div onmousedown="app.selectDistrict('${d.replace(/'/g,"\\'")}')" 
+                         class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0">
+                        <p class="font-bold text-brand_text text-sm">${d}</p>
+                    </div>
+                `).join('') : '<div class="p-3 text-gray-400 text-sm text-center">Sin resultados</div>'; 
             },
+
             selectDistrict: (v) => { document.getElementById('c-district').value = v; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.remove('hidden'); },
             clearDistrict: () => { const i = document.getElementById('c-district'); i.value=''; document.getElementById('district-results').classList.add('hidden'); document.getElementById('btn-clear-district').classList.add('hidden'); i.focus(); },
 
