@@ -322,7 +322,7 @@
     <div class="relative bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-white/5 flex flex-col justify-center overflow-hidden min-h-[100px]">
         
         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-1">
-            Resumen de Carga
+            Resumen de Envíos
         </p>
         
         <div id="courier-breakdown-list" class="flex flex-col gap-2">
@@ -482,7 +482,7 @@
                 <!-- Toolbar Compacta Glass -->
                 <div class="glass-card p-4 rounded-3xl mb-3 flex flex-col gap-3 flex-shrink-0">
                     <!-- Línea 1: Filtros -->
-<div class="flex items-center gap-2 mb-2 h-8 relative z-40">
+<div class="flex items-center gap-2 mb-1 h-8 relative z-40">
     
     <div class="relative h-full shrink-0">
         <button onclick="app.toggleDropdown()" id="filter-trigger-btn" class="h-full px-2.5 bg-primary text-white font-bold rounded-lg flex items-center gap-1.5 shadow-sm border border-white/10 transition active:scale-95 text-xs">
@@ -1578,7 +1578,6 @@ renderOrders: () => {
                 </div>`;
             }).join('');
 
-            // --- AQUÍ ESTÁ EL CAMBIO DE DISEÑO ---
             return `
             <div class="mb-4 relative">
                 <div class="sticky top-0 z-30 backdrop-blur-xl bg-slate-950/80 border-y border-white/10 shadow-lg py-2.5 px-3 mb-3 flex items-center justify-between transition-all">
@@ -1595,7 +1594,8 @@ renderOrders: () => {
                     </div>
                     <div class="flex items-center">
                         <span class="text-[10px] font-bold bg-white/5 text-slate-300 px-2.5 py-1 rounded-lg border border-white/5 shadow-inner">
-                            ${ordersInGroup.length} <span class="hidden sm:inline font-normal text-slate-500 ml-1">envíos</span>
+                            ${ordersInGroup.length} 
+                            <span class="hidden sm:inline font-normal text-slate-300 ml-1">envíos</span>
                         </span>
                     </div>
                 </div>
