@@ -316,6 +316,24 @@
                 <button onclick="app.setTab('orders')" id="nav-orders" class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i data-lucide="truck" class="w-4 h-4"></i> Envíos</button>
             </nav>
             
+<div class="hidden md:block mx-3 mt-4 mb-2 relative group cursor-default">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl border border-white/10 blur-sm group-hover:blur-md transition-all duration-500"></div>
+    
+    <div class="relative bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-white/5 flex flex-col justify-center overflow-hidden min-h-[100px]">
+        
+        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-1">
+            Resumen de Envíos
+        </p>
+        
+        <div id="courier-breakdown-list" class="flex flex-col gap-2">
+            <span class="text-xs text-slate-500 italic">Esperando datos...</span>
+        </div>
+
+        <div class="absolute -top-6 -right-6 w-12 h-12 bg-primary/20 rounded-full blur-xl pointer-events-none"></div>
+    </div>
+</div>
+          
+          
             <!-- FOOTER ESCRITORIO -->
             <div class="mt-auto p-4 border-t border-white/5 hidden md:block bg-black/20">
                 <div class="flex items-center gap-3 mb-4">
@@ -464,13 +482,45 @@
                 <!-- Toolbar Compacta Glass -->
                 <div class="glass-card p-4 rounded-3xl mb-3 flex flex-col gap-3 flex-shrink-0">
                     <!-- Línea 1: Filtros -->
-                    <div class="flex gap-2">
-                        <div class="relative flex-grow">
-                            <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"></i>
-                            <input id="inp-search-orders" oninput="app.onFilterChange()" class="w-full pl-9 pr-3 py-2 bg-black/30 border border-white/10 rounded-xl text-sm text-white focus:border-primary outline-none placeholder-slate-500" placeholder="Buscar cliente, DNI, ref...">
-                        </div>
-                        <input type="date" id="date-specific" onchange="app.onFilterChange()" class="bg-black/30 border border-white/10 rounded-xl px-2 py-2 text-sm w-32 text-white focus:border-primary outline-none flex-shrink-0">
-                    </div>
+<div class="flex items-center gap-2 mb-1 h-8 relative z-40">
+    
+    <div class="relative h-full shrink-0">
+        <button onclick="app.toggleDropdown()" id="filter-trigger-btn" class="h-full px-2.5 bg-primary text-white font-bold rounded-lg flex items-center gap-1.5 shadow-sm border border-white/10 transition active:scale-95 text-xs">
+            <span id="filter-label-display" class="uppercase tracking-wide text-[10px] sm:text-xs">Pendientes</span>
+            <i data-lucide="chevron-down" class="w-3 h-3 transition-transform duration-300" id="filter-chevron"></i>
+        </button>
+
+        <div id="filter-dropdown-menu" class="hidden absolute top-full mt-1 left-0 w-40 bg-[#0f172a] border border-white/10 rounded-lg shadow-xl overflow-hidden backdrop-blur-md flex-col z-50 divide-y divide-white/5 animate-fade-in">
+            <button onclick="app.setFilterStatus('PENDIENTE')" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-white/5 flex items-center justify-between group">
+                PENDIENTES <i data-lucide="clock" class="w-3 h-3 text-slate-500 group-hover:text-primary"></i>
+            </button>
+            <button onclick="app.setFilterStatus('ENVIADO')" class="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between group">
+                ENVIADOS <i data-lucide="truck" class="w-3 h-3 text-slate-500 group-hover:text-secondary"></i>
+            </button>
+            <button onclick="app.setFilterStatus('TODOS')" class="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between group">
+                TODOS <i data-lucide="layers" class="w-3 h-3 text-slate-500 group-hover:text-white"></i>
+            </button>
+        </div>
+        <div id="dropdown-overlay" onclick="app.closeDropdown()" class="hidden fixed inset-0 z-40 cursor-default"></div>
+    </div>
+
+    <div class="h-full shrink-0 relative bg-black/30 border border-white/10 rounded-lg flex items-center px-2 w-[90px] md:w-auto hover:border-white/30 transition-colors">
+        <input type="date" id="date-specific" onchange="app.onFilterChange()" 
+               class="w-full h-full bg-transparent text-[10px] sm:text-xs text-white outline-none border-none cursor-pointer font-bold"
+               style="color-scheme: dark;">
+        <div id="date-indicator" class="hidden absolute top-1 right-1 w-1 h-1 bg-primary rounded-full animate-pulse"></div>
+    </div>
+
+    <div class="relative flex-grow h-full z-10 min-w-0">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 pointer-events-none">
+            <i data-lucide="search" class="w-3 h-3 text-slate-400"></i>
+        </div>
+        <input id="inp-search-orders" oninput="app.onFilterChange()" 
+               class="block w-full h-full pl-8 pr-2 text-xs text-white bg-black/30 border border-white/10 rounded-lg focus:border-primary outline-none transition-all placeholder-slate-500 truncate" 
+               placeholder="Buscar...">
+    </div>
+
+</div>
                     
                     <!-- Línea 2: Herramientas -->
                     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
@@ -593,7 +643,7 @@
         ];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
         const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
-        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, config: { ...initialState }, allOrders: [], selectedOrders: new Set(), visibleOrders: [] };
+        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, config: { ...initialState }, allOrders: [], selectedOrders: new Set(), visibleOrders: [], filterStatus: 'PENDIENTE'};
 
         // Helper para sanitizar XSS
         const escapeHtml = (unsafe) => {
@@ -1088,22 +1138,31 @@
                 app.toggleLoading(false); 
             },
 
-            
-            // Función para limpiar selección al filtrar
+            // --- onFilterChange FUSIONADA (Conserva tu lógica original + lo nuevo) ---
+
             onFilterChange: () => {
-                // 1. Borrar la memoria de seleccionados
+                // 1. LÓGICA ORIGINAL (IMPORTANTE: Limpiar selección al filtrar)
+                // Esto estaba en tu código base y evita errores al filtrar cosas ya seleccionadas
                 state.selectedOrders.clear();
-                
-                // 2. Ocultar la barra de herramientas de selección (si estuviera visible)
-                // Buscamos la barra de acciones (donde están los botones de borrar/imprimir masivo)
-                const toolbar = document.getElementById('selection-actions'); // Asegúrate que tu ID coincida, o usa la lógica genérica abajo
+
+                // Ocultar barra de acciones si existe (botones de eliminar/imprimir masivo)
+                const toolbar = document.getElementById('selection-actions'); 
                 if(toolbar) toolbar.classList.add('hidden');
-                
-                // 3. Actualizar el contador de seleccionados a 0
+
+                // Resetear contador de seleccionados
                 const countEl = document.getElementById('selected-count');
                 if(countEl) countEl.innerText = "0";
 
-                // 4. Renderizar la lista de nuevo
+                // 2. LÓGICA NUEVA (El puntito indicador de fecha)
+                const dSpec = document.getElementById('date-specific');
+                const indicator = document.getElementById('date-indicator');
+
+                if(dSpec && indicator) {
+                    if(dSpec.value) indicator.classList.remove('hidden');
+                    else indicator.classList.add('hidden');
+                }
+
+                // 3. RENDERIZAR
                 app.renderOrders();
             },
             
@@ -1356,94 +1415,206 @@
                 app.renderOrders();
             },
 
-            renderOrders: () => {
-                const l = document.getElementById('orders-list');
-                const q = (document.getElementById('inp-search-orders').value || '').toLowerCase();
-                const dSpec = document.getElementById('date-specific').value;
-                
-                const filtered = state.allOrders.filter(x => {
-                    // Búsqueda en TODOS los campos relevantes
-                    const txt = `${x.clientName} ${x.clientPhone} ${x.clientDni || ''} ${x.clientDistrict || ''} ${x.clientAgency || ''} ${x.clientAddress || ''} ${x.clientRef || ''} ${x.courier} ${x.status || ''}`.toLowerCase();
-                    if (!txt.includes(q)) return false;
-                    
-                    // 2. CORRECCIÓN: Filtro por Fecha de Despacho (shippingDate)
-                    if (dSpec) {
-                        // El input date viene formato "YYYY-MM-DD" (Ej: 2023-11-25)
-                        const [year, month, day] = dSpec.split('-');
-                        
-                        // Tu shippingDate es texto: "Lunes 25/11" o "Mar 25/11"
-                        // Construimos lo que vamos a buscar: "25/11"
-                        const searchStr = `${day}/${month}`;
-            
-                        // Si el pedido no tiene fecha de envío o no contiene "25/11", lo ocultamos
-                        if (!x.shippingDate || !x.shippingDate.includes(searchStr)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
-                
-                state.visibleOrders = filtered;
+            // 1. ABRIR / CERRAR MENÚ DROPDOWN
+            toggleDropdown: () => {
+                const menu = document.getElementById('filter-dropdown-menu');
+                const overlay = document.getElementById('dropdown-overlay');
+                const chevron = document.getElementById('filter-chevron');
 
-                if (!filtered.length) {
-                    // Si no hay visibles...
-                    if(state.hasHiddenOrders) {
-                         // Si es por bloqueo de plan, limpiamos para que solo se vea el aviso
-                         l.innerHTML = '';
-                    } else {
-                        // Si es plan pro y no hay datos (o filtro sin resultados)
-                        l.innerHTML = '<div class="text-center py-10 text-slate-400">Sin envíos encontrados</div>';
-                    }
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                    overlay.classList.remove('hidden');
+                    chevron.style.transform = "rotate(180deg)";
                 } else {
-                    l.innerHTML = filtered.map((x, idx) => {
-                        const id = String(x.orderId || x.createdAt); // FORCE STRING ID
-                        const isSel = state.selectedOrders.has(id);
-                        const status = x.status || 'PENDIENTE';
-                        let badgeClass = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
-                        if(status === 'ENVIADO') badgeClass = 'bg-secondary/20 text-secondary border border-secondary/30';
+                    app.closeDropdown();
+                }
+            },
 
-                        return `
-                        <div class="bg-black/30 border ${isSel ? 'border-primary ring-1 ring-primary bg-primary/10' : 'border-white/10'} p-3 rounded-lg shadow-sm hover:border-white/20 transition group flex gap-3 items-start">
-                            <div class="pt-1">
-                                <input type="checkbox" onchange="app.toggleOrderSelection('${id}')" ${isSel ? 'checked' : ''} class="w-4 h-4 rounded border-slate-500 text-primary focus:ring-primary cursor-pointer bg-black/40">
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between font-bold text-slate-200">
-                                    <span class="truncate text-white">${escapeHtml(x.clientName)}</span>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeClass}">${status}</span>
-                                        <!-- Botón de WhatsApp integrado en la cabecera -->
-                                        <button onclick="app.sendClientSummary('${id}')" class="text-secondary hover:text-white hover:bg-secondary/20 p-1 rounded-full transition" title="Enviar resumen al cliente">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="w-4 h-4">
-                                                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1 items-center">
-                                    <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.clientPhone)}</span>
-                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
-                                    <span class="flex items-center gap-1"><i data-lucide="truck" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.courier)}</span>
-                                </div>
-                                <div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">
-                                    ${x.clientAgency ? `🏢 ${escapeHtml(x.clientAgency)}` : `🏠 ${escapeHtml(x.clientDistrict)} - ${escapeHtml(x.clientAddress || '')}`}
-                                </div>
+            closeDropdown: () => {
+                const menu = document.getElementById('filter-dropdown-menu');
+                const overlay = document.getElementById('dropdown-overlay');
+                const chevron = document.getElementById('filter-chevron');
+
+                if(menu) menu.classList.add('hidden');
+                if(overlay) overlay.classList.add('hidden');
+                if(chevron) chevron.style.transform = "rotate(0deg)";
+            },
+
+            // 2. CAMBIAR FILTRO (Y MANTENER ESTILO COMPACTO)
+            setFilterStatus: (status) => {
+                state.filterStatus = status;
+
+                const label = document.getElementById('filter-label-display');
+                const btn = document.getElementById('filter-trigger-btn');
+
+                const texts = { 'PENDIENTE': 'Pendientes', 'ENVIADO': 'Enviados', 'TODOS': 'Todos' };
+                if(label) label.innerText = texts[status];
+
+                // ESTILO ULTRA COMPACTO (h-full hereda h-8, px-2.5, text-xs)
+                btn.className = "h-full px-2.5 text-white font-bold rounded-lg flex items-center gap-1.5 shadow-sm border transition active:scale-95 shrink-0 text-xs";
+
+                // Asignar colores según estado
+                if (status === 'PENDIENTE') {
+                    btn.classList.add('bg-primary', 'border-primary'); 
+                } else if (status === 'ENVIADO') {
+                    btn.classList.add('bg-secondary', 'border-secondary'); 
+                } else {
+                    btn.classList.add('bg-slate-700', 'border-slate-500'); 
+                }
+
+                app.closeDropdown();
+                app.onFilterChange(); // Ejecutar el filtro inmediatamente
+            },          
+          
+// --- renderOrders: DISEÑO FINAL (HEADER PRO + WIDGET) ---
+
+renderOrders: () => {
+    const l = document.getElementById('orders-list');
+    const q = (document.getElementById('inp-search-orders').value || '').toLowerCase();
+    const dSpec = document.getElementById('date-specific').value;
+    
+    // 1. FILTRADO
+    const filtered = state.allOrders.filter(x => {
+        if (state.filterStatus !== 'TODOS') {
+            const currentStatus = x.status || 'PENDIENTE'; 
+            if (currentStatus !== state.filterStatus) return false;
+        }
+        const txt = `${x.clientName} ${x.clientPhone} ${x.clientDni || ''} ${x.clientDistrict || ''} ${x.clientAgency || ''} ${x.clientAddress || ''} ${x.clientRef || ''} ${x.courier} ${x.status || ''}`.toLowerCase();
+        if (!txt.includes(q)) return false;
+        
+        if (dSpec) {
+            const [year, month, day] = dSpec.split('-');
+            const orderDate = (x.shippingDate || '').toString();
+            if (!orderDate.includes(`${year}-${month}-${day}`) && 
+                !orderDate.includes(`${day}/${month}/${year}`) && 
+                !orderDate.includes(`${day}/${month}`)) return false;
+        }
+        return true;
+    });
+    
+    state.visibleOrders = filtered;
+
+    // 2. ACTUALIZAR WIDGET SIDEBAR
+    const breakdownEl = document.getElementById('courier-breakdown-list');
+    if (breakdownEl) {
+        if (filtered.length === 0) {
+            breakdownEl.innerHTML = '<span class="text-xs text-slate-500 italic">Sin resultados</span>';
+        } else {
+            const counts = filtered.reduce((acc, order) => {
+                const c = (order.courier || 'Otros').toUpperCase().trim();
+                acc[c] = (acc[c] || 0) + 1;
+                return acc;
+            }, {});
+
+            breakdownEl.innerHTML = Object.keys(counts).sort().map(key => `
+                <div class="flex justify-between items-center group/item">
+                    <span class="text-xs font-bold text-slate-300 group-hover/item:text-white transition-colors truncate max-w-[70%]">${key}</span>
+                    <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">${counts[key]}</span>
+                </div>
+            `).join('');
+            
+            if(Object.keys(counts).length > 1) {
+                breakdownEl.innerHTML += `
+                <div class="mt-1 pt-2 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-[10px] uppercase text-slate-500 font-bold">Total</span>
+                    <span class="text-xs font-bold text-white">${filtered.length}</span>
+                </div>`;
+            }
+        }
+    }
+
+    // 3. RENDERIZADO
+    if (!filtered.length) {
+         if(state.hasHiddenOrders && state.filterStatus === 'PENDIENTE' && q === '') {
+             l.innerHTML = ''; 
+        } else if (state.filterStatus === 'PENDIENTE' && q === '' && !dSpec) {
+             l.innerHTML = '<div class="text-center py-10 text-slate-500 flex flex-col items-center"><i data-lucide="check-circle" class="w-8 h-8 mb-2 text-green-500/50"></i><p>¡Todo al día!</p><p class="text-xs">No tienes envíos pendientes.</p></div>';
+        } else {
+             l.innerHTML = '<div class="text-center py-10 text-slate-400">Sin resultados</div>';
+        }
+    } else {
+        const groups = filtered.reduce((acc, order) => {
+            const key = (order.courier || 'OTROS').toUpperCase().trim();
+            if (!acc[key]) acc[key] = [];
+            acc[key].push(order);
+            return acc;
+        }, {});
+
+        const sortedKeys = Object.keys(groups).sort();
+
+        l.innerHTML = sortedKeys.map(courierName => {
+            const ordersInGroup = groups[courierName];
+            const cardsHtml = ordersInGroup.map(x => {
+                const id = String(x.orderId || x.createdAt);
+                const isSel = state.selectedOrders.has(id);
+                const status = x.status || 'PENDIENTE';
+                let badgeClass = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
+                if(status === 'ENVIADO') badgeClass = 'bg-secondary/20 text-secondary border border-secondary/30';
+                if(status === 'ELIMINADO') badgeClass = 'bg-red-500/20 text-red-400 border border-red-500/30';
+
+                return `
+                <div class="bg-black/30 border ${isSel ? 'border-primary ring-1 ring-primary bg-primary/10' : 'border-white/10'} p-3 rounded-lg shadow-sm hover:border-white/20 transition group flex gap-3 items-start mb-2 last:mb-0">
+                    <div class="pt-1">
+                        <input type="checkbox" onchange="app.toggleOrderSelection('${id}')" ${isSel ? 'checked' : ''} class="w-4 h-4 rounded border-slate-500 text-primary focus:ring-primary cursor-pointer bg-black/40">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between font-bold text-slate-200">
+                            <span class="truncate text-white">${escapeHtml(x.clientName)}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeClass}">${status}</span>
+                                <button onclick="app.sendClientSummary('${id}')" class="text-secondary hover:text-white hover:bg-secondary/20 p-1 rounded-full transition" title="Enviar WhatsApp">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="w-4 h-4"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+                                </button>
                             </div>
                         </div>
-                    `}).join('');
-                }
+                        <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1 items-center">
+                            <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.clientPhone)}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
+                        </div>
+                        <div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">
+                            ${x.clientAgency ? `🏢 ${escapeHtml(x.clientAgency)}` : `🏠 ${escapeHtml(x.clientDistrict)} - ${escapeHtml(x.clientAddress || '')}`}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
 
-                // Mostrar/Ocultar aviso de plan limitado
-                const warningEl = document.getElementById('plan-limit-warning');
-                // Mostrar SIEMPRE si hay ocultos por plan gratis
-                if (state.hasHiddenOrders) { 
-                    warningEl.classList.remove('hidden');
-                } else {
-                    warningEl.classList.add('hidden');
-                }
-                
-                lucide.createIcons();
-            },
+            return `
+            <div class="mb-4 relative">
+                <div class="sticky top-0 z-30 backdrop-blur-xl bg-slate-950/80 border-y border-white/10 shadow-lg py-2.5 px-3 mb-3 flex items-center justify-between transition-all">
+                    <div class="flex items-center gap-3">
+                        <div class="w-1 h-5 bg-gradient-to-b from-primary to-purple-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                        <div class="flex items-center gap-2">
+                            <div class="bg-white/5 p-1 rounded-md">
+                                <i data-lucide="truck" class="w-3.5 h-3.5 text-slate-300"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white tracking-wide shadow-black drop-shadow-md">
+                                ${courierName}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-[10px] font-bold bg-white/5 text-slate-300 px-2.5 py-1 rounded-lg border border-white/5 shadow-inner">
+                            ${ordersInGroup.length} 
+                            <span class="hidden sm:inline font-normal text-slate-300 ml-1">envíos</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 px-1">
+                    ${cardsHtml}
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+
+    const warningEl = document.getElementById('plan-limit-warning');
+    if (warningEl) {
+        if (state.hasHiddenOrders) warningEl.classList.remove('hidden');
+        else warningEl.classList.add('hidden');
+    }
+    
+    lucide.createIcons();
+},
 
             toggleOrderSelection: (id) => {
                 const strId = String(id); 
