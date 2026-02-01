@@ -484,10 +484,6 @@
     "Direccion": "JR. CORDOVA NRO. 605, ESQUINA PLAZA DE ARMAS, BOLIVAR - LA LIBERTAD."
   },
   {
-    "Agencia": "La Libertad / Bolívar / Bolívar / Santiago De Chuco",
-    "Direccion": "Calle Idilio Muerto Nro. 550, Barrio Santa Mónica - Santiago de Chuco, La libertad."
-  },
-  {
     "Agencia": "La Libertad / Chepén / Chepen / Chepen",
     "Direccion": "Calle Lima N° 129 Urb. Chepen"
   },
@@ -694,6 +690,10 @@
   {
     "Agencia": "Lima / Lima / Santa Anita / Santa Anita",
     "Direccion": "Av. Santa Rosa 131, Santa Anita"
+  },
+  {
+    "Agencia": "Lima / Lima / Santiago De Surco / Higuereta",
+    "Direccion": "Jr. Preciados 133 Urb. Residencial Higuereta - Santiago de Surco"
   },
   {
     "Agencia": "Lima / Lima / Santiago De Surco / Surco",
@@ -917,7 +917,7 @@
   },
   {
     "Agencia": "San Martin / Mariscal Cáceres / Juanjuí / Juanjui",
-    "Direccion": "Jr. Dos de mayo 425 - Juanjui"
+    "Direccion": "Psje. Guillermo Arévalo 124, Juanjui - Mariscal Cáceres - San Martín"
   },
   {
     "Agencia": "San Martin / Moyobamba / Moyobamba / Moyobamba",
