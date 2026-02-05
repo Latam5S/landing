@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
+
 <head>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso a Clientes | Latam5S</title>
-    <meta name="description" content="Inicia sesión en tu panel de control Latam5S. Gestiona tus envíos, configura tu logística y centraliza tus envíos en un solo lugar. Acceso seguro para emprendedores.">
-    
+    <meta name="description"
+        content="Inicia sesión en tu panel de control Latam5S. Gestiona tus envíos, configura tu logística y centraliza tus envíos en un solo lugar. Acceso seguro para emprendedores.">
+
     <meta property="og:title" content="Acceso a Clientes | Latam5S">
-    <meta property="og:description" content="Inicia sesión en tu panel de control. Gestiona tus envíos y centraliza tu logística en un solo lugar. Acceso seguro.">
+    <meta property="og:description"
+        content="Inicia sesión en tu panel de control. Gestiona tus envíos y centraliza tu logística en un solo lugar. Acceso seguro.">
     <meta property="og:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -18,24 +21,26 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Acceso a Clientes | Latam5S">
-    <meta name="twitter:description" content="Inicia sesión en tu panel de control. Gestiona tus envíos y centraliza tu logística en un solo lugar. Acceso seguro.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand.png"/>
+    <meta name="twitter:description"
+        content="Inicia sesión en tu panel de control. Gestiona tus envíos y centraliza tu logística en un solo lugar. Acceso seguro.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand.png" />
 
     <link rel="canonical" href="https://www.latam5s.com/login" />
-    
+
     <!-- Fuente Quicksand -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <link rel="preconnect" href="https://script.google.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-  
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -73,15 +78,17 @@
     </script>
 
     <style>
-        body { 
-            font-family: "Quicksand", sans-serif; 
+        body {
+            font-family: "Quicksand", sans-serif;
             background-color: #020617;
-            color: #e2e8f0; /* Slate-200 */
+            color: #e2e8f0;
+            /* Slate-200 */
         }
-        
+
         /* Glassmorphism Utilities - UNIFICADO Y CONSISTENTE */
         .glass-panel {
-            background: rgba(15, 23, 42, 0.7); /* Base oscura sólida */
+            background: rgba(15, 23, 42, 0.7);
+            /* Base oscura sólida */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -92,62 +99,133 @@
         .glass-card {
             /* CAMBIO: Usamos colores HEX sólidos (#1e293b y #0f172a) en lugar de RGBA con transparencia */
             background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
-            
+
             /* El backdrop-filter ya no es necesario si el fondo es opaco, pero no daña dejarlo */
             /* backdrop-filter: blur(16px); */
-            
+
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-        
+
         /* Scrollbar Personalizada Dark */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         /* Modals & Sheets */
-        .modal-enter { opacity: 0; transform: scale(0.95); }
-        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 0.2s, transform 0.2s; }
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.2s, transform 0.2s;
+        }
 
         /* Animations */
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        .slide-up { animation: slideUp 0.4s ease-out forwards; opacity: 0; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Busca esto en login.html y reemplázalo */
         @media print {
+
             /* CORRECCIÓN: Agregamos !important para anular el bg-dark_bg de Tailwind */
-            body { 
-                background-color: white !important; 
-                color: black !important; 
-                height: auto !important; /* Evita que ocupe el 100vh oscuro */
+            body {
+                background-color: white !important;
+                color: black !important;
+                height: auto !important;
+                /* Evita que ocupe el 100vh oscuro */
                 overflow: visible !important;
             }
-            
+
             /* Aseguramos que el fondo no se cuele por ningún lado */
-            html { background-color: white !important; }
-        
-            body * { visibility: hidden; }
-            #print-area, #print-area * { visibility: visible; }
-            
-            #print-area { 
-                position: absolute; 
-                left: 0; 
-                top: 0; 
-                width: 100%; 
-                margin: 0; 
-                padding: 0; 
-                background-color: white !important; /* Fondo blanco forzado */
-                display: block !important; 
-                z-index: 9999; 
+            html {
+                background-color: white !important;
             }
-            .no-print { display: none !important; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #print-area,
+            #print-area * {
+                visibility: visible;
+            }
+
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: white !important;
+                /* Fondo blanco forzado */
+                display: block !important;
+                z-index: 9999;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
         }
 
         /* Canvas Background */
@@ -157,40 +235,53 @@
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 0; /* Detrás de todo */
-            pointer-events: none; /* Click-through */
+            z-index: 0;
+            /* Detrás de todo */
+            pointer-events: none;
+            /* Click-through */
         }
 
         .logo-text-gradient {
             /* Degradado horizontal para el texto Latam5S (simula las redes sociales) */
-            background: linear-gradient(to right, #3B82F6, #60A5FA, #2DD4BF, #10B981); 
+            background: linear-gradient(to right, #3B82F6, #60A5FA, #2DD4BF, #10B981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text; /* Compatible con otros navegadores */
-            color: transparent; /* Fallback */
+            background-clip: text;
+            /* Compatible con otros navegadores */
+            color: transparent;
+            /* Fallback */
         }
-        
     </style>
 </head>
-<body class="bg-dark_bg text-slate-200 h-[100dvh] overflow-hidden flex flex-col selection:bg-primary selection:text-white relative">
+
+<body
+    class="bg-dark_bg text-slate-200 h-[100dvh] overflow-hidden flex flex-col selection:bg-primary selection:text-white relative">
 
     <!-- OVERLAY CARGA -->
-    <div id="loading-overlay" class="fixed inset-0 bg-dark_bg/95 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300 hidden pointer-events-none opacity-0 backdrop-blur-sm">
+    <div id="loading-overlay"
+        class="fixed inset-0 bg-dark_bg/95 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300 hidden pointer-events-none opacity-0 backdrop-blur-sm">
         <div class="relative">
             <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary shadow-neon"></div>
-            <div class="absolute top-0 left-0 h-16 w-16 rounded-full border-t-2 border-b-2 border-primary opacity-50 animate-pulse"></div>
+            <div
+                class="absolute top-0 left-0 h-16 w-16 rounded-full border-t-2 border-b-2 border-primary opacity-50 animate-pulse">
+            </div>
         </div>
-        <p id="loading-text" class="text-primary font-bold mt-6 animate-pulse tracking-widest text-xs uppercase">Conectando...</p>
+        <p id="loading-text" class="text-primary font-bold mt-6 animate-pulse tracking-widest text-xs uppercase">
+            Conectando...</p>
     </div>
 
-    <div id="generic-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center transition-opacity duration-200 opacity-0" onclick="if(event.target === this) app.closeModal()">
-        <div class="glass-card rounded-3xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-200 border border-white/10 shadow-2xl relative">
+    <div id="generic-modal"
+        class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center transition-opacity duration-200 opacity-0"
+        onclick="if(event.target === this) app.closeModal()">
+        <div
+            class="glass-card rounded-3xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform duration-200 border border-white/10 shadow-2xl relative">
             <div id="modal-content"></div>
         </div>
     </div>
-  
+
     <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] glass-card border-l-4 border-secondary text-white px-6 py-3 rounded-xl shadow-neon-green flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0">
+    <div id="toast"
+        class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] glass-card border-l-4 border-secondary text-white px-6 py-3 rounded-xl shadow-neon-green flex items-center gap-3 transition-all duration-300 -translate-y-20 opacity-0">
         <i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i>
         <span id="toast-msg" class="font-bold text-sm">Acción completada</span>
     </div>
@@ -199,13 +290,16 @@
     <div id="print-area" class="hidden bg-white p-4 text-black"></div>
 
     <!-- VISTA AUTH (Login) -->
-    <div id="view-auth" class="flex-1 h-full flex flex-col items-center justify-center p-4 hidden overflow-y-auto no-print relative z-10">
+    <div id="view-auth"
+        class="flex-1 h-full flex flex-col items-center justify-center p-4 hidden overflow-y-auto no-print relative z-10">
         <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl overflow-hidden slide-up my-auto relative z-10">
             <div class="bg-card_bg/50 p-8 text-center relative overflow-hidden border-b border-white/5">
-                <div class="absolute top-0 right-0 p-4 opacity-5"><i data-lucide="box" class="w-32 h-32 text-white"></i></div>
+                <div class="absolute top-0 right-0 p-4 opacity-5"><i data-lucide="box" class="w-32 h-32 text-white"></i>
+                </div>
                 <div class="relative z-10">
                     <h1 class="text-3xl font-bold text-white tracking-tight logo-text-gradient">Latam5S</h1>
-                    <div id="connection-status" class="inline-flex items-center gap-2 bg-white/5 px-4 py-1.5 rounded-full text-[10px] font-bold text-secondary mt-3 border border-white/5">
+                    <div id="connection-status"
+                        class="inline-flex items-center gap-2 bg-white/5 px-4 py-1.5 rounded-full text-[10px] font-bold text-secondary mt-3 border border-white/5">
                         <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Sistema Seguro
                     </div>
                 </div>
@@ -214,18 +308,25 @@
             <div class="p-8">
                 <form onsubmit="app.handleLogin(event)" class="space-y-6">
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold text-primary uppercase tracking-wider ml-1">WhatsApp</label>
-                        <input id="auth-phone" type="tel" required placeholder="Ingresa tu número" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-slate-600">
+                        <label
+                            class="block text-xs font-bold text-primary uppercase tracking-wider ml-1">WhatsApp</label>
+                        <input id="auth-phone" type="tel" required placeholder="Ingresa tu número"
+                            class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-slate-600">
                     </div>
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold text-primary uppercase tracking-wider ml-1">Contraseña</label>
-                        <input id="auth-pass" type="password" required placeholder="Ingresa tu contraseña" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-slate-600">
+                        <label
+                            class="block text-xs font-bold text-primary uppercase tracking-wider ml-1">Contraseña</label>
+                        <input id="auth-pass" type="password" required placeholder="Ingresa tu contraseña"
+                            class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition placeholder-slate-600">
                     </div>
-                    <button type="submit" class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-neon transition active:scale-95 flex justify-center items-center gap-2 mt-4">
+                    <button type="submit"
+                        class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-neon transition active:scale-95 flex justify-center items-center gap-2 mt-4">
                         Iniciar Sesión
                     </button>
                 </form>
-                <p id="auth-error" class="text-red-400 text-xs text-center mt-4 font-bold hidden bg-red-500/10 py-2 rounded-lg border border-red-500/20"></p>
+                <p id="auth-error"
+                    class="text-red-400 text-xs text-center mt-4 font-bold hidden bg-red-500/10 py-2 rounded-lg border border-red-500/20">
+                </p>
                 <div class="mt-8 text-center text-xs text-slate-500 pt-4 border-t border-white/5">
                     Acceso exclusivo para socios registrados.
                 </div>
@@ -240,28 +341,35 @@
     <div id="view-admin" class="flex-1 flex flex-col h-full hidden no-print overflow-hidden z-10">
         <header class="glass-panel p-4 flex justify-between items-center shadow-lg z-20">
             <div class="flex items-center gap-3">
-                <div class="bg-primary/20 p-2 rounded-lg text-primary border border-primary/20"><i data-lucide="shield" class="w-5 h-5"></i></div>
+                <div class="bg-primary/20 p-2 rounded-lg text-primary border border-primary/20"><i data-lucide="shield"
+                        class="w-5 h-5"></i></div>
                 <h1 class="font-bold text-lg text-white">Panel Admin</h1>
             </div>
-            <button onclick="app.logout()" class="text-xs font-bold bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg transition border border-white/5">Salir</button>
+            <button onclick="app.logout()"
+                class="text-xs font-bold bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg transition border border-white/5">Salir</button>
         </header>
         <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-5xl mx-auto w-full space-y-6 pb-20">
             <div class="glass-card p-6 rounded-3xl">
-                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5 text-primary"></i> Alta de Emprendedor</h2>
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="user-plus"
+                        class="w-5 h-5 text-primary"></i> Alta de Emprendedor</h2>
                 <form onsubmit="app.adminCreateUser(event)" class="flex flex-col md:flex-row gap-4 items-end">
                     <div class="flex-1 w-full">
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">WhatsApp del Cliente</label>
-                        <input id="admin-new-phone" type="tel" required placeholder="Ej: 999888777" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary transition">
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">WhatsApp del
+                            Cliente</label>
+                        <input id="admin-new-phone" type="tel" required placeholder="Ej: 999888777"
+                            class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary transition">
                     </div>
                     <div class="w-full md:w-40">
                         <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Plan</label>
-                        <select id="admin-new-plan" class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary cursor-pointer">
+                        <select id="admin-new-plan"
+                            class="w-full bg-black/30 border border-white/10 text-white rounded-xl p-4 outline-none focus:border-primary cursor-pointer">
                             <option value="Gratis" class="bg-card_bg">Gratis</option>
                             <option value="Pro" class="bg-card_bg">Pro</option>
                             <option value="Empresa" class="bg-card_bg">Empresa</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full md:w-auto bg-primary text-white px-6 py-4 rounded-xl font-bold hover:bg-blue-600 transition flex items-center justify-center gap-2 shadow-neon">
+                    <button type="submit"
+                        class="w-full md:w-auto bg-primary text-white px-6 py-4 rounded-xl font-bold hover:bg-blue-600 transition flex items-center justify-center gap-2 shadow-neon">
                         <i data-lucide="zap" class="w-4 h-4"></i> Crear
                     </button>
                 </form>
@@ -269,12 +377,19 @@
             <div class="glass-card rounded-3xl overflow-hidden">
                 <div class="p-6 border-b border-white/5 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-white">Usuarios Registrados</h2>
-                    <button onclick="app.adminLoadUsers()" class="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white transition"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+                    <button onclick="app.adminLoadUsers()"
+                        class="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white transition"><i
+                            data-lucide="refresh-cw" class="w-4 h-4"></i></button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-slate-300">
                         <thead class="bg-black/20 text-slate-400 uppercase text-xs font-bold">
-                            <tr><th class="px-6 py-4">WhatsApp</th><th class="px-6 py-4">Plan</th><th class="px-6 py-4">Fecha Alta</th><th class="px-6 py-4 text-right">Acciones</th></tr>
+                            <tr>
+                                <th class="px-6 py-4">WhatsApp</th>
+                                <th class="px-6 py-4">Plan</th>
+                                <th class="px-6 py-4">Fecha Alta</th>
+                                <th class="px-6 py-4 text-right">Acciones</th>
+                            </tr>
                         </thead>
                         <tbody id="admin-users-list" class="divide-y divide-white/5"></tbody>
                     </table>
@@ -288,11 +403,14 @@
 
     <!-- VISTA DASHBOARD (EMPRENDEDOR) -->
     <div id="view-dashboard" class="flex-1 flex flex-col md:flex-row h-full hidden no-print overflow-hidden z-10">
-        <aside class="w-full md:w-72 glass-panel md:border-r border-b border-white/5 flex flex-col shadow-lg z-20 flex-shrink-0">
+        <aside
+            class="w-full md:w-72 glass-panel md:border-r border-b border-white/5 flex flex-col shadow-lg z-20 flex-shrink-0">
             <!-- HEADER ADAPTATIVO -->
             <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center bg-black/20">
                 <div class="flex items-center gap-3">
-                    <div class="bg-secondary/10 p-2 rounded-xl text-secondary border border-secondary/20 shadow-neon-green"><i data-lucide="package" class="w-6 h-6"></i></div>
+                    <div
+                        class="bg-secondary/10 p-2 rounded-xl text-secondary border border-secondary/20 shadow-neon-green">
+                        <i data-lucide="package" class="w-6 h-6"></i></div>
                     <div>
                         <h1 class="font-bold text-lg text-white leading-tight">Mi Panel</h1>
                         <p class="text-xs text-slate-400 hidden md:block">Emprendedor</p>
@@ -302,96 +420,132 @@
                 <div class="flex items-center gap-3 md:hidden">
                     <div class="text-right">
                         <p class="user-phone-display text-xs font-bold text-slate-300">...</p>
-                        <p class="user-plan-display text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">...</p>
+                        <p
+                            class="user-plan-display text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                            ...</p>
                     </div>
-                    <button onclick="app.logout()" class="bg-red-500/10 text-red-400 p-2 rounded-lg hover:bg-red-500/20 transition border border-red-500/20">
+                    <button onclick="app.logout()"
+                        class="bg-red-500/10 text-red-400 p-2 rounded-lg hover:bg-red-500/20 transition border border-red-500/20">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
 
             <nav class="flex md:flex-col p-2 gap-1 overflow-x-auto no-scrollbar">
-                <button onclick="app.setTab('config')" id="nav-config" class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i data-lucide="settings" class="w-4 h-4"></i> Configurar</button>
-                <button onclick="app.setTab('share')" id="nav-share" class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i data-lucide="share-2" class="w-4 h-4"></i> Compartir</button>
-                <button onclick="app.setTab('orders')" id="nav-orders" class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i data-lucide="truck" class="w-4 h-4"></i> Envíos</button>
+                <button onclick="app.setTab('config')" id="nav-config"
+                    class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i
+                        data-lucide="settings" class="w-4 h-4"></i> Configurar</button>
+                <button onclick="app.setTab('share')" id="nav-share"
+                    class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i
+                        data-lucide="share-2" class="w-4 h-4"></i> Compartir</button>
+                <button onclick="app.setTab('orders')" id="nav-orders"
+                    class="nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"><i
+                        data-lucide="truck" class="w-4 h-4"></i> Envíos</button>
             </nav>
-            
-<div class="hidden md:block mx-3 mt-4 mb-2 relative group cursor-default">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl border border-white/10 blur-sm group-hover:blur-md transition-all duration-500"></div>
-    
-    <div class="relative bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-white/5 flex flex-col justify-center overflow-hidden min-h-[100px]">
-        
-        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-1">
-            Resumen de Envíos
-        </p>
-        
-        <div id="courier-breakdown-list" class="flex flex-col gap-2">
-            <span class="text-xs text-slate-500 italic">Esperando datos...</span>
-        </div>
 
-        <div class="absolute -top-6 -right-6 w-12 h-12 bg-primary/20 rounded-full blur-xl pointer-events-none"></div>
-    </div>
-</div>
-          
-          
+            <div class="hidden md:block mx-3 mt-4 mb-2 relative group cursor-default">
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl border border-white/10 blur-sm group-hover:blur-md transition-all duration-500">
+                </div>
+
+                <div
+                    class="relative bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-white/5 flex flex-col justify-center overflow-hidden min-h-[100px]">
+
+                    <p
+                        class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-1">
+                        Resumen de Envíos
+                    </p>
+
+                    <div id="courier-breakdown-list" class="flex flex-col gap-2">
+                        <span class="text-xs text-slate-500 italic">Esperando datos...</span>
+                    </div>
+
+                    <div
+                        class="absolute -top-6 -right-6 w-12 h-12 bg-primary/20 rounded-full blur-xl pointer-events-none">
+                    </div>
+                </div>
+            </div>
+
+
             <!-- FOOTER ESCRITORIO -->
             <div class="mt-auto p-4 border-t border-white/5 hidden md:block bg-black/20">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 border border-white/5"><i data-lucide="phone" class="w-5 h-5"></i></div>
+                    <div
+                        class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 border border-white/5">
+                        <i data-lucide="phone" class="w-5 h-5"></i></div>
                     <div class="overflow-hidden">
                         <p class="user-phone-display text-sm font-bold text-white truncate">...</p>
-                        <p class="user-plan-display text-[10px] font-bold text-primary uppercase tracking-wide bg-primary/10 px-2 py-0.5 rounded w-fit mt-1 border border-primary/20">PLAN GRATIS</p>
+                        <p
+                            class="user-plan-display text-[10px] font-bold text-primary uppercase tracking-wide bg-primary/10 px-2 py-0.5 rounded w-fit mt-1 border border-primary/20">
+                            PLAN GRATIS</p>
                     </div>
                 </div>
-                <button onclick="app.logout()" class="w-full text-red-400 text-xs font-bold hover:bg-red-500/10 py-3 rounded-xl transition border border-transparent hover:border-red-500/20">Cerrar Sesión</button>
+                <button onclick="app.logout()"
+                    class="w-full text-red-400 text-xs font-bold hover:bg-red-500/10 py-3 rounded-xl transition border border-transparent hover:border-red-500/20">Cerrar
+                    Sesión</button>
                 <div class="text-center text-[9px] text-slate-500 mt-4 uppercase font-bold tracking-widest">
                     Powered by Latam5S
                 </div>
             </div>
         </aside>
-        
+
         <!-- Contenedor Principal -->
         <main class="flex-1 relative overflow-hidden flex flex-col">
             <!-- Decoración de fondo sutil -->
             <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
                 <div class="absolute top-[10%] right-[10%] w-64 h-64 bg-primary/30 rounded-full blur-[100px]"></div>
             </div>
-            
+
             <!-- PESTAÑA CONFIGURACIÓN (Aplicado glass-card unificado, ancho completo) -->
             <div id="tab-config" class="tab-content w-full h-full overflow-y-auto p-4 md:p-8 hidden no-scrollbar z-10">
                 <div class="max-w-7xl mx-auto slide-up pb-32">
-                    <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-white">Configuración</h2><button id="btn-save-config" onclick="app.saveConfig()" class="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-600 transition flex gap-2 shadow-neon"><i data-lucide="save" class="w-4 h-4"></i> Guardar</button></div>
-                    
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-white">Configuración</h2><button id="btn-save-config"
+                            onclick="app.saveConfig()"
+                            class="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-600 transition flex gap-2 shadow-neon"><i
+                                data-lucide="save" class="w-4 h-4"></i> Guardar</button>
+                    </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <!-- Columna Izquierda: Datos y Seguridad -->
                         <div class="space-y-6">
                             <div class="glass-card p-6 rounded-3xl space-y-5">
-                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">Datos Públicos</h3>
-                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre Emprendimiento</label><input id="inp-store-name" oninput="app.updateConfigInput('merchantName', this.value)" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition"></div>
-                              <div>
-                                  <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp Emprendimiento</label>
-                                  <div class="relative">
-                                      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
-                                      <input id="inp-whatsapp" 
-                                             type="tel" 
-                                             maxlength="9" 
-                                             placeholder="9..." 
-                                             inputmode="numeric"
-                                             oninput="app.formatWhatsapp(this)"
-                                             class="w-full bg-black/30 border border-white/10 rounded-xl py-4 pr-4 pl-12 text-white outline-none focus:border-primary transition font-mono tracking-wider">
-                                  </div>
-                                  <p class="text-[10px] text-slate-500 mt-1 pl-1">Solo números, debe empezar con 9.</p>
-                              </div>
+                                <h3
+                                    class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">
+                                    Datos Públicos</h3>
+                                <div><label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nombre
+                                        Emprendimiento</label><input id="inp-store-name"
+                                        oninput="app.updateConfigInput('merchantName', this.value)"
+                                        class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">WhatsApp
+                                        Emprendimiento</label>
+                                    <div class="relative">
+                                        <span
+                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+51</span>
+                                        <input id="inp-whatsapp" type="tel" maxlength="9" placeholder="9..."
+                                            inputmode="numeric" oninput="app.formatWhatsapp(this)"
+                                            class="w-full bg-black/30 border border-white/10 rounded-xl py-4 pr-4 pl-12 text-white outline-none focus:border-primary transition font-mono tracking-wider">
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mt-1 pl-1">Solo números, debe empezar con 9.
+                                    </p>
+                                </div>
                             </div>
-                            
+
                             <div class="glass-card p-6 rounded-3xl">
-                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 flex items-center gap-2 border-b border-white/5 pb-2"><i data-lucide="lock" class="w-3 h-3"></i> Seguridad</h3>
+                                <h3
+                                    class="font-bold text-primary uppercase text-xs tracking-wider mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
+                                    <i data-lucide="lock" class="w-3 h-3"></i> Seguridad</h3>
                                 <div class="flex gap-3 items-end">
                                     <div class="flex-1">
-                                        <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nueva Contraseña</label>
-                                        <input id="inp-new-pass" type="password" class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition">
+                                        <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nueva
+                                            Contraseña</label>
+                                        <input id="inp-new-pass" type="password"
+                                            class="w-full bg-black/30 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-primary transition">
                                     </div>
-                                    <button id="btn-change-pass" onclick="app.changePassword()" class="bg-indigo-600 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-indigo-700 transition h-[56px] shadow-lg">Actualizar</button>
+                                    <button id="btn-change-pass" onclick="app.changePassword()"
+                                        class="bg-indigo-600 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-indigo-700 transition h-[56px] shadow-lg">Actualizar</button>
                                 </div>
                             </div>
                         </div>
@@ -399,75 +553,96 @@
                         <!-- Columna Derecha: Logística (Full Height) -->
                         <div class="flex flex-col">
                             <div class="glass-card p-6 rounded-3xl space-y-5 h-full relative">
-                                <h3 class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">
+                                <h3
+                                    class="font-bold text-primary uppercase text-xs tracking-wider mb-4 border-b border-white/5 pb-2">
                                     Logística <span class="text-red-400">*</span>
                                 </h3>
 
                                 <div>
-                                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">Couriers Habilitados <span class="text-red-500">*</span></label>
+                                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">Couriers
+                                        Habilitados <span class="text-red-500">*</span></label>
                                     <div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
                                 </div>
 
                                 <div>
-                                    <label class="text-xs font-bold text-slate-400 uppercase block mt-2 mb-2">Días de Despacho <span class="text-red-500">*</span></label>
+                                    <label class="text-xs font-bold text-slate-400 uppercase block mt-2 mb-2">Días de
+                                        Despacho <span class="text-red-500">*</span></label>
                                     <div id="container-days" class="flex flex-wrap gap-2"></div>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4 mt-2">
                                     <div>
-                                        <label class="text-xs font-bold text-slate-400 uppercase block mb-1">Hora Corte <span class="text-red-500">*</span></label>
-                                        <div class="flex items-center gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
+                                        <label class="text-xs font-bold text-slate-400 uppercase block mb-1">Hora Corte
+                                            <span class="text-red-500">*</span></label>
+                                        <div
+                                            class="flex items-center gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
                                             <i data-lucide="clock" class="w-4 h-4 text-primary"></i>
-                                            <input type="time" id="inp-time" onchange="app.updateConfigInput('updateTime', this.value); app.checkConfigStatus()" class="bg-transparent text-sm text-white outline-none w-full cursor-pointer">
+                                            <input type="time" id="inp-time"
+                                                onchange="app.updateConfigInput('updateTime', this.value); app.checkConfigStatus()"
+                                                class="bg-transparent text-sm text-white outline-none w-full cursor-pointer">
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label class="text-xs font-bold text-slate-400 uppercase block mb-1" title="Días de anticipación mínimos para el pedido">Anticipación (Días) <span class="text-red-500">*</span></label>
-                                        <div class="flex items-center gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
+                                        <label class="text-xs font-bold text-slate-400 uppercase block mb-1"
+                                            title="Días de anticipación mínimos para el pedido">Anticipación (Días)
+                                            <span class="text-red-500">*</span></label>
+                                        <div
+                                            class="flex items-center gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
                                             <i data-lucide="calendar-clock" class="w-4 h-4 text-secondary"></i>
-                                            <input type="number" id="inp-gap" min="0" max="30" placeholder="0" 
-                                                   oninput="app.updateConfigInput('updateGap', this.value); app.checkConfigStatus()" 
-                                                   class="bg-transparent text-sm text-white outline-none w-full placeholder-slate-600">
+                                            <input type="number" id="inp-gap" min="0" max="30" placeholder="0"
+                                                oninput="app.updateConfigInput('updateGap', this.value); app.checkConfigStatus()"
+                                                class="bg-transparent text-sm text-white outline-none w-full placeholder-slate-600">
                                         </div>
                                     </div>
                                 </div>
 
                                 <p class="text-[10px] text-slate-500 leading-tight mt-2">
-                                    <span class="text-primary">*</span> La "Anticipación" define cuántos días mínimos de margen necesitas para preparar el pedido antes del día de envío.
+                                    <span class="text-primary">*</span> La "Anticipación" define cuántos días mínimos de
+                                    margen necesitas para preparar el pedido antes del día de envío.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="text-center text-[10px] text-slate-500 uppercase font-bold tracking-widest pt-8">
                         Powered by Latam5S
                     </div>
                 </div>
             </div>
-            
+
             <!-- PESTAÑA COMPARTIR (Ya tenía glass-card, se mantiene igual) -->
             <div id="tab-share" class="tab-content w-full h-full overflow-y-auto p-4 hidden no-scrollbar z-10">
                 <div class="min-h-full flex flex-col items-center justify-center py-8 pb-32">
                     <div class="glass-card p-8 rounded-3xl text-center max-w-md w-full slide-up border border-white/10">
-                        <div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-secondary border border-secondary/20 shadow-neon-green"><i data-lucide="share-2" class="w-10 h-10"></i></div>
-                        
+                        <div
+                            class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-secondary border border-secondary/20 shadow-neon-green">
+                            <i data-lucide="share-2" class="w-10 h-10"></i></div>
+
                         <h2 class="text-2xl font-bold mb-4 text-white">¡Listo para compartir!</h2>
                         <p class="text-slate-400 text-sm mb-8 leading-relaxed">
                             Tu formulario personalizado está activo. Comparte el siguiente enlace con tus clientes.
                         </p>
 
-                        <div class="bg-black/30 p-4 rounded-xl border border-white/10 mb-8 break-all font-mono text-primary select-all cursor-pointer hover:bg-black/40 transition" onclick="app.copyLink()"><code id="share-link" class="text-xs font-bold">...</code></div>
-                        
+                        <div class="bg-black/30 p-4 rounded-xl border border-white/10 mb-8 break-all font-mono text-primary select-all cursor-pointer hover:bg-black/40 transition"
+                            onclick="app.copyLink()"><code id="share-link" class="text-xs font-bold">...</code></div>
+
                         <div class="space-y-4">
-                            <button onclick="app.copyLink()" class="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-blue-600 transition shadow-neon">Copiar Link</button>
-                            <button onclick="app.shareOnWhatsapp()" class="w-full bg-secondary/20 text-secondary py-4 rounded-xl font-bold hover:bg-secondary/30 transition flex items-center justify-center gap-3 border border-secondary/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                            <button onclick="app.copyLink()"
+                                class="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-blue-600 transition shadow-neon">Copiar
+                                Link</button>
+                            <button onclick="app.shareOnWhatsapp()"
+                                class="w-full bg-secondary/20 text-secondary py-4 rounded-xl font-bold hover:bg-secondary/30 transition flex items-center justify-center gap-3 border border-secondary/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
                                 </svg>
                                 Enviar por WhatsApp
                             </button>
-                            <button onclick="app.openClientLink()" class="w-full bg-white/5 text-white border border-white/10 py-4 rounded-xl font-bold hover:bg-white/10 transition flex items-center justify-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i> Abrir en nueva pestaña</button>
+                            <button onclick="app.openClientLink()"
+                                class="w-full bg-white/5 text-white border border-white/10 py-4 rounded-xl font-bold hover:bg-white/10 transition flex items-center justify-center gap-2"><i
+                                    data-lucide="external-link" class="w-4 h-4"></i> Abrir en nueva pestaña</button>
                         </div>
                     </div>
                     <div class="text-center text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-8">
@@ -475,77 +650,101 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- PESTAÑA ENVÍOS (Actualizada a rounded-3xl) -->
             <div id="tab-orders" class="tab-content hidden w-full h-full flex flex-col p-3 md:p-8 z-10">
-                
+
                 <!-- Toolbar Compacta Glass -->
                 <div class="glass-card p-4 rounded-3xl mb-3 flex flex-col gap-3 flex-shrink-0">
                     <!-- Línea 1: Filtros -->
-<div class="flex items-center gap-2 mb-1 h-8 relative z-40">
-    
-    <div class="relative h-full shrink-0">
-        <button onclick="app.toggleDropdown()" id="filter-trigger-btn" class="h-full px-2.5 bg-primary text-white font-bold rounded-lg flex items-center gap-1.5 shadow-sm border border-white/10 transition active:scale-95 text-xs">
-            <span id="filter-label-display" class="uppercase tracking-wide text-[10px] sm:text-xs">Pendientes</span>
-            <i data-lucide="chevron-down" class="w-3 h-3 transition-transform duration-300" id="filter-chevron"></i>
-        </button>
+                    <div class="flex items-center gap-2 mb-1 h-8 relative z-40">
 
-        <div id="filter-dropdown-menu" class="hidden absolute top-full mt-1 left-0 w-40 bg-[#0f172a] border border-white/10 rounded-lg shadow-xl overflow-hidden backdrop-blur-md flex-col z-50 divide-y divide-white/5 animate-fade-in">
-            <button onclick="app.setFilterStatus('PENDIENTE')" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-white/5 flex items-center justify-between group">
-                PENDIENTES <i data-lucide="clock" class="w-3 h-3 text-slate-500 group-hover:text-primary"></i>
-            </button>
-            <button onclick="app.setFilterStatus('ENVIADO')" class="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between group">
-                ENVIADOS <i data-lucide="truck" class="w-3 h-3 text-slate-500 group-hover:text-secondary"></i>
-            </button>
-            <button onclick="app.setFilterStatus('TODOS')" class="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between group">
-                TODOS <i data-lucide="layers" class="w-3 h-3 text-slate-500 group-hover:text-white"></i>
-            </button>
-        </div>
-        <div id="dropdown-overlay" onclick="app.closeDropdown()" class="hidden fixed inset-0 z-40 cursor-default"></div>
-    </div>
+                        <div class="relative h-full shrink-0">
+                            <button onclick="app.toggleDropdown()" id="filter-trigger-btn"
+                                class="h-full px-2.5 bg-primary text-white font-bold rounded-lg flex items-center gap-1.5 shadow-sm border border-white/10 transition active:scale-95 text-xs">
+                                <span id="filter-label-display"
+                                    class="uppercase tracking-wide text-[10px] sm:text-xs">Pendientes</span>
+                                <i data-lucide="chevron-down" class="w-3 h-3 transition-transform duration-300"
+                                    id="filter-chevron"></i>
+                            </button>
 
-    <div class="h-full shrink-0 relative bg-black/30 border border-white/10 rounded-lg flex items-center px-2 w-[90px] md:w-auto hover:border-white/30 transition-colors">
-        <input type="date" id="date-specific" onchange="app.onFilterChange()" 
-               class="w-full h-full bg-transparent text-[10px] sm:text-xs text-white outline-none border-none cursor-pointer font-bold"
-               style="color-scheme: dark;">
-        <div id="date-indicator" class="hidden absolute top-1 right-1 w-1 h-1 bg-primary rounded-full animate-pulse"></div>
-    </div>
+                            <div id="filter-dropdown-menu"
+                                class="hidden absolute top-full mt-1 left-0 w-40 bg-[#0f172a] border border-white/10 rounded-lg shadow-xl overflow-hidden backdrop-blur-md flex-col z-50 divide-y divide-white/5 animate-fade-in">
+                                <button onclick="app.setFilterStatus('PENDIENTE')"
+                                    class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-white/5 flex items-center justify-between group">
+                                    PENDIENTES <i data-lucide="clock"
+                                        class="w-3 h-3 text-slate-500 group-hover:text-primary"></i>
+                                </button>
+                                <button onclick="app.setFilterStatus('ENVIADO')"
+                                    class="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between group">
+                                    ENVIADOS <i data-lucide="truck"
+                                        class="w-3 h-3 text-slate-500 group-hover:text-secondary"></i>
+                                </button>
+                                <button onclick="app.setFilterStatus('TODOS')"
+                                    class="w-full text-left px-3 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 flex items-center justify-between group">
+                                    TODOS <i data-lucide="layers"
+                                        class="w-3 h-3 text-slate-500 group-hover:text-white"></i>
+                                </button>
+                            </div>
+                            <div id="dropdown-overlay" onclick="app.closeDropdown()"
+                                class="hidden fixed inset-0 z-40 cursor-default"></div>
+                        </div>
 
-    <div class="relative flex-grow h-full z-10 min-w-0">
-        <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 pointer-events-none">
-            <i data-lucide="search" class="w-3 h-3 text-slate-400"></i>
-        </div>
-        <input id="inp-search-orders" oninput="app.onFilterChange()" 
-               class="block w-full h-full pl-8 pr-2 text-xs text-white bg-black/30 border border-white/10 rounded-lg focus:border-primary outline-none transition-all placeholder-slate-500 truncate" 
-               placeholder="Buscar...">
-    </div>
+                        <div
+                            class="h-full shrink-0 relative bg-black/30 border border-white/10 rounded-lg flex items-center px-2 w-[90px] md:w-auto hover:border-white/30 transition-colors">
+                            <input type="date" id="date-specific" onchange="app.onFilterChange()"
+                                class="w-full h-full bg-transparent text-[10px] sm:text-xs text-white outline-none border-none cursor-pointer font-bold"
+                                style="color-scheme: dark;">
+                            <div id="date-indicator"
+                                class="hidden absolute top-1 right-1 w-1 h-1 bg-primary rounded-full animate-pulse">
+                            </div>
+                        </div>
 
-</div>
-                    
+                        <div class="relative flex-grow h-full z-10 min-w-0">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 pointer-events-none">
+                                <i data-lucide="search" class="w-3 h-3 text-slate-400"></i>
+                            </div>
+                            <input id="inp-search-orders" oninput="app.onFilterChange()"
+                                class="block w-full h-full pl-8 pr-2 text-xs text-white bg-black/30 border border-white/10 rounded-lg focus:border-primary outline-none transition-all placeholder-slate-500 truncate"
+                                placeholder="Buscar...">
+                        </div>
+
+                    </div>
+
                     <!-- Línea 2: Herramientas -->
                     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                        <button onclick="app.toggleAllSelection()" class="px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 rounded-lg text-xs font-bold whitespace-nowrap flex items-center gap-2 flex-shrink-0 transition">
-                            <i data-lucide="check-square" class="w-4 h-4"></i> <span class="hidden sm:inline">Todo</span>
+                        <button onclick="app.toggleAllSelection()"
+                            class="px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 rounded-lg text-xs font-bold whitespace-nowrap flex items-center gap-2 flex-shrink-0 transition">
+                            <i data-lucide="check-square" class="w-4 h-4"></i> <span
+                                class="hidden sm:inline">Todo</span>
                         </button>
-                        
+
                         <div class="h-6 w-px bg-white/10 mx-1 flex-shrink-0"></div>
-                        
-                        <button onclick="app.printLabels()" class="px-3 py-2 bg-white/5 text-slate-300 border border-white/10 rounded-lg font-bold hover:bg-white/10 transition flex items-center justify-center gap-2 text-xs flex-shrink-0">
-                            <i data-lucide="printer" class="w-4 h-4"></i> <span class="hidden sm:inline">Etiquetas</span>
+
+                        <button onclick="app.printLabels()"
+                            class="px-3 py-2 bg-white/5 text-slate-300 border border-white/10 rounded-lg font-bold hover:bg-white/10 transition flex items-center justify-center gap-2 text-xs flex-shrink-0">
+                            <i data-lucide="printer" class="w-4 h-4"></i> <span
+                                class="hidden sm:inline">Etiquetas</span>
                         </button>
-                        <button onclick="app.exportExcel()" class="px-3 py-2 bg-secondary/10 text-secondary border border-secondary/20 rounded-lg font-bold hover:bg-secondary/20 transition flex items-center justify-center gap-2 text-xs flex-shrink-0">
-                            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> <span class="hidden sm:inline">Excel</span>
+                        <button onclick="app.exportExcel()"
+                            class="px-3 py-2 bg-secondary/10 text-secondary border border-secondary/20 rounded-lg font-bold hover:bg-secondary/20 transition flex items-center justify-center gap-2 text-xs flex-shrink-0">
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> <span
+                                class="hidden sm:inline">Excel</span>
                         </button>
-                        <button onclick="app.loadOrders()" class="px-3 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 text-slate-300 flex-shrink-0 transition">
+                        <button onclick="app.loadOrders()"
+                            class="px-3 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 text-slate-300 flex-shrink-0 transition">
                             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                         </button>
 
                         <div class="h-6 w-px bg-white/10 mx-1 flex-shrink-0"></div>
 
-                        <button onclick="app.openStatusMenu()" class="px-3 py-2 bg-primary/80 hover:bg-primary text-white rounded-lg text-xs font-bold whitespace-nowrap flex items-center gap-1 flex-shrink-0 shadow-neon transition">
-                            <i data-lucide="plus-circle" class="w-4 h-4"></i> <span class="hidden sm:inline">Estado</span>
+                        <button onclick="app.openStatusMenu()"
+                            class="px-3 py-2 bg-primary/80 hover:bg-primary text-white rounded-lg text-xs font-bold whitespace-nowrap flex items-center gap-1 flex-shrink-0 shadow-neon transition">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> <span
+                                class="hidden sm:inline">Estado</span>
                         </button>
-                        <button onclick="app.deleteSelected()" class="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold whitespace-nowrap flex items-center gap-2 flex-shrink-0 transition">
+                        <button onclick="app.deleteSelected()"
+                            class="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold whitespace-nowrap flex items-center gap-2 flex-shrink-0 transition">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -557,51 +756,63 @@
                         <!-- Items -->
                     </div>
                     <!-- AVISO DEL PLAN GRATIS (SE MUESTRA SOLO SI EL PLAN ES GRATIS) -->
-                     <div id="plan-limit-warning" class="hidden absolute inset-0 p-6 bg-dark_bg/90 backdrop-blur-md z-30 flex flex-col items-center justify-center text-center rounded-3xl">
-                        <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary mx-auto shadow-neon border border-primary/20 animate-pulse">
+                    <div id="plan-limit-warning"
+                        class="hidden absolute inset-0 p-6 bg-dark_bg/90 backdrop-blur-md z-30 flex flex-col items-center justify-center text-center rounded-3xl">
+                        <div
+                            class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary mx-auto shadow-neon border border-primary/20 animate-pulse">
                             <i data-lucide="lock" class="w-8 h-8"></i>
                         </div>
                         <h3 class="text-lg font-bold text-white mb-2">Plan Gratuito Limitado</h3>
                         <p class="text-sm text-slate-400 mb-6 font-medium">
                             La visualización de respuestas no está incluida en su plan actual.
                         </p>
-                        <button onclick="app.showUpgradeModal()" class="bg-gradient-to-r from-primary to-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-neon hover:scale-105 transition flex items-center gap-2">
-                           <i data-lucide="sparkles" class="w-4 h-4"></i> Ver <span id="hidden-count">0</span> registros
+                        <button onclick="app.showUpgradeModal()"
+                            class="bg-gradient-to-r from-primary to-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-neon hover:scale-105 transition flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Ver <span id="hidden-count">0</span>
+                            registros
                         </button>
-                        <p class="text-[11px] text-slate-500 mt-6 leading-relaxed max-w-xs mx-auto border-t border-white/5 pt-4">
-                            Todas tus respuestas serán visibles aquí, incluidas las conversaciones que se descarten en WhatsApp. Con el plan gratuito, solo se almacenan 2 meses de respuestas.
+                        <p
+                            class="text-[11px] text-slate-500 mt-6 leading-relaxed max-w-xs mx-auto border-t border-white/5 pt-4">
+                            Todas tus respuestas serán visibles aquí, incluidas las conversaciones que se descarten en
+                            WhatsApp. Con el plan gratuito, solo se almacenan 2 meses de respuestas.
                         </p>
                     </div>
                 </div>
-                
-                <div class="text-center text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-4 md:hidden pb-2">
+
+                <div
+                    class="text-center text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-4 md:hidden pb-2">
                     Powered by Latam5S
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="modal-export" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+    <div id="modal-export"
+        class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
         <div class="bg-slate-900 border border-white/10 rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
             <div class="bg-white/5 p-4 border-b border-white/5 flex justify-between items-center">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <i data-lucide="file-spreadsheet" class="text-green-500"></i> Exportar Pedidos
                 </h3>
-                <button onclick="document.getElementById('modal-export').classList.add('hidden')" class="text-slate-400 hover:text-white transition">
+                <button onclick="document.getElementById('modal-export').classList.add('hidden')"
+                    class="text-slate-400 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            
+
             <div class="p-6 space-y-4">
-                <p class="text-sm text-slate-400 mb-4">Hemos detectado los siguientes couriers en tu lista filtrada. ¿Qué formato deseas descargar?</p>
-                
+                <p class="text-sm text-slate-400 mb-4">Hemos detectado los siguientes couriers en tu lista filtrada.
+                    ¿Qué formato deseas descargar?</p>
+
                 <div id="export-options" class="space-y-3">
-                    </div>
+                </div>
 
                 <div class="border-t border-white/5 pt-4 mt-4">
-                    <button onclick="app.downloadFormat('general')" class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-white/5 hover:bg-slate-700 transition group">
+                    <button onclick="app.downloadFormat('general')"
+                        class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-white/5 hover:bg-slate-700 transition group">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 group-hover:bg-slate-600">
+                            <div
+                                class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 group-hover:bg-slate-600">
                                 <i data-lucide="table" class="w-4 h-4"></i>
                             </div>
                             <div class="text-left">
@@ -618,7 +829,7 @@
 
     <script>
 
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwy6GejNoEKAemSpfT1dmjYSXeecE3iIKIvQKpDdVwxTeu0AV5UEVLzfde24fWYsje7CA/exec";
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbyLHYo0JnYk65ii9SPeRap0uGvZlFqMu05jBO_t3VnZmN04zQiH9rKUz6h93Rqzq-7L6A/exec";
 
         // CONFIGURACIÓN DE LIMITES DEL PLAN (FEATURE FLAGS)
         const PLAN_FEATURES = {
@@ -626,24 +837,24 @@
                 allowViewOrders: false, // NO mostrar nada
             },
             'Pro': {
-                allowViewOrders: true, 
+                allowViewOrders: true,
             },
             'Empresa': {
                 allowViewOrders: true,
             }
         };
 
-        const SafeStorage = { memory: {}, setItem: function(k, v) { try { localStorage.setItem(k, v); } catch(e) { this.memory[k] = v; } }, getItem: function(k) { try { return localStorage.getItem(k); } catch(e) { return this.memory[k] || null; } }, removeItem: function(k) { try { localStorage.removeItem(k); } catch(e) { delete this.memory[k]; } } };
+        const SafeStorage = { memory: {}, setItem: function (k, v) { try { localStorage.setItem(k, v); } catch (e) { this.memory[k] = v; } }, getItem: function (k) { try { return localStorage.getItem(k); } catch (e) { return this.memory[k] || null; } }, removeItem: function (k) { try { localStorage.removeItem(k); } catch (e) { delete this.memory[k]; } } };
         const ALL_COURIERS = [
-            "Shalom", 
-            "Olva Courier", 
+            "Shalom",
+            "Olva Courier",
             "Marvisur",
-            "Dinsides", 
+            "Dinsides",
             "Delivery"
         ];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
         const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
-        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, config: { ...initialState }, allOrders: [], selectedOrders: new Set(), visibleOrders: [], filterStatus: 'PENDIENTE'};
+        const state = { user: null, merchantId: null, apiUrl: DEFAULT_API_URL, config: { ...initialState }, allOrders: [], selectedOrders: new Set(), visibleOrders: [], filterStatus: 'PENDIENTE' };
 
         // Helper para sanitizar XSS
         const escapeHtml = (unsafe) => {
@@ -651,7 +862,7 @@
             return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         };
 
-        window.app = { 
+        window.app = {
 
             // --- NUEVA FUNCIÓN: Formateo estricto de WhatsApp ---
             formatWhatsapp: (el) => {
@@ -661,7 +872,7 @@
                 // 2. Validar que empiece con 9
                 // Si el primer digito no es 9 y ya hay algo escrito, lo borramos
                 if (val.length > 0 && val.charAt(0) !== '9') {
-                     val = val.substring(1); 
+                    val = val.substring(1);
                 }
 
                 // 3. Actualizar el valor del input visualmente
@@ -678,31 +889,31 @@
                     el.classList.remove('border-red-500/50');
                     el.classList.add('border-white/10', 'focus:border-primary');
                 }
-            },          
+            },
 
             // 1. Función pura que devuelve si es válido y qué falta
             validateConfig: () => {
-                    const c = state.config;
-                    const errors = [];
+                const c = state.config;
+                const errors = [];
 
-                    if (!c.merchantName || c.merchantName.length < 3) errors.push("Nombre del emprendimiento");
+                if (!c.merchantName || c.merchantName.length < 3) errors.push("Nombre del emprendimiento");
 
-                    // --- ACTUALIZACIÓN AQUÍ: Validación estricta de Regex ---
-                    // ^9 = empieza con 9
-                    // \d{8}$ = seguido de exactamente 8 dígitos más (total 9)
-                    if (!c.whatsapp || !/^9\d{8}$/.test(c.whatsapp)) errors.push("Celular válido (9 dígitos)");
-                    // -------------------------------------------------------
+                // --- ACTUALIZACIÓN AQUÍ: Validación estricta de Regex ---
+                // ^9 = empieza con 9
+                // \d{8}$ = seguido de exactamente 8 dígitos más (total 9)
+                if (!c.whatsapp || !/^9\d{8}$/.test(c.whatsapp)) errors.push("Celular válido (9 dígitos)");
+                // -------------------------------------------------------
 
-                    if (!c.couriers || c.couriers.length === 0) errors.push("Al menos un Courier");
-                    if (!c.shippingDays || c.shippingDays.length === 0) errors.push("Al menos un día de envío");
-                    if (!c.updateTime) errors.push("Hora de corte");
-                    if (c.updateGap === "" || c.updateGap === null || c.updateGap === undefined) errors.push("Días de anticipación");
+                if (!c.couriers || c.couriers.length === 0) errors.push("Al menos un Courier");
+                if (!c.shippingDays || c.shippingDays.length === 0) errors.push("Al menos un día de envío");
+                if (!c.updateTime) errors.push("Hora de corte");
+                if (c.updateGap === "" || c.updateGap === null || c.updateGap === undefined) errors.push("Días de anticipación");
 
-                    return {
-                        isValid: errors.length === 0,
-                        errors: errors
-                    };
-                },
+                return {
+                    isValid: errors.length === 0,
+                    errors: errors
+                };
+            },
 
             // 2. Función visual que actualiza la UI (candado en pestaña compartir)
             checkConfigStatus: () => {
@@ -715,75 +926,75 @@
                     navShare.classList.remove('opacity-50', 'cursor-not-allowed');
                     navShare.classList.add('hover:bg-white/5', 'hover:text-white');
                     // Cambiamos el icono a share-2 (normal)
-                    if(icon) icon.setAttribute('data-lucide', 'share-2');
+                    if (icon) icon.setAttribute('data-lucide', 'share-2');
                 } else {
                     // Estado: BLOQUEADO
                     navShare.classList.add('opacity-50', 'cursor-not-allowed');
                     navShare.classList.remove('hover:bg-white/5', 'hover:text-white');
-                     // Cambiamos el icono a lock (bloqueado)
-                    if(icon) icon.setAttribute('data-lucide', 'share-2');
+                    // Cambiamos el icono a lock (bloqueado)
+                    if (icon) icon.setAttribute('data-lucide', 'share-2');
                 }
                 lucide.createIcons(); // Refrescar iconos
-            },          
-              
+            },
+
             updateConfigInput: (key, value) => {
-                    state.config[key] = value;
-                    app.checkConfigStatus(); // <--- IMPORTANTE: Revalida visualmente en tiempo real
-                },
+                state.config[key] = value;
+                app.checkConfigStatus(); // <--- IMPORTANTE: Revalida visualmente en tiempo real
+            },
 
-            toggleLoading: (show) => { const el = document.getElementById('loading-overlay'); show ? (el.classList.remove('hidden'), setTimeout(()=>el.classList.remove('opacity-0'),10)) : (el.classList.add('opacity-0'), setTimeout(()=>el.classList.add('hidden'),300)); },
-            
+            toggleLoading: (show) => { const el = document.getElementById('loading-overlay'); show ? (el.classList.remove('hidden'), setTimeout(() => el.classList.remove('opacity-0'), 10)) : (el.classList.add('opacity-0'), setTimeout(() => el.classList.add('hidden'), 300)); },
 
-    modalTimer: null,
 
-    // 1. openModal CORREGIDO
-    openModal: (htmlContent) => {
-        const el = document.getElementById('generic-modal');
-        const content = document.getElementById('modal-content');
-        
-        // --- LA CORRECCIÓN MÁGICA ---
-        // Si había una orden de cerrar el modal, LA CANCELAMOS inmediatamente.
-        if (app.modalTimer) clearTimeout(app.modalTimer);
-        // -----------------------------
+            modalTimer: null,
 
-        content.innerHTML = htmlContent;
-        
-        el.classList.remove('hidden');
-        
-        // Pequeño delay para permitir que el navegador procese el cambio de display antes de la opacidad
-        setTimeout(() => {
-            el.classList.remove('opacity-0');
-            if(el.firstElementChild) {
-                el.firstElementChild.classList.remove('scale-95');
-                el.firstElementChild.classList.add('scale-100');
-            }
-        }, 10);
-        
-        if(window.lucide) lucide.createIcons();
-    },
+            // 1. openModal CORREGIDO
+            openModal: (htmlContent) => {
+                const el = document.getElementById('generic-modal');
+                const content = document.getElementById('modal-content');
 
-    // 2. closeModal CORREGIDO
-    closeModal: () => {
-        const el = document.getElementById('generic-modal');
-        if(!el) return;
+                // --- LA CORRECCIÓN MÁGICA ---
+                // Si había una orden de cerrar el modal, LA CANCELAMOS inmediatamente.
+                if (app.modalTimer) clearTimeout(app.modalTimer);
+                // -----------------------------
 
-        // Iniciamos animación de salida
-        el.classList.add('opacity-0');
-        if(el.firstElementChild) {
-            el.firstElementChild.classList.remove('scale-100');
-            el.firstElementChild.classList.add('scale-95');
-        }
+                content.innerHTML = htmlContent;
 
-        // Guardamos la referencia del Timer para poder cancelarlo si se abre rápido de nuevo
-        app.modalTimer = setTimeout(() => {
-            el.classList.add('hidden');
-            app.modalTimer = null; // Limpiamos la variable
-        }, 200); // 200ms debe coincidir con tu CSS duration-200
-    },
+                el.classList.remove('hidden');
 
-    // Reemplazo de showModal (Confirmación)
-    showModal: (msg, onConfirm) => {
-        app.openModal(`
+                // Pequeño delay para permitir que el navegador procese el cambio de display antes de la opacidad
+                setTimeout(() => {
+                    el.classList.remove('opacity-0');
+                    if (el.firstElementChild) {
+                        el.firstElementChild.classList.remove('scale-95');
+                        el.firstElementChild.classList.add('scale-100');
+                    }
+                }, 10);
+
+                if (window.lucide) lucide.createIcons();
+            },
+
+            // 2. closeModal CORREGIDO
+            closeModal: () => {
+                const el = document.getElementById('generic-modal');
+                if (!el) return;
+
+                // Iniciamos animación de salida
+                el.classList.add('opacity-0');
+                if (el.firstElementChild) {
+                    el.firstElementChild.classList.remove('scale-100');
+                    el.firstElementChild.classList.add('scale-95');
+                }
+
+                // Guardamos la referencia del Timer para poder cancelarlo si se abre rápido de nuevo
+                app.modalTimer = setTimeout(() => {
+                    el.classList.add('hidden');
+                    app.modalTimer = null; // Limpiamos la variable
+                }, 200); // 200ms debe coincidir con tu CSS duration-200
+            },
+
+            // Reemplazo de showModal (Confirmación)
+            showModal: (msg, onConfirm) => {
+                app.openModal(`
             <div class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary mx-auto shadow-neon border border-primary/20">
                 <i data-lucide="alert-circle" class="w-7 h-7"></i>
             </div>
@@ -794,13 +1005,13 @@
                 <button id="btn-confirm-action" class="flex-1 py-3 rounded-xl font-bold bg-primary text-white hover:bg-blue-600 shadow-neon transition">Confirmar</button>
             </div>
         `);
-        document.getElementById('btn-confirm-action').onclick = () => { onConfirm(); app.closeModal(); };
-    },
+                document.getElementById('btn-confirm-action').onclick = () => { onConfirm(); app.closeModal(); };
+            },
 
-    // Reemplazo de openStatusMenu
-    openStatusMenu: () => {
-        if (state.selectedOrders.size === 0) return app.showToast('Selecciona al menos un envío');
-        app.openModal(`
+            // Reemplazo de openStatusMenu
+            openStatusMenu: () => {
+                if (state.selectedOrders.size === 0) return app.showToast('Selecciona al menos un envío');
+                app.openModal(`
             <h3 class="text-xl font-bold text-white mb-2 text-center">Actualizar Estado</h3>
             <p class="text-xs text-slate-400 text-center mb-6">Se aplicará a ${state.selectedOrders.size} elemento(s).</p>
             <div class="space-y-4">
@@ -812,11 +1023,11 @@
                 </button>
             </div>
         `);
-    },
+            },
 
-    // Reemplazo de showUpgradeModal
-    showUpgradeModal: () => {
-        app.openModal(`
+            // Reemplazo de showUpgradeModal
+            showUpgradeModal: () => {
+                app.openModal(`
             <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6 text-primary mx-auto shadow-neon border border-primary/20">
                 <i data-lucide="crown" class="w-8 h-8"></i>
             </div>
@@ -826,54 +1037,54 @@
                 <i data-lucide="sparkles" class="w-4 h-4"></i> Gratis por 7 días
             </button>
         `);
-    },
+            },
 
-            
+
             // FUNCIÓN CORREGIDA: ACTIVACIÓN INMEDIATA
             activateTrial: async () => {
                 app.toggleLoading(true);
                 try {
-                    const res = await fetch(state.apiUrl, { 
-                        method: "POST", 
-                        body: JSON.stringify({ action: "startTrial", merchantId: state.user.uid }) 
+                    const res = await fetch(state.apiUrl, {
+                        method: "POST",
+                        body: JSON.stringify({ action: "startTrial", merchantId: state.user.uid })
                     });
                     const json = await res.json();
-                    
-                    if(json.status === 'success') { 
+
+                    if (json.status === 'success') {
                         // 1. Actualizar Estado Local Inmediatamente (Sin preguntar al servidor)
-                        state.user.plan = 'Pro (Prueba)'; 
-                        SafeStorage.setItem('app_current_user', JSON.stringify(state.user)); 
-                        
+                        state.user.plan = 'Pro (Prueba)';
+                        SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
+
                         // 2. Actualizar Visualmente el Badge del Plan (Sidebar)
-                        document.querySelectorAll('.user-plan-display').forEach(el => 
+                        document.querySelectorAll('.user-plan-display').forEach(el =>
                             el.innerText = `PLAN ${state.user.plan.toUpperCase()}`
                         );
 
                         // 3. Cerrar Modal
-                        app.closeModal(); 
-                        
+                        app.closeModal();
+
                         // 4. Recargar los Pedidos (Ahora que el estado es PRO, se mostrarán)
                         // IMPORTANTE: No llamamos a loadData(), solo a loadOrders()
-                        await app.loadOrders(); 
-                        
-                        app.showToast('¡Prueba Activada! Disfruta 7 días Pro 🎉'); 
+                        await app.loadOrders();
+
+                        app.showToast('¡Prueba Activada! Disfruta 7 días Pro 🎉');
                     } else {
                         // ERROR (Ya la usó)
                         app.closeModal();
                         app.showModal(json.message || 'No se pudo activar la prueba', () => app.closeModal());
                     }
-                } catch(e){
+                } catch (e) {
                     app.showToast('Error de conexión');
-                } 
+                }
                 app.toggleLoading(false);
             },
-            
+
             setStatus: (newStatus) => {
                 app.closeModal('modal-status');
                 app.showModal(`¿Cambiar ${state.selectedOrders.size} envíos a ${newStatus}?`, async () => {
                     app.toggleLoading(true);
                     const ids = Array.from(state.selectedOrders);
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "updateOrdersStatus", merchantId: state.merchantId, orderIds: ids, newStatus: newStatus }) }); app.showToast('Estados actualizados'); app.loadOrders(); } catch(e) {}
+                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "updateOrdersStatus", merchantId: state.merchantId, orderIds: ids, newStatus: newStatus }) }); app.showToast('Estados actualizados'); app.loadOrders(); } catch (e) { }
                     app.toggleLoading(false);
                 });
             },
@@ -882,65 +1093,65 @@
             sendClientSummary: (orderId) => {
                 const order = state.allOrders.find(o => String(o.orderId || o.createdAt) === String(orderId));
                 if (!order) return app.showToast("Error: No se encontró el pedido.");
-            
+
                 const storeName = state.config.merchantName || "Nuestra Tienda";
                 let phone = (order.clientPhone || "").replace(/[^0-9]/g, "");
                 if (phone.length === 9) { phone = "51" + phone; }
-                
+
                 // Validación básica de número
                 if (phone.length < 9) return app.showToast("El número de teléfono no es válido.");
-            
+
                 const statusEmoji = order.status === 'ENVIADO' ? '✅' : '📦';
                 const statusText = order.status === 'ENVIADO' ? 'Enviado' : 'Programado';
-                
+
                 let destinationInfo = "";
                 if (order.clientAgency) {
                     destinationInfo = `🏢 *Agencia:* ${order.clientAgency} (DNI: ${order.clientDni})`;
                 } else {
                     destinationInfo = `🏠 *Dirección:* ${order.clientDistrict}, ${order.clientAddress} (Ref: ${order.clientRef})`;
                 }
-            
+
                 // CORRECCIÓN CLAVE: Usamos \n en lugar de %0A y emojis literales
                 const message = `Hola *${order.clientName}*! 👋\n` +
-                                `Tu envío en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
-                                `📅 *Fecha:* ${order.shippingDate}\n` +
-                                `🚚 *Courier:* ${order.courier}\n` +
-                                `${destinationInfo}\n\n` +
-                                `Gracias por tu compra! ✨`;
-            
+                    `Tu envío en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
+                    `📅 *Fecha:* ${order.shippingDate}\n` +
+                    `🚚 *Courier:* ${order.courier}\n` +
+                    `${destinationInfo}\n\n` +
+                    `Gracias por tu compra! ✨`;
+
                 // CORRECCIÓN CLAVE: encodeURIComponent envuelve TODO el mensaje
                 const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
             },
-            
+
             showToast: (msg) => {
                 const el = document.getElementById('toast');
                 document.getElementById('toast-msg').innerText = msg;
                 el.classList.remove('opacity-0', '-translate-y-20');
                 setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
             },
-   
+
             scrollToEl: (el) => { setTimeout(() => { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100); },
 
-            handleLogin: async (e) => { 
-                e.preventDefault(); 
+            handleLogin: async (e) => {
+                e.preventDefault();
                 const p = document.getElementById('auth-phone').value.trim();
                 const pw = document.getElementById('auth-pass').value.trim();
-                const err = document.getElementById('auth-error'); 
-                app.toggleLoading(true); 
-                try { 
-                    const res = await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "loginUser", data: { phone: p, password: pw } }) }); 
-                    const json = await res.json(); 
-                    if(json.status === 'success') { app.loginSuccess(json.user); return; } 
-                    else { err.innerText = json.message || "Error desconocido"; err.classList.remove('hidden'); app.toggleLoading(false); return; } 
-                } catch(e) { console.error(e); err.innerText = "Error de conexión con el servidor"; err.classList.remove('hidden'); app.toggleLoading(false); } 
+                const err = document.getElementById('auth-error');
+                app.toggleLoading(true);
+                try {
+                    const res = await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "loginUser", data: { phone: p, password: pw } }) });
+                    const json = await res.json();
+                    if (json.status === 'success') { app.loginSuccess(json.user); return; }
+                    else { err.innerText = json.message || "Error desconocido"; err.classList.remove('hidden'); app.toggleLoading(false); return; }
+                } catch (e) { console.error(e); err.innerText = "Error de conexión con el servidor"; err.classList.remove('hidden'); app.toggleLoading(false); }
             },
             loginSuccess: (u) => { state.user = u; SafeStorage.setItem('app_current_user', JSON.stringify(u)); app.init(); },
-            logout: () => { SafeStorage.removeItem('app_current_user'); state.user=null; state.merchantId=null; window.location.reload(); },
-            
-            adminLoadUsers: async () => { 
-                const l = document.getElementById('admin-users-list'); 
-                
+            logout: () => { SafeStorage.removeItem('app_current_user'); state.user = null; state.merchantId = null; window.location.reload(); },
+
+            adminLoadUsers: async () => {
+                const l = document.getElementById('admin-users-list');
+
                 // Verificamos si tenemos el token guardado en el estado del usuario
                 // state.user.token viene del cambio que hicimos en loginUser en el backend
                 const secretToken = state.user && state.user.token ? state.user.token : null;
@@ -950,111 +1161,111 @@
                     return;
                 }
 
-                l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400"><i data-lucide="shield-check" class="inline w-4 h-4 mr-1"></i> Autorizando...</td></tr>'; 
+                l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400"><i data-lucide="shield-check" class="inline w-4 h-4 mr-1"></i> Autorizando...</td></tr>';
                 lucide.createIcons();
 
                 app.toggleLoading(true);
-                let u = []; 
-                
-                try { 
+                let u = [];
+
+                try {
                     // ENVIAMOS EL TOKEN AUTOMÁTICAMENTE (Ya no pide prompt)
                     // Nota: Enviamos 'adminSecret' con el valor del token
-                    const res = await fetch(`${state.apiUrl}?action=getUsers&adminSecret=${encodeURIComponent(secretToken)}`); 
-                    const json = await res.json(); 
-                    
-                    if(json.users) {
-                        u = json.users; 
+                    const res = await fetch(`${state.apiUrl}?action=getUsers&adminSecret=${encodeURIComponent(secretToken)}`);
+                    const json = await res.json();
+
+                    if (json.users) {
+                        u = json.users;
                         // Renderizado de la tabla (Tu código visual original)
-                        l.innerHTML = u.length ? u.map(user => `<tr class="bg-white border-b hover:bg-slate-50"><td class="px-6 py-4 font-bold text-slate-700">${escapeHtml(user.phone)}</td><td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${escapeHtml(user.plan||'Gratis')}</span></td><td class="px-6 py-4 text-xs text-slate-400">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</td><td class="px-6 py-4 text-right flex gap-2 justify-end"><button onclick="app.adminResend('${escapeHtml(user.uid)}','${escapeHtml(user.phone)}')" class="text-indigo-600 text-xs font-bold hover:bg-indigo-50 px-2 py-1 rounded">Clave</button><select onchange="app.adminUpdatePlan('${escapeHtml(user.uid)}', this.value)" class="text-xs border rounded p-1 bg-slate-50 cursor-pointer outline-none"><option value="" disabled selected>Cambiar Plan</option><option value="Gratis">Gratis</option><option value="Pro">Pro</option><option value="Empresa">Empresa</option></select></td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center">Base de datos vacía</td></tr>'; 
+                        l.innerHTML = u.length ? u.map(user => `<tr class="bg-white border-b hover:bg-slate-50"><td class="px-6 py-4 font-bold text-slate-700">${escapeHtml(user.phone)}</td><td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${escapeHtml(user.plan || 'Gratis')}</span></td><td class="px-6 py-4 text-xs text-slate-400">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}</td><td class="px-6 py-4 text-right flex gap-2 justify-end"><button onclick="app.adminResend('${escapeHtml(user.uid)}','${escapeHtml(user.phone)}')" class="text-indigo-600 text-xs font-bold hover:bg-indigo-50 px-2 py-1 rounded">Clave</button><select onchange="app.adminUpdatePlan('${escapeHtml(user.uid)}', this.value)" class="text-xs border rounded p-1 bg-slate-50 cursor-pointer outline-none"><option value="" disabled selected>Cambiar Plan</option><option value="Gratis">Gratis</option><option value="Pro">Pro</option><option value="Empresa">Empresa</option></select></td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center">Base de datos vacía</td></tr>';
                     } else {
                         l.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500 font-bold">⛔ Acceso Denegado (Token inválido)</td></tr>`;
                     }
-                } catch(e){ 
+                } catch (e) {
                     console.error(e);
                     l.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">Error de conexión</td></tr>';
-                } 
-                
-                app.toggleLoading(false); 
+                }
+
+                app.toggleLoading(false);
             },
-            
-            adminUpdatePlan: (uid, newPlan) => { 
+
+            adminUpdatePlan: (uid, newPlan) => {
                 app.showModal(`¿Confirmas cambiar el plan a ${newPlan}?`, async () => {
-                    app.toggleLoading(true); 
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "updateUserPlan", merchantId: uid, newPlan: newPlan }) }); } catch(e){} 
+                    app.toggleLoading(true);
+                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "updateUserPlan", merchantId: uid, newPlan: newPlan }) }); } catch (e) { }
                     app.adminLoadUsers();
                     app.showToast('Plan actualizado');
                 });
             },
-            
-            adminCreateUser: async (e) => { e.preventDefault(); const p = document.getElementById('admin-new-phone').value.trim(), pl = document.getElementById('admin-new-plan').value; app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "registerUser", data: { phone: p, password: np, plan: pl } }) }); } catch(e){} window.open(`https://wa.me/51${p}?text=${encodeURIComponent(`🔐 Bienvenid@ (Plan ${pl})\n\n📱 User: ${p}\n🔑 Pass: *${np}*\n\nEntra: ${window.location.href}`)}`, '_blank'); document.getElementById('admin-new-phone').value=""; app.adminLoadUsers(); app.showToast('Usuario creado con éxito'); },
-            
-            adminResend: (uid, phone) => { 
+
+            adminCreateUser: async (e) => { e.preventDefault(); const p = document.getElementById('admin-new-phone').value.trim(), pl = document.getElementById('admin-new-plan').value; app.toggleLoading(true); const np = Math.floor(1000 + Math.random() * 9000).toString(); try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "registerUser", data: { phone: p, password: np, plan: pl } }) }); } catch (e) { } window.open(`https://wa.me/51${p}?text=${encodeURIComponent(`🔐 Bienvenid@ (Plan ${pl})\n\n📱 User: ${p}\n🔑 Pass: *${np}*\n\nEntra: ${window.location.href}`)}`, '_blank'); document.getElementById('admin-new-phone').value = ""; app.adminLoadUsers(); app.showToast('Usuario creado con éxito'); },
+
+            adminResend: (uid, phone) => {
                 app.showModal(`¿Resetear clave para ${phone}?`, async () => {
-                    app.toggleLoading(true); const np = Math.floor(1000+Math.random()*9000).toString(); 
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "changePassword", merchantId: uid, newPassword: np }) }); } catch(e){} 
-                    window.open(`https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación de clave:*\n\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`, '_blank'); 
+                    app.toggleLoading(true); const np = Math.floor(1000 + Math.random() * 9000).toString();
+                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "changePassword", merchantId: uid, newPassword: np }) }); } catch (e) { }
+                    window.open(`https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación de clave:*\n\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`, '_blank');
                     app.toggleLoading(false);
                     app.showToast('Contraseña restablecida');
                 });
             },
-            
-            saveConfig: async () => { 
-                            // 1. SANITIZACIÓN (LIMPIEZA DE DATOS)
-                            const nameInput = document.getElementById('inp-store-name');
 
-                            // Lógica de limpieza: trim() quita bordes, replace(/\s+/g, ' ') colapsa espacios internos
-                            let cleanName = nameInput.value.trim().replace(/\s+/g, ' ');
+            saveConfig: async () => {
+                // 1. SANITIZACIÓN (LIMPIEZA DE DATOS)
+                const nameInput = document.getElementById('inp-store-name');
 
-                            // Aplicamos la limpieza al input visual y al estado
-                            nameInput.value = cleanName; 
-                            app.updateConfigInput('merchantName', cleanName);
+                // Lógica de limpieza: trim() quita bordes, replace(/\s+/g, ' ') colapsa espacios internos
+                let cleanName = nameInput.value.trim().replace(/\s+/g, ' ');
 
-                            // 2. VALIDACIÓN (Ahora valida sobre el nombre ya limpio)
-                            const validation = app.validateConfig();
+                // Aplicamos la limpieza al input visual y al estado
+                nameInput.value = cleanName;
+                app.updateConfigInput('merchantName', cleanName);
 
-                            if (!validation.isValid) {
-                                const missing = validation.errors.join(", ");
-                                app.showToast(`⚠️ No se puede guardar. Falta: ${missing}`);
+                // 2. VALIDACIÓN (Ahora valida sobre el nombre ya limpio)
+                const validation = app.validateConfig();
 
-                                const btn = document.getElementById('btn-save-config');
-                                btn.classList.add('bg-red-500', 'animate-shake');
-                                setTimeout(() => btn.classList.remove('bg-red-500', 'animate-shake'), 500);
-                                return; 
-                            }
+                if (!validation.isValid) {
+                    const missing = validation.errors.join(", ");
+                    app.showToast(`⚠️ No se puede guardar. Falta: ${missing}`);
 
-                            // 3. PROCESO DE GUARDADO (Backend)
-                            const btn = document.getElementById('btn-save-config');
-                            btn.disabled = true;
-                            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
-                            lucide.createIcons();
+                    const btn = document.getElementById('btn-save-config');
+                    btn.classList.add('bg-red-500', 'animate-shake');
+                    setTimeout(() => btn.classList.remove('bg-red-500', 'animate-shake'), 500);
+                    return;
+                }
 
-                            app.toggleLoading(true); 
+                // 3. PROCESO DE GUARDADO (Backend)
+                const btn = document.getElementById('btn-save-config');
+                btn.disabled = true;
+                btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Guardando...';
+                lucide.createIcons();
 
-                            // Recopilamos el resto de valores
-                            state.config.merchantName = cleanName; // Aseguramos usar el limpio
-                            state.config.whatsapp = document.getElementById('inp-whatsapp').value; 
-                            state.config.updateTime = document.getElementById('inp-time').value; 
-                            state.config.updateGap = document.getElementById('inp-gap').value;
+                app.toggleLoading(true);
 
-                            SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config)); 
+                // Recopilamos el resto de valores
+                state.config.merchantName = cleanName; // Aseguramos usar el limpio
+                state.config.whatsapp = document.getElementById('inp-whatsapp').value;
+                state.config.updateTime = document.getElementById('inp-time').value;
+                state.config.updateGap = document.getElementById('inp-gap').value;
 
-                            try { 
-                                await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveConfig", merchantId: state.user.uid, data: state.config }) }); 
-                            } catch(e){
-                                console.error("Error backend", e);
-                            } 
+                SafeStorage.setItem(`config_${state.user.uid}`, JSON.stringify(state.config));
 
-                            setTimeout(() => { 
-                                app.toggleLoading(false); 
-                                app.showToast('Configuración guardada y optimizada'); 
-                                app.checkConfigStatus();
+                try {
+                    await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "saveConfig", merchantId: state.user.uid, data: state.config }) });
+                } catch (e) {
+                    console.error("Error backend", e);
+                }
 
-                                btn.disabled = false;
-                                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
-                                lucide.createIcons();
-                            }, 500); 
-                        },
-            
+                setTimeout(() => {
+                    app.toggleLoading(false);
+                    app.showToast('Configuración guardada y optimizada');
+                    app.checkConfigStatus();
+
+                    btn.disabled = false;
+                    btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
+                    lucide.createIcons();
+                }, 500);
+            },
+
             changePassword: async () => {
                 const newPass = document.getElementById('inp-new-pass').value.trim();
                 if (!newPass) return;
@@ -1064,23 +1275,23 @@
                         await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "changePassword", merchantId: state.user.uid, newPassword: newPass }) });
                         document.getElementById('inp-new-pass').value = "";
                         app.showToast('Contraseña actualizada');
-                    } catch(e) {}
+                    } catch (e) { }
                     app.toggleLoading(false);
                 });
             },
-            
+
             // --- NUEVO HELPER: Genera la URL correcta dinámicamente ---
             getShareUrl: () => {
                 // 1. Detecta la carpeta actual (ej: /landing/ o /)
                 const path = window.location.pathname;
                 const folder = path.substring(0, path.lastIndexOf('/') + 1);
-                
+
                 // 2. Construye la URL apuntando a form.html
                 return `${window.location.origin}${folder}form?merchant=${state.user.uid}`;
             },
 
             // --- FUNCIONES MODIFICADAS ---
-            
+
             copyLink: () => {
                 const text = app.getShareUrl(); // <--- Usamos el helper
                 const fallbackCopy = (t) => { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); };
@@ -1090,7 +1301,7 @@
 
             shareOnWhatsapp: () => {
                 const url = app.getShareUrl(); // <--- Usamos el helper
-                const message = `${url}\n*PROGRAMA TU ENVÍO AQUÍ* ☝️`; 
+                const message = `${url}\n*PROGRAMA TU ENVÍO AQUÍ* ☝️`;
                 window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
             },
 
@@ -1098,44 +1309,44 @@
                 const url = app.getShareUrl(); // <--- Usamos el helper
                 window.open(url, '_blank');
             },
-            
-            loadData: async () => { 
-                app.toggleLoading(true); 
-                
+
+            loadData: async () => {
+                app.toggleLoading(true);
+
                 // 1. Cargar Configuración
-                state.config = { ...initialState }; 
-                try { 
-                    const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`); 
-                    const json = await res.json(); 
-                    if (json.data) state.config = json.data; 
-                } catch(e){ 
-                    const local = SafeStorage.getItem(`config_${state.merchantId}`); 
-                    if(local) state.config = JSON.parse(local); 
-                } 
-                
+                state.config = { ...initialState };
+                try {
+                    const res = await fetch(`${state.apiUrl}?action=getConfig&merchantId=${state.merchantId}`);
+                    const json = await res.json();
+                    if (json.data) state.config = json.data;
+                } catch (e) {
+                    const local = SafeStorage.getItem(`config_${state.merchantId}`);
+                    if (local) state.config = JSON.parse(local);
+                }
+
                 // 2. Verificar estado del plan
                 if (state.user && state.merchantId) {
                     try {
                         const resStatus = await fetch(`${state.apiUrl}?action=getUserStatus&merchantId=${state.merchantId}`);
                         const jsonStatus = await resStatus.json();
-                        
+
                         if (jsonStatus.status === 'success' && jsonStatus.plan !== state.user.plan) {
                             state.user.plan = jsonStatus.plan;
                             if (jsonStatus.plan === 'Gratis') delete state.user.trialEndsAt;
                             SafeStorage.setItem('app_current_user', JSON.stringify(state.user));
                             app.showToast('Tu plan se ha actualizado');
                         }
-                    } catch(e) { console.log("Offline check"); }
+                    } catch (e) { console.log("Offline check"); }
 
                     document.querySelectorAll('.user-phone-display').forEach(el => el.innerText = state.user.phone);
-                    if(state.user.plan) document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user.plan.toUpperCase()}`);
+                    if (state.user.plan) document.querySelectorAll('.user-plan-display').forEach(el => el.innerText = `PLAN ${state.user.plan.toUpperCase()}`);
                 }
 
                 // 3. Renderizado (Directo al dashboard, ya no hay cliente)
-                app.renderDashboard(); 
-                app.loadOrders(); 
-                
-                app.toggleLoading(false); 
+                app.renderDashboard();
+                app.loadOrders();
+
+                app.toggleLoading(false);
             },
 
             // --- onFilterChange FUSIONADA (Conserva tu lógica original + lo nuevo) ---
@@ -1146,26 +1357,26 @@
                 state.selectedOrders.clear();
 
                 // Ocultar barra de acciones si existe (botones de eliminar/imprimir masivo)
-                const toolbar = document.getElementById('selection-actions'); 
-                if(toolbar) toolbar.classList.add('hidden');
+                const toolbar = document.getElementById('selection-actions');
+                if (toolbar) toolbar.classList.add('hidden');
 
                 // Resetear contador de seleccionados
                 const countEl = document.getElementById('selected-count');
-                if(countEl) countEl.innerText = "0";
+                if (countEl) countEl.innerText = "0";
 
                 // 2. LÓGICA NUEVA (El puntito indicador de fecha)
                 const dSpec = document.getElementById('date-specific');
                 const indicator = document.getElementById('date-indicator');
 
-                if(dSpec && indicator) {
-                    if(dSpec.value) indicator.classList.remove('hidden');
+                if (dSpec && indicator) {
+                    if (dSpec.value) indicator.classList.remove('hidden');
                     else indicator.classList.add('hidden');
                 }
 
                 // 3. RENDERIZAR
                 app.renderOrders();
             },
-            
+
             downloadFormat: async (type) => {
                 app.toggleLoading(true);
                 document.getElementById('modal-export').classList.add('hidden'); // Cerrar modal
@@ -1183,21 +1394,21 @@
                 let dataToExport = [];
                 let fileName = "";
                 let sheetName = "";
-                
+
                 // Obtenemos el año completo (ej: 2025)
                 const currentYearFull = new Date().getFullYear();
 
                 // --- 1. SHALOM (.xlsx) ---
                 if (type === 'shalom') {
                     const shalomList = list.filter(x => x.courier.match(/shalom/i));
-                    
+
                     dataToExport = shalomList.map(x => {
                         let destino = "";
                         let rawName = "";
 
                         // A. Extraer nombre de la agencia (antes del PIPE)
-                        if(x.clientAgency && x.clientAgency.includes('|')) {
-                            rawName = x.clientAgency.split('|')[0].trim(); 
+                        if (x.clientAgency && x.clientAgency.includes('|')) {
+                            rawName = x.clientAgency.split('|')[0].trim();
                         } else {
                             rawName = x.clientAgency || x.clientDistrict || "";
                         }
@@ -1213,23 +1424,23 @@
                         return {
                             "DESTINATARIO (DOC)": x.clientDni || "",
                             "TELF. DESTINATARIO": x.clientPhone || "",
-                            "CONTACTO (DOC)": "", 
-                            "TELF. CONTACTO": "", 
-                            "NRO GRR": "", 
-                            "ORIGEN": "", 
-                            "DESTINO": destino, 
+                            "CONTACTO (DOC)": "",
+                            "TELF. CONTACTO": "",
+                            "NRO GRR": "",
+                            "ORIGEN": "",
+                            "DESTINO": destino,
                             "MERCADERIA": "",
                             "ALTO": "", "ANCHO": "", "LARGO": "", "PESO": "", "CANTIDAD": "1"
                         };
                     });
-                    fileName = `CargaMasiva_Shalom_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    fileName = `CargaMasiva_Shalom_${new Date().toISOString().slice(0, 10)}.xlsx`;
                     sheetName = "Hoja1";
-                } 
-                
+                }
+
                 // --- 2. OLVA COURIER (.xlsx) ---
                 else if (type === 'olva') {
                     const olvaList = list.filter(x => x.courier.match(/olva/i));
-                    
+
                     dataToExport = olvaList.map((x, idx) => {
                         const nameParts = (x.clientName || "").split(" ");
                         let nombres = nameParts[0];
@@ -1238,11 +1449,11 @@
 
                         const isAgency = !!x.clientAgency;
                         let direccion = "", tienda = "", distrito = "", provincia = "LIMA", dpto = "LIMA";
-                        
-                        if(isAgency && x.clientAgency.includes('|')) {
+
+                        if (isAgency && x.clientAgency.includes('|')) {
                             tienda = x.clientAgency.split('|')[0].trim();
                         } else {
-                            direccion = `${x.clientAddress} ${x.clientRef ? '('+x.clientRef+')' : ''}`.trim();
+                            direccion = `${x.clientAddress} ${x.clientRef ? '(' + x.clientRef + ')' : ''}`.trim();
                             distrito = x.clientDistrict || "";
                         }
 
@@ -1273,18 +1484,18 @@
                             "Apellido Materno": apMaterno
                         };
                     });
-                    fileName = `CargaMasiva_Olva_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    fileName = `CargaMasiva_Olva_${new Date().toISOString().slice(0, 10)}.xlsx`;
                     sheetName = "InputData";
                 }
 
                 // --- 3. DINSIDES (.xlsx) ---
                 else if (type === 'dinsides') {
                     const dinsidesList = list.filter(x => x.courier.match(/dinsides/i));
-                    
+
                     dataToExport = dinsidesList.map(x => {
                         // A. LIMPIEZA DE DISTRITO: "Lince (S/.10)" -> "Lince"
                         let distLimpio = x.clientDistrict || "";
-                        if(distLimpio.includes('(')) {
+                        if (distLimpio.includes('(')) {
                             distLimpio = distLimpio.split('(')[0].trim();
                         }
 
@@ -1304,7 +1515,7 @@
                             "TIPO DE VENTA (SELECCIONE SOLO DEL LISTADO)": "",
                             "NOMBRE DEL DESTINATARIO": x.clientName,
                             "TELEFONO DESTINATARIO 9 DIGITOS": x.clientPhone,
-                            "DISTRITO (SELECCIONE SOLO DEL LISTADO)": distLimpio, 
+                            "DISTRITO (SELECCIONE SOLO DEL LISTADO)": distLimpio,
                             "DIRECCION DE ENTREGA": x.clientAddress || "",
                             "COORDENADAS DE LA DIRECCIÓN": "",
                             "FECHA DE ENTREGA (DIA/MES/AÑO)": fechaEntrega, // <--- FORMATO CORREGIDO
@@ -1314,7 +1525,7 @@
                             "OBSERVACION": x.clientRef || ""
                         };
                     });
-                    fileName = `CargaMasiva_Dinsides_${new Date().toISOString().slice(0,10)}.xlsx`; 
+                    fileName = `CargaMasiva_Dinsides_${new Date().toISOString().slice(0, 10)}.xlsx`;
                     sheetName = "PEDIDOS";
                 }
 
@@ -1327,7 +1538,7 @@
                         if (dateMatch) fechaClean = `${dateMatch[1]}/${dateMatch[2]}/${shortYear}`;
 
                         let colAgenciaDistrito = "", colDireccionRef = "", colDni = "";
-                        
+
                         if (x.clientAgency) {
                             let parts = x.clientAgency.split(' | ');
                             if (parts.length < 2) parts = [x.clientAgency, ""];
@@ -1352,12 +1563,12 @@
                             "Estado": x.status || "PENDIENTE"
                         };
                     });
-                    fileName = `ReporteGeneral_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    fileName = `ReporteGeneral_${new Date().toISOString().slice(0, 10)}.xlsx`;
                     sheetName = "Reporte";
                 }
 
                 // --- GENERACIÓN DEL ARCHIVO ---
-                if(dataToExport.length === 0) {
+                if (dataToExport.length === 0) {
                     app.toggleLoading(false);
                     return app.showToast("⚠️ No hay envíos de este courier en la lista actual");
                 }
@@ -1365,32 +1576,32 @@
                 const ws = XLSX.utils.json_to_sheet(dataToExport);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, sheetName);
-                
-                XLSX.writeFile(wb, fileName); 
+
+                XLSX.writeFile(wb, fileName);
 
                 app.toggleLoading(false);
                 app.showToast(`Descarga exitosa: ${fileName}`);
             },
 
-            
+
             // --- NUEVA LÓGICA DE PEDIDOS (Filtrado & Selección) ---
-            loadOrders: async () => { 
-                const l = document.getElementById('orders-list'); 
-                l.innerHTML = '<div class="text-center py-10 text-slate-400 flex flex-col items-center gap-2"><i data-lucide="loader" class="animate-spin w-6 h-6"></i> Cargando envíos...</div>'; 
+            loadOrders: async () => {
+                const l = document.getElementById('orders-list');
+                l.innerHTML = '<div class="text-center py-10 text-slate-400 flex flex-col items-center gap-2"><i data-lucide="loader" class="animate-spin w-6 h-6"></i> Cargando envíos...</div>';
                 lucide.createIcons();
-                
-                try { 
+
+                try {
                     // Anti-cache param
-                    const res = await fetch(`${state.apiUrl}?action=getOrders&merchantId=${state.merchantId}&_t=${Date.now()}`); 
-                    const json = await res.json(); 
-                    
+                    const res = await fetch(`${state.apiUrl}?action=getOrders&merchantId=${state.merchantId}&_t=${Date.now()}`);
+                    const json = await res.json();
+
                     // AQUI APLICAMOS EL FILTRO DE PLAN
                     // Revisar plan local (incluyendo 'Pro (Prueba)')
                     const userPlan = state.user ? state.user.plan : 'Gratis';
                     const isFree = userPlan === 'Gratis';
-                    
+
                     let rawOrders = json.orders || [];
-                    
+
                     // Si es gratis, NO CARGAR NADA en allOrders, pero guardar el total para el contador
                     if (isFree) {
                         state.allOrders = [];
@@ -1402,16 +1613,16 @@
                         state.hasHiddenOrders = false;
                         state.totalHiddenCount = 0;
                     }
-                    
+
                     state.selectedOrders.clear();
-                    
+
                     // Actualizar contador en el aviso
                     const hiddenCountEl = document.getElementById('hidden-count');
-                    if(hiddenCountEl) hiddenCountEl.innerText = state.totalHiddenCount;
+                    if (hiddenCountEl) hiddenCountEl.innerText = state.totalHiddenCount;
 
-                } catch(e){
+                } catch (e) {
                     state.allOrders = [];
-                } 
+                }
                 app.renderOrders();
             },
 
@@ -1435,9 +1646,9 @@
                 const overlay = document.getElementById('dropdown-overlay');
                 const chevron = document.getElementById('filter-chevron');
 
-                if(menu) menu.classList.add('hidden');
-                if(overlay) overlay.classList.add('hidden');
-                if(chevron) chevron.style.transform = "rotate(0deg)";
+                if (menu) menu.classList.add('hidden');
+                if (overlay) overlay.classList.add('hidden');
+                if (chevron) chevron.style.transform = "rotate(0deg)";
             },
 
             // 2. CAMBIAR FILTRO (Y MANTENER ESTILO COMPACTO)
@@ -1448,111 +1659,111 @@
                 const btn = document.getElementById('filter-trigger-btn');
 
                 const texts = { 'PENDIENTE': 'Pendientes', 'ENVIADO': 'Enviados', 'TODOS': 'Todos' };
-                if(label) label.innerText = texts[status];
+                if (label) label.innerText = texts[status];
 
                 // ESTILO ULTRA COMPACTO (h-full hereda h-8, px-2.5, text-xs)
                 btn.className = "h-full px-2.5 text-white font-bold rounded-lg flex items-center gap-1.5 shadow-sm border transition active:scale-95 shrink-0 text-xs";
 
                 // Asignar colores según estado
                 if (status === 'PENDIENTE') {
-                    btn.classList.add('bg-primary', 'border-primary'); 
+                    btn.classList.add('bg-primary', 'border-primary');
                 } else if (status === 'ENVIADO') {
-                    btn.classList.add('bg-secondary', 'border-secondary'); 
+                    btn.classList.add('bg-secondary', 'border-secondary');
                 } else {
-                    btn.classList.add('bg-slate-700', 'border-slate-500'); 
+                    btn.classList.add('bg-slate-700', 'border-slate-500');
                 }
 
                 app.closeDropdown();
                 app.onFilterChange(); // Ejecutar el filtro inmediatamente
-            },          
-          
-// --- renderOrders: DISEÑO FINAL (HEADER PRO + WIDGET) ---
+            },
 
-renderOrders: () => {
-    const l = document.getElementById('orders-list');
-    const q = (document.getElementById('inp-search-orders').value || '').toLowerCase();
-    const dSpec = document.getElementById('date-specific').value;
-    
-    // 1. FILTRADO
-    const filtered = state.allOrders.filter(x => {
-        if (state.filterStatus !== 'TODOS') {
-            const currentStatus = x.status || 'PENDIENTE'; 
-            if (currentStatus !== state.filterStatus) return false;
-        }
-        const txt = `${x.clientName} ${x.clientPhone} ${x.clientDni || ''} ${x.clientDistrict || ''} ${x.clientAgency || ''} ${x.clientAddress || ''} ${x.clientRef || ''} ${x.courier} ${x.status || ''}`.toLowerCase();
-        if (!txt.includes(q)) return false;
-        
-        if (dSpec) {
-            const [year, month, day] = dSpec.split('-');
-            const orderDate = (x.shippingDate || '').toString();
-            if (!orderDate.includes(`${year}-${month}-${day}`) && 
-                !orderDate.includes(`${day}/${month}/${year}`) && 
-                !orderDate.includes(`${day}/${month}`)) return false;
-        }
-        return true;
-    });
-    
-    state.visibleOrders = filtered;
+            // --- renderOrders: DISEÑO FINAL (HEADER PRO + WIDGET) ---
 
-    // 2. ACTUALIZAR WIDGET SIDEBAR
-    const breakdownEl = document.getElementById('courier-breakdown-list');
-    if (breakdownEl) {
-        if (filtered.length === 0) {
-            breakdownEl.innerHTML = '<span class="text-xs text-slate-500 italic">Sin resultados</span>';
-        } else {
-            const counts = filtered.reduce((acc, order) => {
-                const c = (order.courier || 'Otros').toUpperCase().trim();
-                acc[c] = (acc[c] || 0) + 1;
-                return acc;
-            }, {});
+            renderOrders: () => {
+                const l = document.getElementById('orders-list');
+                const q = (document.getElementById('inp-search-orders').value || '').toLowerCase();
+                const dSpec = document.getElementById('date-specific').value;
 
-            breakdownEl.innerHTML = Object.keys(counts).sort().map(key => `
+                // 1. FILTRADO
+                const filtered = state.allOrders.filter(x => {
+                    if (state.filterStatus !== 'TODOS') {
+                        const currentStatus = x.status || 'PENDIENTE';
+                        if (currentStatus !== state.filterStatus) return false;
+                    }
+                    const txt = `${x.clientName} ${x.clientPhone} ${x.clientDni || ''} ${x.clientDistrict || ''} ${x.clientAgency || ''} ${x.clientAddress || ''} ${x.clientRef || ''} ${x.courier} ${x.status || ''}`.toLowerCase();
+                    if (!txt.includes(q)) return false;
+
+                    if (dSpec) {
+                        const [year, month, day] = dSpec.split('-');
+                        const orderDate = (x.shippingDate || '').toString();
+                        if (!orderDate.includes(`${year}-${month}-${day}`) &&
+                            !orderDate.includes(`${day}/${month}/${year}`) &&
+                            !orderDate.includes(`${day}/${month}`)) return false;
+                    }
+                    return true;
+                });
+
+                state.visibleOrders = filtered;
+
+                // 2. ACTUALIZAR WIDGET SIDEBAR
+                const breakdownEl = document.getElementById('courier-breakdown-list');
+                if (breakdownEl) {
+                    if (filtered.length === 0) {
+                        breakdownEl.innerHTML = '<span class="text-xs text-slate-500 italic">Sin resultados</span>';
+                    } else {
+                        const counts = filtered.reduce((acc, order) => {
+                            const c = (order.courier || 'Otros').toUpperCase().trim();
+                            acc[c] = (acc[c] || 0) + 1;
+                            return acc;
+                        }, {});
+
+                        breakdownEl.innerHTML = Object.keys(counts).sort().map(key => `
                 <div class="flex justify-between items-center group/item">
                     <span class="text-xs font-bold text-slate-300 group-hover/item:text-white transition-colors truncate max-w-[70%]">${key}</span>
                     <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">${counts[key]}</span>
                 </div>
             `).join('');
-            
-            if(Object.keys(counts).length > 1) {
-                breakdownEl.innerHTML += `
+
+                        if (Object.keys(counts).length > 1) {
+                            breakdownEl.innerHTML += `
                 <div class="mt-1 pt-2 border-t border-white/5 flex justify-between items-center">
                     <span class="text-[10px] uppercase text-slate-500 font-bold">Total</span>
                     <span class="text-xs font-bold text-white">${filtered.length}</span>
                 </div>`;
-            }
-        }
-    }
+                        }
+                    }
+                }
 
-    // 3. RENDERIZADO
-    if (!filtered.length) {
-         if(state.hasHiddenOrders && state.filterStatus === 'PENDIENTE' && q === '') {
-             l.innerHTML = ''; 
-        } else if (state.filterStatus === 'PENDIENTE' && q === '' && !dSpec) {
-             l.innerHTML = '<div class="text-center py-10 text-slate-500 flex flex-col items-center"><i data-lucide="check-circle" class="w-8 h-8 mb-2 text-green-500/50"></i><p>¡Todo al día!</p><p class="text-xs">No tienes envíos pendientes.</p></div>';
-        } else {
-             l.innerHTML = '<div class="text-center py-10 text-slate-400">Sin resultados</div>';
-        }
-    } else {
-        const groups = filtered.reduce((acc, order) => {
-            const key = (order.courier || 'OTROS').toUpperCase().trim();
-            if (!acc[key]) acc[key] = [];
-            acc[key].push(order);
-            return acc;
-        }, {});
+                // 3. RENDERIZADO
+                if (!filtered.length) {
+                    if (state.hasHiddenOrders && state.filterStatus === 'PENDIENTE' && q === '') {
+                        l.innerHTML = '';
+                    } else if (state.filterStatus === 'PENDIENTE' && q === '' && !dSpec) {
+                        l.innerHTML = '<div class="text-center py-10 text-slate-500 flex flex-col items-center"><i data-lucide="check-circle" class="w-8 h-8 mb-2 text-green-500/50"></i><p>¡Todo al día!</p><p class="text-xs">No tienes envíos pendientes.</p></div>';
+                    } else {
+                        l.innerHTML = '<div class="text-center py-10 text-slate-400">Sin resultados</div>';
+                    }
+                } else {
+                    const groups = filtered.reduce((acc, order) => {
+                        const key = (order.courier || 'OTROS').toUpperCase().trim();
+                        if (!acc[key]) acc[key] = [];
+                        acc[key].push(order);
+                        return acc;
+                    }, {});
 
-        const sortedKeys = Object.keys(groups).sort();
+                    const sortedKeys = Object.keys(groups).sort();
 
-        l.innerHTML = sortedKeys.map(courierName => {
-            const ordersInGroup = groups[courierName];
-            const cardsHtml = ordersInGroup.map(x => {
-                const id = String(x.orderId || x.createdAt);
-                const isSel = state.selectedOrders.has(id);
-                const status = x.status || 'PENDIENTE';
-                let badgeClass = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
-                if(status === 'ENVIADO') badgeClass = 'bg-secondary/20 text-secondary border border-secondary/30';
-                if(status === 'ELIMINADO') badgeClass = 'bg-red-500/20 text-red-400 border border-red-500/30';
+                    l.innerHTML = sortedKeys.map(courierName => {
+                        const ordersInGroup = groups[courierName];
+                        const cardsHtml = ordersInGroup.map(x => {
+                            const id = String(x.orderId || x.createdAt);
+                            const isSel = state.selectedOrders.has(id);
+                            const status = x.status || 'PENDIENTE';
+                            let badgeClass = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
+                            if (status === 'ENVIADO') badgeClass = 'bg-secondary/20 text-secondary border border-secondary/30';
+                            if (status === 'ELIMINADO') badgeClass = 'bg-red-500/20 text-red-400 border border-red-500/30';
 
-                return `
+                            return `
                 <div class="bg-black/30 border ${isSel ? 'border-primary ring-1 ring-primary bg-primary/10' : 'border-white/10'} p-3 rounded-lg shadow-sm hover:border-white/20 transition group flex gap-3 items-start mb-2 last:mb-0">
                     <div class="pt-1">
                         <input type="checkbox" onchange="app.toggleOrderSelection('${id}')" ${isSel ? 'checked' : ''} class="w-4 h-4 rounded border-slate-500 text-primary focus:ring-primary cursor-pointer bg-black/40">
@@ -1576,9 +1787,9 @@ renderOrders: () => {
                         </div>
                     </div>
                 </div>`;
-            }).join('');
+                        }).join('');
 
-            return `
+                        return `
             <div class="mb-4 relative">
                 <div class="sticky top-0 z-30 backdrop-blur-xl bg-slate-950/80 border-y border-white/10 shadow-lg py-2.5 px-3 mb-3 flex items-center justify-between transition-all">
                     <div class="flex items-center gap-3">
@@ -1604,29 +1815,29 @@ renderOrders: () => {
                 </div>
             </div>
             `;
-        }).join('');
-    }
+                    }).join('');
+                }
 
-    const warningEl = document.getElementById('plan-limit-warning');
-    if (warningEl) {
-        if (state.hasHiddenOrders) warningEl.classList.remove('hidden');
-        else warningEl.classList.add('hidden');
-    }
-    
-    lucide.createIcons();
-},
+                const warningEl = document.getElementById('plan-limit-warning');
+                if (warningEl) {
+                    if (state.hasHiddenOrders) warningEl.classList.remove('hidden');
+                    else warningEl.classList.add('hidden');
+                }
+
+                lucide.createIcons();
+            },
 
             toggleOrderSelection: (id) => {
-                const strId = String(id); 
+                const strId = String(id);
                 if (state.selectedOrders.has(strId)) state.selectedOrders.delete(strId);
                 else state.selectedOrders.add(strId);
-                app.renderOrders(); 
+                app.renderOrders();
             },
-            
+
             toggleAllSelection: () => {
                 // Usamos SOLO los pedidos visibles (filtrados)
                 const list = state.visibleOrders;
-                
+
                 // Si no hay nada en pantalla, no hacemos nada
                 if (list.length === 0) return;
 
@@ -1639,33 +1850,33 @@ renderOrders: () => {
                     // Si falta alguno, los MARCAMOS todos los visibles
                     list.forEach(x => state.selectedOrders.add(String(x.orderId || x.createdAt)));
                 }
-                
+
                 app.renderOrders();
                 app.updateSelectionUI();
             },
-            
+
             deleteSelected: () => {
                 if (state.selectedOrders.size === 0) return app.showToast('Selecciona al menos un envío');
                 app.showModal(`¿Eliminar ${state.selectedOrders.size} envíos?`, async () => {
                     app.toggleLoading(true);
                     const ids = Array.from(state.selectedOrders);
-                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "deleteOrders", merchantId: state.merchantId, orderIds: ids }) }); app.showToast('Envíos eliminados'); app.loadOrders(); } catch(e) {}
+                    try { await fetch(state.apiUrl, { method: "POST", body: JSON.stringify({ action: "deleteOrders", merchantId: state.merchantId, orderIds: ids }) }); app.showToast('Envíos eliminados'); app.loadOrders(); } catch (e) { }
                     app.toggleLoading(false);
                 });
             },
-            
+
             updateBatchStatus: () => {
                 if (state.selectedOrders.size === 0) return app.showToast('Selecciona envíos');
                 app.openStatusMenu();
             },
-            
-            exportExcel: () => { 
+
+            exportExcel: () => {
                 const list = state.visibleOrders;
                 if (!list.length) return app.showToast('No hay datos para exportar');
 
                 // 1. Analizar qué couriers hay en la lista visible
                 const counts = { 'Shalom': 0, 'Olva Courier': 0, 'Dinsides': 0 };
-                
+
                 list.forEach(o => {
                     // Normalizamos nombres para evitar errores de mayúsculas/minúsculas
                     if (o.courier.match(/shalom/i)) counts['Shalom']++;
@@ -1705,11 +1916,11 @@ renderOrders: () => {
             },
 
             printLabels: () => {
-                const targets = state.selectedOrders.size > 0 
-                    ? state.allOrders.filter(x => state.selectedOrders.has(String(x.orderId || x.createdAt))) 
+                const targets = state.selectedOrders.size > 0
+                    ? state.allOrders.filter(x => state.selectedOrders.has(String(x.orderId || x.createdAt)))
                     : state.visibleOrders;
 
-                if(!targets.length) return app.showToast('Nada para imprimir');
+                if (!targets.length) return app.showToast('Nada para imprimir');
 
                 // UX: Preguntar al usuario el formato antes de proceder
                 app.openModal(`
@@ -1745,16 +1956,16 @@ renderOrders: () => {
 
                 // Guardamos los targets temporalmente para que doPrint los use
                 app.tempTargets = targets;
-                if(window.lucide) lucide.createIcons();
+                if (window.lucide) lucide.createIcons();
             },
 
             doPrint: (list, cols = 2) => {
-                if(!list.length) return;
+                if (!list.length) return;
                 const area = document.getElementById('print-area');
                 const shopName = state.config.merchantName || "Mi Tienda";
                 const cardWidth = cols === 1 ? '98%' : '48%';
                 const m = cols === 2 ? 1 : 2;
-                
+
                 // CORRECCIÓN: Usamos 'block' en el contenedor y 'inline-block' en las tarjetas.
                 // Esto evita que el navegador móvil parta las tarjetas entre páginas.
                 area.innerHTML = `
@@ -1792,10 +2003,10 @@ renderOrders: () => {
                                 <div style="margin-bottom: 8px; min-height: 35px;">
                                     <p style="margin: 0; font-size: ${8 * m}px; color: #666; font-weight: bold; text-transform: uppercase;">DESTINO:</p>
                                     <p style="margin: 2px 0 0 0; font-size: ${10 * m}px; color: #000; line-height: 1.3;">
-                                        ${x.clientAgency ? 
-                                            `<strong>AGENCIA:</strong> ${escapeHtml(x.clientAgency)}<br><strong>DNI:</strong> ${x.clientDni}` : 
-                                            `<strong>DIRECCIÓN:</strong> ${escapeHtml(x.clientAddress)}<br><span style="color:#444">${escapeHtml(x.clientDistrict)}</span>`
-                                        }
+                                        ${x.clientAgency ?
+                        `<strong>AGENCIA:</strong> ${escapeHtml(x.clientAgency)}<br><strong>DNI:</strong> ${x.clientDni}` :
+                        `<strong>DIRECCIÓN:</strong> ${escapeHtml(x.clientAddress)}<br><span style="color:#444">${escapeHtml(x.clientDistrict)}</span>`
+                    }
                                     </p>
                                     ${!x.clientAgency ? `<p style="margin: 2px 0 0 0; font-size: ${9 * m}px; color: #555;">Ref: ${escapeHtml(x.clientRef || '-')}</p>` : ''}
                                 </div>
@@ -1812,85 +2023,85 @@ renderOrders: () => {
                 setTimeout(() => { area.innerHTML = ''; }, 1000);
             },
 
-            toggleConfigItem: (k, v) => { 
-                    if (state.config[k].includes(v)) state.config[k] = state.config[k].filter(i => i !== v); 
-                    else state.config[k].push(v); 
-                    app.renderDashboard(); 
-                    app.checkConfigStatus(); // <--- IMPORTANTE: Revalida al tocar botones de courier/dias
-                },
-          
-            renderDashboard: () => { 
-                    document.getElementById('inp-store-name').value = state.config.merchantName || ''; 
-                    document.getElementById('inp-whatsapp').value = state.config.whatsapp || ''; 
-                    document.getElementById('inp-time').value = state.config.updateTime || ''; 
+            toggleConfigItem: (k, v) => {
+                if (state.config[k].includes(v)) state.config[k] = state.config[k].filter(i => i !== v);
+                else state.config[k].push(v);
+                app.renderDashboard();
+                app.checkConfigStatus(); // <--- IMPORTANTE: Revalida al tocar botones de courier/dias
+            },
 
-                    // --- NUEVO: Renderizar el valor del gap ---
-                    document.getElementById('inp-gap').value = state.config.updateGap !== undefined ? state.config.updateGap : ''; 
+            renderDashboard: () => {
+                document.getElementById('inp-store-name').value = state.config.merchantName || '';
+                document.getElementById('inp-whatsapp').value = state.config.whatsapp || '';
+                document.getElementById('inp-time').value = state.config.updateTime || '';
 
-                    // Inputs con oninput para validación en tiempo real
-                    document.getElementById('inp-store-name').oninput = (e) => app.updateConfigInput('merchantName', e.target.value);
-                    document.getElementById('inp-whatsapp').oninput = (e) => app.updateConfigInput('whatsapp', e.target.value);
+                // --- NUEVO: Renderizar el valor del gap ---
+                document.getElementById('inp-gap').value = state.config.updateGap !== undefined ? state.config.updateGap : '';
 
-                    // Renderizado de Botones (Igual que antes)
-                    document.getElementById('container-couriers').innerHTML = ALL_COURIERS.map(c => `<div onclick="app.toggleConfigItem('couriers','${c}')" class="cursor-pointer bg-black/30 border border-white/10 rounded p-2 text-xs font-bold flex items-center gap-2 select-none ${state.config.couriers.includes(c)?'border-primary text-primary bg-primary/10':'text-slate-400 hover:bg-white/5'} transition"><div class="w-3 h-3 border rounded flex items-center justify-center ${state.config.couriers.includes(c)?'bg-primary border-primary':'border-slate-500'}">${state.config.couriers.includes(c)?'<i data-lucide="check" class="w-2 h-2 text-white"></i>':''}</div>${c}</div>`).join(''); 
-                    document.getElementById('container-days').innerHTML = ALL_DAYS.map(d => `<button onclick="app.toggleConfigItem('shippingDays','${d}')" class="px-3 py-1 rounded text-xs font-bold border transition ${state.config.shippingDays.includes(d)?'bg-primary text-white border-primary shadow-neon':'bg-black/30 text-slate-400 border-white/10 hover:bg-white/5'}">${d}</button>`).join(''); 
+                // Inputs con oninput para validación en tiempo real
+                document.getElementById('inp-store-name').oninput = (e) => app.updateConfigInput('merchantName', e.target.value);
+                document.getElementById('inp-whatsapp').oninput = (e) => app.updateConfigInput('whatsapp', e.target.value);
 
-                    lucide.createIcons();
+                // Renderizado de Botones (Igual que antes)
+                document.getElementById('container-couriers').innerHTML = ALL_COURIERS.map(c => `<div onclick="app.toggleConfigItem('couriers','${c}')" class="cursor-pointer bg-black/30 border border-white/10 rounded p-2 text-xs font-bold flex items-center gap-2 select-none ${state.config.couriers.includes(c) ? 'border-primary text-primary bg-primary/10' : 'text-slate-400 hover:bg-white/5'} transition"><div class="w-3 h-3 border rounded flex items-center justify-center ${state.config.couriers.includes(c) ? 'bg-primary border-primary' : 'border-slate-500'}">${state.config.couriers.includes(c) ? '<i data-lucide="check" class="w-2 h-2 text-white"></i>' : ''}</div>${c}</div>`).join('');
+                document.getElementById('container-days').innerHTML = ALL_DAYS.map(d => `<button onclick="app.toggleConfigItem('shippingDays','${d}')" class="px-3 py-1 rounded text-xs font-bold border transition ${state.config.shippingDays.includes(d) ? 'bg-primary text-white border-primary shadow-neon' : 'bg-black/30 text-slate-400 border-white/10 hover:bg-white/5'}">${d}</button>`).join('');
 
-                    // Validar estado inicial al renderizar
-                    app.checkConfigStatus(); 
-                },
-            
+                lucide.createIcons();
+
+                // Validar estado inicial al renderizar
+                app.checkConfigStatus();
+            },
+
             setTab: (t) => {
-                    // --- BLOQUEO DE SEGURIDAD UX ---
-                    if (t === 'share') {
-                        const validation = app.validateConfig();
-                        if (!validation.isValid) {
-                            // Feedback UX: Listamos lo que falta
-                            const missing = validation.errors.join(", ");
-                            app.showToast(`⚠️ Falta configurar: ${missing}`);
+                // --- BLOQUEO DE SEGURIDAD UX ---
+                if (t === 'share') {
+                    const validation = app.validateConfig();
+                    if (!validation.isValid) {
+                        // Feedback UX: Listamos lo que falta
+                        const missing = validation.errors.join(", ");
+                        app.showToast(`⚠️ Falta configurar: ${missing}`);
 
-                            // Efecto visual de error (sacudida) en la pestaña config
-                            const configTab = document.getElementById('nav-config');
-                            configTab.classList.add('animate-pulse', 'text-red-400');
-                            setTimeout(() => configTab.classList.remove('animate-pulse', 'text-red-400'), 1000);
+                        // Efecto visual de error (sacudida) en la pestaña config
+                        const configTab = document.getElementById('nav-config');
+                        configTab.classList.add('animate-pulse', 'text-red-400');
+                        setTimeout(() => configTab.classList.remove('animate-pulse', 'text-red-400'), 1000);
 
-                            // Forzamos volver a config
-                            app.setTab('config');
-                            return;
-                        }
+                        // Forzamos volver a config
+                        app.setTab('config');
+                        return;
                     }
-                    // -------------------------------
+                }
+                // -------------------------------
 
-                    ['config','share','orders'].forEach(x => { 
-                        document.getElementById(`tab-${x}`).classList.add('hidden'); 
-                        // Restauramos clases base
-                        document.getElementById(`nav-${x}`).className = "nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap"; 
-                    }); 
+                ['config', 'share', 'orders'].forEach(x => {
+                    document.getElementById(`tab-${x}`).classList.add('hidden');
+                    // Restauramos clases base
+                    document.getElementById(`nav-${x}`).className = "nav-item p-3 rounded-lg text-sm font-bold text-left flex gap-3 items-center text-slate-400 hover:bg-white/5 hover:text-white transition whitespace-nowrap";
+                });
 
-                    document.getElementById(`tab-${t}`).classList.remove('hidden'); 
-                    // Clase activa
-                    document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon"; 
+                document.getElementById(`tab-${t}`).classList.remove('hidden');
+                // Clase activa
+                document.getElementById(`nav-${t}`).className = "nav-item p-3 rounded-lg text-sm font-bold bg-primary/10 text-primary border border-primary/20 text-left flex gap-3 items-center transition shadow-neon";
 
-                    if(t === 'share') {
-                        // Actualizamos visualmente el texto usando la misma lógica
-                        document.getElementById('share-link').innerText = app.getShareUrl();
-                    }
+                if (t === 'share') {
+                    // Actualizamos visualmente el texto usando la misma lógica
+                    document.getElementById('share-link').innerText = app.getShareUrl();
+                }
 
-                    // Si entramos a config, chequeamos el estado visualmente
-                    if(t==='config') app.checkConfigStatus();
-                },
-   
+                // Si entramos a config, chequeamos el estado visualmente
+                if (t === 'config') app.checkConfigStatus();
+            },
+
             init: () => {
                 // Ya no buscamos merchant en URL
                 const u = JSON.parse(SafeStorage.getItem('app_current_user'));
-                
+
                 // Ocultamos todas las vistas por defecto
                 document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
 
-                if(u) {
+                if (u) {
                     state.user = u;
-                    if(u.isAdmin) {
+                    if (u.isAdmin) {
                         // Si es Admin Maestro
                         document.getElementById('view-admin').classList.remove('hidden');
                         app.adminLoadUsers();
@@ -1911,4 +2122,5 @@ renderOrders: () => {
         app.init();
     </script>
 </body>
+
 </html>
