@@ -88,6 +88,10 @@
     "Direccion": "Av. Los Cedros 274, Referencia: A 70 Metros Del Puente Del Hospital De Andahuaylas"
   },
   {
+    "Agencia": "Apurimac / Cotabambas / Challhuahuacho / Challhuahuacho",
+    "Direccion": "Barrio Wichaypampa Lt. 13 - 15 - 16, Challhuahuacho - Cotabambas - ApuríMac, Ref. A Dos Cdras Del Terminal Terrestre De Challhuahuacho / A Espaldas Del Taller E&L"
+  },
+  {
     "Agencia": "Arequipa / Arequipa / Alto Selva Alegre / Av Augusto Salazar Bondy",
     "Direccion": "Augusto Salazar Bondy Mz J Lt 4 Alto Selva Alegre - Arequipa, Ref.  A Media Cdra. De La Iglesia Guadalupe"
   },
@@ -98,6 +102,10 @@
   {
     "Agencia": "Arequipa / Arequipa / Arequipa / Av Parra 379 Co",
     "Direccion": "Av. Parra 379 - Arequipa"
+  },
+  {
+    "Agencia": "Arequipa / Arequipa / Arequipa / Mall Lambramani",
+    "Direccion": "Av. Lambramani 325, Arequipa - Arequipa - Arequipa, Ref. Dentro Del Mall Parque Arauco Piso - 4 (SóTano)"
   },
   {
     "Agencia": "Arequipa / Arequipa / Cayma / Av Charcani",
@@ -192,7 +200,7 @@
     "Direccion": "Av. Lote Colonizadores. 4 Parcela 180, Majes - Caylloma - Arequipa, Ref. A Media Cdra. Del Grifo El Eje"
   },
   {
-    "Agencia": "Arequipa / Caylloma / Majes / Pedregal Centro",
+    "Agencia": "Arequipa / Caylloma / Majes / Calle Yarabamba",
     "Direccion": "Calle Yarabamba, Mz. Y Lt 7. Villa El Pedregal, Majes - Caylloma - Arequipa, Ref. A Media Cdra. De La Notaria TeráN Bejar"
   },
   {
@@ -264,10 +272,6 @@
     "Direccion": "Av. Fray José Arana N 805 - Referencia : Frente Al Terminal Angel Divino"
   },
   {
-    "Agencia": "Cajamarca / Contumaza / Chilete / Chilete",
-    "Direccion": "Jr. Santa Rosa N° 130 - Chilete, Ref. A 100 Del Puente De Ingreso A Chilete"
-  },
-  {
     "Agencia": "Cajamarca / Contumaza / Yonan / Tembladera  Cajamarca",
     "Direccion": "Jr. Bolognesi S/N – Tembladera - Yonan - Contumazá - Cajamarca, Ref. Al Frente Del Parque VíCtor RaúL Haya De La Torre"
   },
@@ -314,10 +318,6 @@
   {
     "Agencia": "Callao / Callao / Callao / Av Saenz PeñA",
     "Direccion": "Av. Saenz PeñA N° 414 - 416 - Callao - Callao, Ref. Cruce Con Av. Marco Polo"
-  },
-  {
-    "Agencia": "Callao / Callao / Callao / Av. Canta Callao",
-    "Direccion": "Av. Canta Callao 10 - Parcela 2a Local 109, Referencia : Al Frente De Tottus"
   },
   {
     "Agencia": "Callao / Callao / Callao / Callao Faucett",
@@ -380,7 +380,7 @@
     "Direccion": "Urb. Cachimayo A-37 Av. La Cultura – San Sebastian – Cusco, Ref. Entre Paradero Enaco Y Parque Cachimayo, A 2 Cuadra De La Universidad Andina."
   },
   {
-    "Agencia": "Cusco / Cusco / San Sebastian / Via Evitamiento Chacahuayco",
+    "Agencia": "Cusco / Cusco / San Sebastian / Cusco Co Via Evitamiento",
     "Direccion": "Av. Evitamiento S/N Ups Chacahuayco, San Sebastian - Cusco - Cusco, Ref. VíA Evitamiento En El Paradero Horacio"
   },
   {
@@ -404,16 +404,12 @@
     "Direccion": "Av. Pachacutec 429 - Wanchaq, Ref. A 100 Mtrs. De La Piscina Wanchaq"
   },
   {
-    "Agencia": "Cusco / Cusco / Wanchaq / Cusco Co Parque Industrial",
+    "Agencia": "Cusco / Cusco / Wanchaq / Cusco Parque Industrial",
     "Direccion": "Av. Las Americas Mz. E Lt. 20, 2da Etapa, Urb. Parque Industrial, Wanchaq - Cusco, Ref. Al Frente De Talleres Pfuro, Al Frente De Mederera Urpi, Paralela A La Av Via Expresa."
   },
   {
     "Agencia": "Cusco / Cusco / Wanchaq / Velasco Astete",
     "Direccion": "Velasco Astete D3 - Wanchaq, Referencia: A 2 Cdras. Del Aereopuerto"
-  },
-  {
-    "Agencia": "Cusco / Espinar / Yauri ( Espinar ) / Espinar",
-    "Direccion": "Av. Tintaya N° 215 Espinar, Ref. A Dos Cuadra S De Los Bomberos"
   },
   {
     "Agencia": "Cusco / La Convencion / Santa Ana / Quillabamba",
@@ -456,8 +452,8 @@
     "Direccion": "Jr. Chiclayo 247 0c-02 Cent Aucayu, Leoncio Prado, HuáNuco, Ref. AtráS Del Estadio Municipal"
   },
   {
-    "Agencia": "Huanuco / Leoncio Prado / Rupa Rupa / Tingo MaríA - Amazonas",
-    "Direccion": "Av. Amazonas Nro 778 - Leoncio Prado, Ref. A 1 Cuadra Del Reniec"
+    "Agencia": "Huanuco / Leoncio Prado / Rupa Rupa / Tingo MaríA - Leoncio Prado",
+    "Direccion": "Av. Tito Jaime 914, Rupa Rupa-  Leoncio Prado - Huanuco, Ref. A Dos Cdras. De La Plaza De Armas Leoncio Pardo"
   },
   {
     "Agencia": "Huanuco / Leoncio Prado / Rupa Rupa / Tingo Maria Co Buenos Aires",
@@ -710,10 +706,6 @@
   {
     "Agencia": "La Libertad / Trujillo / Trujillo / Av Hnos Uceda - America Norte",
     "Direccion": "Av. Hermanos Uceda Meza N° 269 Urb Miraflores Ii Etapa - Trujillo - Trujillo - La Libertad, Ref. A Una Cdra. De Av. America Norte. / Entre Av. Miraflores Y Av. Salvador Lara"
-  },
-  {
-    "Agencia": "La Libertad / Trujillo / Trujillo / Calle Liverpool",
-    "Direccion": "Calle Liverpool N° 329 / Urb. Santa Isabel - Trujillo.  Referencia : A Una Cuadra Antes De La Iglesia De Mansiche"
   },
   {
     "Agencia": "La Libertad / Trujillo / Trujillo / Calle Santa Cruz - America Sur",
@@ -1288,6 +1280,10 @@
     "Direccion": "Av. Los HéRoes 1140 - Sjm, Referencia: Una Cdra. Antes Del Hospital MaríA Auxiliadora"
   },
   {
+    "Agencia": "Lima / Lima / San Martin De Porres / Av Bertello Smp",
+    "Direccion": "Av. Alejandro Bertello Bollati Mz. H Lt. 2-A - Asoc. De Viv. San Remo Ii Etapa, San MartíN De Porres - Lima - Lima, Ref. A Media Cdra. Del Cruce Con Av. Canta Callao"
+  },
+  {
     "Agencia": "Lima / Lima / San Martin De Porres / Av Jose Granda Cdra 38",
     "Direccion": "Av. José Granda 3826 De La Urb. Condevilla SeñOr Y Valdivieso Mz. M7 Lt 20, 2 Etapa, 2 Sector - S.M.P. , Ref.  Entre Av. Condevilla Y Av. Los PróCeres"
   },
@@ -1446,10 +1442,6 @@
   {
     "Agencia": "Madre De Dios / Tambopata / Las Piedras / El Triunfo",
     "Direccion": "Av. Interoceanica Km. 1 , Las Piedras - Tambopata - Madre De Dios, Ref. Al Costado Del Grifo Virgen Natividad"
-  },
-  {
-    "Agencia": "Madre De Dios / Tambopata / Tambopata / Jr. Jaime Troncoso",
-    "Direccion": "Jr. Jaime Troncoso 442, Tambopata - Madre De Dios, Ref. A Media Cdra. Del Jardin Piloto / A Media Cdra. De La Empresa Real Dorado"
   },
   {
     "Agencia": "Madre De Dios / Tambopata / Tambopata / Tambopata Av Circunvalacion",
@@ -1676,7 +1668,7 @@
     "Direccion": "Jr. Agustin Gamarra Mz. R1 Lt. 09 Urb. Huancane, Juliaca - San RomáN - Puno, Ref. A Una Cdra. De La Av. Huancane / Cruce Con Jr. Alberto Cuentas Zabala"
   },
   {
-    "Agencia": "Puno / San Roman / Juliaca / Juliaca San Santiago",
+    "Agencia": "Puno / San Roman / Juliaca / Jr. Mama Ocllo",
     "Direccion": "Jr. Mama Ocllo 915 - B ( Cruce Con Jr AzáNgaro )"
   },
   {
@@ -1786,6 +1778,10 @@
   {
     "Agencia": "Tacna / Tacna / Coronel Gregorio Albarracin Lanchipa / Villa San Francisco",
     "Direccion": "Asoc. Villa San Francisco Mz. 94 Lt. 22, Referencia: Cerca A Caja Cusco"
+  },
+  {
+    "Agencia": "Tacna / Tacna / Coronel Gregorio Albarracin Lanchipa / ViñAnis",
+    "Direccion": "Promuvi ViñAni, Amp. I Etapa, Mz. 574, Lt. 09 – Coronel Gregorio AlbarracíN Lanchipa – Tacna - Tacna, Ref. A Media Cdra. Del óValo Los Molles"
   },
   {
     "Agencia": "Tacna / Tacna / Tacna / Av  Vigil",

@@ -410,7 +410,8 @@
                 <div class="flex items-center gap-3">
                     <div
                         class="bg-secondary/10 p-2 rounded-xl text-secondary border border-secondary/20 shadow-neon-green">
-                        <i data-lucide="package" class="w-6 h-6"></i></div>
+                        <i data-lucide="package" class="w-6 h-6"></i>
+                    </div>
                     <div>
                         <h1 class="font-bold text-lg text-white leading-tight">Mi Panel</h1>
                         <p class="text-xs text-slate-400 hidden md:block">Emprendedor</p>
@@ -472,7 +473,8 @@
                 <div class="flex items-center gap-3 mb-4">
                     <div
                         class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 border border-white/5">
-                        <i data-lucide="phone" class="w-5 h-5"></i></div>
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                    </div>
                     <div class="overflow-hidden">
                         <p class="user-phone-display text-sm font-bold text-white truncate">...</p>
                         <p
@@ -536,7 +538,8 @@
                             <div class="glass-card p-6 rounded-3xl">
                                 <h3
                                     class="font-bold text-primary uppercase text-xs tracking-wider mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
-                                    <i data-lucide="lock" class="w-3 h-3"></i> Seguridad</h3>
+                                    <i data-lucide="lock" class="w-3 h-3"></i> Seguridad
+                                </h3>
                                 <div class="flex gap-3 items-end">
                                     <div class="flex-1">
                                         <label class="text-xs font-bold text-slate-400 uppercase mb-1 block">Nueva
@@ -559,8 +562,8 @@
                                 </h3>
 
                                 <div>
-                                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">Couriers
-                                        Habilitados <span class="text-red-500">*</span></label>
+                                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">
+                                        Métodos de envío/retiro <span class="text-red-500">*</span></label>
                                     <div id="container-couriers" class="grid grid-cols-2 gap-2"></div>
                                 </div>
 
@@ -617,7 +620,8 @@
                     <div class="glass-card p-8 rounded-3xl text-center max-w-md w-full slide-up border border-white/10">
                         <div
                             class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-secondary border border-secondary/20 shadow-neon-green">
-                            <i data-lucide="share-2" class="w-10 h-10"></i></div>
+                            <i data-lucide="share-2" class="w-10 h-10"></i>
+                        </div>
 
                         <h2 class="text-2xl font-bold mb-4 text-white">¡Listo para compartir!</h2>
                         <p class="text-slate-400 text-sm mb-8 leading-relaxed">
@@ -850,7 +854,8 @@
             "Olva Courier",
             "Marvisur",
             "Dinsides",
-            "Delivery"
+            "Delivery",
+            "Retiro en tienda",
         ];
         const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
         const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
@@ -1107,16 +1112,23 @@
                 let destinationInfo = "";
                 if (order.clientAgency) {
                     destinationInfo = `🏢 *Agencia:* ${order.clientAgency} (DNI: ${order.clientDni})`;
-                } else {
+                } else if (order.clientAddress) {
                     destinationInfo = `🏠 *Dirección:* ${order.clientDistrict}, ${order.clientAddress} (Ref: ${order.clientRef})`;
                 }
 
+
+
                 // CORRECCIÓN CLAVE: Usamos \n en lugar de %0A y emojis literales
-                const message = `Hola *${order.clientName}*! 👋\n` +
+                const message = (order.courier !== 'Retiro en tienda') ?
+                    `Hola *${order.clientName}*! 👋\n` +
                     `Tu envío en *${storeName}* está *${statusText}* ${statusEmoji}\n\n` +
                     `📅 *Fecha:* ${order.shippingDate}\n` +
                     `🚚 *Courier:* ${order.courier}\n` +
                     `${destinationInfo}\n\n` +
+                    `Gracias por tu compra! ✨` :
+                    `Hola *${order.clientName}*! 👋\n` +
+                    `Tu retiro en tienda está *${statusText}* ${statusEmoji}\n\n` +
+                    `📅 *Fecha:* ${order.shippingDate}\n` +
                     `Gracias por tu compra! ✨`;
 
                 // CORRECCIÓN CLAVE: encodeURIComponent envuelve TODO el mensaje
@@ -1783,7 +1795,9 @@
                             <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
                         </div>
                         <div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">
-                            ${x.clientAgency ? `🏢 ${escapeHtml(x.clientAgency)}` : `🏠 ${escapeHtml(x.clientDistrict)} - ${escapeHtml(x.clientAddress || '')}`}
+                            ${x.clientAgency ?
+                                    `🏢 ${escapeHtml(x.clientAgency)}` :
+                                    (!x.clientAddress ? `🏢 Retiro en tienda` : `🏠 ${escapeHtml(x.clientDistrict)} - ${escapeHtml(x.clientAddress || '')}`)}
                         </div>
                     </div>
                 </div>`;
@@ -2000,16 +2014,21 @@
                                     <p style="margin: 0; font-size: ${11 * m}px; color: #000; font-family: monospace; font-weight: bold;">${escapeHtml(x.clientPhone)}</p>
                                 </div>
                                 
-                                <div style="margin-bottom: 8px; min-height: 35px;">
+                                ${x.courier !== 'Retiro en tienda' ?
+                                `<div style="margin-bottom: 8px; min-height: 35px;">
                                     <p style="margin: 0; font-size: ${8 * m}px; color: #666; font-weight: bold; text-transform: uppercase;">DESTINO:</p>
                                     <p style="margin: 2px 0 0 0; font-size: ${10 * m}px; color: #000; line-height: 1.3;">
                                         ${x.clientAgency ?
-                        `<strong>AGENCIA:</strong> ${escapeHtml(x.clientAgency)}<br><strong>DNI:</strong> ${x.clientDni}` :
-                        `<strong>DIRECCIÓN:</strong> ${escapeHtml(x.clientAddress)}<br><span style="color:#444">${escapeHtml(x.clientDistrict)}</span>`
-                    }
+                                        `<strong>AGENCIA:</strong> ${escapeHtml(x.clientAgency)}<br><strong>DNI:</strong> ${x.clientDni}` :
+                                        `<strong>DIRECCIÓN:</strong> ${escapeHtml(x.clientAddress)}<br><span style="color:#444">${escapeHtml(x.clientDistrict)}</span>`
+                                        }
                                     </p>
                                     ${!x.clientAgency ? `<p style="margin: 2px 0 0 0; font-size: ${9 * m}px; color: #555;">Ref: ${escapeHtml(x.clientRef || '-')}</p>` : ''}
-                                </div>
+                                </div>`
+                                :
+                                `<div style="margin-bottom: 8px; min-height: 35px;">
+                                </div>`
+                                }
             
                                 <div style="border-top: 1px solid #ccc; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; color: #000;">
                                     <span style="font-size: ${10 * m}px; font-weight: 800; text-transform: uppercase; background: #eee; padding: 2px 5px; border-radius: 4px;">${escapeHtml(x.courier)}</span>

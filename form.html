@@ -26,6 +26,13 @@
             theme: {
                 extend: {
                     colors: {
+                        primary: '#3B82F6',     /* Azul eléctrico */
+                        primary_glow: '#60A5FA',
+                        secondary: '#10B981',   /* Verde éxito */
+                        dark_bg: '#020617',     /* Negro profundo Slate-950 */
+                        card_bg: '#0f172a',     /* Slate-900 */
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        glass_border: 'rgba(255, 255, 255, 0.08)',
                         brand_accent: '#D96B4F',
                         brand_accent_alt: '#FF8B6A',
                         brand_text: '#2b2b2b',
@@ -148,7 +155,8 @@
                             </select>
                             <div
                                 class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
-                                <i data-lucide="chevron-down" class="w-5 h-5"></i></div>
+                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                            </div>
                         </div>
                     </div>
 
@@ -231,8 +239,8 @@
                     <div id="block-closing"
                         class="hidden opacity-0 transition-all duration-500 transform translate-y-4 space-y-8">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">¿Cuándo lo enviamos? <span
-                                    class="text-danger">*</span></label>
+                            <label id="c-date-label" class="block text-sm font-bold text-gray-700 mb-2 ml-1">¿Cuándo lo
+                                enviamos? <span class="text-danger">*</span></label>
                             <div class="relative">
                                 <select id="c-date-select"
                                     class="w-full appearance-none bg-gray-50 border border-gray-200 rounded-xl py-4 pl-4 pr-10 text-gray-800 outline-none focus:border-brand_accent focus:bg-white focus:ring-4 focus:ring-brand_accent/10 cursor-pointer input-transition font-medium shadow-sm">
@@ -240,14 +248,15 @@
                                 </select>
                                 <div
                                     class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
-                                    <i data-lucide="calendar" class="w-5 h-5"></i></div>
+                                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                                </div>
                             </div>
                         </div>
 
                         <button type="submit" id="btn-submit-order"
-                            class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-200 transform active:scale-95 flex justify-center items-center gap-3 text-lg">
+                            class="w-full bg-[#3B82F6] hover:bg-[#60A5FA] text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-200 transform active:scale-95 flex justify-center items-center gap-3 text-lg">
+                            Finalizar y enviar por WhatsApp
                             <i class="fab fa-whatsapp text-2xl"></i>
-                            Enviar Datos por WhatsApp
                         </button>
                     </div>
                 </div>
@@ -258,17 +267,12 @@
                     target="_blank"
                     class="group block bg-gray-50 hover:bg-white border border-gray-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
                     <div class="flex items-center justify-center gap-4">
-                        <div
-                            class="w-12 h-12 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#10B981] flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">
-                            5S</div>
-
                         <div class="text-left">
                             <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by
                                 Latam5S</p>
-                            <p class="text-sm font-bold text-brand_text leading-tight">
-                                ¿Vendes por WhatsApp? <br>
-                                <span class="logo-text-gradient font-bold underline underline-offset-2">Pide tu
-                                    formulario aquí</span>
+                            <p class="text-sm text-gray-500 leading-tight">
+                                ¿Quieres un formulario como éste para tu negocio? <br>
+                                <span class="logo-text-gradient font-bold underline underline-offset-2">Haz Click aquí</span>
                             </p>
                         </div>
 
@@ -306,17 +310,12 @@
                     target="_blank"
                     class="group block bg-gray-50 hover:bg-white border border-gray-200 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1">
                     <div class="flex items-center justify-center gap-4">
-                        <div
-                            class="w-12 h-12 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#10B981] flex items-center justify-center font-bold text-2xl shadow-lg text-white transition-transform group-hover:scale-110">
-                            5S</div>
-
                         <div class="text-left">
                             <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Powered by
                                 Latam5S</p>
-                            <p class="text-sm font-bold text-brand_text leading-tight">
-                                ¿Vendes por WhatsApp? <br>
-                                <span class="logo-text-gradient font-bold underline underline-offset-2">Pide tu
-                                    formulario aquí</span>
+                            <p class="text-sm text-gray-500 leading-tight">
+                                ¿Quieres un formulario como éste para tu negocio? <br>
+                                <span class="logo-text-gradient font-bold underline underline-offset-2">Haz Click aquí</span>
                             </p>
                         </div>
 
@@ -348,7 +347,7 @@
             agency: { "Shalom": "lstShalom.json", "Olva Courier": "lstOlvaCourier.json", "Marvisur": "lstMarvisur.json" }
         };
 
-        const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency", "Dinsides": "home", "Delivery": "home" };
+        const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency", "Dinsides": "home", "Delivery": "home", "Retiro en tienda": "store" };
         const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
         const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
@@ -399,6 +398,10 @@
                     if (type === 'agency') {
                         const opt = document.createElement('option');
                         opt.value = c; opt.innerText = "Retiro en agencia " + c;
+                        cs.appendChild(opt);
+                    } else if (type === 'store') {
+                        const opt = document.createElement('option');
+                        opt.value = c; opt.innerText = c;
                         cs.appendChild(opt);
                     } else {
                         if (!homeOptionAdded) {
@@ -480,14 +483,31 @@
                     document.getElementById('c-dni').setAttribute('required', 'true');
                     document.getElementById('c-agency').setAttribute('required', 'true');
                     document.getElementById('c-agency').value = "";
-                    app.loadAgencies(realCourier); app.clearDistrict();
+                    app.loadAgencies(realCourier);
+                    app.clearDistrict();
+                    app.loadDateLabel();
+                } else if (state.selectedCourierType === 'store') {
+                    af.classList.add('hidden'); hf.classList.add('hidden');
+                    app.clearAgency();
+                    app.clearDistrict();
+                    app.revealStep('block-personal');
+                    app.loadDateLabel();
                 } else {
                     af.classList.add('hidden'); hf.classList.remove('hidden');
                     document.getElementById('c-address').setAttribute('required', 'true');
                     document.getElementById('c-district').setAttribute('required', 'true');
                     document.getElementById('c-ref').setAttribute('required', 'true');
-                    app.clearAgency(); app.clearDistrict(); app.loadExternalLists(realCourier);
+                    app.clearAgency();
+                    app.clearDistrict();
+                    app.loadExternalLists(realCourier);
+                    app.loadDateLabel();
                 }
+            },
+
+            loadDateLabel: async () => {
+                const label = document.getElementById('c-date-label');
+                if (label && state.selectedCourierType === 'store') label.innerText = "¿Cuándo lo retiras?";
+                else if (label) label.innerText = "¿Cuándo lo enviamos?";
             },
 
             loadExternalLists: async (courierName) => {
@@ -645,7 +665,7 @@
                     const loadedAgencies = state.externalData.agencies || [];
                     const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === inputAgency.value.trim());
                     if (!isValid) { inputAgency.focus(); inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona una agencia de la lista"); }
-                } else {
+                } else if (state.selectedCourierType === 'home') {
                     const inputDist = document.getElementById('c-district');
                     const validDistricts = state.externalData.districts || [];
                     if (!validDistricts.includes(inputDist.value.trim())) { inputDist.focus(); inputDist.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputDist.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona un distrito de la lista"); }
@@ -667,6 +687,8 @@
                     data.clientAgency = document.getElementById('c-agency').value.trim();
                     cacheData.dni = data.clientDni; cacheData.agency = data.clientAgency;
                     wa = `📦 *NUEVO ENVÍO (AGENCIA)*\n\n👤 ${name}\n📱 ${phone}\n🆔 DNI: ${data.clientDni}\n🏢 Agencia: ${data.clientAgency.replace(' | ', '\n📍 ')}\n\n🚚 ${state.selectedCourier}\n📅 ${day}`;
+                } else if (state.selectedCourierType === 'store') {
+                    wa = `📦 *NUEVO RETIRO EN TIENDA*\n\n👤 ${name}\n📱 ${phone}\n\n📅 ${day}`;
                 } else {
                     data.clientAddress = document.getElementById('c-address').value.trim();
                     data.clientDistrict = document.getElementById('c-district').value.trim();
