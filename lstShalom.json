@@ -412,6 +412,10 @@
     "Direccion": "Velasco Astete D3 - Wanchaq, Referencia: A 2 Cdras. Del Aereopuerto"
   },
   {
+    "Agencia": "Cusco / Espinar / Yauri ( Espinar ) / Espinar",
+    "Direccion": "Av. Tintaya N° 215 Espinar, Ref. A Dos Cuadra S De Los Bomberos"
+  },
+  {
     "Agencia": "Cusco / La Convencion / Santa Ana / Quillabamba",
     "Direccion": "Jr. Puno Lt. 10 Y 11 Mz. G Urb. Santa Ana, Cusco - La Convencion - Santa Ana, Ref. A Media Cdra.L Del Estadio Municipal De Quillabamba / Cruce Con Prolongacion Jr. Martin Pio Concha"
   },
@@ -885,7 +889,7 @@
   },
   {
     "Agencia": "Lima / Lima / Ate-Vitarte / Av  Esperanza",
-    "Direccion": "Av. Esperanza Mz. R Lt. 7 Las AméRicas - Ate Vitarte, Ref. Frente A La PasteleríA Dominick"
+    "Direccion": "Av. Esperanza Mz. K Lt. 06 Las Americas - Ate Vitarte - Lima, Ref. Pasando Mercado Raucana"
   },
   {
     "Agencia": "Lima / Lima / Ate-Vitarte / Av  Marco Puente",
@@ -1444,6 +1448,10 @@
     "Direccion": "Av. Interoceanica Km. 1 , Las Piedras - Tambopata - Madre De Dios, Ref. Al Costado Del Grifo Virgen Natividad"
   },
   {
+    "Agencia": "Madre De Dios / Tambopata / Tambopata / Jr. Jaime Troncoso",
+    "Direccion": "Jr. Jaime Troncoso 442, Tambopata - Madre De Dios, Ref. A Media Cdra. Del Jardin Piloto / A Media Cdra. De La Empresa Real Dorado"
+  },
+  {
     "Agencia": "Madre De Dios / Tambopata / Tambopata / Tambopata Av Circunvalacion",
     "Direccion": "Av. Circunvalacion Mz. C Lt. 01, Tambopata - Tambopata - Madre De Dios, Ref. A Dos Cdras. De La Carretera Interoceanica Sur / Cruce Con Jr. Las Mercedes Cabello"
   },
@@ -1677,7 +1685,7 @@
   },
   {
     "Agencia": "San Martin / Bellavista / Bellavista / San Martin Bellavista",
-    "Direccion": "Av. Lima S/N Cdra. 8 - Bellavista, Ref. Al Costado De La Polleria La CabañA O Al Poder Judicial"
+    "Direccion": "Jr. Huancavelica Mz.97 Lt. A Tercer Piso, Bellavista - Bellavista - San Martin, Ref. Espaldas De FerreteríA El Iman"
   },
   {
     "Agencia": "San Martin / El Dorado / San Jose De Sisa / San Jose De Sisa",
