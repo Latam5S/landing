@@ -104,10 +104,6 @@
     "Direccion": "Av. Parra 379 - Arequipa"
   },
   {
-    "Agencia": "Arequipa / Arequipa / Arequipa / Mall Lambramani",
-    "Direccion": "Av. Lambramani 325, Arequipa - Arequipa - Arequipa, Ref. Dentro Del Mall Parque Arauco Piso - 4 (SóTano)"
-  },
-  {
     "Agencia": "Arequipa / Arequipa / Cayma / Av Charcani",
     "Direccion": "Av. Charcani 401 Asoc. Jose Olaya, Ref. Frente Al Colegio Mendel"
   },
@@ -242,6 +238,10 @@
   {
     "Agencia": "Cajamarca / Cajamarca / Cajamarca / Barrio San Jose",
     "Direccion": "Jr. Chanchamayo N° 1162 - Barrio San José Cajamarca,  Referencia: Paralela Con Jr. Huancavelica Y Jr. Sara Macdougall."
+  },
+  {
+    "Agencia": "Cajamarca / Cajamarca / Cajamarca / Barrio San MartíN",
+    "Direccion": "JiróN Los Gladiolos N° 336 Barrio San MartíN, Cajamarca – Cajamarca – Cajamarca, Ref. A La Altura De La Cdra. 13 De La VíA De Evitamiento Sur /A Una Cdra. De La Universidad Nacional De Cajamarca"
   },
   {
     "Agencia": "Cajamarca / Cajamarca / Cajamarca / Cajamarca Co",
@@ -418,6 +418,10 @@
   {
     "Agencia": "Cusco / La Convencion / Santa Ana / Quillabamba",
     "Direccion": "Jr. Puno Lt. 10 Y 11 Mz. G Urb. Santa Ana, Cusco - La Convencion - Santa Ana, Ref. A Media Cdra.L Del Estadio Municipal De Quillabamba / Cruce Con Prolongacion Jr. Martin Pio Concha"
+  },
+  {
+    "Agencia": "Cusco / Quispicanchi / Ocongate / Ocongate",
+    "Direccion": "Sect. Mayo Ucjo S/N, Ocongate - Quispicanchi - Cusco, Ref. A La Espalda Del Terminal De Buses De Ocongate / A Orillas De La Carreta A Mazuko"
   },
   {
     "Agencia": "Cusco / Quispicanchi / Oropesa / Oropesa",
@@ -712,6 +716,10 @@
     "Direccion": "Av. Hermanos Uceda Meza N° 269 Urb Miraflores Ii Etapa - Trujillo - Trujillo - La Libertad, Ref. A Una Cdra. De Av. America Norte. / Entre Av. Miraflores Y Av. Salvador Lara"
   },
   {
+    "Agencia": "La Libertad / Trujillo / Trujillo / Calle Liverpool",
+    "Direccion": "Calle Liverpool N° 329 / Urb. Santa Isabel - Trujillo.  Referencia : A Una Cuadra Antes De La Iglesia De Mansiche"
+  },
+  {
     "Agencia": "La Libertad / Trujillo / Trujillo / Calle Santa Cruz - America Sur",
     "Direccion": "Calle Santa Cruz N° 389 Chicago - Trujillo - La Libertad, Ref. A Media Cdra. De La Av. America Sur/A Media Cuadra Del Estadio Chan Chan."
   },
@@ -840,10 +848,6 @@
     "Direccion": "Antigua Panamericana Sur Cdra. 11 Mz. 46, Lt. 08. Chilca - CañEte - Lima, Ref. A Media Cdra. Del Hotel El PacíFico"
   },
   {
-    "Agencia": "Lima / CañEte / Chilca / Av Nicolas De Pierola  Cdra 4",
-    "Direccion": "Av NicoláS De Pierola 462, Una Cuadra Antes De La Municipalidad"
-  },
-  {
     "Agencia": "Lima / CañEte / Imperial / CañEte Imperial",
     "Direccion": "Jr. Augusto B. LeguíA N.º 457, Mz E, Centro Poblado Imperial, Imperial - CañEte - Lima, Ref. CevicheríA Brisas Del Mar"
   },
@@ -966,6 +970,10 @@
   {
     "Agencia": "Lima / Lima / Carabayllo / Tungasuca",
     "Direccion": "Av. Trapiche Mz. P Lt. 48, Urb. Tungasuca Referencia: Aux. Av. Chimpu Ocllo Con Aux. ChillóN Trapiche, A 1 Cuadra Del Mercado Qatuna"
+  },
+  {
+    "Agencia": "Lima / Lima / Cercado Lima / Av  Nicolas DueñAs Cdra. 5",
+    "Direccion": "Av. Nicolas DueñAs 584 Mz. C Lt. 4 – Aahh Primero De Setiembre, Cercado De Lima – Lima - Lima, Ref. A Media Cdra. Del Cruce Con Jr. Pedro Garezon"
   },
   {
     "Agencia": "Lima / Lima / Cercado Lima / Lima Av Tingo MaríA",
