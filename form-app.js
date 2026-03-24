@@ -376,3 +376,4 @@ const app = {
 
 const state = { merchantId: null, config: {}, selectedCourierType: null, selectedCourier: null, externalData: { districts: null, agencies: [] } };
 app.init();
+window.app = app;
