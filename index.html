@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Latam5S: Libérate del trabajo manual</title>
     <meta name="description"
-        content="Agenda tus envíos 24/7 y gestiónalos sin digitar un solo dato. Optimiza tus envíos por Shalom, Olva, Marvisur y/o Delivery. La herramienta No-Code que crea formularios, imprime rótulos y genera tu Excel automáticamente. ¡Libérate hoy!">
+        content="El Estándar Universal de Datos convierte tus envíos en Rótulos Profesionales y Excel para carga masiva, sin digitar ni un solo dato. Optimiza tus envíos por Shalom, Olva, Marvisur y/o Delivery. ¡Libérate hoy!">
 
     <!-- OPEN GRAPH TAGS (Para compartir en WhatsApp, Facebook, LinkedIn) -->
     <meta property="og:title" content="Latam5S: Libérate del trabajo manual">
-    <meta property="og:description" content="Agenda tus envíos 24/7 y gestiónalos sin digitar un solo dato. 🚀">
+    <meta property="og:description"
+        content="El Estándar Universal de Datos convierte tus envíos en Rótulos Profesionales y Excel para carga masiva, sin digitar ni un solo dato.">
     <meta property="og:type" content="website">
 
     <!-- Imagen de Marca (Asegúrate de que este archivo exista en tu dominio) -->
@@ -22,22 +23,15 @@
     <!-- Twitter Card (Usando el mismo contenido) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Latam5S: Libérate del trabajo manual">
-    <meta name="twitter:description" content="Agenda tus envíos 24/7 y gestiónalos sin digitar un solo dato. 🚀" />
+    <meta name="twitter:description"
+        content="El Estándar Universal de Datos convierte tus envíos en Rótulos Profesionales y Excel para carga masiva, sin digitar ni un solo dato." />
     <meta name="twitter:image" content="https://raw.githubusercontent.com/complicidad/landing/main/brand2.png" />
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-
-    <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
 
     <script>
@@ -46,1328 +40,483 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3B82F6',     /* Azul eléctrico */
-                        primary_glow: '#60A5FA',
-                        secondary: '#10B981',   /* Verde éxito */
-                        dark_bg: '#020617',     /* Negro profundo Slate-950 */
-                        card_bg: '#0f172a',     /* Slate-900 */
-                        glass: 'rgba(255, 255, 255, 0.03)',
-                        glass_border: 'rgba(255, 255, 255, 0.08)',
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark_bg: '#020617',
                     },
-                    fontFamily: {
-                        sans: ['Quicksand', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'neon': '0 0 20px rgba(59, 130, 246, 0.15)',
-                        'neon-green': '0 0 20px rgba(16, 185, 129, 0.15)',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        shake: {
-                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
-                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
-                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
-                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
-                        }
-                    }
+                    fontFamily: { sans: ['Quicksand', 'sans-serif'], label: ['Inter', 'sans-serif'] },
                 }
             }
         }
     </script>
 
     <style>
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
         body {
-            font-family: "Quicksand", sans-serif;
-            background-color: #020617;
-            /* Fallback */
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Glassmorphism Utilities */
         .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
         }
 
-        .glass-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Custom Logo Gradient para Navbar */
-        .logo-icon-gradient {
-            /* Degradado para el fondo del círculo (simula el Favicon) */
-            background: linear-gradient(to bottom right, #3B82F6, #2DD4BF);
-        }
-
-        .logo-text-gradient {
-            /* Degradado horizontal para el texto Latam5S (simula las redes sociales) */
-            background: linear-gradient(to right, #3B82F6, #60A5FA, #2DD4BF, #10B981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            /* Compatible con otros navegadores */
-            color: transparent;
-            /* Fallback */
-        }
-
-        /* Gradient Text */
         .text-gradient {
-            background: linear-gradient(to right, #60A5FA, #34D399);
+            background: linear-gradient(to right, #3B82F6, #10B981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Demo Chat Styles */
-        .whatsapp-bg {
-            background-color: #0b141a;
-            /* Dark WA theme base */
-            background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
-            background-blend-mode: overlay;
-            opacity: 0.9;
+        .bg-brand-gradient {
+            background: linear-gradient(to right, #3B82F6, #10B981);
         }
 
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
+        /* ESTRUCTURA 3D CORREGIDA */
+        .flip-container {
+            perspective: 1200px;
+            width: 100%;
+            max-width: 440px;
+            height: 380px;
         }
 
-        .message-pop {
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            opacity: 0;
-            transform: scale(0.9) translateY(10px);
-            transform-origin: bottom left;
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            animation: autoFlip 8s infinite ease-in-out;
         }
 
-        .message-pop-own {
-            transform-origin: bottom right;
+        .flip-front,
+        .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            /* ESTO ES LO QUE OCULTA LA OTRA CARA */
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            /* REDONDEA EL CONTENIDO INTERNO */
         }
 
-        @keyframes popIn {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
+        .flip-back {
+            transform: rotateY(180deg);
+        }
+
+        /* VOLTEA EL EXCEL */
+
+        @keyframes autoFlip {
+
+            0%,
+            45% {
+                transform: rotateY(0deg);
             }
-        }
 
-        .screen-transition {
-            transition: transform 0.4s ease-out, opacity 0.4s;
-        }
-
-        /* Estilos FAQ Accordion */
-        details>summary {
-            list-style: none;
-        }
-
-        details>summary::-webkit-details-marker {
-            display: none;
-        }
-
-        details[open] summary~* {
-            animation: sweep .3s ease-in-out;
-        }
-
-        @keyframes sweep {
-            0% {
-                opacity: 0;
-                transform: translateY(-10px)
+            50%,
+            95% {
+                transform: rotateY(180deg);
             }
 
             100% {
-                opacity: 1;
-                transform: translateY(0)
+                transform: rotateY(0deg);
             }
         }
 
+        @keyframes float {
 
-        /* Custom Scrollbar for Dropdown */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
         }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
         }
     </style>
 </head>
 
-<body class="bg-dark_bg text-gray-100 selection:bg-primary selection:text-white overflow-x-hidden antialiased">
+<body class="bg-white dark:bg-dark_bg text-slate-900 dark:text-gray-100 antialiased">
 
-    <!-- Navbar Flotante -->
-    <header class="fixed w-full z-50 transition-all duration-300 top-0 py-4" id="main-header">
-        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+    <header class="fixed w-full z-50 top-0 py-4">
+        <div class="mx-auto max-w-6xl px-6">
             <nav
-                class="glass-panel rounded-full px-6 py-3 flex items-center justify-between shadow-lg shadow-primary/5">
-                <!-- Logo -->
+                class="glass-panel bg-white/80 dark:bg-dark_bg/80 rounded-full px-6 py-3 flex items-center justify-between shadow-xl border border-gray-200 dark:border-white/10">
                 <a href="#" class="flex items-center gap-2 group">
-                    <!-- 1. Icono 'L' con fondo degradado y forma de círculo (como el favicon) -->
                     <div
-                        class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-lg shadow-lg">
+                        class="w-8 h-8 rounded-full bg-brand-gradient flex items-center justify-center font-bold text-white shadow-lg">
                         5S</div>
-                    <!-- 2. Texto 'Latam5S' con el degradado de las redes sociales -->
-                    <span class="font-extrabold text-lg tracking-tight logo-text-gradient">Latam5S</span>
+                    <span class="font-extrabold text-lg text-gradient tracking-tight">Latam5S</span>
                 </a>
-
-                <!-- Desktop Menu -->
-                <div class="hidden lg:flex gap-8 items-center text-sm font-medium text-gray-300">
-                    <a href="#hero" class="hover:text-white transition-colors">Inicio</a>
-                    <a href="#live-test" class="hover:text-white transition-colors">Demo</a>
-                    <a href="#beneficios" class="hover:text-white transition-colors">Características</a>
-                    <a href="#como-funciona" class="hover:text-white transition-colors">Cómo funciona</a>
-                    <a href="#pricing" class="hover:text-white transition-colors">Precios</a>
-                </div>
-
-                <!-- CTA & Mobile Toggle -->
-                <div class="flex items-center gap-4">
-                    <!-- Login: Abre en nueva pestaña -->
-                    <a href="login" target="_blank"
-                        class="hidden lg:block text-sm font-bold text-gray-300 hover:text-white transition-colors">
-                        Ingresar
-                    </a>
-
-                    <!-- CTA Principal: WhatsApp -->
-                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20interesa%20crear%20una%20cuenta%20Gratuita"
-                        target="_blank"
-                        class="hidden sm:flex bg-white text-dark_bg px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition-all shadow-glow hover:shadow-white/20 transform hover:-translate-y-0.5">
-                        Empezar Gratis
-                    </a>
-                    <button class="lg:hidden p-2 text-gray-300 hover:text-white"
-                        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                        <i data-feather="menu"></i>
-                    </button>
-                </div>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10">
+                    <i id="theme-toggle-dark-icon" class="hidden" data-feather="moon"></i>
+                    <i id="theme-toggle-light-icon" class="hidden" data-feather="sun"></i>
+                </button>
             </nav>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full px-4 mt-2">
-            <div class="glass-panel rounded-2xl p-4 flex flex-col gap-4 text-center shadow-2xl">
-                <a href="#hero" class="font-medium text-gray-300 py-2" onclick="toggleMenu()">Inicio</a>
-                <a href="#live-test" class="font-medium text-white bg-white/10 rounded-lg py-2"
-                    onclick="toggleMenu()">Demo Interactiva</a>
-                <a href="#beneficios" class="font-medium text-gray-300 py-2" onclick="toggleMenu()">Características</a>
-                <a href="#como-funciona" class="font-medium text-gray-300 py-2" onclick="toggleMenu()">Cómo funciona</a>
-                <a href="#pricing" class="font-medium text-gray-300 py-2" onclick="toggleMenu()">Precios</a>
-
-                <!-- Login Mobile: Abre en nueva pestaña -->
-                <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20interesa%20crear%20una%20cuenta%20Gratuita"
-                    target="_blank" class="font-bold text-primary py-2 border-t border-white/10 mt-2 pt-4">Empezar
-                    Gratis</a>
-                <a href="login" target="_blank"
-                    class="font-bold text-primary py-2 border-t border-white/10 mt-2 pt-4">Ingresar al Sistema</a>
-            </div>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <div id="hero" class="relative pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
-        <!-- Background Effects -->
-        <canvas id="chaosCanvas" class="absolute inset-0 pointer-events-none opacity-20 z-0"></canvas>
-        <div
-            class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none">
-        </div>
-
-        <div class="container mx-auto px-4 relative z-10">
+    <section class="relative pt-32 pb-20 min-h-screen flex flex-col justify-center overflow-hidden">
+        <canvas id="chaosCanvas" class="absolute inset-0 opacity-20 pointer-events-none dark:opacity-30"></canvas>
+        <div class="mx-auto px-6 lg:px-12 max-w-6xl w-full relative z-10 text-center lg:text-left">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-                <!-- LEFT COLUMN: COPY -->
-                <div class="text-center lg:text-left z-20">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary_glow text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in-up backdrop-blur-sm">
-                        <span class="flex h-2 w-2 relative"><span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span
-                                class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span>
-                        WhatsApp Automation 2026
-                    </div>
-
+                <div class="z-20 max-w-xl mx-auto lg:mx-0">
                     <h1
-                        class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white mb-6 leading-[1.1]">
-                        Libérate del<br class="hidden sm:block">
-                        <span class="text-gradient">trabajo manual</span>
+                        class="text-4xl md:text-7xl font-extrabold leading-[1.1] mb-6 tracking-tighter dark:text-white text-slate-900">
+                        Libérate del<br><span class="text-gradient">Trabajo Manual</span>
                     </h1>
-
-                    <p class="mt-6 text-lg text-gray-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                        Olvídate de agencias equivocadas y datos desordenados. Latam5S estandariza los datos para
-                        Shalom, Olva, Marvisur y Delivery automáticamente desde WhatsApp.
+                    <p class="text-slate-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed mb-10">
+                        El Estándar Universal de Datos convierte tus envíos en <b>Rótulos Profesionales</b> y
+                        <b>Excel</b> para carga masiva, sin digitar ni un solo dato.
                     </p>
-
-                    <div class="mt-10 flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
-                        <!-- Solo botón de probar demo -->
-                        <a href="#live-test"
-                            class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-blue-600 text-white font-bold rounded-full shadow-neon transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-base">
-                            <i data-feather="zap" class="w-5 h-5"></i> Probar Demo
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#flujo"
+                            class="px-10 py-5 bg-brand-gradient hover:brightness-110 text-white font-bold rounded-full shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg uppercase tracking-tighter">
+                            <i data-feather="zap"></i> DESCUBRE CÓMO FUNCIONA
                         </a>
                     </div>
-
-                    <!-- Trust Badges -->
-                    <div class="mt-12 pt-8 border-t border-white/5 flex flex-col lg:items-start items-center gap-3">
-                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Compatible con</p>
-                        <div
-                            class="flex gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 text-white items-center">
-                            <div class="flex items-center gap-2"><i class="fab fa-whatsapp text-2xl"></i> <span
-                                    class="font-bold text-sm">WhatsApp</span></div>
-                            <div class="h-4 w-px bg-white/20"></div>
-                            <div class="flex items-center gap-2"><i class="fab fa-android text-2xl"></i> <span
-                                    class="font-bold text-sm">Android</span></div>
-                            <div class="h-4 w-px bg-white/20"></div>
-                            <div class="flex items-center gap-2"><i class="fab fa-apple text-2xl"></i> <span
-                                    class="font-bold text-sm">iOS</span></div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- RIGHT COLUMN: PHONES DEMO (Robust Layout) -->
-                <div class="relative flex justify-center lg:justify-end mt-12 lg:mt-0 w-full">
-                    <div
-                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-full blur-[80px] pointer-events-none">
-                    </div>
-
-                    <div class="flex justify-center items-end gap-4 sm:gap-8 w-full max-w-[550px]">
-                        <!-- PHONE 1: MANUAL -->
-                        <div
-                            class="relative w-[48%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-1 ring-white/10 flex flex-col opacity-60 hover:opacity-100 transition-opacity duration-500">
-                            <div class="absolute inset-0 bg-red-500/5 pointer-events-none z-30 mix-blend-overlay"></div>
-                            <div
-                                class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5 shrink-0">
-                                <div class="flex items-center gap-1.5 sm:gap-2">
-                                    <i class="fas fa-chevron-left text-gray-400 text-xs"></i>
-                                    <div
-                                        class="w-5 h-5 sm:w-8 sm:h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-user text-[8px] sm:text-xs text-white"></i></div>
-                                    <span
-                                        class="text-[9px] sm:text-xs text-gray-300 font-medium truncate w-12 sm:w-auto">Ana</span>
-                                </div>
-                            </div>
-                            <div id="manual-chat-view"
-                                class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative">
-                                <div class="whatsapp-bg absolute inset-0 opacity-20"></div>
-                                <div id="manual-messages"
-                                    class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2"></div>
-                                <div
-                                    class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 shrink-0">
-                                    <div
-                                        class="flex-1 bg-[#2a3942] rounded-full h-6 sm:h-8 px-2 sm:px-3 flex items-center">
-                                        <span
-                                            class="text-[8px] sm:text-[10px] text-gray-400 animate-pulse">Escribiendo...</span>
-                                    </div>
-                                    <div
-                                        class="w-6 h-6 sm:w-8 sm:h-8 bg-[#00a884] rounded-full flex items-center justify-center text-white text-[8px] sm:text-xs shadow-lg">
-                                        <i class="fas fa-microphone"></i></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PHONE 2: LATAM5S (Fixed Layout) -->
-                        <div
-                            class="relative w-[50%] aspect-[9/19] bg-gray-900 rounded-[2rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-800 shadow-2xl overflow-hidden ring-2 ring-primary flex flex-col shadow-neon transform scale-105 z-20 mb-4 sm:mb-0">
+                <div class="flex flex-col justify-center items-center w-full relative z-10">
+                    <div class="flip-container animate-float scale-90 sm:scale-100">
+                        <div class="flip-card">
 
                             <div
-                                class="bg-[#202c33] p-2 sm:p-3 flex items-center justify-between z-20 border-b border-white/5 shrink-0">
-                                <div class="flex items-center gap-1.5 sm:gap-2">
-                                    <i class="fas fa-chevron-left text-primary text-xs"></i>
-                                    <div
-                                        class="w-5 h-5 sm:w-8 sm:h-8 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-500/50">
-                                        <i class="fas fa-user text-[8px] sm:text-xs text-blue-400"></i></div>
-                                    <span
-                                        class="text-[9px] sm:text-xs text-gray-300 font-medium truncate w-12 sm:w-auto">Ana</span>
+                                class="flip-front bg-white border border-gray-200 p-5 sm:p-7 text-black flex flex-col text-left items-start font-black">
+                                <div class="flex justify-between items-center w-full mb-1 border-b-2 border-black pb-2">
+                                    <span class="text-[11px] uppercase font-label">REMITENTE</span>
+                                    <span class="text-[15px] font-label">Regalos Store</span>
                                 </div>
-                            </div>
-
-                            <!-- CHAT CONTAINER: STRICT FLEX COLUMN -->
-                            <div id="opt-chat-view"
-                                class="flex-1 bg-[#0b141a] w-full overflow-hidden flex flex-col relative">
-                                <div class="whatsapp-bg absolute inset-0 opacity-20"></div>
-                                <div id="opt-messages"
-                                    class="relative z-10 flex-1 overflow-y-auto p-2 flex flex-col gap-2"></div>
+                                <div class="mt-4 mb-4 font-label flex-grow w-full">
+                                    <span class="text-[11px] uppercase block mb-1">PARA:</span>
+                                    <div class="text-[24px] sm:text-[30px] leading-tight tracking-tight uppercase">
+                                        HOMERO SIMPSON</div>
+                                    <div class="text-[20px] sm:text-[22px] mt-0.5 tracking-tight">904 774 275</div>
+                                    <span class="text-[11px] uppercase block mt-4 mb-1">DESTINO:</span>
+                                    <div class="text-[12px] sm:text-[13px] leading-tight">
+                                        <span class="uppercase font-black">AGENCIA:</span> LIMA / LIMA / LA MOLINA | Av.
+                                        Siempreviva 742
+                                    </div>
+                                    <div class="text-[13px] mt-1.5 uppercase tracking-tight">DNI: 12345678</div>
+                                </div>
                                 <div
-                                    class="relative z-20 bg-[#202c33] p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-2 shrink-0">
+                                    class="flex justify-between items-end w-full border-t-2 border-black pt-3 mt-auto font-label text-black">
                                     <div
-                                        class="flex-1 bg-[#2a3942] rounded-full h-6 sm:h-8 px-2 sm:px-3 flex items-center">
-                                        <span
-                                            class="text-[8px] sm:text-[10px] text-gray-400 animate-pulse">Escribiendo...</span>
-                                    </div>
-                                    <div
-                                        class="w-6 h-6 sm:w-8 sm:h-8 bg-[#00a884] rounded-full flex items-center justify-center text-white text-[8px] sm:text-xs shadow-lg">
-                                        <i class="fas fa-microphone"></i></div>
+                                        class="bg-black text-white px-3 py-1 rounded text-[12px] tracking-widest uppercase">
+                                        SHALOM</div>
+                                    <div class="text-[12px]">Lunes 09/03</div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flip-back bg-[#f9fafb] border border-gray-200 p-4 flex flex-col font-sans text-left items-start text-black">
+                                <div
+                                    class="flex items-center gap-2 mb-4 bg-[#1D6F42] -mx-4 -mt-4 p-3 text-white w-[calc(100%+2rem)]">
+                                    <i class="far fa-file-excel text-xl"></i>
+                                    <span class="text-[11px] font-bold uppercase">Carga Masiva</span>
+                                </div>
+                                <div class="flex-grow overflow-x-auto w-full">
+                                    <table class="w-full text-[7px] border-collapse">
+                                        <thead>
+                                            <tr
+                                                class="bg-gray-100 text-[6.5px] text-slate-500 font-bold uppercase text-left">
+                                                <th class="border p-1">CLIENTE</th>
+                                                <th class="border p-1">AGENCIA</th>
+                                                <th class="border p-1">SEDE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="font-bold">
+                                            <tr class="bg-white">
+                                                <td class="border p-1">H. SIMPSON</td>
+                                                <td class="border p-1 text-blue-600">SHALOM</td>
+                                                <td class="border p-1">LA MOLINA</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border p-1">M. BOUVIER</td>
+                                                <td class="border p-1 text-primary">OLVA</td>
+                                                <td class="border p-1">SURCO</td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <td class="border p-1 font-black italic text-secondary uppercase">B.
+                                                    SIMPSON</td>
+                                                <td class="border p-1 text-secondary font-black italic uppercase">
+                                                    DELIVERY</td>
+                                                <td class="border p-1">MIRAFLORES</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border p-1">N. FLANDERS</td>
+                                                <td class="border p-1 text-primary">MARVISUR</td>
+                                                <td class="border p-1">CERCADO</td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <td class="border p-1">L. SIMPSON</td>
+                                                <td class="border p-1 text-blue-600">SHALOM</td>
+                                                <td class="border p-1">SAN ISIDRO</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border p-1">A. SIMPSON</td>
+                                                <td class="border p-1 text-primary">OLVA</td>
+                                                <td class="border p-1">LOS OLIVOS</td>
+                                            </tr>
+                                            <tr class="bg-white">
+                                                <td class="border p-1 font-black italic text-secondary uppercase">E.
+                                                    KRABAPPEL</td>
+                                                <td class="border p-1 text-secondary font-black italic uppercase">
+                                                    DELIVERY</td>
+                                                <td class="border p-1">LIMA</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-auto py-3 border-t border-gray-200 text-center w-full">
+                                    <span
+                                        class="inline-block bg-secondary/10 text-secondary border border-secondary/30 px-4 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest">Información
+                                        lista para carga masiva 🚀</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <p
+                        class="mt-12 text-center text-[11px] font-bold text-primary tracking-[0.4em] uppercase animate-pulse">
+                        Un estándar, dos resultados ⚡️</p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- LIVE TEST SECTION -->
-    <section id="live-test" class="py-24 bg-dark_bg relative border-t border-white/5">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-secondary/5 rounded-full blur-[100px] z-0"></div>
-        <div class="container mx-auto px-4 relative z-10">
-            <div
-                class="max-w-5xl mx-auto glass-card rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center gap-12">
-
-                <div class="flex-1 text-center md:text-left">
-                    <span
-                        class="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-wider mb-4 border border-green-500/20">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Demo en Vivo
-                    </span>
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">Haz la prueba tú mismo</h2>
-                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        Completa este formulario como si fueras un cliente. Verás cómo la magia ocurre en tu propio
-                        WhatsApp en 3 segundos.
-                    </p>
-                    <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500">
-                        <div class="flex items-center gap-2"><i data-feather="check-circle"
-                                class="text-primary w-4 h-4"></i> Formatos Verificados</div>
-                        <div class="flex items-center gap-2"><i data-feather="check-circle"
-                                class="text-primary w-4 h-4"></i> Buscador de Sedes</div>
-                        <div class="flex items-center gap-2"><i data-feather="check-circle"
-                                class="text-primary w-4 h-4"></i> 100% Gratis</div>
-                    </div>
+        <div
+            class="mt-32 py-12 bg-gray-50 dark:bg-white/[0.02] border-y border-gray-200 dark:border-white/5 relative z-10">
+            <div class="container mx-auto px-4 flex flex-wrap justify-center gap-8 md:gap-24 text-center">
+                <div class="flex flex-col items-center text-slate-900 dark:text-white">
+                    <span class="font-extrabold text-3xl md:text-4xl tracking-tighter">10,000+</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-primary mt-1">Envíos
+                        Procesados</span>
                 </div>
-
-                <div class="flex-1 w-full max-w-md">
-                    <div
-                        class="bg-gray-900/80 rounded-2xl p-6 border border-white/10 shadow-2xl relative overflow-visible group ">
-                        <div
-                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary rounded-t-2xl">
-                        </div>
-                        <div class="mb-4 pb-2 border-b border-gray-800">
-                            <h3 class="text-white font-bold text-lg">Datos de Envío</h3>
-                            <p class="text-gray-500 text-xs">Simula lo que verá tu cliente</p>
-                        </div>
-
-                        <form id="demo-form" class="space-y-4" autocomplete="off">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Tu
-                                        Nombre</label>
-                                    <input type="text" id="demo-name"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-gray-600"
-                                        placeholder="Ej: Juan Pérez" required>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Tu
-                                        Celular</label>
-                                    <input type="tel" id="demo-phone"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600"
-                                        placeholder="999..." required maxlength="9" pattern="9[0-9]{8}"
-                                        title="Solo se permite números de 9 dígitos.">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">DNI /
-                                        CE</label>
-                                    <input type="tel" id="demo-dni"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600"
-                                        placeholder="8 dígitos" required maxlength="12" pattern="[0-9]{8,12}">
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Agencia</label>
-                                    <select id="demo-agency"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white outline-none focus:ring-2 focus:ring-primary cursor-pointer">
-                                        <option value="Shalom" selected>Shalom</option>
-                                        <option value="Olva" disabled class="text-gray-500 bg-gray-800">Olva Courier
-                                        </option>
-                                        <option value="Marvisur" disabled class="text-gray-500 bg-gray-800">Marvisur
-                                        </option>
-                                        <option value="Delivery" disabled class="text-gray-500 bg-gray-800">Delivery
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="relative">
-                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1.5 ml-1">Buscar Sede
-                                    (Calle/Distrito)</label>
-                                <div class="relative">
-                                    <i class="fas fa-search absolute left-3 top-3.5 text-gray-500 text-xs z-10"></i>
-
-                                    <!-- EL INPUT AHORA TIENE MÁS ESPACIO A LA DERECHA (pr-10) -->
-                                    <input type="text" id="demo-sede"
-                                        class="w-full pl-9 pr-10 py-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-primary outline-none transition-all placeholder-gray-600"
-                                        placeholder="Cargando agencias..." required autocomplete="off">
-
-                                    <!-- NUEVO BOTÓN 'X' -->
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <button type="button" id="btn-clear-demo" onclick="app.clearDemoAgency()"
-                                            class="hidden text-gray-400 hover:text-white p-1">
-                                            <i data-feather="x" class="h-5 w-5"></i>
-                                        </button>
-                                    </div>
-
-                                    <ul id="sedes-dropdown"
-                                        class="hidden absolute left-0 right-0 mt-1 max-h-60 overflow-y-auto custom-scrollbar bg-gray-900 border border-gray-700 rounded-xl shadow-2xl z-50">
-                                        <li class="p-3 text-sm text-gray-500 text-center">Escribe para buscar...</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full py-4 mt-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl shadow-lg hover:shadow-green-500/20 transition-all flex items-center justify-center gap-3 transform hover:-translate-y-1 group-hover:scale-[1.02]">
-                                <i class="fab fa-whatsapp text-2xl"></i> Enviar por WhatsApp
-                            </button>
-                            <p class="text-[10px] text-center text-gray-500 mt-3">
-                                *Estos datos organizados se enviarán por WhatsApp a Latam5S.
-                            </p>
-                        </form>
-                    </div>
+                <div
+                    class="flex flex-col items-center border-x border-gray-200 dark:border-white/10 px-8 md:px-24 text-slate-900 dark:text-white">
+                    <span class="font-extrabold text-3xl md:text-4xl tracking-tighter">100+</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-secondary mt-1">Negocios en
+                        Control</span>
                 </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- BENEFICIOS -->
-    <section id="beneficios" class="py-24 bg-card_bg">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16 max-w-3xl mx-auto">
-                <div
-                    class="inline-block mb-4 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider">
-                    Características</div>
-                <h2 class="text-3xl sm:text-5xl font-bold text-white mb-6">Agendar envíos no debería ser un trabajo
-                    manual.</h2>
-                <p class="text-gray-400 text-lg">Un sistema donde tú defines los límites y tus clientes eligen cómo y
-                    cuándo recibir sus compras.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-pink-500/30">
-                    <div
-                        class="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="sliders" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Tu Negocio, Tus Reglas</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tú defines qué días haces envíos y con qué couriers
-                        trabajas. Evita que te agenden envíos en días que no trabajas o por agencias que no te quedan
-                        cerca.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-cyan-500/30">
-                    <div
-                        class="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="link" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Formulario Personalizado</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tu cliente recibe un link donde ingresa sus datos y
-                        elige la fecha y la agencia de su preferencia dentro de las opciones que tú ya configuraste.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-secondary/30">
-                    <div
-                        class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="check-circle" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Validación de Datos</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tu cliente no puede agendar con errores. El sistema
-                        valida los datos al momento, asegurando que recibas información lista para procesar.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-purple-500/30">
-                    <div
-                        class="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="map" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Buscador Inteligente</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Encuentra cualquier registro al instante, buscando
-                        por nombre, DNI, agencia, etc. No más rastreo manual en chats de WhatsApp.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-indigo-500/30">
-                    <div
-                        class="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="download" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Descarga Excel</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">El sistema agrupa los datos elegidos por tus
-                        clientes y genera el archivo perfecto para la web de Shalom, Olva o Dinsides. ¡Cero errores de
-                        formato!.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-yellow-500/30">
-                    <div
-                        class="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center text-yellow-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="file-text" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Imprime Rótulos</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Convierte la elección de tu cliente en una etiqueta
-                        profesional. Compatible con cualquier impresora (térmica, casera o ticketera). Tira el plumón
-                        para siempre.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-primary/30">
-                    <div
-                        class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="truck" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Multi-Agencia</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tus clientes eligen, tú mantienes el control.
-                        Ofrece envíos por Shalom, Olva, Marvisur y/o Delivery bajo tus propias reglas.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-red-500/30">
-                    <div
-                        class="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center text-red-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="smartphone" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">100% Móvil</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tu oficina logística en tu bolsillo. Gestiona
-                        estatus y genera rótulos desde cualquier lugar. Sin apps pesadas para tus clientes.</p>
-                </div>
-
-                <div
-                    class="glass-card p-6 rounded-2xl hover:bg-white/[0.02] transition-all group border border-white/5 hover:border-emerald-500/30">
-                    <div
-                        class="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-feather="message-circle" class="w-5 h-5"></i></div>
-                    <h3 class="text-lg font-bold text-white mb-2">Soporte Local</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Respaldo humano y local. Entendemos cómo funcionan
-                        las agencias locales y te ayudamos a gestionar tus datos de envío con éxito.</p>
+                <div class="flex flex-col items-center text-slate-900 dark:text-white">
+                    <span class="font-extrabold text-3xl md:text-4xl tracking-tighter">100%</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-primary mt-1">Libres de
+                        Digitar</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CASOS DE USO -->
-    <section id="casos-uso" class="py-24 bg-dark_bg relative border-t border-white/5">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-white">El sistema que trabaja mientras tú vendes.</h2>
-            </div>
+    <section id="flujo" class="py-24 relative text-center">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <h2
+                class="text-3xl md:text-5xl font-extrabold mb-6 tracking-tighter italic uppercase dark:text-white text-slate-900">
+                Logística en automático ⚡️</h2>
+            <p class="text-slate-600 dark:text-gray-400 text-lg mb-16 max-w-2xl mx-auto leading-relaxed">Elimina el
+                error humano y recupera el <b>control total</b> de tu tiempo.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="flex flex-col items-center">
                 <div
-                    class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <div
-                        class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-500 mb-4">
-                        <i data-feather="map" class="w-6 h-6"></i></div>
-                    <h3 class="font-bold text-white mb-2">Envíos a Nivel Nacional.</h3>
-                    <p class="text-sm text-gray-400">Ofrece Shalom, Olva, Marvisur y/o Delivery bajo tus propias reglas.
-                        El cliente elige su agencia favorita al agendar y tú recibes los nombres y direcciones
-                        correctos, eliminando errores de digitación.</p>
-                </div>
-                <div
-                    class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <div
-                        class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-500 mb-4">
-                        <i data-feather="shopping-bag" class="w-6 h-6"></i></div>
-                    <h3 class="font-bold text-white mb-2">E-commerce Nacional</h3>
-                    <p class="text-sm text-gray-400">Recibe la información agrupada automáticamente según tus horarios
-                        de cierre. Programa tus envíos nacionales con tiempo y mantén el control total de tu stock sin
-                        complicaciones.</p>
-                </div>
-                <div
-                    class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <div
-                        class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-500 mb-4">
-                        <i data-feather="message-circle" class="w-6 h-6"></i></div>
-                    <h3 class="font-bold text-white mb-2">Ventas por Redes</h3>
-                    <p class="text-sm text-gray-400">No pierdas tiempo pidiendo datos por WhatsApp tras vender en TikTok
-                        o Instagram. Tus clientes llenan su información en tu link y tú generas etiquetas profesionales
-                        listas para imprimir de inmediato.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CÓMO FUNCIONA -->
-    <section id="como-funciona" class="py-24 bg-card_bg relative border-t border-white/5">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-20">
-                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Empieza en 3 Pasos</h2>
-                <p class="text-gray-400">Sin instalaciones complejas. Listo en minutos.</p>
-            </div>
-
-            <div class="relative">
-                <!-- Línea conectora (Desktop) -->
-                <div
-                    class="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent z-0">
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-12 relative z-10">
-                    <!-- Step 1 -->
-                    <div class="text-center group">
-                        <div
-                            class="w-24 h-24 mx-auto bg-dark_bg rounded-full border border-white/10 flex items-center justify-center text-3xl font-bold text-primary mb-6 shadow-neon group-hover:scale-110 transition-transform relative">
-                            <i data-feather="link" class="w-10 h-10"></i>
+                    class="bg-white dark:bg-dark_bg p-8 rounded-3xl border border-gray-200 dark:border-primary/40 shadow-xl w-full max-w-sm group transition-transform hover:scale-105">
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                            <i data-feather="edit-3"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Crea tu Enlace</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed px-4">
-                            Regístrate gratis y obtén tu enlace único (ej: latam5s.com/tu-tienda).
-                        </p>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-primary">Paso 1:
+                                Entrada</span>
+                            <h3 class="text-xl font-bold mt-1 dark:text-white text-slate-900">Captura Inteligente</h3>
+                            <p class="text-xs text-slate-500 dark:text-gray-400 mt-2 italic leading-relaxed">Tus
+                                clientes llenan sus datos sin errores en tu Formulario Universal.</p>
+                        </div>
+                        <a href="https://www.latam5s.com/form?merchant=u_bfr4p7c2w" target="_blank"
+                            class="mt-4 px-6 py-3 bg-brand-gradient text-white font-bold rounded-xl text-[10px] uppercase tracking-widest hover:brightness-110 transition-all flex items-center gap-2 shadow-lg">
+                            <i data-feather="eye" class="w-4 h-4 text-white"></i> Probar Formulario Real
+                        </a>
                     </div>
-
-                    <!-- Step 2 -->
-                    <div class="text-center group">
+                </div>
+                <div class="w-[2px] h-10 bg-brand-gradient my-4 opacity-30"></div>
+                <div class="w-3 h-3 rounded-full bg-brand-gradient mb-4"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full mt-4">
+                    <div
+                        class="bg-white dark:bg-dark_bg p-10 rounded-[2.5rem] border border-gray-200 dark:border-white/10 text-center shadow-lg">
                         <div
-                            class="w-24 h-24 mx-auto bg-dark_bg rounded-full border border-white/10 flex items-center justify-center text-3xl font-bold text-secondary mb-6 shadow-neon-green group-hover:scale-110 transition-transform relative">
-                            <i data-feather="share-2" class="w-10 h-10"></i>
+                            class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto mb-6">
+                            <i data-feather="printer"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Compártelo</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed px-4">
-                            Configura el enlace en tus respuestas rápidas de WhatsApp o redes sociales.
-                        </p>
+                        <h3 class="font-bold uppercase tracking-widest text-sm dark:text-white text-slate-900">Rótulos
+                            Profesionales</h3>
+                        <p class="text-xs text-slate-500 dark:text-gray-400 mt-3 italic">Listos para cualquier
+                            impresora.</p>
                     </div>
-
-                    <!-- Step 3 -->
-                    <div class="text-center group">
+                    <div
+                        class="bg-white dark:bg-dark_bg p-10 rounded-[2.5rem] border border-gray-200 dark:border-white/10 text-center shadow-lg">
                         <div
-                            class="w-24 h-24 mx-auto bg-dark_bg rounded-full border border-white/10 flex items-center justify-center text-3xl font-bold text-purple-400 mb-6 shadow-[0_0_20px_rgba(168,85,247,0.15)] group-hover:scale-110 transition-transform relative">
-                            <i data-feather="package" class="w-10 h-10"></i>
+                            class="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary mx-auto mb-6">
+                            <i data-feather="file-text"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Recibe y Gestiona</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed px-4">
-                            Tus envíos llegan a tu <strong>Dashboard</strong> listos para imprimir rótulos y despachar.
-                        </p>
+                        <h3 class="font-bold uppercase tracking-widest text-sm dark:text-white text-slate-900">Excel
+                            Masivo</h3>
+                        <p class="text-xs text-slate-500 dark:text-gray-400 mt-3 italic">Perfecto para carga masiva.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRECIOS -->
-    <section id="pricing" class="py-24 bg-card_bg border-t border-white/5">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-4 text-white">Planes de Suscripción</h2>
-            <p class="text-gray-400 mb-16">Liberate del trabajo manual.</p>
+    <section id="precios" class="py-24 bg-gray-50 dark:bg-black/20 text-center">
+        <div class="container mx-auto px-4 text-slate-900 dark:text-white">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-16 italic uppercase dark:text-white">Planes de Crecimiento
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto items-stretch px-4 text-left">
 
-            <!-- TARJETAS (Resumen) -->
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start mb-16">
-
-                <!-- Plan INICIAL -->
                 <div
-                    class="glass-panel p-8 rounded-3xl border border-white/5 order-2 md:order-1 hover:bg-white/[0.02] transition-colors text-left">
-                    <h3 class="font-bold text-gray-400 mb-2 tracking-widest text-sm uppercase">BÁSICO</h3>
-                    <div class="text-4xl font-bold mb-4 text-white">S/. 0</div>
-                    <p class="text-gray-500 text-sm mb-8 border-b border-white/10 pb-8">Tu negocio, tus reglas.</p>
-
-                    <ul class="space-y-4 mb-8 text-sm text-gray-300">
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Respuestas vía WhatsApp</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Elige Couriers</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Elige Días de Envío</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Eilge Hora de Cierre</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Contabiliza Envíos</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-gray-500 w-4 h-4 mt-0.5"></i> <span>Enlace Genérico</span></li>
-                    </ul>
-
-                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20interesa%20crear%20una%20cuenta%20Gratuita."
-                        target="_blank"
-                        class="block w-full py-3 border border-white/10 rounded-xl text-sm font-bold text-white text-center hover:bg-white/5 transition-colors">Crea
-                        Tu Cuenta Gratis</a>
-                </div>
-
-                <!-- Plan PRO -->
-                <div
-                    class="bg-gradient-to-b from-[#1e293b] to-[#0f172a] p-8 rounded-3xl border border-primary/50 relative transform md:scale-105 shadow-2xl order-1 md:order-2 z-10 text-left">
-                    <div
-                        class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-bold px-4 py-1 rounded-full shadow-lg tracking-wider animate-pulse text-center">
-                        OFERTA POR TIEMPO LIMITADO
-                    </div>
-
-                    <h3 class="font-bold text-primary_glow mb-2 tracking-widest text-sm uppercase">PRO</h3>
-
-                    <div class="mb-4">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-5xl font-bold text-white tracking-tight">S/. 29</span>
-                            <span class="text-base font-normal text-gray-500">/mes</span>
-                        </div>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-sm text-gray-400 line-through decoration-red-500/50">Precio regular: S/.
-                                49</span>
-                            <span
-                                class="text-[10px] bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full font-bold border border-red-500/20">Ahorra
-                                40%</span>
-                        </div>
-                    </div>
-
-                    <p class="text-gray-400 text-sm mb-8 border-b border-white/10 pb-8">Automatización total.</p>
-
-                    <ul class="space-y-4 mb-8 text-sm text-white">
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span class="font-bold">Imprime Rótulos</span>
+                    class="bg-white dark:bg-dark_bg p-10 rounded-[2.5rem] border border-gray-200 dark:border-white/5 flex flex-col h-full hover:shadow-2xl transition-all">
+                    <h3 class="font-bold text-slate-400 tracking-widest text-[10px] uppercase mb-2">BÁSICO</h3>
+                    <div class="text-4xl sm:text-5xl font-bold mb-6">S/. 0</div>
+                    <p class="text-slate-500 dark:text-gray-400 text-sm mb-8 font-medium">Empieza a poner orden hoy
+                        mismo.</p>
+                    <ul class="space-y-4 mb-10 text-sm text-slate-600 dark:text-gray-300 flex-grow">
+                        <li class="flex items-center gap-3"><i data-feather="check" class="text-secondary w-4 h-4"></i>
+                            Formulario Perzonalizado</li>
+                        <li class="flex items-center gap-3"><i data-feather="check" class="text-secondary w-4 h-4"></i>
+                            Datos vía WhatsApp</li>
+                        <li class="flex items-center gap-3"><i data-feather="check" class="text-secondary w-4 h-4"></i>
+                            Agencias Ilimitadas</li>
+                        <li
+                            class="flex items-center gap-3 border-t border-gray-100 dark:border-white/5 pt-4 text-slate-400 italic text-[11px]">
+                            incluye 7 días GRATIS del Plan PRO
                         </li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span>Descarga Excel</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span>Búsqueda Avanzada</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span>Detalle de Envíos</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span>Cambia de Estado
-                                (pendiente/enviado)</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span>Notifica por WhatsApp</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="plus"
-                                class="text-primary w-4 h-4 mt-0.5"></i> <span class="text-gray-400">Todo lo del plan
-                                Básico</span></li>
                     </ul>
-
-                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20quiero%20aprovechar%20la%20promoción%20del%20Plan%20PRO%20de%2029%20soles."
-                        target="_blank"
-                        class="block w-full py-4 bg-primary text-white rounded-xl text-sm font-bold hover:bg-blue-600 shadow-neon transition-all text-center transform hover:scale-[1.02]">
-                        Prueba 7 días gratis
-                    </a>
+                    <a href="https://wa.me/51904774275?text=Hola,%20quiero%20el%20Plan%20BÁSICO"
+                        class="block w-full py-4 border-2 border-primary text-primary rounded-2xl text-center font-bold hover:bg-primary hover:text-white transition-all uppercase text-[10px] tracking-widest">QUIERO
+                        COMENZAR</a>
                 </div>
 
-                <!-- Plan EMPRESA -->
-                <div
-                    class="glass-panel p-8 rounded-3xl border border-white/5 order-3 opacity-80 hover:opacity-100 transition-all text-left relative overflow-hidden group">
+                <div class="relative group h-full mt-10 sm:mt-0">
                     <div
-                        class="absolute inset-0 bg-dark_bg/40 backdrop-blur-[2px] z-10 flex items-center justify-center pointer-events-none group-hover:backdrop-blur-none transition-all">
-                        <span
-                            class="bg-purple-500/20 text-purple-400 border border-purple-500/30 px-4 py-1 rounded-full text-[15px] font-bold uppercase tracking-widest -rotate-45 shadow-2xl">
-                            Muy pronto
-                        </span>
-                    </div>
-
-                    <h3 class="font-bold text-purple-400 mb-2 tracking-widest text-sm uppercase">SUPER PRO</h3>
-
-                    <div class="mb-4">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-4xl font-bold text-white tracking-tight">S/. 99</span>
-                            <span class="text-base font-normal text-gray-500">/mes</span>
+                        class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-gradient text-white text-[10px] font-extrabold px-6 py-2 rounded-full shadow-lg z-20 animate-pulse uppercase w-max">
+                        OFERTA POR TIEMPO LIMITADO</div>
+                    <div
+                        class="bg-white dark:bg-dark_bg p-10 rounded-[3.5rem] border-2 border-primary shadow-premium flex flex-col h-full transform transition-transform sm:scale-105 group-hover:scale-[1.07]">
+                        <h3 class="font-bold text-primary tracking-widest text-[10px] uppercase mb-2">PRO</h3>
+                        <div class="mb-4">
+                            <div class="flex items-baseline gap-2 dark:text-white"><span
+                                    class="text-4xl sm:text-5xl font-extrabold tracking-tight">S/. 29</span><span
+                                    class="text-base font-bold">/mes</span></div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-xs text-slate-400 line-through italic font-medium">S/. 49
+                                    regular</span>
+                                <span
+                                    class="text-[9px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-widest">40%
+                                    OFF</span>
+                            </div>
                         </div>
+                        <p class="text-slate-500 dark:text-gray-400 text-sm mb-8 font-medium">La solución definitiva
+                            para negocios en crecimiento.</p>
+                        <ul class="space-y-4 mb-10 text-sm flex-grow font-bold dark:text-white">
+                            <li class="flex items-center gap-3"><i data-feather="zap"
+                                    class="text-secondary w-4 h-4"></i> Excel de Carga Masiva</li>
+                            <li class="flex items-center gap-3"><i data-feather="zap"
+                                    class="text-secondary w-4 h-4"></i> Rótulos Profesionales</li>
+                            <li class="flex items-center gap-3"><i data-feather="zap"
+                                    class="text-secondary w-4 h-4"></i> Gestión de Estados</li>
+                        </ul>
+                        <a href="https://wa.me/51904774275?text=Hola,%20quiero%20el%20Plan%20PRO"
+                            class="block w-full py-5 bg-brand-gradient text-white rounded-2xl text-center font-extrabold shadow-lg hover:brightness-110 transition-all transform hover:scale-[1.02] uppercase text-[10px] tracking-widest">QUIERO
+                            SER PRO</a>
                     </div>
-
-                    <p class="text-gray-500 text-sm mb-8 border-b border-white/10 pb-8">Personalización total.</p>
-
-                    <ul class="space-y-4 mb-8 text-sm text-gray-400">
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-purple-400 w-4 h-4 mt-0.5"></i> <span
-                                class="font-bold text-gray-300">Funciones Avanzadas</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-purple-400 w-4 h-4 mt-0.5"></i> <span>Enlace Personalizado</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-purple-400 w-4 h-4 mt-0.5"></i> <span>Logo de tu Marca</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="check"
-                                class="text-purple-400 w-4 h-4 mt-0.5"></i> <span>Colores de tu Marca</span></li>
-                        <li class="flex items-start gap-3"><i data-feather="plus"
-                                class="text-purple-400 w-4 h-4 mt-0.5"></i> <span>Todo lo del plan Pro</span></li>
-                    </ul>
-
-                    <a href="https://wa.me/51904774275?text=Hola%20Latam5S,%20me%20gustaría%20ser%20de%20los%20primeros%20en%20probar%20el%20Plan%20Super%20Pro."
-                        target="_blank"
-                        class="relative z-20 block w-full py-3 border border-purple-500/30 rounded-xl text-sm font-bold text-purple-400 text-center hover:bg-purple-500/10 transition-colors">
-                        Lista de Espera
-                    </a>
                 </div>
             </div>
-
-            <!-- BOTÓN COMPARAR -->
-            <button onclick="document.getElementById('compare-table').classList.toggle('hidden')"
-                class="text-gray-400 hover:text-white text-sm font-semibold flex items-center justify-center gap-2 mx-auto transition-colors group">
-                Comparar todas las características
-                <i data-feather="chevron-down" class="group-hover:translate-y-1 transition-transform"></i>
-            </button>
-
-            <!-- TABLA COMPARATIVA (Oculta por defecto) -->
-            <div id="compare-table"
-                class="hidden mt-12 max-w-5xl mx-auto overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md animate-fade-in-up">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-400">
-                        <thead class="bg-white/5 text-white font-bold uppercase text-xs tracking-wider">
-                            <tr>
-                                <th class="p-4 md:p-6">Característica</th>
-                                <th class="p-4 md:p-6 text-center w-1/4">Básico</th>
-                                <th class="p-4 md:p-6 text-center w-1/4 text-primary">Pro</th>
-                                <th class="p-4 md:p-6 text-center w-1/4 text-purple-400">Super Pro</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-white/5">
-                            <!-- Basi -->
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white font-medium">Registros Mensuales</td>
-                                <td class="p-4 md:p-6 text-center text-white font-bold">Ilimitados</td>
-                                <td class="p-4 md:p-6 text-center text-white font-bold">Ilimitados</td>
-                                <td class="p-4 md:p-6 text-center text-white font-bold">Ilimitados</td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6">Elige Couriers</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6">Elige Días de Envío</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6">Eilge Hora de Cierre</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6">Contabiliza Envíos</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6">Enlace Genérico</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-
-                            <!-- PRO -->
-                            <tr class="hover:bg-white/[0.02] bg-white/[0.01]">
-                                <td class="p-4 md:p-6 text-white">Imprime Rótulos</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Descarga Excel</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Búsqueda Avanzada</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Detalle de Envíos</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Cambia de Estado (pendiente/enviado)</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Notifica por WhatsApp</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-
-                            <!-- Super PRO -->
-                            <tr class="hover:bg-white/[0.02] bg-white/[0.01]">
-                                <td class="p-4 md:p-6 text-white">Funciones Avanzadas</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Enlace Personalizado</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Logo de tu Marca</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                            <tr class="hover:bg-white/[0.02]">
-                                <td class="p-4 md:p-6 text-white">Colores de tu marca</td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="x"
-                                        class="mx-auto text-gray-600 w-4 h-4"></i></td>
-                                <td class="p-4 md:p-6 text-center"><i data-feather="check"
-                                        class="mx-auto text-green-500 w-4 h-4"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- FAQ -->
-    <section class="py-24 bg-dark_bg">
-        <div class="container mx-auto px-4 max-w-2xl space-y-4">
-            <h2 class="text-2xl font-bold text-center mb-12 text-white">Preguntas Frecuentes</h2>
-
-            <details class="group glass-panel rounded-xl overflow-hidden">
-                <summary
-                    class="flex justify-between items-center p-5 cursor-pointer font-semibold text-white hover:bg-white/5 transition-colors">
-                    ¿Necesito saber programar?
-                    <span class="group-open:rotate-180 transition text-gray-400"><i
-                            data-feather="chevron-down"></i></span>
-                </summary>
-                <div class="px-5 pb-5 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
-                    Para nada. Latam5S es una herramienta No-Code. Solo te registras, copias tu enlace y lo pegas en tus
-                    respuestas de WhatsApp. Tardas menos de 2 minutos.
-                </div>
-            </details>
-
-            <details class="group glass-panel rounded-xl overflow-hidden">
-                <summary
-                    class="flex justify-between items-center p-5 cursor-pointer font-semibold text-white hover:bg-white/5 transition-colors">
-                    ¿Funciona con WhatsApp normal?
-                    <span class="group-open:rotate-180 transition text-gray-400"><i
-                            data-feather="chevron-down"></i></span>
-                </summary>
-                <div class="px-5 pb-5 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
-                    Sí. Funciona perfectamente con WhatsApp Personal, WhatsApp Business App y también con la API
-                    oficial. Es solo un enlace inteligente.
-                </div>
-            </details>
-
-            <details class="group glass-panel rounded-xl overflow-hidden">
-                <summary
-                    class="flex justify-between items-center p-5 cursor-pointer font-semibold text-white hover:bg-white/5 transition-colors">
-                    ¿Mis clientes tienen que descargar una app?
-                    <span class="group-open:rotate-180 transition text-gray-400"><i
-                            data-feather="chevron-down"></i></span>
-                </summary>
-                <div class="px-5 pb-5 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
-                    No. El formulario se abre directamente en su navegador (Chrome, Safari) súper rápido. Es ligero y no
-                    requiere descargas.
-                </div>
-            </details>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black text-white py-12 border-t border-white/10 text-center text-sm relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none"></div>
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="flex justify-center items-center gap-2 mb-6">
-                <a href="#" class="flex items-center gap-2 group">
-                    <!-- 1. Icono 'L' con fondo degradado y forma de círculo (como el favicon) -->
-                    <div
-                        class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-lg shadow-lg">
-                        5S</div>
-                    <!-- 2. Texto 'Latam5S' con el degradado de las redes sociales -->
-                    <span class="font-extrabold text-lg tracking-tight logo-text-gradient">Latam5S</span>
-                </a>
+    <footer
+        class="py-20 bg-gray-50 dark:bg-black text-center text-slate-400 text-[10px] relative border-t border-gray-200 dark:border-white/5">
+        <div class="flex flex-col items-center gap-8 px-4 text-slate-900 dark:text-white">
+            <a href="#" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 rounded-full bg-brand-gradient flex items-center justify-center font-bold text-white shadow-lg">
+                    5S</div>
+                <span class="font-extrabold text-lg text-gradient tracking-tight">Latam5S</span>
+            </a>
+            <div class="flex justify-center flex-wrap gap-8 font-bold uppercase tracking-widest text-slate-400">
+                <a href="#" class="hover:text-primary transition-colors">Términos</a>
+                <a href="#" class="hover:text-primary transition-colors">Privacidad</a>
+                <a href="/login" class="hover:text-primary transition-colors">Acceso Clientes</a>
             </div>
-            <div class="flex justify-center gap-6 mb-8 text-gray-400">
-                <a href="#" class="hover:text-white transition-colors">Términos</a>
-                <a href="#" class="hover:text-white transition-colors">Privacidad</a>
-                <a href="#" class="hover:text-white transition-colors">Contacto</a>
-            </div>
-            <p class="text-gray-600">&copy; 2024 Latam5S. Hecho para emprendedores, no para programadores.</p>
+            <p class="uppercase tracking-[0.4em] opacity-40">© 2025 Latam5S - Hecho para emprendedores de verdad.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>
         feather.replace();
 
-        // ----------------------------------------------------
-        // LOGICA DE CARGA Y BÚSQUEDA DE AGENCIAS SHALOM
-        // ----------------------------------------------------
-        // CORRECCIÓN: Usar la URL absoluta de GitHub para asegurar la carga
-        const shalomUrl = "https://raw.githubusercontent.com/complicidad/form/main/lstShalom.json";
-        const inputSede = document.getElementById('demo-sede');
-        const dropdownSede = document.getElementById('sedes-dropdown');
-        let agencias = [];
-        let validOptions = new Set();
+        // DARK MODE TOGGLE
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-        // Helper para sanitizar HTML (necesario para renderDropdown)
-        function escapeHtml(unsafe) {
-            if (typeof unsafe !== 'string') return unsafe;
-            return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        };
-
-        async function loadAgencies() {
-            try {
-                // console.log("Intentando cargar agencias desde:", shalomUrl); // DEBUG
-                const response = await fetch(shalomUrl);
-                if (!response.ok) throw new Error('Error al cargar agencias');
-
-                const data = await response.json();
-
-                agencias = data.map(item => {
-                    const nombre = item.Agencia || item.c_nom_agencia || 'Agencia';
-                    const direccion = item.Direccion || item.c_direccion || '';
-                    const fullText = `${nombre} ${direccion}`.toLowerCase();
-                    // Usar replace para evitar que las comillas simples rompan el JS en el click handler
-                    const safeName = nombre.replace(/'/g, "\\'");
-                    const safeDireccion = direccion.replace(/'/g, "\\'");
-                    const value = `${safeName} - ${safeDireccion}`;
-
-                    validOptions.add(value);
-
-                    return { nombre: nombre, direccion: direccion, fullText: fullText, value: value };
-                });
-
-                inputSede.placeholder = "Escribe tu destino (Ej: Arequipa)";
-                console.log(`Cargadas ${agencias.length} agencias de Shalom`);
-            } catch (error) {
-                console.error("Error cargando agencias:", error);
-                inputSede.placeholder = "Error cargando. Escribe manual.";
+        function updateIcons() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleDarkIcon.classList.add('hidden');
+                themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                themeToggleDarkIcon.classList.remove('hidden');
+                themeToggleLightIcon.classList.add('hidden');
             }
         }
 
-        // Renderizar opciones en el dropdown
-        function renderDropdown(items) {
-            dropdownSede.innerHTML = '';
-            if (items.length === 0) {
-                dropdownSede.innerHTML = `<li class="p-3 text-sm text-gray-500 text-center">No se encontraron resultados</li>`;
-            } else {
-                items.forEach(item => {
-                    const li = document.createElement('li');
-                    li.className = "px-4 py-3 hover:bg-gray-800 cursor-pointer border-b border-gray-800 last:border-0 transition-colors";
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        updateIcons();
 
-                    // Diseño de 2 líneas con escape HTML
-                    li.innerHTML = `
-                        <div class="font-bold text-white text-sm">${escapeHtml(item.nombre)}</div>
-                        <div class="text-[11px] text-gray-400 mt-1 whitespace-normal leading-snug">${escapeHtml(item.direccion)}</div>
-                    `;
+        themeToggleBtn.addEventListener('click', function () {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateIcons();
+        });
 
-                    // Nota: El item.value ya tiene las comillas escapadas para JS.
-                    li.addEventListener('click', () => {
-                        inputSede.value = item.value;
-                        dropdownSede.classList.add('hidden');
-                        inputSede.classList.remove('border-red-500', 'animate-shake');
-                        inputSede.classList.add('border-gray-700');
-                    });
-                    dropdownSede.appendChild(li);
+        // CANVAS PARTICULAS
+        const canvas = document.getElementById('chaosCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function initChaos() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3
                 });
             }
-            dropdownSede.classList.remove('hidden');
         }
-
-        // Event Listeners para el Input (Demo)
-        inputSede.addEventListener('input', (e) => {
-            const button = document.getElementById('btn-clear-demo');
-
-            // Lógica para mostrar/ocultar la X
-            if (e.target.value.length > 0) {
-                button.classList.remove('hidden');
-            } else {
-                button.classList.add('hidden');
-                dropdownSede.classList.add('hidden'); // Si se borra el texto, ocultar dropdown
-            }
-
-            // ... (rest of your existing logic)
-            inputSede.classList.remove('border-red-500', 'animate-shake');
-            inputSede.classList.add('border-gray-700');
-
-            const val = e.target.value.toLowerCase();
-            if (val.length < 2) {
-                dropdownSede.classList.add('hidden');
-                return;
-            }
-            const filtered = agencias.filter(a => a.fullText.includes(val)).slice(0, 5);
-            renderDropdown(filtered);
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!inputSede.contains(e.target) && !dropdownSede.contains(e.target)) {
-                dropdownSede.classList.add('hidden');
-            }
-        });
-
-        loadAgencies();
-
-
-        // ----------------------------------------------------
-        // LIVE FORM LOGIC (CON VALIDACIÓN ESTRICTA Y FORMATO WHATSAPP)
-        // ----------------------------------------------------
-        document.getElementById('demo-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const n = document.getElementById('demo-name').value;
-            const p = document.getElementById('demo-phone').value;
-            const dni = document.getElementById('demo-dni').value;
-            const agency = document.getElementById('demo-agency').value;
-            const sedeFull = inputSede.value;
-
-            // --- VALIDACIÓN ESTRICTA DE SEDE ---
-            // Buscamos si el valor ingresado coincide con alguna opción válida
-            if (!validOptions.has(sedeFull)) {
-                inputSede.classList.remove('border-gray-700');
-                inputSede.classList.add('border-red-500', 'animate-shake');
-                inputSede.focus();
-                setTimeout(() => inputSede.classList.remove('animate-shake'), 500);
-                return;
-            }
-
-            // --- PARSEAR SEDE Y DIRECCIÓN ---
-            const separatorIndex = sedeFull.indexOf(' - ');
-            const sedeName = sedeFull.substring(0, separatorIndex);
-            const direccion = sedeFull.substring(separatorIndex + 3);
-
-            // Efecto visual de carga
-            const btn = e.target.querySelector('button');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-
-            setTimeout(() => {
-                // Mensaje en formato Markdown para WhatsApp
-                const message = `*✅ DATOS DE PRUEBA:*\n` + // Usar \n
-                    `* *Cliente:* ${n}\n` +
-                    `* *Cel:* ${p}\n` +
-                    `* *DNI/CE:* ${dni}\n` +
-                    `* *Agencia:* ${agency}\n` +
-                    `* *Sede:* ${sedeName}\n\n` +
-                    `______________________________\n` +
-                    `*¡Envía la palabra QUIERO y recibe tu usuario y contraseña 🔑!*`;
-
-                window.open(`https://wa.me/51904774275?text=${encodeURIComponent(message)}`, '_blank');
-                btn.innerHTML = originalContent;
-            }, 800);
-        });
-
-        function toggleMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        function drawChaos() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = document.documentElement.classList.contains('dark') ? "rgba(59, 130, 246, 0.2)" : "rgba(59, 130, 246, 0.08)";
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI * 2); ctx.fill();
+            });
+            requestAnimationFrame(drawChaos);
         }
-
-        // Nueva Función para borrar el campo de búsqueda de la demo
-        window.app = window.app || {}; // Asegura que app exista si no se ha usado
-        window.app.clearDemoAgency = () => {
-            const input = document.getElementById('demo-sede');
-            const button = document.getElementById('btn-clear-demo');
-            const dropdown = document.getElementById('sedes-dropdown');
-
-            input.value = ''; // Borra el texto
-            dropdown.classList.add('hidden'); // Oculta el dropdown
-            button.classList.add('hidden'); // Oculta la 'X'
-            input.focus(); // Vuelve el foco al campo
-        };
-
-        // CHAOS ANIMATION
-        function setupChaos() {
-            const cvs = document.getElementById('chaosCanvas');
-            if (!cvs) return;
-            const ctx = cvs.getContext('2d');
-            let w, h, p = [];
-            const rsz = () => { w = cvs.width = cvs.parentElement.offsetWidth; h = cvs.height = cvs.parentElement.offsetHeight; };
-            class P { constructor() { this.init(); } init() { this.x = Math.random() * w; this.y = Math.random() * h; this.vx = (Math.random() - .5) * 0.5; this.vy = (Math.random() - .5) * 0.5; this.s = Math.random() * 1.5 + 0.5; this.a = Math.random() * 0.5 + 0.1; } upd() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > w) this.vx *= -1; if (this.y < 0 || this.y > h) this.vy *= -1; } drw() { ctx.fillStyle = `rgba(255,255,255,${this.a})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2); ctx.fill(); } }
-            const init = () => { p = []; for (let i = 0; i < 50; i++)p.push(new P()); };
-            const anim = () => { ctx.clearRect(0, 0, w, h); p.forEach(pt => { pt.upd(); pt.drw() }); ctx.strokeStyle = 'rgba(255,255,255,0.03)'; for (let i = 0; i < p.length; i++) { for (let j = i + 1; j < p.length; j++) { let dx = p[i].x - p[j].x, dy = p[i].y - p[j].y; if (dx * dx + dy * dy < 10000) { ctx.beginPath(); ctx.moveTo(p[i].x, p[i].y); ctx.lineTo(p[j].x, p[j].y); ctx.stroke(); } } } requestAnimationFrame(anim); };
-            window.addEventListener('resize', rsz); rsz(); init(); anim();
-        }
-
-        // CHAT DEMO LOGIC
-        const wait = ms => new Promise(r => setTimeout(r, ms));
-        const getTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        function addMsg(id, txt, type) {
-            const d = document.createElement('div');
-            const base = "message-pop px-3 py-1.5 rounded-lg max-w-[85%] text-[10px] sm:text-xs shadow-sm mb-2 relative leading-snug";
-            const style = type === 'out' ? "self-end bg-[#005c4b] text-[#e9edef] rounded-tr-none" : "self-start bg-[#202c33] text-[#e9edef] rounded-tl-none";
-            d.className = `${base} ${style}`;
-            d.innerHTML = `<div class="break-words">${txt}</div><div class="text-[9px] text-gray-400 text-right mt-0.5 flex justify-end items-center gap-1">${getTime()} ${type === 'out' ? '<i class="fas fa-check-double text-[#53bdeb]"></i>' : ''}</div>`;
-            const c = document.getElementById(id); if (c) { c.appendChild(d); c.scrollTop = c.scrollHeight; }
-        }
-
-        async function runMan() {
-            const id = 'manual-messages'; const el = document.getElementById(id); if (!el) return;
-            while (true) {
-                el.innerHTML = ''; await wait(1000);
-                addMsg(id, 'Hola, quiero mi envío', 'in'); await wait(1500); addMsg(id, 'Hola 👋 ¿A qué ciudad y por qué agencia?', 'out'); await wait(2000);
-                addMsg(id, 'Arequipa', 'in'); await wait(1500); addMsg(id, '¿Por Shalom, Olva o Marvisur? ¿Qué sede?', 'out'); await wait(2500);
-                addMsg(id, 'Por Shalom... la de la Av Ejército', 'in'); await wait(2000); addMsg(id, '¿Cuál de todas? Hay 3 en esa avenida 😓', 'out'); await wait(3000);
-                addMsg(id, 'Mmm... no sé, la principal creo', 'in'); await wait(2000); addMsg(id, 'Necesito DNI y nombre completo por favor', 'out'); await wait(3000);
-            }
-        }
-
-        async function runOpt() {
-            const id = 'opt-messages'; const el = document.getElementById(id); if (!el) return;
-            while (true) {
-                el.innerHTML = ''; await wait(1000);
-                addMsg(id, 'Hola, quiero mi envío 📦', 'in'); await wait(800);
-                addMsg(id, '¡Claro! Agenda tu envío aquí: <span class="text-[#53bdeb] underline">latam5s.com/envio</span>', 'out'); await wait(2000);
-
-                // Mensaje estandarizado simulado en la animación (MEJORADO Y LLAMATIVO)
-                const card = `
-                    Hola, estos son mi datos de envío:<br><br>
-                    • <b>Cliente:</b> Ana Pérez<br>
-                    • <b>Cel:</b> 999 123 456<br>
-                    • <b>DNI/CE:</b> 12345678<br>
-                    • <b>Agencia:</b> Shalom<br>
-                    • <b>Sede:</b> Arequipa / Arequipa / Cayma / Av Charcani
-                `;
-
-                // Lo enviamos como mensaje del usuario ('in') para simular que el cliente envía los datos
-                addMsg(id, card, 'in');
-
-                await wait(1000);
-                addMsg(id, '¡Genial!', 'out'); await wait(4000);
-            }
-        }
-
-        setupChaos(); runMan(); runOpt();
+        window.addEventListener('resize', initChaos);
+        initChaos(); drawChaos();
     </script>
 </body>
 
