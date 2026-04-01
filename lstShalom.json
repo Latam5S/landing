@@ -216,11 +216,11 @@
     "Direccion": "Aa.Hh  Complejo Artesanal T1 Lt1 - Ayacucho  -  Referencia :  A Una Cuadra De La Puerta 2 Del Terminal Terrestre Libertadores De AméRica"
   },
   {
-    "Agencia": "Ayacucho / Huamanga / Carmen Alto / Ayacucho Carmen Alto",
+    "Agencia": "Ayacucho / Huamanga / Carmen Alto / Carmen Alto",
     "Direccion": "Asentamiento Humano Carmen Alto Mz B1 Lote 9 Zona Ii Acuchimay Carmen Alto – Huamanga- Ayacucho, Ref. A 1 Cuadra De La Municipalidad De Carmen Alto"
   },
   {
-    "Agencia": "Ayacucho / Huamanga / Jesus Nazareno / Ayacucho JesúS Nazareno",
+    "Agencia": "Ayacucho / Huamanga / Jesus Nazareno / Jesus Nazareno",
     "Direccion": "Jr. José MaríA Eguren 451 - Jesus Nazareno - Huamanga - Ayacucho, Ref. Cruce Con Jr. Mariano Melgar"
   },
   {
@@ -525,7 +525,7 @@
   },
   {
     "Agencia": "Ica / Pisco / Pisco / Av Abraham Valdelomar Co",
-    "Direccion": "Av. Abraham Valdelomar S/N, Urb. Residencial Paracas Mz C Lt 14 - Pisco  Referencia : Cruce Con Av. Las AméRicas, Al Costado De La Posta San Martin"
+    "Direccion": "Av. Abraham Valdelomar Nro. Puerta 965 Pisco - Pisco - Ica, Ref. A Una Cdra. Por La Posta San Martin"
   },
   {
     "Agencia": "Ica / Pisco / Pisco / La Villa  Cruce Pisco",
@@ -829,7 +829,7 @@
   },
   {
     "Agencia": "Lima / Barranca / Barranca / Barranca",
-    "Direccion": "Urb. Las Vegas - Mz. C, Lt. 22 - Barranca, Referencia: A Espaldas Del Fe Y AlegríA N°35 En La UrbanizacióN Techo Propio"
+    "Direccion": "Jr. Andres Reyes Buitron 416. Barranca - Barranca – Lima, Ref. A 2 Cdrs. Del Parque El Olvivar / A Mtrs. De La Casa Del Maestro"
   },
   {
     "Agencia": "Lima / Barranca / Paramonga / Paramonga",
@@ -1436,6 +1436,10 @@
     "Direccion": "Av. ParticipacióN Parcela 9-A San Juan Bautista - Maynas - Loreto, Ref. Frente Al Lavadero Osito Y A Media Cdra. Del Parque 1 De Enero"
   },
   {
+    "Agencia": "Loreto / Maynas / Iquitos San Juan Bautista / Ctra Iquitos Nauta",
+    "Direccion": "Carretera Iquitos Nauta, S/N Mz. K - Lt. 20, San Juan Bautista - Maynas - Loreto, Ref. Al Costado De La Distribuidora Amazon Gas."
+  },
+  {
     "Agencia": "Loreto / Maynas / Punchana / Punchana",
     "Direccion": "Calle Borja N°648 Punchana - Maynas - Loreto, Ref. Al Costado De La Farmacia San Carlos Centro MéDico"
   },
@@ -1452,8 +1456,8 @@
     "Direccion": "Av. Interoceanica Km. 1 , Las Piedras - Tambopata - Madre De Dios, Ref. Al Costado Del Grifo Virgen Natividad"
   },
   {
-    "Agencia": "Madre De Dios / Tambopata / Tambopata / Jr. Jaime Troncoso",
-    "Direccion": "Jr. Jaime Troncoso 442, Tambopata - Madre De Dios, Ref. A Media Cdra. Del Jardin Piloto / A Media Cdra. De La Empresa Real Dorado"
+    "Agencia": "Madre De Dios / Tambopata / Tambopata / Av 15 De Agosto",
+    "Direccion": "Av. 15 De Agosto N° 529, Tambopata - Tambopata - Madre De Dios, Ref. A Espaldas Del Colegio Carlos Fermin Fitzcarrald / Cruce Con Jr. Ica"
   },
   {
     "Agencia": "Madre De Dios / Tambopata / Tambopata / Tambopata Av Circunvalacion",
@@ -1548,12 +1552,8 @@
     "Direccion": "Urb. Parque Industrial Piura Futura Mz. G, Lt. 1a. 26 De Octubre - Piura, Referencia: Al Frente Del Grifo Petro Perú"
   },
   {
-    "Agencia": "Piura / Piura / Castilla /  Av Tacna",
-    "Direccion": "Av. Tacna 509 Castilla - Piura, Referencia: Frente A Ugel De Castilla"
-  },
-  {
     "Agencia": "Piura / Piura / Castilla / Tacala",
-    "Direccion": "Aa.Hh. San ValentíN Mz. N Lt. 12 Castilla - Piura, Referencia: Al Costado Del Colegio Pedro Ruiz Gallo"
+    "Direccion": "Carr. Panamericana A-2 Ah. Almirante Miguel Grau I Etapa, Castilla - Piura - Piura, Ref. Al Costado De CeráMicas San Lorenzo"
   },
   {
     "Agencia": "Piura / Piura / Catacaos / Catacaos",
@@ -1648,6 +1648,10 @@
     "Direccion": "Urb. San Pedro-Alto Puno, Av La Cultura N° 160, Puno - Puno - Puno, Ref. A Tres Cdras. De La Av. Que Va A Juliaca / A Dos Cdras. Del Grifo Bronco"
   },
   {
+    "Agencia": "Puno / Puno / Puno / Av  4 De Noviembre Co",
+    "Direccion": "Av. 4 De Noviembre N° 474-B Y 486-B Barrio Santa Rosa, Puno - Puno – Puno, Ref. A Una Cdra. De Sunafil"
+  },
+  {
     "Agencia": "Puno / Puno / Puno / Av Costanera",
     "Direccion": "Av. Costanera N° 211 Con Jr. Los Incas - Puno"
   },
@@ -1689,7 +1693,7 @@
   },
   {
     "Agencia": "San Martin / Bellavista / Bellavista / San Martin Bellavista",
-    "Direccion": "Jr. Huancavelica Mz.97 Lt. A Tercer Piso, Bellavista - Bellavista - San Martin, Ref. Espaldas De FerreteríA El Iman"
+    "Direccion": "Av. Lima S/N C-4 Mz 71 – Lote A – Tercer Piso, Bellavista- Bellavista- San Martin, Ref. Espaldas De FerreteríA El Iman"
   },
   {
     "Agencia": "San Martin / El Dorado / San Jose De Sisa / San Jose De Sisa",
