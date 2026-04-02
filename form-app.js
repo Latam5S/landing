@@ -233,7 +233,8 @@ const app = {
     },
 
     selectAgency: (n, a) => {
-        document.getElementById('c-agency').value = `${n} | ${a}`;
+        const address = a?.trim() ? ` | ${a}` : '';
+        document.getElementById('c-agency').value = `${n}${address}`;
         document.getElementById('agency-results').classList.add('hidden');
         document.getElementById('btn-clear-agency').classList.remove('hidden');
         document.getElementById('c-agency').classList.remove('border-red-500', 'bg-red-50');
@@ -246,7 +247,7 @@ const app = {
             const val = el.value.trim();
             if (!val) return;
             const loadedAgencies = state.externalData.agencies || [];
-            const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === val);
+            const isValid = loadedAgencies.some(item => `${item.Agencia}${item.Direccion?.trim() ? ' | ' + item.Direccion : ''}` === val);
             if (!isValid) { el.value = ""; app.showToast("⚠️ Selecciona una opción del listado"); document.getElementById('agency-results').classList.add('hidden'); }
         }, 200);
     },
@@ -322,7 +323,7 @@ const app = {
         if (state.selectedCourierType === 'agency') {
             const inputAgency = document.getElementById('c-agency');
             const loadedAgencies = state.externalData.agencies || [];
-            const isValid = loadedAgencies.some(item => `${item.Agencia} | ${item.Direccion}` === inputAgency.value.trim());
+            const isValid = loadedAgencies.some(item => `${item.Agencia}${item.Direccion?.trim() ? ' | ' + item.Direccion : ''}` === inputAgency.value.trim());
             if (!isValid) { inputAgency.focus(); inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona una agencia de la lista"); }
         } else if (state.selectedCourierType === 'home') {
             const inputDist = document.getElementById('c-district');

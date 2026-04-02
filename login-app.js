@@ -1205,7 +1205,6 @@ const app = {
                     </div>
                 `;
         window.print();
-        setTimeout(() => { area.innerHTML = ''; }, 1000);
     },
 
     toggleConfigItem: (k, v) => {
