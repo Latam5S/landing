@@ -3,10 +3,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 const URLS = {
     districts: "lstDistritos.json",
     coverage: { "Dinsides": "lstDinsides.json" },
-    agency: { "Shalom": "lstShalom.json", "Olva Courier": "lstOlvaCourier.json", "Marvisur": "lstMarvisur.json" }
+    agency: { "Shalom": "lstShalom.json", "Olva Courier": "lstOlvaCourier.json", "Marvisur": "lstMarvisur.json", "Encomienda": "lstEncomienda.json" }
 };
 
-const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency", "Dinsides": "home", "Delivery": "home", "Retiro en tienda": "store" };
+const COURIER_TYPES = { "Shalom": "agency", "Olva Courier": "agency", "Marvisur": "agency", "Dinsides": "home", "Delivery": "home", "Retiro en tienda": "store", "Encomienda": "agency" };
 const DAY_NAMES_FULL = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const MONTH_NAMES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 const DAY_INDEX_MAP = { "Dom": 0, "Lun": 1, "Mar": 2, "Mié": 3, "Jue": 4, "Vie": 5, "Sáb": 6 };
@@ -324,7 +324,12 @@ const app = {
             const inputAgency = document.getElementById('c-agency');
             const loadedAgencies = state.externalData.agencies || [];
             const isValid = loadedAgencies.some(item => `${item.Agencia}${item.Direccion?.trim() ? ' | ' + item.Direccion : ''}` === inputAgency.value.trim());
-            if (!isValid) { inputAgency.focus(); inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50'); setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000); return app.showToast("⚠️ Selecciona una agencia de la lista"); }
+            if (!isValid) {
+                inputAgency.focus();
+                inputAgency.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                setTimeout(() => inputAgency.classList.remove('animate-shake', 'border-red-500', 'bg-red-50'), 1000);
+                return app.showToast("⚠️ Selecciona una agencia de la lista");
+            }
         } else if (state.selectedCourierType === 'home') {
             const inputDist = document.getElementById('c-district');
             const validDistricts = state.externalData.districts || [];

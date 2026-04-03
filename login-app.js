@@ -22,6 +22,7 @@ const ALL_COURIERS = [
     "Dinsides",
     "Delivery",
     "Retiro en tienda",
+    "Encomienda",
 ];
 const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 const initialState = { merchantName: "", whatsapp: "", couriers: [], shippingDays: [], updateTime: "18:00", updateGap: "0" };
@@ -770,6 +771,7 @@ const app = {
 
         try {
             // Anti-cache param
+            // const res = await fetch(`api/legacy/merchants/${state.merchantId}/orders?_t=${Date.now()}`);
             const res = await fetch(`${state.apiUrl}?action=getOrders&merchantId=${state.merchantId}&_t=${Date.now()}`);
             const json = await res.json();
 

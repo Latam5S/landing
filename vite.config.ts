@@ -15,5 +15,12 @@ export default defineConfig({
   publicDir: 'public',
   server: {
     port: 8090,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
 });
