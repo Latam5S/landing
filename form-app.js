@@ -371,7 +371,13 @@ const app = {
         const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}'); cache[phone] = cacheData; localStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
 
         const btn = document.getElementById('btn-submit-order');
+        const spinner = document.getElementById('btn-submit-spinner');
+        const text = document.getElementById('btn-submit-text');
+
         btn.disabled = true;
+        spinner.classList.remove('hidden');
+        text.classList.add('hidden');
+
         setTimeout(async () => {
             try {
                 const res = await fetch(API_URL, {
@@ -382,11 +388,14 @@ const app = {
                         data: data
                     })
                 });
-            
+
                 console.log("Order saved, response:", res);
             } catch (e) {
                 console.error("'Error saving order:", e);
                 app.showToast("Ocurrió un error al guardar tu envío. Intenta nuevamente.", "error");
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+                text.classList.remove('hidden');
                 return;
             }
             btn.disabled = false;
