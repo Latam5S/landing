@@ -86,6 +86,7 @@ const app = {
             const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
             if (cache[val]) {
                 badge.classList.remove('hidden');
+                debugger;
                 app.fillFromCache(cache[val]);
                 app.showToast('¡Hola de nuevo! Cargamos tus datos ✨');
                 ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => setTimeout(() => app.revealStep(id), idx * 100));
@@ -101,9 +102,15 @@ const app = {
         if (data.courier) {
             const select = document.getElementById('c-courier-select');
             const type = COURIER_TYPES[data.courier] || "home";
-            if (type === 'agency') {
-                if ([...select.options].some(o => o.value === data.courier)) { select.value = data.courier; app.onCourierChange(data.courier); }
-            } else { select.value = "GENERIC_HOME"; app.onCourierChange("GENERIC_HOME"); }
+            if (type === 'agency' || type === 'store') {
+                if ([...select.options].some(o => o.value === data.courier)) {
+                    select.value = data.courier;
+                    app.onCourierChange(data.courier);
+                }
+            } else {
+                select.value = "GENERIC_HOME";
+                app.onCourierChange("GENERIC_HOME");
+            }
         }
         setTimeout(() => {
             document.getElementById('c-date-select').value = "";
