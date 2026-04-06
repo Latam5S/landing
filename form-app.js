@@ -86,7 +86,6 @@ const app = {
             const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}');
             if (cache[val]) {
                 badge.classList.remove('hidden');
-                debugger;
                 app.fillFromCache(cache[val]);
                 app.showToast('¡Hola de nuevo! Cargamos tus datos ✨');
                 ['block-service', 'dynamic-form-section', 'block-personal', 'block-closing'].forEach((id, idx) => setTimeout(() => app.revealStep(id), idx * 100));
@@ -371,20 +370,41 @@ const app = {
 
         const cache = JSON.parse(localStorage.getItem('latam5s_client_cache') || '{}'); cache[phone] = cacheData; localStorage.setItem('latam5s_client_cache', JSON.stringify(cache));
 
-        setTimeout(() => {
+        const btn = document.getElementById('btn-submit-order');
+        btn.disabled = true;
+        setTimeout(async () => {
+            try {
+                const res = await fetch(API_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "saveOrder",
+                        merchantId: state.merchantId,
+                        data: data
+                    })
+                });
+            
+                console.log("Order saved, response:", res);
+            } catch (e) {
+                console.error("'Error saving order:", e);
+                app.showToast("Ocurrió un error al guardar tu envío. Intenta nuevamente.", "error");
+                return;
+            }
+            btn.disabled = false;
             window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
-            try { fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "saveOrder", merchantId: state.merchantId, data: data }) }); } catch (e) { }
             document.getElementById('client-form').classList.add('hidden');
             document.getElementById('view-client').classList.add('hidden');
             document.getElementById('client-title').classList.add('hidden');
             document.getElementById('success-view').classList.remove('hidden');
-        }, 500);
+        }, 0);
     },
 
-    showToast: (msg) => {
-        const el = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
-        el.classList.remove('opacity-0', '-translate-y-20'); setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
-    }
+    showToast: (msg, type='') => {
+        const toatType = type ? `${type}-` : '';
+        const el = document.getElementById(`${toatType}toast`);
+        document.getElementById(`${toatType}toast-msg`).innerText = msg;
+        el.classList.remove('opacity-0', '-translate-y-20');
+        setTimeout(() => el.classList.add('opacity-0', '-translate-y-20'), 3000);
+    },
 };
 
 const state = { merchantId: null, config: {}, selectedCourierType: null, selectedCourier: null, externalData: { districts: null, agencies: [] } };
