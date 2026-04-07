@@ -378,33 +378,31 @@ const app = {
         spinner.classList.remove('hidden');
         text.classList.add('hidden');
 
-        setTimeout(async () => {
-            try {
-                const res = await fetch(API_URL, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        action: "saveOrder",
-                        merchantId: state.merchantId,
-                        data: data
-                    })
-                });
+        try {
+            const res = await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "saveOrder",
+                    merchantId: state.merchantId,
+                    data: data
+                })
+            });
 
-                console.log("Order saved, response:", res);
-            } catch (e) {
-                console.error("'Error saving order:", e);
-                app.showToast("Ocurrió un error al guardar tu envío. Intenta nuevamente.", "error");
-                btn.disabled = false;
-                spinner.classList.add('hidden');
-                text.classList.remove('hidden');
-                return;
-            }
+            console.log("Order saved, response:", res);
+        } catch (e) {
+            console.error("'Error saving order:", e);
+            app.showToast("Ocurrió un error al guardar tu envío. Intenta nuevamente.", "error");
             btn.disabled = false;
-            window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
-            document.getElementById('client-form').classList.add('hidden');
-            document.getElementById('view-client').classList.add('hidden');
-            document.getElementById('client-title').classList.add('hidden');
-            document.getElementById('success-view').classList.remove('hidden');
-        }, 0);
+            spinner.classList.add('hidden');
+            text.classList.remove('hidden');
+            return;
+        }
+        btn.disabled = false;
+        window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
+        document.getElementById('client-form').classList.add('hidden');
+        document.getElementById('view-client').classList.add('hidden');
+        document.getElementById('client-title').classList.add('hidden');
+        document.getElementById('success-view').classList.remove('hidden');
     },
 
     showToast: (msg, type='') => {
