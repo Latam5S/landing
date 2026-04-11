@@ -398,11 +398,17 @@ const app = {
             return;
         }
         btn.disabled = false;
-        window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank');
+        state.waMessage = wa;
+        document.getElementById('order-summary').innerText = wa.replace(/\*/g, '');
         document.getElementById('client-form').classList.add('hidden');
         document.getElementById('view-client').classList.add('hidden');
         document.getElementById('client-title').classList.add('hidden');
         document.getElementById('success-view').classList.remove('hidden');
+    },
+
+    sendWhatsApp: () => {
+        if (!state.waMessage || !state.config.whatsapp) return;
+        window.open(`https://wa.me/51${state.config.whatsapp}?text=${encodeURIComponent(state.waMessage)}`, '_blank');
     },
 
     showToast: (msg, type='') => {

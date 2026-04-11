@@ -280,11 +280,12 @@
                     <button type="submit" id="btn-submit-order"
                         class="w-full bg-[#3B82F6] hover:bg-[#60A5FA] disabled:bg-gray-400 text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-200 transform active:scale-95 disabled:active:scale-100 flex justify-center items-center gap-3 text-lg">
                         <span id="btn-submit-spinner" class="hidden">
-                            <div class="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                            <div class="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent">
+                            </div>
                         </span>
                         <span id="btn-submit-text" class="flex items-center gap-3">
-                            Finalizar y enviar por WhatsApp
-                            <i class="fab fa-whatsapp text-2xl"></i>
+                            Agendar envío
+                            <i data-lucide="save" class="w-6 h-6"></i>
                         </span>
                     </button>
 
@@ -300,12 +301,24 @@
                 <i data-lucide="check" class="w-12 h-12"></i>
             </div>
 
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Abriendo WhatsApp!</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Registro Exitoso!</h2>
 
-            <p class="text-gray-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-                Tu envío ha sido programado correctamente. <br>
-                <span class="font-medium text-gray-700">Continúa la conversación en el chat para finalizar.</span>
+            <p class="text-gray-500 text-sm mb-4 max-w-xs mx-auto leading-relaxed">
+                Tu envío ha sido programado correctamente. Verifica los datos y envíalos por chat con el botón verde.
             </p>
+
+            <div
+                class="w-full max-w-sm mx-auto mb-8 bg-gray-50 border border-gray-200 rounded-xl p-5 text-left shadow-inner">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-200 pb-2">
+                    Resumen</p>
+                <div id="order-summary" class="whitespace-pre-line text-sm text-gray-800 font-medium"></div>
+            </div>
+
+            <button type="button" id="btn-send-whatsapp" onclick="app.sendWhatsApp()"
+                class="w-full max-w-sm mx-auto bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-200 transform active:scale-95 flex justify-center items-center gap-3 text-lg">
+                Enviar por WhatsApp
+                <i class="fab fa-whatsapp text-2xl"></i>
+            </button>
 
         </div>
 
