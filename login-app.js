@@ -603,13 +603,17 @@ const app = {
                 return {
                     "DESTINATARIO (DOC)": x.clientDni || "",
                     "TELF. DESTINATARIO": x.clientPhone || "",
-                    "CONTACTO (DOC)": "",
-                    "TELF. CONTACTO": "",
-                    "NRO GRR": "",
-                    "ORIGEN": "",
+                    "CONTACTO (DOC)": null,
+                    "TELF. CONTACTO": null,
+                    "NRO GRR": null,
+                    "ORIGEN": null,
                     "DESTINO": destino,
-                    "MERCADERIA": "",
-                    "ALTO": "", "ANCHO": "", "LARGO": "", "PESO": "", "CANTIDAD": "1"
+                    "MERCADERIA": null,
+                    "ALTO": null,
+                    "ANCHO": null,
+                    "LARGO": null,
+                    "PESO": null,
+                    "CANTIDAD": "1"
                 };
             });
             fileName = `CargaMasiva_Shalom_${new Date().toISOString().slice(0, 10)}.xlsx`;
