@@ -1,0 +1,23 @@
+{
+  "name": "l5s-com",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "e2e-test": "playwright test",
+    "e2e-test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/bun": "latest",
+    "dotenv": "^17.3.1",
+    "vite": "^8.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
