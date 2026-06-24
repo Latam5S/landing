@@ -308,7 +308,7 @@ const app = {
                 );
             }
         } catch (e) {
-            app.showToast("Error de conexión");
+            app.showToast("Error de conexión", "error");
         }
         app.toggleLoading(false);
     },
@@ -325,7 +325,7 @@ const app = {
                     app.showToast("Estados actualizados");
                     app.loadOrders();
                 } catch (e) {
-                    app.showToast("Error al actualizar estados");
+                    app.showToast("Error al actualizar estados", "error");
                 }
                 app.toggleLoading(false);
             },
@@ -337,7 +337,7 @@ const app = {
         const order = state.allOrders.find(
             (o) => String(o.orderId || o.createdAt) === String(orderId),
         );
-        if (!order) return app.showToast("Error: No se encontró el pedido.");
+        if (!order) return app.showToast("Error: No se encontró el pedido.", "error");
 
         const storeName = state.config.merchantName || "Nuestra Tienda";
         let phone = (order.clientPhone || "").replace(/[^0-9]/g, "");
@@ -347,7 +347,7 @@ const app = {
 
         // Validación básica de número
         if (phone.length < 9)
-            return app.showToast("El número de teléfono no es válido.");
+            return app.showToast("El número de teléfono no es válido.", "error");
 
         const statusEmoji = order.status === "ENVIADO" ? "✅" : "📦";
         const statusText = order.status === "ENVIADO" ? "Enviado" : "Programado";
@@ -378,9 +378,10 @@ const app = {
         window.open(url, "_blank");
     },
 
-    showToast: (msg) => {
-        const el = document.getElementById("toast");
-        document.getElementById("toast-msg").innerText = msg;
+    showToast: (msg, type = "") => {
+        const prefix = type ? `${type}-` : "";
+        const el = document.getElementById(`${prefix}toast`);
+        document.getElementById(`${prefix}toast-msg`).innerText = msg;
         el.classList.remove("opacity-0", "-translate-y-20");
         setTimeout(() => el.classList.add("opacity-0", "-translate-y-20"), 3000);
     },
@@ -484,11 +485,13 @@ const app = {
             app.toggleLoading(true);
             try {
                 await api.adminUpdateUserPlan(uid, newPlan);
+                app.adminLoadUsers();
+                app.showToast("Plan actualizado");
             } catch (e) {
                 console.error("Error updating plan", e);
+                app.showToast("Error al actualizar el plan", "error");
             }
-            app.adminLoadUsers();
-            app.showToast("Plan actualizado");
+            app.toggleLoading(false);
         });
     },
 
@@ -512,7 +515,7 @@ const app = {
         } catch (e) {
             console.error("Error creating merchant", e);
             app.toggleLoading(false);
-            app.showToast("Error al crear usuario");
+            app.showToast("Error al crear usuario", "error");
             return;
         }
         window.open(
@@ -530,15 +533,16 @@ const app = {
             const np = Math.floor(1000 + Math.random() * 9000).toString();
             try {
                 await api.adminUpdatePassword(uid, np);
+                window.open(
+                    `https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación de clave:*\n\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`,
+                    "_blank",
+                );
+                app.showToast("Contraseña restablecida");
             } catch (e) {
                 console.error("Error resetting password", e);
+                app.showToast("Error al restablecer la contraseña", "error");
             }
-            window.open(
-                `https://wa.me/51${phone}?text=${encodeURIComponent(`🔐 *Recuperación de clave:*\n\n📱Usuario: ${phone}\n🔑Nueva Clave: *${np}*`)}`,
-                "_blank",
-            );
             app.toggleLoading(false);
-            app.showToast("Contraseña restablecida");
         });
     },
 
@@ -591,19 +595,25 @@ const app = {
 
         try {
             await api.saveMerchantConfig(state.config);
+
+            setTimeout(() => {
+                app.toggleLoading(false);
+                app.showToast("Configuración guardada y optimizada");
+                app.checkConfigStatus();
+
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
+                lucide.createIcons();
+            }, 500);
         } catch (e) {
             console.error("Error saving config", e);
-        }
-
-        setTimeout(() => {
             app.toggleLoading(false);
-            app.showToast("Configuración guardada y optimizada");
-            app.checkConfigStatus();
+            app.showToast("Error al guardar la configuración", "error");
 
             btn.disabled = false;
             btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Guardar';
             lucide.createIcons();
-        }, 500);
+        }
     },
 
     changePassword: async () => {
@@ -619,7 +629,7 @@ const app = {
                     app.showToast("Contraseña actualizada");
                 } catch (e) {
                     console.error("Error updating password", e);
-                    app.showToast("Error al actualizar contraseña");
+                    app.showToast("Error al actualizar contraseña", "error");
                 }
                 app.toggleLoading(false);
             },
@@ -673,6 +683,7 @@ const app = {
         try {
             const json = await api.getMerchantConfig();
             if (json.dataJson) state.config = json.dataJson;
+            delete state.config.isNewConfig; // Limpiamos la bandera si existe
         } catch (e) {
             const local = SafeStorage.getItem(`config_${state.merchantId}`);
             const config = local ? JSON.parse(local) : state.config;
@@ -1007,6 +1018,7 @@ const app = {
             if (hiddenCountEl) hiddenCountEl.innerText = state.totalHiddenCount;
         } catch (e) {
             state.allOrders = [];
+            app.showToast("Error al cargar los pedidos", "error");
         }
         app.renderOrders();
     },
@@ -1296,7 +1308,7 @@ const app = {
                     app.showToast("Envíos eliminados");
                     app.loadOrders();
                 } catch (e) {
-                    app.showToast("Error al eliminar envíos");
+                    app.showToast("Error al eliminar envíos", "error");
                 }
                 app.toggleLoading(false);
             },
