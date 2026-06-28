@@ -165,7 +165,7 @@
   },
   {
     "Agencia": "Arequipa / Arequipa / Paucarpata / Urb Manuel Prado",
-    "Direccion": "Calle BeléN N°100 - A Urb. Manuel Prado - Paucarpata  Referencia: A Espaldas Del Cc. Mall Aventura Porongoche."
+    "Direccion": "Calle BeléN N°100 - A Urb. Manuel Prado - Paucarpata  Referencia: A Espaldas Del Cc. Mall Aventura Porongoche"
   },
   {
     "Agencia": "Arequipa / Arequipa / Socabaya / Av Socabaya - Los Toritos",
@@ -210,10 +210,6 @@
   {
     "Agencia": "Arequipa / Islay / Islay / Matarani",
     "Direccion": "Asentamiento Humano. Puerto Nuevo Mz. I Lt. 18 Av. Bello Horizonte, Islay - Islay - Arequipa, Ref. Frente Al Parque EcolóGico"
-  },
-  {
-    "Agencia": "Arequipa / Islay / Mollendo / Cercado Mollendo",
-    "Direccion": "Calle Dean Valdivia 388 Cercado, Referencia: Esquina Con Blondel"
   },
   {
     "Agencia": "Arequipa / Islay / Mollendo / Mollendo Co",
@@ -517,7 +513,7 @@
   },
   {
     "Agencia": "Ica / Ica / La Tinguina / La TinguiñA",
-    "Direccion": "Av. Victorio Gotuzzo N° 506 - TinguiñA - Ica, Ref. Cruce Con Fray RamóN Rosas, Al Costado De La Comisaria P.N.P. La TinguiñA"
+    "Direccion": "Calle Francisco Sales Sotelo N° 298 Sub Lote 3, La TinguiñA - Ica – Ica, Ref. Cruce De La Av.Frncisco Sales Sotelo Y Av. Jose Carlos Mariategui"
   },
   {
     "Agencia": "Ica / Ica / Parcona / Parcona",
@@ -545,7 +541,7 @@
   },
   {
     "Agencia": "Ica / Nazca / Vista Alegre / Vista Alegre Co",
-    "Direccion": "Carretera Panamericana Sur NU00b0 906, Vista Alegre - Nazca -U00a0ica, Ref. Frente Al Aeropuerto De Vista Alegre"
+    "Direccion": "Carretera Panamericana Sur NU00b0 906, Vista Alegre - Nazca - U00a0ica, Ref. Frente Al Aeropuerto De Vista Alegre"
   },
   {
     "Agencia": "Ica / Pisco / Pisco / Av Abraham Valdelomar Co",
@@ -586,6 +582,10 @@
   {
     "Agencia": "Junin / Huancayo / Chilca / Chilca Huancayo",
     "Direccion": "Jr. 28 De Julio N° 935, Ref. Esquina 28 De Julio Y Santos Chocano"
+  },
+  {
+    "Agencia": "Junin / Huancayo / Chilca / Chilca Leoncio Prado",
+    "Direccion": "Jr. Leonico Prado 656, Chilca – Huancayo - JuníN Referencia: Esquina Con Jiron Jose Olaya"
   },
   {
     "Agencia": "Junin / Huancayo / El Tambo / Av CircunvalacióN Cruce Con Mariategui",
@@ -1316,6 +1316,10 @@
     "Direccion": "Av. San Juan Mz. 24 Lt. 1, Sect. Nuevo Horizonte, Pp. Jj Pamplona Alta - San Juan De Miraflores, Ref. A 3 Cdras. Del Cruce Con Av. Salvador Allende"
   },
   {
+    "Agencia": "Lima / Lima / San Juan De Miraflores / Av Los Precursores / Las Americas",
+    "Direccion": "Av. Los Precursores Mz. B Lt. 17 Aa.Hh El Inti, San Juan De Miraflores - Lima - Lima, Ref. A 1 Cdra. Del Cruce Con Av. Los PróCeres"
+  },
+  {
     "Agencia": "Lima / Lima / San Juan De Miraflores / Av Miguel Grau  Pamplona Alta",
     "Direccion": "Av. Almirante Miguel Grau Mz. Y3 Lt. 29,Pamplona Alta - San Juan De Miraflores - Lima, Ref. A Media Cdra. Del Mercado Ollantay Pamplonaalta"
   },
@@ -1326,6 +1330,10 @@
   {
     "Agencia": "Lima / Lima / San Juan De Miraflores / Maria Auxiliadora",
     "Direccion": "Av. Los HéRoes 1140 - Sjm, Referencia: Una Cdra. Antes Del Hospital MaríA Auxiliadora"
+  },
+  {
+    "Agencia": "Lima / Lima / San Martin De Porres / Av  Central  Smp",
+    "Direccion": "Av. Central Mz. A Lt. 07, Urb. Programa De Vivienda Lucerito De Naranjal, San MartíN De Porres - Lima - Lima, Ref. A 5 Cdras. Del Cruce Con Av. Tantamayo"
   },
   {
     "Agencia": "Lima / Lima / San Martin De Porres / Av Bertello Smp",
@@ -1596,7 +1604,7 @@
     "Direccion": "Urb. Parque Industrial Piura Futura Mz. G, Lt. 1a. 26 De Octubre - Piura, Referencia: Al Frente Del Grifo Petro Perú"
   },
   {
-    "Agencia": "Piura / Piura / Castilla /  Av Tacna",
+    "Agencia": "Piura / Piura / Castilla / Av Tacna",
     "Direccion": "Av. Tacna 509 Castilla - Piura, Referencia: Frente A Ugel De Castilla"
   },
   {
@@ -1629,7 +1637,7 @@
   },
   {
     "Agencia": "Piura / Piura / Tambo Grande / Tambo Grande",
-    "Direccion": "Av. AráMbulo SantíN N° 100, Mz. D Lt. E Aa. Hh. AndréS RáZuri Referencia: A Dos Cuadras Del Estadio Deportivo"
+    "Direccion": "Aa. Hh. El Huerto Mz. E Lt. 08 Tambo Grande – Piura - Piura, Ref. AtráS Del Colegio Ina 54 Agropecuario, A La Altura Del Campo Campestre Rivera Del RíO"
   },
   {
     "Agencia": "Piura / Sechura / Sechura / Sechura",
