@@ -1,3 +1,4 @@
+import './shared-outage-banner.js';
 
 const DEFAULT_API_URL = import.meta.env.VITE_API_URL;
 

@@ -1,3 +1,5 @@
+import './shared-tailwind-config.js';
+
 (function () {
   const STORAGE_KEY = 'l5s_outage_banner_dismissed';
 
@@ -16,7 +18,7 @@
 
   banner.innerHTML =
     '<span style="font-size:22px;line-height:1">🛠️</span>' +
-    '<span>Mantenimiento programado: Estaremos fuera de servicio por 30 minutos el viernes 03 de julio a las 10:00 a.m. ¡Agradecemos tu comprensión!</span>' +
+    '<span>Mantenimiento programado: Estaremos fuera de servicio por 30 minutos el martes 07 de julio a las 10:00 a.m. ¡Agradecemos tu comprensión!</span>' +
     '<button id="outage-ack-btn" style="background:#1e293b;color:#fff;border:none;padding:6px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:\'Quicksand\',sans-serif;white-space:nowrap">Entendido</button>';
 
   document.body.prepend(banner);
@@ -55,4 +57,4 @@
       }
     }
   }
-})()
+})();
