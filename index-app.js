@@ -1,5 +1,4 @@
-// Latam5S Landing Page - Main Application Script
-// Environment variables available via import.meta.env
+import './shared-outage-banner.js';
 
 // Initialize Feather Icons
 feather.replace();
