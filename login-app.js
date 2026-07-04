@@ -1206,8 +1206,11 @@ const app = {
                             </div>
                         </div>
                         <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1 items-center">
-                            <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.clientPhone)}</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
+                            ${x.clientDni
+                                ? `<span class="flex items-center gap-1" title="Doc. Identidad"><i data-lucide="contact-round" class="w-3 h-3 text-primary"></i> <b>${escapeHtml(x.clientDni)}</b></span>`
+                                : ""}
+                            <span class="flex items-center gap-1" title="Teléfono"><i data-lucide="phone" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.clientPhone)}</span>
+                            <span class="flex items-center gap-1" title="Fecha de envío"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
                         </div>
                         <div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">
                             ${x.clientAgency
