@@ -1,4 +1,4 @@
-import api from "./rest-client.js";
+import {anonymousApi as api} from "./rest-client.js";
 
 const URLS = {
   districts: "lstDistritos.json",

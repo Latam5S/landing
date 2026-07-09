@@ -1,28 +1,35 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+const MERCHANT_API_TOKEN_KEY = 'latam5s_merchant_api_token';
+const ANONYMOUS_API_TOKEN_KEY = 'latam5s_anonymous_api_token';
 
 const SafeStorage = {
     setItem(key, value) {
         try {
             localStorage.setItem(key, value);
-        } catch (e) { }
+        } catch (e) {
+            console.error("Failed to set item in localStorage:", e);
+        }
     },
     getItem(key) {
         try {
             return localStorage.getItem(key);
         } catch (e) {
+            console.error("Failed to get item from localStorage:", e);
             return null;
         }
     },
     removeItem(key) {
         try {
             localStorage.removeItem(key);
-        } catch (e) { }
+        } catch (e) {
+            console.error("Failed to remove item from localStorage:", e);
+        }
     },
 };
 
 class APIClient {
-    constructor() {
-        this.tokenKey = "latam5s_auth_token";
+    constructor(tokenKey = MERCHANT_API_TOKEN_KEY) {
+        this.tokenKey = tokenKey;
     }
 
     setToken(token) {
@@ -53,6 +60,7 @@ class APIClient {
             );
             return JSON.parse(jsonPayload);
         } catch (e) {
+            console.error("Failed to parse token payload:", e);
             return null;
         }
     }
@@ -238,5 +246,6 @@ class APIClient {
     }
 }
 
-export const api = new APIClient();
-export default api;
+export const merchantApi = new APIClient(MERCHANT_API_TOKEN_KEY);
+export const anonymousApi = new APIClient(ANONYMOUS_API_TOKEN_KEY);
+export default merchantApi
