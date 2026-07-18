@@ -100,7 +100,7 @@
     "Direccion": "Av. Lima N° 406 – Alto Selva Alegre - Arequipa, Ref. Esquina Con Av. Obrera Cuadra 20"
   },
   {
-    "Agencia": "Arequipa / Arequipa / Arequipa / Av Parra 379 Co",
+    "Agencia": "Arequipa / Arequipa / Arequipa / Av Parra 379",
     "Direccion": "Av. Parra 379 - Arequipa"
   },
   {
@@ -166,6 +166,10 @@
   {
     "Agencia": "Arequipa / Arequipa / Paucarpata / Urb Manuel Prado",
     "Direccion": "Calle Belén N°100 - A Urb. Manuel Prado - Paucarpata  Referencia: A Espaldas Del Cc. Mall Aventura Porongoche"
+  },
+  {
+    "Agencia": "Arequipa / Arequipa / Sachaca / Variante Uchumayo Co",
+    "Direccion": "Variante De Uchumayo Km 4.5 Valle Chili Sector Alto Cural, Parcela 662, Sachaca - Arequipa - Arequipa, Ref. A 50 Mts. Del Óvalo Volvo Variante Uchumayo"
   },
   {
     "Agencia": "Arequipa / Arequipa / Socabaya / Av Socabaya - Los Toritos",
@@ -945,7 +949,7 @@
   },
   {
     "Agencia": "Lima / Lima / Ate-vitarte / Huaycan Entrada",
-    "Direccion": "Carretera Central Km 17 Mz. E Lt. 1,  Ref. Entrada De Huaycan Al Costado Del Grifo Primax. Ex Grifo El Negro."
+    "Direccion": "Av. Andrés Avelino Cáceres Mz G Lt. 14, 1er Piso Prog De Viv. Philadelfia De Ate Iv Etapa, Ate Vitarte - Lima - Lima, Ref. a Una Cdra. De La Ctra. Central, Paradero El Lavadero"
   },
   {
     "Agencia": "Lima / Lima / Ate-vitarte / Los Sauces",
@@ -1476,12 +1480,12 @@
     "Direccion": "Av.  tupac Amaru Con - Calle Lourdes De León #479 iquitos Maynas - Loreto, Ref. Frente A La Botica Thiagofama"
   },
   {
-    "Agencia": "Loreto / Maynas / Iquitos / Iquitos Co Jr. Pablo Rossell",
-    "Direccion": "Jr. Pablo Rossell 590 Con Nanay, Ref. Cruce Con Av. Nanay Frente Al Instituto Cepro América Computer"
+    "Agencia": "Loreto / Maynas / Iquitos / Iquitos Co Jr. Bolognesi",
+    "Direccion": "Jr. Francisco  Bolognesi 941  Esquina Con Jr Bermudez  Referencia Frente A La Universidad Nacional De La Amazonia Peruana"
   },
   {
-    "Agencia": "Loreto / Maynas / Iquitos / Iquitos Jr Francisco Bolognesi",
-    "Direccion": "Jr. Francisco Bolognesi Nro 203 - 215  Iquitos.  Referencia : Esquina Con Putumayo"
+    "Agencia": "Loreto / Maynas / Iquitos / Iquitos Jr Pablo Rossel",
+    "Direccion": "Jr. Pablo Rossel Nro  590 Cruce Con Jr  Nanay"
   },
   {
     "Agencia": "Loreto / Maynas / Iquitos San Juan Bautista / Av Jose A. Quiñones",
@@ -1693,7 +1697,7 @@
   },
   {
     "Agencia": "Puno / Chucuito / Desaguadero / Desaguadero",
-    "Direccion": "Av. 28 De Julio N° 564 - 566, Chucuito Ref. A 50 Mtrs. Del Banco De La Nacion"
+    "Direccion": "Av. Panamericana n° 1158 - 1160, Desaguadero - Chucuito - Puno, Ref. al Costado Del Grifo Bartolomé"
   },
   {
     "Agencia": "Puno / El Collao / Ilave / Ilave",
@@ -1780,7 +1784,7 @@
     "Direccion": "Jr. Serafín Filomeno N°279, Moyobamba - Moyobamba - San Martín, Ref. A Una Cuadra Imedia Del Cumo (centro Cultural De Moyobamba)"
   },
   {
-    "Agencia": "San Martin / Moyobamba / Moyobamba / Ovalo Orquideas Co",
+    "Agencia": "San Martin / Moyobamba / Moyobamba / Moyobamba  Co",
     "Direccion": "Jr. 20 De Abril  2138 -  Referencia : Altura De La  Pampa Del  Hambre"
   },
   {

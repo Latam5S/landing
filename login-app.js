@@ -792,7 +792,7 @@ const app = {
                 // B. LÓGICA DE "ÚLTIMO DATO"
                 if (rawName.includes("/")) {
                     const parts = rawName.split("/");
-                    destino = parts.slice(3 - parts.length).map((p) => p.toUpperCase()).join(" / ").trim();
+                    destino = parts.slice(3 - parts.length).map((p) => p.toUpperCase()).join("/").trim();
                 } else {
                     destino = rawName.toUpperCase();
                 }
