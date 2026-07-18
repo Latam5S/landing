@@ -783,7 +783,7 @@ const app = {
                 let rawName = "";
 
                 // A. Extraer nombre de la agencia (antes del PIPE)
-                if (x.clientAgency && x.clientAgency.includes("|")) {
+                if (x.clientAgency?.includes("|")) {
                     rawName = x.clientAgency.split("|")[0].trim();
                 } else {
                     rawName = x.clientAgency || x.clientDistrict || "";
@@ -792,7 +792,7 @@ const app = {
                 // B. LÓGICA DE "ÚLTIMO DATO"
                 if (rawName.includes("/")) {
                     const parts = rawName.split("/");
-                    destino = parts[parts.length - 1].trim().toUpperCase();
+                    destino = parts.slice(3 - parts.length).map((p) => p.toUpperCase()).join(" / ").trim();
                 } else {
                     destino = rawName.toUpperCase();
                 }
@@ -806,10 +806,10 @@ const app = {
                     "ORIGEN": null,
                     "DESTINO": destino,
                     "MERCADERIA": null,
-                    "ALTO": null,
-                    "ANCHO": null,
-                    "LARGO": null,
-                    "PESO": null,
+                    "ALTO": 0,
+                    "ANCHO": 0,
+                    "LARGO": 0,
+                    "PESO": 0,
                     "CANTIDAD": "1",
                 };
             });
@@ -1454,10 +1454,11 @@ const app = {
                             let destLine2 = '';
                             console.log("coureier -", x.courier);
                             if (x.clientAgency && multiAddressCouriers.includes(x.courier)) { //}   (x.courier || '') === 'Shalom') {
-                                const parts = location.split(' / ').map(s => s.trim()).filter(Boolean);
-                                const last = parts.pop() || '';
-                                destLine1 = parts.join(' / ');
-                                destLine2 = last;
+                                const parts = location.split('/').filter(Boolean);
+                                const partsLine1 = parts.slice(0, 3);
+                                const partsLine2 = parts.slice(3 - parts.length);
+                                destLine1 = partsLine1.join('/').trim();
+                                destLine2 = partsLine2.join('/').trim();
                             }
 
                             const isStore = (x.courier || '') === 'Retiro en tienda';
