@@ -212,10 +212,6 @@
     "Direccion": "Asentamiento Humano. Puerto Nuevo Mz. I Lt. 18 Av. Bello Horizonte, islay - islay - Arequipa, Ref. Frente Al Parque Ecológico"
   },
   {
-    "Agencia": "Arequipa / Islay / Mollendo / Cercado Mollendo",
-    "Direccion": "Calle Dean Valdivia 388 Cercado, Referencia: Esquina Con Blondel"
-  },
-  {
     "Agencia": "Arequipa / Islay / Mollendo / Mollendo Co",
     "Direccion": "Mariscal Castilla 472 –a, Arequipa - Islay - Mollendo, Ref. al Costado De Cei “mi carrusel”"
   },
@@ -436,6 +432,10 @@
     "Direccion": "Calle San Jose N° 703 Barrio Progreso, Yauri (espinar) - Espinar - Cusco, Ref.  a Media Cdra. Del Grifo San Jose / A Media Cdra. De La Av. Tintaya"
   },
   {
+    "Agencia": "Cusco / La Convencion / Pichari / Pichari",
+    "Direccion": "Asoc. Gral. Juan Velasco A. Mz. B Lt. 2 , Pichari - La Convencion – Cusco, Ref. Al Costado De Techo Propio"
+  },
+  {
     "Agencia": "Cusco / La Convencion / Santa Ana / Quillabamba",
     "Direccion": "Jr. Puno Lt. 10 Y 11 Mz. G Urb. Santa Ana, Cusco - La Convencion - Santa Ana, Ref. A Media Cdra.l Del Estadio Municipal De Quillabamba / Cruce Con Prolongacion Jr. Martin Pio Concha"
   },
@@ -537,7 +537,7 @@
   },
   {
     "Agencia": "Ica / Nazca / Marcona / San Juan De Marcona",
-    "Direccion": "A.h. San Martin De Porres E-28 San Juan De Marcona - Nazca - Ica, Ref. Entre El Hotel San Martin Y El Minimarket Lana"
+    "Direccion": "A. H. San Martín De Porres E-28 san Juan De Marcona - Nazca - Ica, Ref. Entre El Hotel San Martin Y El Minimarket Lana"
   },
   {
     "Agencia": "Ica / Nazca / Nazca / Av Circunvalacion Nazca",
@@ -776,8 +776,8 @@
     "Direccion": "Av. Las Américas Lt. 42 Mz. D, Urb. Monterrico - I Etapa, Chiclayo - Chiclayo - Lambayeque, Ref. A Media Cdra. entre La Av. Colectora Y Av. Las Americas Y A Media Cdra. Del Grifo Sr. De Sipán"
   },
   {
-    "Agencia": "Lambayeque / Chiclayo / Chiclayo / Mariscal Nieto",
-    "Direccion": "Calle Mariscal Nieto N° 390, Referencia: Entre Mariscal Nieto Y Miguel Grau"
+    "Agencia": "Lambayeque / Chiclayo / Chiclayo / Calle Tacna",
+    "Direccion": "Calle. Tacna n° 1095 -chiclayo- Chiclayo - Lambayeque, Ref. Intersección Con Av. Jose Quiñones / A Espaldas Del Supermercado Makro Chiclayo"
   },
   {
     "Agencia": "Lambayeque / Chiclayo / Chiclayo / Miraflores Chiclayo",
@@ -1012,10 +1012,6 @@
     "Direccion": "Jr. Presbítero García Villon Nro. 560 Cercado Lima - Lima, Ref. A La Altura De La Cdra. 5 De Av. Oscar R. Benavides (ex Av. Colonial), En Medio De Las Av. Guillermo Dansey Y Av. Oscar R. Benavides"
   },
   {
-    "Agencia": "Lima / Lima / Cercado Lima / Malvinas - Jr. Ricardo Treneman",
-    "Direccion": "Jr. Ricardo Treneman N° 920, Referencia: Dentro Del Local Farenet"
-  },
-  {
     "Agencia": "Lima / Lima / Chorrillos / Chorrillos Co",
     "Direccion": "Av. Santa Anita N.° 580, Chorrillos - Lima, Ref. Al Costado Del Mercado Santa Anita, Cruce Con San Genaro"
   },
@@ -1166,6 +1162,10 @@
   {
     "Agencia": "Lima / Lima / Los Olivos / Pro",
     "Direccion": "Av. Los Próceres Mz. Pp2 Lt.21, Urb. Puertas De Pro - Los Olivos"
+  },
+  {
+    "Agencia": "Lima / Lima / Los Olivos / Segunda De Pro",
+    "Direccion": "Av. Alfredo Mendiola 8161 Urb. Pro, Los Olivos - Lima - Lima, Ref. A Una Cdra. Del Colegio José maría Arguedas"
   },
   {
     "Agencia": "Lima / Lima / Lurigancho / Chosica",
@@ -1320,6 +1320,10 @@
     "Direccion": "Av. San Juan Mz. 24 Lt. 1, Sect. Nuevo Horizonte, Pp. Jj Pamplona Alta - San Juan De Miraflores, Ref. A 3 Cdras. Del Cruce Con Av. Salvador Allende"
   },
   {
+    "Agencia": "Lima / Lima / San Juan De Miraflores / Av Los Precursores / Las Americas",
+    "Direccion": "Av. Los Precursores Mz. B Lt. 17 Aa.hh El Inti, San Juan De Miraflores - Lima - Lima, Ref. A 1 Cdra. Del Cruce Con Av. Los Próceres"
+  },
+  {
     "Agencia": "Lima / Lima / San Juan De Miraflores / Av Miguel Grau  Pamplona Alta",
     "Direccion": "Av. Almirante Miguel Grau Mz. Y3 Lt. 29,pamplona Alta - San Juan De Miraflores - Lima, Ref. A Media Cdra. Del Mercado Ollantay Pamplonaalta"
   },
@@ -1334,10 +1338,6 @@
   {
     "Agencia": "Lima / Lima / San Martin De Porres / Av  Central  Smp",
     "Direccion": "Av. Central Mz. A Lt. 07, Urb. Programa De Vivienda Lucerito De Naranjal, San Martín De Porres - Lima - Lima, Ref. A 5 Cdras. Del Cruce Con Av. Tantamayo"
-  },
-  {
-    "Agencia": "Lima / Lima / San Martin De Porres / Av Bertello Smp",
-    "Direccion": "Av. Alejandro Bertello Bollati Mz. H Lt. 2-a - Asoc. De Viv. San Remo Ii Etapa, San Martín De Porres - Lima - Lima, Ref. A Media Cdra. Del Cruce Con Av. Canta Callao"
   },
   {
     "Agencia": "Lima / Lima / San Martin De Porres / Av Jose Granda Cdra 38",
@@ -1388,6 +1388,10 @@
     "Direccion": "Av. German Aguirre Ugarte 649 Urb. San German - San Martin De Porres, Ref. A La Altura De La Cuadra 6 De La Av. German Aguirre Y A 3 Cuadras De Av. Tomas Valle"
   },
   {
+    "Agencia": "Lima / Lima / San Martin De Porres / Smp Av Bertello",
+    "Direccion": "Av. Alejandro Bertello Bollati Mz. H Lt. 2-a - Asoc. De Viv. San Remo Ii Etapa, San Martín De Porres - Lima - Lima, Ref. A Media Cdra. Del Cruce Con Av. Canta Callao"
+  },
+  {
     "Agencia": "Lima / Lima / San Martin De Porres / Smp-av. Proceres",
     "Direccion": "Av. Próceres N° 588 Urb. Covicem, Ref. A 2 Cdras. De Tomás Valle"
   },
@@ -1400,7 +1404,7 @@
     "Direccion": "Av. Huarochirí Mz. E1 Lt. 03 - Urb. Los Cedros Santa Anita, Ref. Cruce De Av. Huarochirí Con Av. Santa Ana"
   },
   {
-    "Agencia": "Lima / Lima / Santa Anita / Jr Cesar Vallejo",
+    "Agencia": "Lima / Lima / Santa Anita / Urb Universal",
     "Direccion": "Jr. Cesar Vallejo 302 Mz. B1 Lt. 02 Urb Universal, Santa Anita- Lima-lima, Ref. A 1 Cdra. Del Cruce Con Av. Tupac Amaru"
   },
   {
