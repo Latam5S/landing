@@ -100,10 +100,6 @@
     "Direccion": "Av. Lima N° 406 – Alto Selva Alegre - Arequipa, Ref. Esquina Con Av. Obrera Cuadra 20"
   },
   {
-    "Agencia": "Arequipa / Arequipa / Arequipa / Av Parra 379",
-    "Direccion": "Av. Parra 379 - Arequipa"
-  },
-  {
     "Agencia": "Arequipa / Arequipa / Arequipa / Mall Lambramani",
     "Direccion": "Av. Lambramani 325, Arequipa - Arequipa- Arequipa, Ref. Dentro Del Mall Lambramani (sotano Piso -4)"
   },
@@ -180,8 +176,8 @@
     "Direccion": "Asentamiento Urbano Municipal Horacio Zeballos Gamez Sector E Mz. 1 Lt. 18 socabaya - Arequipa, Ref. al Costado Del Colegio Joule Y/o 2 Cdras. Del Penal De Socabaya"
   },
   {
-    "Agencia": "Arequipa / Arequipa / Uchumayo / Uchumayo",
-    "Direccion": "Urb. El Carmen M. E. Lt. 1 Congata Del Distrito Uchumayo - Arequipa, Ref. A Dos Cdras. De La Comisaria Congata"
+    "Agencia": "Arequipa / Arequipa / Uchumayo / Congata",
+    "Direccion": "Urb. El Carmen M. E. Lt. 1 Congata Del Distrito Uchumayo  - Arequipa, Ref. A Dos Cdras. De La Comisaria Congata"
   },
   {
     "Agencia": "Arequipa / Arequipa / Yura / Yura",
@@ -1485,11 +1481,11 @@
   },
   {
     "Agencia": "Loreto / Maynas / Iquitos / Iquitos Co Jr. Bolognesi",
-    "Direccion": "Jr. Francisco  Bolognesi 941  Esquina Con Jr Bermudez  Referencia Frente A La Universidad Nacional De La Amazonia Peruana"
+    "Direccion": "Jr. Francisco Bolognesi #941 Con Jr. Bermúdez, Iquitos - Maynas - Loreto, Ref. Frente A La Universidad nacional De La Amazonia Peruana"
   },
   {
     "Agencia": "Loreto / Maynas / Iquitos / Iquitos Jr Pablo Rossel",
-    "Direccion": "Jr. Pablo Rossel Nro  590 Cruce Con Jr  Nanay"
+    "Direccion": "Jr Pablo Rossel 590 Con Nanay, Ref. Frente Al Cetpro American Computer"
   },
   {
     "Agencia": "Loreto / Maynas / Iquitos San Juan Bautista / Av Jose A. Quiñones",
