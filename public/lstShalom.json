@@ -100,6 +100,10 @@
     "Direccion": "Av. Lima N° 406 – Alto Selva Alegre - Arequipa, Ref. Esquina Con Av. Obrera Cuadra 20"
   },
   {
+    "Agencia": "Arequipa / Arequipa / Arequipa / Av Parra 379",
+    "Direccion": "Av. Parra 379 - Arequipa"
+  },
+  {
     "Agencia": "Arequipa / Arequipa / Arequipa / Mall Lambramani",
     "Direccion": "Av. Lambramani 325, Arequipa - Arequipa- Arequipa, Ref. Dentro Del Mall Lambramani (sotano Piso -4)"
   },
@@ -661,7 +665,7 @@
   },
   {
     "Agencia": "La Libertad / Ascope / Paijan / Paijan",
-    "Direccion": "Av. Panamericana Norte N° 1320 - Paijan"
+    "Direccion": "Av. Panamericana Nro. 2321 La Libertad - Ascope - Paijan, Ref. A 1 Cdra. Del Estadio Municipal De Paiján"
   },
   {
     "Agencia": "La Libertad / Chepen / Chepen / Chepen",
@@ -845,7 +849,7 @@
   },
   {
     "Agencia": "Lambayeque / Lambayeque / Motupe / Motupe",
-    "Direccion": "Calle Los Pinos N°116 - Lotizacion La Primavera  Referencia :  A Media Cuadra De La Panamericana Carretera Fernando Belaunde Terry"
+    "Direccion": "Av. El Maestro N° 447 - Motupe - Lambayeque- Lambayeque, Ref. En La Carretera Fernando Belaunde Terry (panamericana Norte) / Al Frente Del Grifo Ava"
   },
   {
     "Agencia": "Lambayeque / Lambayeque / Olmos / Olmos",
