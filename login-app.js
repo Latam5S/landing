@@ -1489,9 +1489,11 @@ const app = {
                                 
                                 <div style="margin-bottom: 8px;">
                                     <p style="margin: 0; font-size: ${7 * m}px; color: #666; font-weight: bold; text-transform: uppercase;">DESTINATARIO:</p>
-                                    <h2 style="margin: 2px 0; font-size: ${12 * m}px; font-weight: 900; color: #000; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(x.clientName).toUpperCase()}</h2>
-                                    ${x.clientDni ? `<p style="margin: 0; font-size: ${9 * m}px; color: #000;">N\u00B0DOC: ${escapeHtml(x.clientDni)}</p>` : ''}
-                                    <p style="margin: 0; font-size: ${9 * m}px; color: #000;">Cel: ${escapeHtml(x.clientPhone)}</p>
+                                    <h2 style="margin: 2px 0; font-size: ${12 * m}px; font-weight: 800; color: #000; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(x.clientName).toUpperCase()}</h2>
+                                    <p style="margin: 2px 0 0 0; font-size: ${12 * m}px; font-weight: 800; color: #000; line-height: 1.2; display: flex;">
+                                        ${x.clientDni ? `<span style="flex: 0 0 50%; min-width: 0; word-break: break-word; overflow-wrap: break-word; padding-right: 8px; box-sizing: border-box;">N\u00B0DOC: ${escapeHtml(x.clientDni)}</span>` : ''}
+                                        <span style="flex: 0 0 50%; min-width: 0; word-break: break-word; overflow-wrap: break-word;">Cel: ${escapeHtml(x.clientPhone)}</span>
+                                    </p>
                                 </div>
                                 
                                 ${!isStore ? `
