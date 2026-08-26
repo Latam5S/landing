@@ -265,7 +265,7 @@
   },
   {
     "Agencia": "Arequipa / Caraveli / Caraveli / Agente Caraveli - Av. Peru  Nro 104",
-    "Direccion": "Peru Nro 104"
+    "Direccion": "Av Peru Nro 104"
   },
   {
     "Agencia": "Arequipa / Caraveli / Chala / Agente Chala - Ah Manuel Prado Mz 50 Av Progreso Chala S/n",
@@ -456,10 +456,6 @@
     "Direccion": "Jr Zarumilla Nro 150 Santa Cruz"
   },
   {
-    "Agencia": "Callao / Callao / Callao / Agente Smp-jr Callao",
-    "Direccion": "Ca Callao Nro 574 (cercado De Lima, A Pocas Cuadras De La Plaza Mayor Y Del Jr.)"
-  },
-  {
     "Agencia": "Callao / Callao / Callao / Olva Almacen - Av. Argentina 4458 - Callao",
     "Direccion": "Av Argentina Nro 4458"
   },
@@ -628,8 +624,8 @@
     "Direccion": "Jr Lima Nro 227"
   },
   {
-    "Agencia": "Junin / Chanchamayo / Perene / Tienda Perene - Av Marginal Mz Q Lte 1 Vista Alegre - Perene (libreria Lfcf Villa Perene)",
-    "Direccion": "Av Marginal Mz Q Lte 1 Vista Alegre - Perene (libreria Lfcf Villa Perene)"
+    "Agencia": "Junin / Chanchamayo / Perene / Tienda Perene -jr 22 De Octubre S/n S/n Urbanizacion Esperanza-pampa Silva",
+    "Direccion": "Jr 22 De Octubre S/n S/n Urbanizacion Esperanza-pampa Silva"
   },
   {
     "Agencia": "Junin / Chanchamayo / Pichanaki / Pichanaki - Av Carretera Marginal  Nro 481",
@@ -780,6 +776,10 @@
     "Direccion": "Mz C25 Lte 16 Urb. Manuel Arevalo (av. Los Jardines-ie Gean Piaget)"
   },
   {
+    "Agencia": "La Libertad / Trujillo / Laredo / Agente Olvatru- Laredo / Bazar Metrito",
+    "Direccion": "Calle San Ignacio Nro 690 (ex Campamento Laredo)"
+  },
+  {
     "Agencia": "La Libertad / Trujillo / Moche / Agente Olvatru- Moche / Multiservicios D¿veras",
     "Direccion": "Sepulveda Nro 369"
   },
@@ -905,7 +905,7 @@
   },
   {
     "Agencia": "Lima / Lima / Ate / Agente Olva Salamanca - Los Saucos",
-    "Direccion": "Ca Los Sauces Nro 353 Urbanizacion Recaudadores"
+    "Direccion": "Calle Los Sauces 353(urb Los Recaudadores Salamanca-espalda Plaza Vea De Circunvalacion - Salamanca)"
   },
   {
     "Agencia": "Lima / Lima / Ate / Olva Ate - Prolongacion Javier Prado 9288 Tda 101, Ate - Av Prolongacion Javier Prado Nro 9288",
@@ -1284,6 +1284,10 @@
     "Direccion": "Jose Grand Nro 3437 ( La Av. José Granda, San Martín De Porres, Cerca De La Av. U)"
   },
   {
+    "Agencia": "Lima / Lima / San Martin De Porres / Agente Smp-jr Callao",
+    "Direccion": "Jirón Callao 574(urb Peru 1er Piso Altura De La Cuadra 35 De La Av Perú  Frente A La Plaza De Armas De Smp)"
+  },
+  {
     "Agencia": "Lima / Lima / San Miguel / Agente Olva San Miguel - Bodega Don Emilio  - Av Federico Gallesse  Nro 884",
     "Direccion": "Av Federico Gallesse  Nro 884 (a Cuatro Cuadras Del Parque Media Luna)"
   },
@@ -1378,10 +1382,6 @@
   {
     "Agencia": "Loreto / Mariscal Ramon Castilla / Caballococha / Caballococha - Ca 28 De Julio Nro 711 Caballococha",
     "Direccion": "Ca 28 De Julio Nro 711 Caballococha"
-  },
-  {
-    "Agencia": "Loreto / Maynas / Iquitos / Agente Olva Iquitos - K&a Proyectos Y Servicios -iquitos",
-    "Direccion": "Mz A Lte 8 Urbanizacion Acuario - Iquitos (altura Cdra 12 De La Calle Brasil)"
   },
   {
     "Agencia": "Loreto / Maynas / Iquitos / Tienda Olva Putumayo - Iqt",
