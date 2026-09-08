@@ -477,7 +477,7 @@
   },
   {
     "Agencia": "Huanuco / Huanuco / Huanuco / Jr Aguilar",
-    "Direccion": "Jr. Aguilar N° 872 -  Huánuco"
+    "Direccion": "Jr. Mayro N° 344, Ref. A Una Cdra. Del Parque San Pedro"
   },
   {
     "Agencia": "Huanuco / Leoncio Prado / Jose Crespo Y Castil / Aucayacu",
@@ -712,6 +712,10 @@
     "Direccion": "Av. Hermanos Angulo 628, Trujillo, Ref. A Espaldas De La Municipalidad El Porvenir"
   },
   {
+    "Agencia": "La Libertad / Trujillo / El Porvenir / Av. 12 De Noviembre",
+    "Direccion": "Av. 12 De Noviembre m. W Lote 19 Mz. 3a, El Porvenir - Trujillo - La Libertad, Ref. Al Frente Del Completo Deportivo José Caipo"
+  },
+  {
     "Agencia": "La Libertad / Trujillo / El Porvenir / Av. Las Magnolias",
     "Direccion": "Av. Las Magnolias Mz. 25 Lt. 2a Nuevo Porvenir, El Porvenir - Trujillo - La Libertad, Ref. A Una Cdra. Del Poder Judicial Cisaj Sede El Porvenir"
   },
@@ -762,6 +766,10 @@
   {
     "Agencia": "La Libertad / Trujillo / Trujillo / Trujillo La Perla",
     "Direccion": "Av. La Perla Mz. E Lote 05 Urb. Ingenieria – Trujillo – La Libertad, Ref. A 1 Cdra. Del Colegio Bruning"
+  },
+  {
+    "Agencia": "La Libertad / Trujillo / Victor Larco Herrera / Av Larco",
+    "Direccion": "Av. Larco 865, Trujillo - Trujillo - La Libertad, Ref.  Mz X Lt 28 Cui San Andres V Etapa Tercer Sector"
   },
   {
     "Agencia": "La Libertad / Viru / Chao / Chao",
@@ -897,7 +905,7 @@
   },
   {
     "Agencia": "Lima / Huaral / Huaral / Huaral",
-    "Direccion": "H. U. Fundo Esquivel P-21, Mz. C, Lt. 5, 6, 8 Y 9 De La Urb. Residencial El Olivar, Huaral - Huaral - Lima, Ref. A 1 M. Del Estadio Unión Huaral, A 3 Cdras. De Los 3 Arcos Ingreso A huaral"
+    "Direccion": "Habilitación Urbana Fundo Esquivel P-21, Mz. C, Lt. 5, 6, 8 Y 9 De La Urb. Resid. El Olivar, Con Int. En Av. Chancay, Ref. A 1 M. Del Estadio Unión Huaral, A 3 Cdras. De Los 3 Arcos Ingreso A huaral"
   },
   {
     "Agencia": "Lima / Huarochiri / San Antonio / Jicamarca",
@@ -977,7 +985,7 @@
   },
   {
     "Agencia": "Lima / Lima / Carabayllo / Av  Tupac Amaru Km. 19",
-    "Direccion": "Mz. 1a - Lt. 8 Av. Tupac Amaru N° 10472, Carabayllo - Lima, Ref. Al Costado Del Colegio Ciro Alegría"
+    "Direccion": "Jr. Los Sauces Mz. E Lote 9 Del Aa. Hh. Villa Manuel Escorza, Ref. Entre Prolongacion Av. Primavera Y Jr. Los Sauces Altura De Av. Tupac Amaru Km. 19"
   },
   {
     "Agencia": "Lima / Lima / Carabayllo / Av Jose Saco Rojas",
@@ -1014,6 +1022,10 @@
   {
     "Agencia": "Lima / Lima / Cercado Lima / Malvinas - Jr. Garcia Villón",
     "Direccion": "Jr. Presbítero García Villon Nro. 560 Cercado Lima - Lima, Ref. A La Altura De La Cdra. 5 De Av. Oscar R. Benavides (ex Av. Colonial), En Medio De Las Av. Guillermo Dansey Y Av. Oscar R. Benavides"
+  },
+  {
+    "Agencia": "Lima / Lima / Cercado Lima / Malvinas - Jr. Ricardo Treneman",
+    "Direccion": "Jr. Ricardo Treneman N° 920, Referencia: Dentro Del Local Farenet"
   },
   {
     "Agencia": "Lima / Lima / Chorrillos / Chorrillos Co",
