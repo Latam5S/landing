@@ -55,6 +55,7 @@ const initialState = {
     shippingDays: [],
     updateTime: "18:00",
     updateGap: "0",
+    enableAdvancedOrderStatus: false,
 };
 const state = {
     user: null,
@@ -64,7 +65,20 @@ const state = {
     selectedOrders: new Set(),
     visibleOrders: [],
     filterStatus: "PENDIENTE",
+    savedAdvancedOrderStatus: false,
 };
+
+const STATUS_LABELS = {
+    PENDIENTE: "PENDIENTE",
+    ENVIADO: "ENVIADO",
+    EN_PREPARACION: "EN PREPARACIÓN",
+    EMPAQUETADO: "EMPAQUETADO",
+    CANCELADO: "CANCELADO",
+    ELIMINADO: "ELIMINADO",
+};
+const statusLabel = (s) => STATUS_LABELS[s] || (s || "PENDIENTE");
+
+const PRINT_BLOCKED_STATUSES = ["ENVIADO", "CANCELADO", "ELIMINADO", "EMPAQUETADO"];
 
 // Helper para sanitizar XSS
 const escapeHtml = (unsafe) => {
@@ -167,6 +181,55 @@ const app = {
         app.checkConfigStatus(); // <--- IMPORTANTE: Revalida visualmente en tiempo real
     },
 
+    toggleAdvancedOrderStatus: () => {
+        // Solo actualiza el valor pendiente y el switch. La visibilidad de los
+        // menús se aplica recién al guardar (ver applySavedAdvancedOrderStatus).
+        state.config.enableAdvancedOrderStatus =
+            !state.config.enableAdvancedOrderStatus;
+        app.renderAdvancedStatusSwitch();
+    },
+
+    applySavedAdvancedOrderStatus: () => {
+        state.savedAdvancedOrderStatus =
+            !!state.config.enableAdvancedOrderStatus;
+        app.renderAdvancedOrderStatusVisibility();
+        if (
+            !state.savedAdvancedOrderStatus &&
+            state.filterStatus !== "PENDIENTE" &&
+            state.filterStatus !== "ENVIADO" &&
+            state.filterStatus !== "TODOS"
+        ) {
+            state.filterStatus = "PENDIENTE";
+            app.setFilterStatus("PENDIENTE");
+        }
+    },
+
+    renderAdvancedStatusSwitch: () => {
+        const on = !!state.config.enableAdvancedOrderStatus;
+        const sw = document.getElementById("sw-advanced-statuses");
+        if (!sw) return;
+        sw.classList.toggle("bg-primary", on);
+        sw.classList.toggle("bg-slate-700", !on);
+        sw.setAttribute("aria-pressed", on);
+        const knob = document.getElementById("sw-knob");
+        if (knob) knob.style.transform = on ? "translateX(20px)" : "translateX(0)";
+    },
+
+    renderAdvancedOrderStatusVisibility: () => {
+        const on = !!state.savedAdvancedOrderStatus;
+        const top = document.getElementById("advanced-status-filters-top");
+        const bottom = document.getElementById("advanced-status-filters-bottom");
+        if (top) top.classList.toggle("hidden", !on);
+        if (bottom) bottom.classList.toggle("hidden", !on);
+    },
+
+    getSourceOrders: () =>
+        state.selectedOrders.size > 0
+            ? state.allOrders.filter((x) =>
+                state.selectedOrders.has(String(x.orderId || x.createdAt)),
+            )
+            : state.visibleOrders,
+
     toggleLoading: (show) => {
         const el = document.getElementById("loading-overlay");
         show
@@ -246,16 +309,32 @@ const app = {
     openStatusMenu: () => {
         if (state.selectedOrders.size === 0)
             return app.showToast("Selecciona al menos un envío");
+        const advancedEnabled = !!state.savedAdvancedOrderStatus;
+        const advancedTop = advancedEnabled
+            ? `
+                <button onclick="app.setStatus('EN_PREPARACION')" class="w-full py-4 rounded-xl font-bold bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 border border-orange-500/30 flex items-center justify-center gap-3 transition">
+                    <i data-lucide="package-open" class="w-5 h-5"></i> MARCAR COMO EN PREPARACIÓN
+                </button>
+                <button onclick="app.setStatus('EMPAQUETADO')" class="w-full py-4 rounded-xl font-bold bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 border border-indigo-500/30 flex items-center justify-center gap-3 transition">
+                    <i data-lucide="package-check" class="w-5 h-5"></i> MARCAR COMO EMPAQUETADO
+                </button>`
+            : "";
+        const advancedBottom = advancedEnabled
+            ? `
+                <button onclick="app.setStatus('CANCELADO')" class="w-full py-4 rounded-xl font-bold bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 flex items-center justify-center gap-3 transition">
+                    <i data-lucide="x-circle" class="w-5 h-5"></i> MARCAR COMO CANCELADO
+                </button>`
+            : "";
         app.openModal(`
             <h3 class="text-xl font-bold text-white mb-2 text-center">Actualizar Estado</h3>
             <p class="text-xs text-slate-400 text-center mb-6">Se aplicará a ${state.selectedOrders.size} elemento(s).</p>
             <div class="space-y-4">
-                <button onclick="app.setStatus('ENVIADO')" class="w-full py-4 rounded-xl font-bold bg-secondary/20 text-secondary hover:bg-secondary/30 border border-secondary/30 flex items-center justify-center gap-3 transition">
-                    <i data-lucide="truck" class="w-5 h-5"></i> MARCAR COMO ENVIADO
-                </button>
                 <button onclick="app.setStatus('PENDIENTE')" class="w-full py-4 rounded-xl font-bold bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/30 flex items-center justify-center gap-3 transition">
                     <i data-lucide="clock" class="w-5 h-5"></i> MARCAR COMO PENDIENTE
-                </button>
+                </button>${advancedTop}
+                <button onclick="app.setStatus('ENVIADO')" class="w-full py-4 rounded-xl font-bold bg-secondary/20 text-secondary hover:bg-secondary/30 border border-secondary/30 flex items-center justify-center gap-3 transition">
+                    <i data-lucide="truck" class="w-5 h-5"></i> MARCAR COMO ENVIADO
+                </button>${advancedBottom}
             </div>
         `);
     },
@@ -316,7 +395,7 @@ const app = {
     setStatus: (newStatus) => {
         app.closeModal("modal-status");
         app.showModal(
-            `¿Cambiar ${state.selectedOrders.size} envíos a ${newStatus}?`,
+            `¿Cambiar ${state.selectedOrders.size} envíos a ${statusLabel(newStatus)}?`,
             async () => {
                 app.toggleLoading(true);
                 const ids = Array.from(state.selectedOrders);
@@ -349,8 +428,16 @@ const app = {
         if (phone.length < 9)
             return app.showToast("El número de teléfono no es válido.", "error");
 
-        const statusEmoji = order.status === "ENVIADO" ? "✅" : "📦";
-        const statusText = order.status === "ENVIADO" ? "Enviado" : "Programado";
+        const statusMeta = {
+            ENVIADO: { emoji: "✅", text: "Enviado" },
+            EN_PREPARACION: { emoji: "📦", text: "en preparación" },
+            EMPAQUETADO: { emoji: "📦", text: "empaquetado" },
+            CANCELADO: { emoji: "❌", text: "cancelado" },
+        };
+        const statusInfo =
+            statusMeta[order.status] || { emoji: "📦", text: "Programado" };
+        const statusEmoji = statusInfo.emoji;
+        const statusText = statusInfo.text;
 
         let destinationInfo = "";
         if (order.clientAgency) {
@@ -596,6 +683,9 @@ const app = {
         try {
             await api.saveMerchantConfig(state.config);
 
+            // La bandera de estados avanzados solo se aplica tras guardar
+            app.applySavedAdvancedOrderStatus();
+
             setTimeout(() => {
                 app.toggleLoading(false);
                 app.showToast("Configuración guardada y optimizada");
@@ -690,6 +780,10 @@ const app = {
             state.config = { ...config, isNewConfig: true };
         }
 
+        // Snapshot del flag guardado (controla visibilidad de menús hasta Guardar)
+        state.savedAdvancedOrderStatus =
+            !!state.config.enableAdvancedOrderStatus;
+
         // 2. Verificar estado del plan
         if (state.user && state.merchantId) {
             try {
@@ -766,7 +860,7 @@ const app = {
             });
         }
 
-        const list = state.visibleOrders;
+        const list = app.getSourceOrders();
         let dataToExport = [];
         let fileName = "";
         let sheetName = "";
@@ -953,7 +1047,7 @@ const app = {
                     "Agencia / Distrito": colAgenciaDistrito,
                     "Dirección / Ref": colDireccionRef,
                     DNI: colDni,
-                    Estado: x.status || "PENDIENTE",
+                    Estado: statusLabel(x.status),
                 };
             });
             fileName = `ReporteGeneral_${new Date().toISOString().slice(0, 10)}.xlsx`;
@@ -1058,6 +1152,9 @@ const app = {
         const texts = {
             PENDIENTE: "Pendientes",
             ENVIADO: "Enviados",
+            EN_PREPARACION: "En preparación",
+            EMPAQUETADO: "Empaquetado",
+            CANCELADO: "Cancelado",
             TODOS: "Todos",
         };
         if (label) label.innerText = texts[status];
@@ -1071,6 +1168,12 @@ const app = {
             btn.classList.add("bg-primary", "border-primary");
         } else if (status === "ENVIADO") {
             btn.classList.add("bg-secondary", "border-secondary");
+        } else if (status === "EN_PREPARACION") {
+            btn.classList.add("bg-orange-500", "border-orange-500");
+        } else if (status === "EMPAQUETADO") {
+            btn.classList.add("bg-indigo-500", "border-indigo-500");
+        } else if (status === "CANCELADO") {
+            btn.classList.add("bg-red-500", "border-red-500");
         } else {
             btn.classList.add("bg-slate-700", "border-slate-500");
         }
@@ -1186,6 +1289,15 @@ const app = {
                             if (status === "ENVIADO")
                                 badgeClass =
                                     "bg-secondary/20 text-secondary border border-secondary/30";
+                            if (status === "EN_PREPARACION")
+                                badgeClass =
+                                    "bg-orange-500/20 text-orange-400 border border-orange-500/30";
+                            if (status === "EMPAQUETADO")
+                                badgeClass =
+                                    "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30";
+                            if (status === "CANCELADO")
+                                badgeClass =
+                                    "bg-red-500/20 text-red-400 border border-red-500/30";
                             if (status === "ELIMINADO")
                                 badgeClass =
                                     "bg-red-500/20 text-red-400 border border-red-500/30";
@@ -1199,7 +1311,7 @@ const app = {
                         <div class="flex justify-between font-bold text-slate-200">
                             <span class="truncate text-white">${escapeHtml(x.clientName)}</span>
                             <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeClass}">${status}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeClass}">${statusLabel(status)}</span>
                                 <button onclick="app.sendClientSummary('${id}')" class="text-secondary hover:text-white hover:bg-secondary/20 p-1 rounded-full transition" title="Enviar WhatsApp">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="w-4 h-4"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
                                 </button>
@@ -1325,7 +1437,7 @@ const app = {
     },
 
     exportExcel: () => {
-        const list = state.visibleOrders;
+        const list = app.getSourceOrders();
         if (!list.length) return app.showToast("No hay datos para exportar");
 
         // 1. Analizar qué couriers hay en la lista visible
@@ -1388,12 +1500,12 @@ const app = {
     },
 
     printLabels: () => {
-        const targets =
-            state.selectedOrders.size > 0
-                ? state.allOrders.filter((x) =>
-                    state.selectedOrders.has(String(x.orderId || x.createdAt)),
-                )
-                : state.visibleOrders;
+        const targets = app
+            .getSourceOrders()
+            .filter(
+                (x) =>
+                    !PRINT_BLOCKED_STATUSES.includes(x.status || "PENDIENTE"),
+            );
 
         if (!targets.length) return app.showToast("Nada para imprimir");
 
@@ -1560,6 +1672,10 @@ const app = {
         ).join("");
 
         lucide.createIcons();
+
+        // Renderizar switch de estados avanzados y visibilidad del dropdown filtro
+        app.renderAdvancedStatusSwitch();
+        app.renderAdvancedOrderStatusVisibility();
 
         // Validar estado inicial al renderizar
         app.checkConfigStatus();
