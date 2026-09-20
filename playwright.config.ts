@@ -7,6 +7,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Load .env.development for test credentials
 dotenv.config({ path: path.resolve(__dirname, '.env.development') });
+// .env.local overrides (ADDS APP_USER/APP_PASS per AGENTS.md)
+dotenv.config({ path: path.resolve(__dirname, '.env.local') });
 
 export default defineConfig({
   testDir: './tests',

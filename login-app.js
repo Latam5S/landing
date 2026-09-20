@@ -78,6 +78,78 @@ const STATUS_LABELS = {
 };
 const statusLabel = (s) => STATUS_LABELS[s] || (s || "PENDIENTE");
 
+// createdAt llega del backend en formatos variados (ms, segundos, ISO) →
+// normalizamos a Date local (el API guarda en UTC, lo mostramos en la zona horaria del usuario)
+const DAY_NAMES_FULL = [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+];
+const parseCreatedAt = (ts) => {
+    if (ts === null || ts === undefined || ts === "") return null;
+    let d;
+    // 1. Objeto estilo Firestore {_seconds, _nanoseconds} / {seconds}
+    if (typeof ts === "object" && ts !== null) {
+        const sec = ts._seconds ?? ts.seconds;
+        if (typeof sec === "number" && !isNaN(sec)) d = new Date(sec * 1000);
+    }
+    // 2. Timestamp Unix numérico (ms) o string numérico (segundos si < 1e12)
+    if (
+        !d &&
+        (typeof ts === "number" ||
+            (typeof ts === "string" && ts.trim() !== "" && !isNaN(Number(ts))))
+    ) {
+        let num = Number(ts);
+        if (num < 1e12) num *= 1000;
+        d = new Date(num);
+    }
+    // 3. String de fecha parseable (ISO, etc.)
+    if (!d) d = new Date(ts);
+    return isNaN(d.getTime()) ? null : d;
+};
+// UI (Envíos): igual que "fecha de envío" (Día dd/mm) + hora → "Viernes 18/09 03:45 PM"
+const formatCreatedAt = (ts) => {
+    const d = parseCreatedAt(ts);
+    if (!d) return "";
+    const dd = String(d.getDate()).padStart(2, "0");
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    let hh = d.getHours();
+    const min = String(d.getMinutes()).padStart(2, "0");
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12;
+    return `${DAY_NAMES_FULL[d.getDay()]} ${dd}/${mm} ${hh}:${min} ${ampm}`;
+};
+// Excel (Reporte General): consistente con "Fecha Envío" → "18/09/26 03:45 PM"
+const formatCreatedAtExcel = (ts) => {
+    const d = parseCreatedAt(ts);
+    if (!d) return "";
+    const dd = String(d.getDate()).padStart(2, "0");
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const yy = String(d.getFullYear()).slice(-2);
+    let hh = d.getHours();
+    const min = String(d.getMinutes()).padStart(2, "0");
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12;
+    return `${dd}/${mm}/${yy} ${hh}:${min} ${ampm}`;
+};
+// Búsqueda: cadena con año completo para que el filtro también aplique por año
+const formatCreatedAtSearch = (ts) => {
+    const d = parseCreatedAt(ts);
+    if (!d) return "";
+    const dd = String(d.getDate()).padStart(2, "0");
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    let hh = d.getHours();
+    const min = String(d.getMinutes()).padStart(2, "0");
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12;
+    return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
+};
+
 const PRINT_BLOCKED_STATUSES = ["ENVIADO", "CANCELADO", "ELIMINADO", "EMPAQUETADO"];
 
 // Helper para sanitizar XSS
@@ -178,7 +250,15 @@ const app = {
 
     updateConfigInput: (key, value) => {
         state.config[key] = value;
+        if (key === "merchantName") app.renderPanelTitle();
         app.checkConfigStatus(); // <--- IMPORTANTE: Revalida visualmente en tiempo real
+    },
+
+    renderPanelTitle: () => {
+        const el = document.getElementById("dashboard-title");
+        if (!el) return;
+        const name = (state.config.merchantName || "").trim();
+        el.innerText = name || "Mi Panel";
     },
 
     toggleAdvancedOrderStatus: () => {
@@ -1040,6 +1120,7 @@ const app = {
                 }
 
                 return {
+                    "Fecha de Creación": formatCreatedAtExcel(x.createdAt),
                     "Fecha Envío": fechaClean,
                     Courier: x.courier,
                     Cliente: x.clientName,
@@ -1198,17 +1279,20 @@ const app = {
                 if (currentStatus !== state.filterStatus) return false;
             }
             const txt =
-                `${x.clientName} ${x.clientPhone} ${x.clientDni || ""} ${x.clientDistrict || ""} ${x.clientAgency || ""} ${x.clientAddress || ""} ${x.clientRef || ""} ${x.courier} ${x.status || ""}`.toLowerCase();
+                `${x.clientName} ${x.clientPhone} ${x.clientDni || ""} ${x.clientDistrict || ""} ${x.clientAgency || ""} ${x.clientAddress || ""} ${x.clientRef || ""} ${x.courier} ${x.status || ""} ${formatCreatedAt(x.createdAt)} ${formatCreatedAtExcel(x.createdAt)} ${formatCreatedAtSearch(x.createdAt)}`.toLowerCase();
             if (!txt.includes(q)) return false;
 
             if (dSpec) {
-                const [year, month, day] = dSpec.split("-");
-                const orderDate = (x.shippingDate || "").toString();
-                if (
-                    !orderDate.includes(`${year}-${month}-${day}`) &&
-                    !orderDate.includes(`${day}/${month}/${year}`) &&
-                    !orderDate.includes(`${day}/${month}`)
-                )
+                const [year, month, day] = dSpec.split("-").map(Number);
+                // Filtro por FECHA DE ENVÍO (dd/mm, asumida del año actual)
+                const shippingRaw = (x.shippingDate || "").toString();
+                const m = shippingRaw.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/);
+                if (!m) return false;
+                const sDay = Number(m[1]);
+                const sMonth = Number(m[2]);
+                let sYear = m[3] ? Number(m[3]) : new Date().getFullYear();
+                if (m[3] && sYear < 100) sYear += 2000; // "26" → 2026
+                if (sDay !== day || sMonth !== month || sYear !== year)
                     return false;
             }
             return true;
@@ -1318,11 +1402,16 @@ const app = {
                             </div>
                         </div>
                         <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1 items-center">
+                            ${
+                                x.createdAt
+                                    ? `<span class="flex items-center gap-1" title="Fecha de creación"><i data-lucide="package-plus" class="w-3 h-3 text-secondary"></i> ${escapeHtml(formatCreatedAt(x.createdAt))}</span>`
+                                    : ""
+                            }
                             ${x.clientDni
                                 ? `<span class="flex items-center gap-1" title="Doc. Identidad"><i data-lucide="contact-round" class="w-3 h-3 text-primary"></i> <b>${escapeHtml(x.clientDni)}</b></span>`
                                 : ""}
                             <span class="flex items-center gap-1" title="Teléfono"><i data-lucide="phone" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.clientPhone)}</span>
-                            <span class="flex items-center gap-1" title="Fecha de envío"><i data-lucide="calendar" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
+                            <span class="flex items-center gap-1 font-bold text-white bg-primary/10 border border-primary/25 rounded-md px-1.5 py-0.5" title="Fecha de envío"><i data-lucide="truck" class="w-3 h-3 text-primary"></i> ${escapeHtml(x.shippingDate)}</span>
                         </div>
                         <div class="text-xs text-slate-300 mt-2 font-medium border-t border-white/5 pt-2">
                             ${x.clientAgency
@@ -1650,6 +1739,8 @@ const app = {
             state.config.merchantName || "";
         document.getElementById("inp-whatsapp").value = state.config.whatsapp || "";
         document.getElementById("inp-time").value = state.config.updateTime || "";
+
+        app.renderPanelTitle();
 
         // --- NUEVO: Renderizar el valor del gap ---
         document.getElementById("inp-gap").value =

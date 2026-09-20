@@ -26,7 +26,7 @@
   APP_PASS=54321
   ```
 - Tests clear localStorage/sessionStorage in `beforeEach`
-- Only 1 spec file (`tests/app.spec.ts`) with 4 tests — cheap to run
+- 2 spec files: `tests/app.spec.ts` (4 tests — require the live backend at `localhost:8000`, so they fail without it) and `tests/orders.spec.ts` (13 tests — mocked `/api/legacy/**`, no backend needed). Run the latter with `bunx playwright test tests/orders.spec.ts --reporter=line`.
 
 ## Environment
 - **`VITE_APP_TITLE`** + **`VITE_API_URL`** read by Vite (`import.meta.env`)
