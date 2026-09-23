@@ -150,7 +150,11 @@ const formatCreatedAtSearch = (ts) => {
     return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
 };
 
-const PRINT_BLOCKED_STATUSES = ["ENVIADO", "CANCELADO", "ELIMINADO", "EMPAQUETADO"];
+const PRINT_BLOCKED_STATUSES = new Set([
+    "ENVIADO",
+    "CANCELADO",
+    "ELIMINADO",
+]);
 
 // Helper para sanitizar XSS
 const escapeHtml = (unsafe) => {
@@ -163,11 +167,11 @@ const escapeHtml = (unsafe) => {
         .replace(/'/g, "&#039;");
 };
 
-const multiAddressCouriers = [
+const multiAddressCouriers = new Set([
     "Shalom",
     "Olva Courier",
     "Marvisur",
-];
+]);
 
 const app = {
     // --- NUEVA FUNCIÓN: Formateo estricto de WhatsApp ---
@@ -1593,7 +1597,7 @@ const app = {
             .getSourceOrders()
             .filter(
                 (x) =>
-                    !PRINT_BLOCKED_STATUSES.includes(x.status || "PENDIENTE"),
+                    !PRINT_BLOCKED_STATUSES.has(x.status || "PENDIENTE"),
             );
 
         if (!targets.length) return app.showToast("Nada para imprimir");
@@ -1654,7 +1658,7 @@ const app = {
                             let destLine1 = location;
                             let destLine2 = '';
                             console.log("coureier -", x.courier);
-                            if (x.clientAgency && multiAddressCouriers.includes(x.courier)) { //}   (x.courier || '') === 'Shalom') {
+                            if (x.clientAgency && multiAddressCouriers.has(x.courier)) { //}   (x.courier || '') === 'Shalom') {
                                 const parts = location.split('/').filter(Boolean);
                                 const partsLine1 = parts.slice(0, 3);
                                 const partsLine2 = parts.slice(3 - parts.length);
