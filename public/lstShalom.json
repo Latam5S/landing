@@ -449,7 +449,7 @@
   },
   {
     "Agencia": "Cusco / Quispicanchi / Oropesa / Oropesa",
-    "Direccion": "Sec. Chimpapampa Apv. Jose Ccarlos Mareategui s/n, Oropesa - Quispicanchi - Cusco, Ref. A Una Cdra. De La Carreta A Urcos / A Una Cdra. De La Panificadora Cachito Amarillo"
+    "Direccion": "Mz. C Lt. 3 Del Predio Denominado Fracción B Quispicanchis – Puna Punabamba, Ref. Al Costado De Panificadora Los Marqueses, A Orillas De La Ctra. A Paucartambo"
   },
   {
     "Agencia": "Cusco / Quispicanchi / Urcos / Urcos",
@@ -464,8 +464,12 @@
     "Direccion": "Lt. E-3 Fracción -1, Sector Patahuasi, Urubamba – Urubamba - Cusco, Ref. A Una Cdra. De La Carretera A Ollantaytambo / A Media Cdra. Del Parque Teresita"
   },
   {
-    "Agencia": "Huancavelica / Huancavelica / Huancavelica / Huancavelica",
+    "Agencia": "Huancavelica / Huancavelica / Huancavelica / Barrio Sta Ana Co",
     "Direccion": "Av. Universitaria 1003 - Huancavelica, Ref. A 1 Cdra. De La Escuela Santa Ana Y A 3 Cdras. Del Puente Del Ejército (barrio Santa Ana)"
+  },
+  {
+    "Agencia": "Huancavelica / Huancavelica / Huancavelica / Barrio Yananaco",
+    "Direccion": "Av. Andrés A. Cáceres N° 198, Huancavelica – Huancavelica – Huancavelica, Ref. A Media Cdra. De La Plazoleta Tupac Amaru Y En La Esquina Con Calle Oropeza (barrio Yananaco)"
   },
   {
     "Agencia": "Huanuco / Ambo / Ambo / Ambo",
