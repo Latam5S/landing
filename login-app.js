@@ -89,6 +89,16 @@ const DAY_NAMES_FULL = [
     "Viernes",
     "Sábado",
 ];
+// El API serializa los datetimes como ISO *naive* (UTC sin offset), p.ej.
+// "2026-09-26T06:18:13.324225". El navegador interpreta un ISO sin offset como
+// hora LOCAL, por lo que hay que forzar la "Z" antes de convertirlo a Date.
+const NAIVE_ISO_DATETIME =
+    /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/;
+const asUtcIsoString = (str) => {
+    const s = String(str).trim();
+    if (!NAIVE_ISO_DATETIME.test(s)) return s;
+    return s.replace(" ", "T") + "Z";
+};
 const parseCreatedAt = (ts) => {
     if (ts === null || ts === undefined || ts === "") return null;
     let d;
@@ -107,8 +117,8 @@ const parseCreatedAt = (ts) => {
         if (num < 1e12) num *= 1000;
         d = new Date(num);
     }
-    // 3. String de fecha parseable (ISO, etc.)
-    if (!d) d = new Date(ts);
+    // 3. String de fecha parseable (ISO, etc.) — naive ⇒ se asume UTC
+    if (!d) d = new Date(typeof ts === "string" ? asUtcIsoString(ts) : ts);
     return isNaN(d.getTime()) ? null : d;
 };
 // UI (Envíos): igual que "fecha de envío" (Día dd/mm) + hora → "Viernes 18/09 03:45 PM"

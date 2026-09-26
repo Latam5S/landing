@@ -87,7 +87,13 @@ const CREATED_AT = {
   shalom: Date.UTC(2026, 8, 16, 23, 59),
   olva: Date.UTC(2026, 8, 19, 0, 30),
   retiro: Date.UTC(2026, 8, 15, 12, 0),
+  naive: Date.UTC(2026, 8, 20, 14, 30),
 };
+
+// El API (l5s-legacy BaseSchema.strip_timezones) serializa los datetimes como
+// ISO *naive*: UTC sin offset, p.ej. "2026-09-20T14:30:00.000000". Es el shape
+// real de producción, a diferencia del ISO con "Z" de los otros fixtures.
+const toNaiveIsoUtc = (ms: number) => new Date(ms).toISOString().replace('Z', '');
 
 type Order = { orderId: string; status: string; dataJson: Record<string, unknown> };
 
@@ -174,6 +180,18 @@ const TEST_ORDERS: Order[] = [
       clientDni: '66666666',
       courier: 'Marvisur',
       shippingDate: '23/09',
+    },
+  },
+  {
+    orderId: 'o7',
+    status: 'PENDIENTE',
+    dataJson: {
+      clientName: 'Pedro Naive',
+      clientPhone: '987777777',
+      clientDni: '77777777',
+      courier: 'Encomienda',
+      shippingDate: '24/09',
+      createdAt: toNaiveIsoUtc(CREATED_AT.naive),
     },
   },
 ];
@@ -297,6 +315,26 @@ test.describe('Orders tab — creation date (fecha de creación)', () => {
     await expect(page.locator('#orders-list')).toContainText(
       formatLocal(CREATED_AT.retiro),
     );
+
+    // ISO naive (shape real del API: UTC sin offset) → NO se muestra la hora cruda
+    // del API, se convierte a la zona horaria del usuario (igual que el ISO con "Z")
+    await expect(page.locator('#orders-list')).toContainText(
+      formatLocal(CREATED_AT.naive),
+    );
+    const naiveCard = page
+      .locator('#orders-list')
+      .getByText('Pedro Naive')
+      .first()
+      .locator('xpath=ancestor::div[contains(@class,"bg-black")][1]');
+    await expect(naiveCard).toContainText(formatLocal(CREATED_AT.naive));
+    const naiveRawUtc = new Date(CREATED_AT.naive).toISOString().slice(11, 16);
+    if (
+      new Date(CREATED_AT.naive).getUTCHours() !==
+      new Date(CREATED_AT.naive).getHours()
+    ) {
+      // Sólo tiene sentido comprobarlo cuando la zona horaria difiere de UTC
+      await expect(naiveCard).not.toContainText(naiveRawUtc);
+    }
 
     // Fecha de creación es el primer campo, debajo del nombre del cliente
     const metaTitles = await page
@@ -433,6 +471,13 @@ test.describe('Orders tab — creation date (fecha de creación)', () => {
     );
     expect(retiroRow).toBeTruthy();
     expect(retiroRow![0]).toBe(formatLocalExcel(CREATED_AT.retiro));
+
+    // ISO naive / shape real del API (o7) → igual que el ISO con "Z"
+    const naiveRow = rows.find(
+      (r) => r[2] === 'Encomienda' && r[3] === 'Pedro Naive',
+    );
+    expect(naiveRow).toBeTruthy();
+    expect(naiveRow![0]).toBe(formatLocalExcel(CREATED_AT.naive));
 
     // Legacy order without createdAt → empty cell
     const legacyRow = rows.find(
