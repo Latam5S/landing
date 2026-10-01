@@ -17,7 +17,7 @@
   },
   {
     "Agencia": "Amazonas / Luya / Luya / Luya",
-    "Direccion": "Jr. Ramón Castilla S/n, Luya - Amazonas, Ref. Entre El Colegio Secundario Ramón Castilla Y El Jr. José Gálvez, A Media Cdra. Del Agente De Venta De Pasajes De Civa, Móvil Y Transporte Chiclayo"
+    "Direccion": "Jr. Ramón Castilla 1247 Luya - Amazonas, Ref. Entre El Colegio Secundario Ramón Castilla Y El Jr. José Gálvez, A Media Cdra. Del Agente De Venta De Pasajes De Civa, Móvil Y Transporte Chiclayo"
   },
   {
     "Agencia": "Amazonas / Utcubamba / Bagua Grande / Bagua Grande",
@@ -480,7 +480,7 @@
     "Direccion": "Jr. Los Pinos Lote 3 -d2 Urb Los Pinos - Amarilis - Huánuco, Ref. A La Espalda De Toyota Huánuco"
   },
   {
-    "Agencia": "Huanuco / Huanuco / Huanuco / Jr Aguilar",
+    "Agencia": "Huanuco / Huanuco / Huanuco / Jr Mayro",
     "Direccion": "Jr. Mayro N° 344, Ref. A Una Cdra. Del Parque San Pedro"
   },
   {
@@ -634,6 +634,10 @@
   {
     "Agencia": "Junin / Huancayo / San Agustin / San Agustin De Cajas",
     "Direccion": "Carretera Central Km 7.5 S/n San Agustin – Huancayo – Junín, Ref. Frente A La Envasadora Solgas"
+  },
+  {
+    "Agencia": "Junin / Huancayo / Sapallanga / Sapallanga",
+    "Direccion": "Ca. Coronel Cisneros 598, Ref. Esquina Con Av. Mariscal Caceres"
   },
   {
     "Agencia": "Junin / Jauja / Jauja / Jauja",
@@ -869,7 +873,7 @@
   },
   {
     "Agencia": "Lambayeque / Lambayeque / Tucume / Tucume",
-    "Direccion": "Av. Federico Villarreal N° 982 (ctra. Fernando Belaunde Terry), Referencia: A Media Cdra. Del Cementerio Jardines De La Paz"
+    "Direccion": "Calle Federico Villarreal Nro. 1157, Ref. Frente Al Molino Santamaría"
   },
   {
     "Agencia": "Lima / Barranca / Barranca / Barranca",
@@ -1214,6 +1218,10 @@
   {
     "Agencia": "Lima / Lima / Pachacamac / Av Manuel Valle",
     "Direccion": "Av. Manuel Valle Sub - Lote 2 - 1, Número De Parcela J, Proyecto Huertos De Pachacamac, Valle Lurín - Pachacamac - Lima, Ref. Frente Al Estudio De Canal 4 (america Televisión)"
+  },
+  {
+    "Agencia": "Lima / Lima / Pachacamac / El Retamal",
+    "Direccion": "Av. Victor Malasquez Mz. B Lt. 16 – Asociación De Vivienda “el Sol De San Fernando” Zona 5 – Quebrada De Manchay, Ref. A 2 cdras. Del Cruce Con Av. Unión"
   },
   {
     "Agencia": "Lima / Lima / Pachacamac / La Curva De Manchay",
