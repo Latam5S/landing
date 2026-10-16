@@ -654,10 +654,22 @@ const app = {
     spinner.classList.remove("hidden");
     text.classList.add("hidden");
 
+    async function submitWithRetry() {
+      try {
+        return await api.createOrder(data, true);
+      } catch (e) {
+        if (e && e.status === 401) {
+          const token = await api.getGuestToken(state.merchantId);
+          api.setToken(token);
+          return await api.createOrder(data, true);
+        }
+        throw e;
+      }
+    }
+
+    let res;
     try {
-      // Se requiere un anonymous-token para crear pedidos sin estar logueado
-      // Pasamos useAnonymous=true para que el api client lo gestione automáticamente
-      const res = await api.createOrder(data, true);
+      res = await submitWithRetry();
       console.log("Order saved, response:", res);
     } catch (e) {
       console.error("Error saving order:", e);

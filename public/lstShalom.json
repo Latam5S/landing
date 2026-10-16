@@ -32,8 +32,12 @@
     "Direccion": "Av. Miguel Grau Mz. D 4 Lt. 1 Casma - Ancash, Ref. Frente Al Jardín De Infancia"
   },
   {
-    "Agencia": "Ancash / Huaraz / Huaraz / Huaraz Co",
+    "Agencia": "Ancash / Huaraz / Huaraz / Av. 27 De Noviembre Co",
     "Direccion": "Av. 27 De Noviembre Cdra. 20 S/n - Villon Bajo, Referencia: Al Costado Del Grifo Primax"
+  },
+  {
+    "Agencia": "Ancash / Huaraz / Independencia / Huaraz Independencia",
+    "Direccion": "Jr. Candelaria Villar N. 631, Ref. Esquina Con Con Jr. Huaylas Casa De 4 Pisos Amarillo"
   },
   {
     "Agencia": "Ancash / Huarmey / Huarmey / Huarmey",
@@ -965,7 +969,7 @@
   },
   {
     "Agencia": "Lima / Lima / Ate-vitarte / Huaycan Entrada",
-    "Direccion": "Av. Andrés Avelino Cáceres Mz G Lt. 14, 1er Piso Prog De Viv. Philadelfia De Ate Iv Etapa, Ate Vitarte - Lima - Lima, Ref. a Una Cdra. De La Ctra. Central, Paradero El Lavadero"
+    "Direccion": "Ctra. Central Km. 17.5 mz. I Lt. 1 Praderas De Pariachi, Ref. Misma Ctra. Central A Una Cdra. Del Paradero El Lavadero Y Dos Cdras. Del Grifo El Negro"
   },
   {
     "Agencia": "Lima / Lima / Ate-vitarte / Los Sauces",
@@ -1472,6 +1476,10 @@
     "Direccion": "Av. 01de Mayo 1 Sect Gp 23 - A Mz N Lote 13 - V.e.s., Ref. Av. Pastor Sevilla Con Av. 1 De Mayo A 2 Cuadras Del Hospital De La Solidaridad Por La Ruta C"
   },
   {
+    "Agencia": "Lima / Lima / Villa El Salvador / Av Revolución",
+    "Direccion": "Av. Revolución Mz. J Lt. 19, sector Tercero, Grupo Residencial 9, pueblo Joven Villa El Salvador, Villa El Salvador - Lima - Lima, Ref. Cerca Al Cruce Con Av. Jose Carlos Mariategui"
+  },
+  {
     "Agencia": "Lima / Lima / Villa El Salvador / Av. Cesar Vallejo",
     "Direccion": "Av. Cesar Vallejo, Mz. F Lt. 1 - Sect. 2, Referencia: Frente A Essalud, Al Costado Del Mercado Villa Sur"
   },
@@ -1490,6 +1498,10 @@
   {
     "Agencia": "Lima / Lima / Villa Maria Del Triunfo / Av. Villa Maria",
     "Direccion": "Av Villa Maria  Mz. G12 Lt. 9 - B Ps 1 Sect. Villa Maria Del Triunfo, Ref. Av. Villa Maria  A 2 Cuadras De La Municipalidad De Vmt Y Al Costado De Essalud"
+  },
+  {
+    "Agencia": "Lima / Lima / Villa Maria Del Triunfo / La Tablada Zona Nueva",
+    "Direccion": "Av. Pachacútec N° 4465, Mz. 36, Lt. 18 Zona Nueva Esperanza - P.j. César Vallejo - Villa María Del Triunfo - Lima - Lima, Ref. Al Frente Del Cruce Con Av. 01 De Mayo"
   },
   {
     "Agencia": "Lima / Lima / Villa Maria Del Triunfo / Las Conchitas",
