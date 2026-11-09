@@ -1,7 +1,7 @@
 [
   {
     "Agencia": "Amazonas / Bagua / Bagua / Bagua Chica",
-    "Direccion": "Av. Heroes Del Cenepa 1786  - Bagua - Bagua - Amazonas, Referencia: Al Costado Del Grifo Gavilán"
+    "Direccion": "Otr. Centro Bagua Jr. Madre De Dios 389, Referencia: Al Costado Del Grifo Gavilán"
   },
   {
     "Agencia": "Amazonas / Bongara / Jazan / Pedro Ruiz Gallo",
@@ -9,7 +9,7 @@
   },
   {
     "Agencia": "Amazonas / Chachapoyas / Chachapoyas / Chachapoyas",
-    "Direccion": "Av. San Juan De La Frontera N 103 Barrio Luya Urco Chachapoyas Chachapoyas Amazonas, Referencia: Cruce Con Avenida Aeropuerto"
+    "Direccion": "Av. San Juan De La Frontera N 103 Barrio Luya Urco Chachapoyas Chachapoyas Amazonas, Referencia: Al Costado Del Paradero A Huancas"
   },
   {
     "Agencia": "Amazonas / Utcubamba / Bagua Grande / Bagua Grande",
@@ -265,7 +265,7 @@
   },
   {
     "Agencia": "La Libertad / Pacasmayo / Pacasmayo / Pacasmayo",
-    "Direccion": "A.h.  Las Palmeras Mz. P Lote 1 Dpto A"
+    "Direccion": "Mz. P Lt. 1 Int. A Aa.hh. Las Palmeras - Pacasmayo - La Libertad, Referencia: Frente A Servicios Lubricantes Jg El Chalan."
   },
   {
     "Agencia": "La Libertad / Pacasmayo / San Pedro De Lloc / San Pedro De Lloc",
@@ -305,7 +305,7 @@
   },
   {
     "Agencia": "Lambayeque / Lambayeque / Olmos / Olmos",
-    "Direccion": "Panamericana Antigua Km 874 De Ciudad De Olmos - Lambayeque, Referencia: Entrada Al Arco De Olmos"
+    "Direccion": "Panamericana Antigua Km 874,olmos - Lambayeque, Referencia: Entrada Al Arco De Olmos"
   },
   {
     "Agencia": "Lambayeque / Lambayeque / Tucume / Tucume",
@@ -318,6 +318,10 @@
   {
     "Agencia": "Lima / Cañete / San Vicente De Cañete / Cañete",
     "Direccion": "Urb. Tercer Mundo Mz. A -1 Lt. 13 - San Vicente De Cañete - Cañete - Lima, Referencia: Cerca A La Ferretería Sofía  Cruce Con Av. Libertadores"
+  },
+  {
+    "Agencia": "Lima / Huaral / Chancay / Chancay",
+    "Direccion": "Urb. Las Viñas De Chancay Mz. B Lote 11, Referencia: Panamericana Norte Km 83"
   },
   {
     "Agencia": "Lima / Huaral / Huaral / Huaral",
@@ -341,7 +345,7 @@
   },
   {
     "Agencia": "Lima / Lima / Ate / Santa Clara",
-    "Direccion": "Urb. Sol De Las Viñas  Otr. Carretara Central Km 11.5   Mz. A Lote 01, Referencia: Altura Del Restaurante Manya"
+    "Direccion": "Urb. Sol De Las Viñas  Otr. Carretera Central Km 11.5   Mz. A Lote 01, Referencia: Altura Del Restaurante Manya"
   },
   {
     "Agencia": "Lima / Lima / Breña / Breña",
@@ -468,6 +472,10 @@
     "Direccion": "Urb. Los Jardines De San Juan Et. Dos Av. Proceres De La Independencia 1325, Referencia: A Una Cuadra Y Media Del Banco De La Nación"
   },
   {
+    "Agencia": "Lima / Lima / San Juan De Lurigancho / San Juan De Lurigancho Vi",
+    "Direccion": "Av.central Mz. Q8 Lt. 17, Referencia: A Una Cuadra De La I.e.antonia Moreno De Cáceres"
+  },
+  {
     "Agencia": "Lima / Lima / San Juan De Miraflores / San Juan De Miraflores",
     "Direccion": "Av. De Los Héroes N. 232 A Y Jr. Las Almendras Manzana U Lote 12 - Local No. 6 - San Juan De Miraflores - Lima, Referencia: Frente Al Supermercado Metro Del Paradero El Pozo"
   },
@@ -492,7 +500,7 @@
     "Direccion": "Av. Huancaray Mz. A Lt. 3 – Santa Anita, Referencia: A Una Cuadra Del Oxxo"
   },
   {
-    "Agencia": "Lima / Lima / Santa Rosa(lima) / Ancon",
+    "Agencia": "Lima / Lima / Santa Rosa(lima) / Santa Rosa",
     "Direccion": "Av. Alejandro Bertello, Asc. Santa Rosa De Lima Mz. A Lote 23, Referencia: Al Frente De La Cevichería Tumbes"
   },
   {
@@ -706,6 +714,10 @@
   {
     "Agencia": "Ucayali / Coronel Portillo / Yarinacocha / Pucallpa Ii",
     "Direccion": "Fundo Villa Teresita Lt. B-1 Km 4.100 Av. Centenario Km 4.100 Yarinacocha - Coronel Portillo - Ucayali, Referencia: A 25 M. Del Grifo Espinoza O Al Costado De Naysha Cards"
+  },
+  {
+    "Agencia": "Ucayali / Padre Abad / Neshuya / Neshuya",
+    "Direccion": "C.v. Manuel Gambini Rupay Mz 21 Lote 1, Referencia: Al Costado De Financiera Caja Huancayo"
   },
   {
     "Agencia": "Ucayali / Padre Abad / Padre Abad / Aguaytia",

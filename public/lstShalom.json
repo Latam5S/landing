@@ -496,10 +496,6 @@
     "Direccion": "Av. Tito Jaime 914, Rupa Rupa-  Leoncio Prado - Huanuco, Ref. A Dos Cdras. De La Plaza De Armas Leoncio Pardo"
   },
   {
-    "Agencia": "Huanuco / Leoncio Prado / Rupa Rupa / Tingo Maria Co Buenos Aires",
-    "Direccion": "Calle Rosario Central, Referencia: Segunda Entrada De Buenos Aires, En La Misma Esquina"
-  },
-  {
     "Agencia": "Ica / Chincha / Chincha Alta / Calle Los Angeles",
     "Direccion": "Calle Los Ángeles N° Casa 217 01 - A Sin Barriio Cercado, Chincha Alta - Chincha - Ica, Ref. A 2 Cdras. De La Plaza De Armas De Chncha Pasando Electrodunas"
   },
@@ -753,7 +749,7 @@
   },
   {
     "Agencia": "La Libertad / Trujillo / Moche / Moche",
-    "Direccion": "Av. La Marina Lote 25 - B – Moche – Trujillo - La Libertad, Ref. A Media Cdra De La Comisaría De Moche"
+    "Direccion": "Calle Elio Jacobo Mz. D - Lt. 13. Cruce Con Av. La Marina A Una Cdra. De Essalud Moche. Frente Al Parque El Paraíso."
   },
   {
     "Agencia": "La Libertad / Trujillo / Trujillo / Atahualpa",
@@ -833,7 +829,7 @@
   },
   {
     "Agencia": "Lambayeque / Chiclayo / Pimentel / Pimentel",
-    "Direccion": "Calle Miguel Grau Mz B Lote 3 - pimentel - chiclayo - Lambayeque, Ref. Al Costado De La Comisaria De Pimentel"
+    "Direccion": "Calle Juan Velasco Alvarado n.° 472. Ref. Intersección Con La Calle Ciro Alegría. A Unas Cdras. Del Centro De Salud Pimentel."
   },
   {
     "Agencia": "Lambayeque / Chiclayo / Pomalca / Pomalca",
@@ -1062,10 +1058,6 @@
   {
     "Agencia": "Lima / Lima / Comas / Año Nuevo",
     "Direccion": "Av. Tupac Amaru N° 7837- 7839 Mz. C Lt. 010 Urb. Popular San Juan bautista I Etapa, Comas - Lima, Ref. A Una Cdra. De La Entrada De Collique"
-  },
-  {
-    "Agencia": "Lima / Lima / Comas / Av Tupac Amaru Cdra. 57",
-    "Direccion": "Av. Tupac Amaru 5725-5727 - Urb. huaquillay I Etapa, comas - Lima - Lima, Ref. A Media Cdra. Del Banco De La Nación"
   },
   {
     "Agencia": "Lima / Lima / Comas / Av Univ.  Retablo",
