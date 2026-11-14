@@ -32,12 +32,16 @@
     "Direccion": "Av. Miguel Grau Mz. D 4 Lt. 1 Casma - Ancash, Ref. Frente Al Jardín De Infancia"
   },
   {
-    "Agencia": "Ancash / Huaraz / Huaraz / Av. 27 De Noviembre Co",
+    "Agencia": "Ancash / Huaraz / Huaraz / Av 27 De Noviembre Co",
     "Direccion": "Av. 27 De Noviembre Cdra. 20 S/n - Villon Bajo, Referencia: Al Costado Del Grifo Primax"
   },
   {
     "Agencia": "Ancash / Huaraz / Independencia / Huaraz Independencia",
     "Direccion": "Jr. Candelaria Villar N. 631, Ref. Esquina Con Con Jr. Huaylas Casa De 4 Pisos Amarillo"
+  },
+  {
+    "Agencia": "Ancash / Huari / Huari / Huari",
+    "Direccion": "Av. Circunvalación Baja N.° 865. Ref: Frente A La Plaza De Toros."
   },
   {
     "Agencia": "Ancash / Huarmey / Huarmey / Huarmey",
@@ -1930,10 +1934,6 @@
   {
     "Agencia": "Tumbes / Tumbes / Corrales / Corrales",
     "Direccion": "Av. Huáscar Nº 311 Int. 01 Centro, Corrales - Tumbes, Ref. A Espaldas De La Plaza De Armas"
-  },
-  {
-    "Agencia": "Tumbes / Tumbes / La Cruz / La Cruz  Tumbes",
-    "Direccion": "Jr. Piura 105 Caleta La Cruz, La Cruz - Tumbes, Ref. Frente a ctr. panamericana Norte Y Al Frente De Motorepuestos Y Multiservicios Lujan"
   },
   {
     "Agencia": "Tumbes / Tumbes / Tumbes / Pampa Grande Tumbes",
