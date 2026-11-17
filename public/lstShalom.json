@@ -500,6 +500,10 @@
     "Direccion": "Av. Tito Jaime 914, Rupa Rupa-  Leoncio Prado - Huanuco, Ref. A Dos Cdras. De La Plaza De Armas Leoncio Pardo"
   },
   {
+    "Agencia": "Huanuco / Leoncio Prado / Rupa Rupa / Tingo Maria Co Buenos Aires",
+    "Direccion": "Calle Rosario Central, Referencia: Segunda Entrada De Buenos Aires, En La Misma Esquina"
+  },
+  {
     "Agencia": "Ica / Chincha / Chincha Alta / Calle Los Angeles",
     "Direccion": "Calle Los Ángeles N° Casa 217 01 - A Sin Barriio Cercado, Chincha Alta - Chincha - Ica, Ref. A 2 Cdras. De La Plaza De Armas De Chncha Pasando Electrodunas"
   },
@@ -1486,6 +1490,10 @@
   {
     "Agencia": "Lima / Lima / Villa El Salvador / Óvalo Mariátegui",
     "Direccion": "Av. Pastor Sevilla Sect. 6 - Gp 7 - Mz. A - Lote 05  - V.e.s., Ref. A 2 Cuadras Del Óvalo Mariátegui Con 3 De Octubre"
+  },
+  {
+    "Agencia": "Lima / Lima / Villa El Salvador / Prueba Sistemas",
+    "Direccion": "Av Pruebas."
   },
   {
     "Agencia": "Lima / Lima / Villa Maria Del Triunfo / Av. Lima - Vmt",
