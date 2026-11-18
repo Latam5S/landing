@@ -48,6 +48,38 @@ const ALL_COURIERS = [
     "Encomienda",
 ];
 const ALL_DAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+
+// Distritos válidos de la Plantilla_Pedidos de Dinsides (hoja LISTAS, columna DISTRITO)
+const DINSIDES_DISTRICTS = [
+    "Comas", "San Juan de Lurigancho", "San Martín de Porres", "Los Olivos",
+    "Independencia", "Rímac", "Ate", "Villa El Salvador", "Villa María del Triunfo",
+    "Santiago de Surco", "Miraflores", "La Molina", "Breña", "Cercado de Lima",
+    "Chorrillos", "San Borja", "San Isidro", "Surquillo", "Jesús María",
+    "Magdalena del Mar", "El Agustino", "Ancon", "Barranco", "Carabayllo",
+    "Chaclacayo", "Cieneguilla", "La Victoria", "Lince", "Lurigancho Chosica",
+    "Lurin", "Pueblo Libre", "Pachacamac", "Pucusana", "Puente Piedra",
+    "Punta Hermosa", "Punta Negra", "San Bartolo", "San Juan de Miraflores",
+    "San Luis", "San Miguel", "Santa Anita", "Santa Maria del Mar", "Santa Rosa",
+    "Callao", "Bellavista", "Carmen de la Legua Reynoso", "La Perla", "La Punta",
+    "Ventanilla", "Santa Eulalia", "Ricardo Palma", "Envio Agencia Marvisur",
+    "Envio Agencia Olva Courier", "Envio Agencia Shalom",
+    "Retiro Sede Cercado (Av Arica 1702)", "Retiro Sede Gamarra (Antonio Bazo 1284)",
+    "Mi Perú", "huachipa", "Cajamarquilla", "Manchay", "Huaycan-Ate",
+    "Santa Clara-Ate", "Jicamarca Anexo 8", "Jicamarca Anexo 22", "Chosica",
+];
+const normalizeDistrictKey = (s) =>
+    s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[\s-]+/g, "");
+const DINSIDES_DISTRICT_MAP = new Map([
+    ...DINSIDES_DISTRICTS.map((d) => [normalizeDistrictKey(d), d]),
+    [normalizeDistrictKey("Huaycan"), "Huaycan-Ate"],
+    [normalizeDistrictKey("El Márquez - Callao"), "Callao"],
+    [normalizeDistrictKey("Salamanca Ate"), "Ate"],
+]);
+// "Ancón (S/.17)" -> "Ancon" (nombre exacto de la plantilla; si no existe, se deja limpio)
+const toDinsidesDistrict = (raw) => {
+    const clean = (raw || "").replace(/\s*\(S\/\.?\s*[\d.]+\)\s*$/i, "").trim();
+    return DINSIDES_DISTRICT_MAP.get(normalizeDistrictKey(clean)) || clean;
+};
 const initialState = {
     merchantName: "",
     whatsapp: "",
@@ -1070,14 +1102,9 @@ const app = {
         else if (type === "dinsides") {
             const dinsidesList = list.filter((x) => x.courier.match(/dinsides/i));
 
+            // Columnas en el mismo orden que la hoja PEDIDOS de Plantilla_Pedidos.xlsx
             dataToExport = dinsidesList.map((x) => {
-                // A. LIMPIEZA DE DISTRITO: "Lince (S/.10)" -> "Lince"
-                let distLimpio = x.clientDistrict || "";
-                if (distLimpio.includes("(")) {
-                    distLimpio = distLimpio.split("(")[0].trim();
-                }
-
-                // B. FECHA FORMATO dd/mm/aaaa
+                // FECHA FORMATO dd/mm/aaaa
                 let fechaEntrega = "";
                 if (x.shippingDate) {
                     // Buscamos patrones numéricos dia/mes (ej: 25/11)
@@ -1089,18 +1116,25 @@ const app = {
                 }
 
                 return {
-                    CARGA: "CARGAR",
-                    "TIPO DE VENTA (SELECCIONE SOLO DEL LISTADO)": "",
-                    "NOMBRE DEL DESTINATARIO": x.clientName,
-                    "TELEFONO DESTINATARIO 9 DIGITOS": x.clientPhone,
-                    "DISTRITO (SELECCIONE SOLO DEL LISTADO)": distLimpio,
-                    "DIRECCION DE ENTREGA": x.clientAddress || "",
-                    "COORDENADAS DE LA DIRECCIÓN": "",
-                    "FECHA DE ENTREGA (DIA/MES/AÑO)": fechaEntrega, // <--- FORMATO CORREGIDO
-                    "DETALLE DEL PRODUCTO": "",
-                    "MONTO A COBRAR (decimales se separan con punto . )": "0.00",
-                    "FORMA DE PAGO": "",
-                    OBSERVACION: x.clientRef || "",
+                    SERVICIO: "Entrega",
+                    "NOMBRE DESTINATARIO": x.clientName || "",
+                    "TELÉFONO DESTINATARIO": x.clientPhone || "",
+                    DOCUMENTO: x.clientDni || "",
+                    FECHA: fechaEntrega,
+                    DISTRITO: toDinsidesDistrict(x.clientDistrict),
+                    DIRECCIÓN: x.clientAddress || "",
+                    COORDENADAS: "",
+                    PRODUCTO: "",
+                    OBSERVACIÓN: x.clientRef || "",
+                    "TAMAÑO PAQUETE": "A4 (Sobre)",
+                    "LARGO (cm)": "",
+                    "ANCHO (cm)": "",
+                    "ALTO (cm)": "",
+                    "PESO (kg)": "",
+                    "MÉTODO PAGO": "NO COBRAR",
+                    "MONTO COBRAR": 0,
+                    "FLETE AGENCIA": "",
+                    "ENVIO ML": "",
                 };
             });
             fileName = `CargaMasiva_Dinsides_${new Date().toISOString().slice(0, 10)}.xlsx`;
