@@ -92,6 +92,10 @@
     "Direccion": "Av. Panamericana S/n - Abancay - Apurímac, Ref. A 100 Metros De La Comisaría De Bellavista, Al Costado De Maderera Vega"
   },
   {
+    "Agencia": "Apurimac / Abancay / Curahuasi / Curahuasi",
+    "Direccion": "Av. Panamericana S/n. Ref. Al Costado De La Coopertiva San Pedro."
+  },
+  {
     "Agencia": "Apurimac / Andahuaylas / Andahuaylas / Andahuaylas",
     "Direccion": "Av. Malinas 1355 Pochccota, Andahuaylas - Andahuaylas -  Apurímac, Ref. al Costado De La Ex Cancha El Centenario O Altura De La Universidad Unsaac"
   },
@@ -960,6 +964,10 @@
     "Direccion": "Av. El Sol Mz. S Lt. 2 Zona 03 - Asoc. Parque Industrial El Asesor, Sector 010 Zona 03 - Ate, Ref. A Una Cuadra Y Media De La Carretera Central"
   },
   {
+    "Agencia": "Lima / Lima / Ate-vitarte / Av Los Virreyes - Ate",
+    "Direccion": "Av. Los Virreyes Mz. A Lt. 21 Urb. Tilda Sec. 010 Zn. 03, Ref. a 2 Cdras. Del Innova Schools De Ate Vitarte"
+  },
+  {
     "Agencia": "Lima / Lima / Ate-vitarte / Huaycan  El Descanso",
     "Direccion": "Av. Jose Carlos Mariategui Mza. B Lte 06, Residencial Pariachi Sec. 031 Zon. 05, Ate - Lima - Lima, Ref. Cruce Con La Av. Los Incas"
   },
@@ -1490,10 +1498,6 @@
   {
     "Agencia": "Lima / Lima / Villa El Salvador / Óvalo Mariátegui",
     "Direccion": "Av. Pastor Sevilla Sect. 6 - Gp 7 - Mz. A - Lote 05  - V.e.s., Ref. A 2 Cuadras Del Óvalo Mariátegui Con 3 De Octubre"
-  },
-  {
-    "Agencia": "Lima / Lima / Villa El Salvador / Prueba Sistemas",
-    "Direccion": "Av Pruebas."
   },
   {
     "Agencia": "Lima / Lima / Villa Maria Del Triunfo / Av. Lima - Vmt",
