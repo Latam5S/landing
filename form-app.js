@@ -354,11 +354,15 @@ const app = {
             })
             .slice(0, 100);
 
+    // Keep matches in state and reference them by index: embedding the raw
+    // strings in the inline handler breaks when they contain quotes.
+    state.agencyMatches = m;
+
     if (m.length) {
       c.innerHTML = m
         .map(
-          (a) => `
-                        <div onmousedown="app.selectAgency('${a.Agencia.replace(/'/g, "\\'")}','${a.Direccion.replace(/'/g, "\\'").replace(/\n/g, " ")}')" 
+          (a, i) => `
+                        <div onmousedown="app.selectAgencyAt(${i})"
                              class="p-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-0">
                             <p class="font-bold text-brand_text text-sm mb-0.5">${a.Agencia}</p>
                             <p class="text-xs text-gray-500">${a.Direccion}</p>
@@ -374,6 +378,11 @@ const app = {
                         </div>
                     `;
     }
+  },
+
+  selectAgencyAt: (i) => {
+    const a = (state.agencyMatches || [])[i];
+    if (a) app.selectAgency(a.Agencia, (a.Direccion || "").replace(/\n/g, " "));
   },
 
   selectAgency: (n, a) => {
